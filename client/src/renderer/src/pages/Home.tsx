@@ -1,13 +1,16 @@
 import React from 'react'
+import { FaHome } from 'react-icons/fa'
 
-import Navbar from '@renderer/components/navbar/Navbar'
+import Sidebar from '@renderer/components/navbar/Navbar'
+import { SidebarItem } from '@renderer/components/navbar/Navbar'
 
 const Home = () => {
   return (
-    <div>
-      asdasdsad
-      <Navbar />
-      hola
+    <div className='flex'>
+      <Sidebar>
+        <SidebarItem icon={<FaHome />} text={'Home'} active />
+      </Sidebar>
+      <div className="di">asdasd</div>
     </div>
   )
 }
