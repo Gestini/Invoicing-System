@@ -9,6 +9,7 @@ const Home = () => {
     <div className='flex'>
       <Sidebar>
         <SidebarItem icon={<FaHome />} text={'Home'} active />
+        <SidebarItem icon={<FaHome />} text={'Home'}  />
       </Sidebar>
       <div className="di">asdasd</div>
     </div>
