@@ -38,6 +38,4 @@ public class ProductService {
         return productRepository.findByBusinessUnitId(businessUnitId);
     }
 
-    // Añade otros métodos según sea necesario, por ejemplo, búsqueda por categoría,
-    // etc.
 }
