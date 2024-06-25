@@ -38,4 +38,18 @@ public class ProductService {
         return productRepository.findByBusinessUnitId(businessUnitId);
     }
 
+    // Método para obtener productos por categoría
+    public List<ProductModel> getProductsByCategory(String category) {
+        return productRepository.findByCategory(category);
+    }
+
+    // Método para obtener productos por nombre
+    public List<ProductModel> getProductsByName(String name) {
+        return productRepository.findByName(name);
+    }
+
+    // Método para obtener productos por código de referencia
+    public List<ProductModel> getProductsByReferenceCode(String referenceCode) {
+        return productRepository.findByReferenceCode(referenceCode);
+    }
 }
