@@ -1,0 +1,38 @@
+@font-face {
+  font-family: 'Poppins';
+  src: url('./src/assets/fonts/Poppins.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@import 'tailwindcss/base';
+
+@import 'tailwindcss/components';
+
+@import 'tailwindcss/utilities';
+
+body {
+  background-color: var(--bgColor);
+}
+
+.mainContent {}
+
+.mainContainer {}
+
+main {}
+
+.iconSVG {}
+
+.changeThemeIcon {
+  cursor: pointer;
+
+  svg {}
+}
+
+.default-text-color {}
+
+.max-w-table {}
+
+.dropdownCheckboxIcon {
+  svg {}
+}
