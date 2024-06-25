@@ -42,4 +42,6 @@ public class BusinessUnitsController {
     public ResponseEntity<String> deleteBusinessUnitById(@PathVariable("id") Long id) {
         return this.businessUnitsService.deleteBusinessUnitById(id);
     }
+
+    /*  */
 }
