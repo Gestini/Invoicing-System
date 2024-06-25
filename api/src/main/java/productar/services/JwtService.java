@@ -5,8 +5,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.Base64.Decoder;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,8 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JwtService {
 
-    private static final String SECRET_KEY = "v120v1231823n1nv1n19n3n9NV99v999999121100990873";
+    @Value("${secretkey}")
+    private String SECRET_KEY;
 
     public String getToken(UserDetails user) {
         return getToken(new HashMap<>(), user);
@@ -32,7 +33,7 @@ public class JwtService {
                 .setClaims(extraClaims)
                 .setSubject(user.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+                .setExpiration(new Date(System.currentTimeMillis() + 86400000))
                 .signWith(getKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -60,7 +61,6 @@ public class JwtService {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
-
     }
 
     public <T> T getClaim(String token, Function<Claims, T> ClaimsResolver) {
