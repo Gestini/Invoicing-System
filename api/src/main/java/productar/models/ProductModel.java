@@ -66,6 +66,29 @@ public class ProductModel {
     @NotNull(message = "Business unit cannot be null")
     private BusinessUnitsModel businessUnit;
 
+    
+    private String codigo1;
+    private String codigo2;
+    private String barcode;
+    private String categoryType;
+    private Double purchasePrice;
+    private Double priceCalculation;
+    private Double costPrice;
+    private String pricePolicy;
+    private Double net1;
+    private Double net2;
+    private Double net3;
+    private Double net4;
+    private String taxType;
+    private Double cashPrice;
+    private Double cardPrice;
+    private Double financedPrice;
+    private Double friendPrice;
+    private String referenceCode;
+    private Boolean packageProduct;
+    private Integer quantityPerPackage;
+    private String observations;
+
     public Long getId() {
         return id;
     }
