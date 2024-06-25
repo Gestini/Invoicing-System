@@ -1,6 +1,7 @@
 import { useState, ReactNode, createContext, useContext } from 'react'
 import { MoreVertical, ChevronLast, ChevronFirst } from 'lucide-react'
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from '@nextui-org/react'
+import { NavLink } from 'react-router-dom'
 
 // Define types for props
 interface SidebarProps {
@@ -20,12 +21,12 @@ export default function Sidebar({ children }: SidebarProps) {
   const [expanded, setExpanded] = useState<boolean>(true)
 
   return (
-    <aside className="h-screen flex absolute">
-      <nav className="h-full flex flex-col bg-white border-r shadow-sm">
+    <aside className="flex min-h-[100vh]">
+      <nav className="h-full  flex flex-col border-r shadow-sm">
         <div className="p-4 pb-2 flex justify-between items-center">
           <img
             src="https://img.logoipsum.com/243.svg"
-            className={`overflow-hidden transition-all ${expanded ? 'w-32' : 'w-0'}`}
+            className={`overflow-hidden transition-all ${expanded ? 'w-20' : 'w-0'}`}
             alt=""
           />
           <button
@@ -37,7 +38,7 @@ export default function Sidebar({ children }: SidebarProps) {
         </div>
 
         <SidebarContext.Provider value={{ expanded }}>
-          <ul className="flex-1 px-3">{children}</ul>
+          <div className="flex-1 px-3">{children}</div>
         </SidebarContext.Provider>
 
         <div className="border-t flex p-3">
@@ -49,7 +50,7 @@ export default function Sidebar({ children }: SidebarProps) {
           <div
             className={`
               flex justify-between items-center
-              overflow-hidden transition-all ${expanded ? 'w-52 ml-3' : 'w-0'}
+              overflow-hidden transition-all ${expanded ? 'w-30 ml-3' : 'w-0'}
           `}
           >
             <div className="leading-4">
@@ -58,7 +59,7 @@ export default function Sidebar({ children }: SidebarProps) {
             </div>
             <Dropdown>
               <DropdownTrigger>
-              <MoreVertical size={20} />
+                <MoreVertical size={20} />
               </DropdownTrigger>
               <DropdownMenu aria-label="Static Actions">
                 <DropdownItem key="new">Settings</DropdownItem>
@@ -78,49 +79,81 @@ export default function Sidebar({ children }: SidebarProps) {
 interface SidebarItemProps {
   icon: ReactNode
   text: string
-  active?: boolean
+  path: string
   alert?: boolean
 }
 
 // SidebarItem component
-export function SidebarItem({ icon, text, active, alert }: SidebarItemProps) {
+export function SidebarItem({ path, icon, text, alert }: SidebarItemProps) {
   const { expanded } = useContext(SidebarContext)! // Use ! to assert non-null since we know it's provided by Sidebar
 
   return (
-    <li
-      className={`
-        relative flex items-center py-2 px-3 my-1
-        font-medium rounded-md cursor-pointer
-        transition-colors group
-        ${
-          active
-            ? ' bg-gray-200'
-            : 'hover:bg-indigo-50 text-gray-600'
-        }
+    <>
+      {
+        path ? <NavLink to={path}
+          className={({ isActive }) => `
+    relative flex items-center py-2 px-3
+    font-medium cursor-pointer
+    transition-colors group
+    ${isActive ? 'text-c-primary bg-c-primary-hover' : 'hover:bg-c-primary-hover2 text-gray-600'}
+    ${expanded ? '' : 'rounded-md'}
     `}
-    >
-      {icon}
-      <span className={`overflow-hidden transition-all ${expanded ? 'w-52 ml-3' : 'w-0'}`}>
-        {text}
-      </span>
-      {alert && (
-        <div
-          className={`absolute right-2 w-2 h-2 rounded bg-indigo-400 ${expanded ? '' : 'top-2'}`}
-        />
-      )}
-
-      {!expanded && (
-        <div
-          className={`
-          absolute left-full rounded-md px-2 py-1 ml-6
-          bg-indigo-100 text-indigo-800 text-sm
-          invisible opacity-20 -translate-x-3 transition-all
-          group-hover:visible group-hover:opacity-100 group-hover:translate-x-0
-      `}
         >
-          {text}
-        </div>
-      )}
-    </li>
+          {icon}
+          <span className={`overflow-hidden transition-all ${expanded ? 'w-30 ml-3' : 'w-0'}`}>
+            {text}
+          </span>
+          {alert && (
+            <div
+              className={`absolute right-2 w-2 h-2 rounded bg-indigo-400 ${expanded ? '' : 'top-2'}`}
+            />
+          )}
+
+          {!expanded && (
+            <div
+              className={`
+        absolute left-full rounded-md px-2 py-1 ml-6
+        bg-indigo-100 text-c-primary text-sm
+        invisible opacity-20 -translate-x-3 transition-all
+        group-hover:visible group-hover:opacity-100 group-hover:translate-x-0
+        `}
+            >
+              {text}
+            </div>
+          )}
+        </NavLink>
+          : <div
+            className={`
+    relative flex items-center py-2 px-3 font-medium cursor-pointer transition-colors group   
+    text-[#ffd700] hover:bg-[#ffd9002d]
+    ${expanded ? '' : 'rounded-md'}
+    `}
+          >
+            {icon}
+            <span className={`overflow-hidden transition-all ${expanded ? 'w-30 ml-3' : 'w-0'}`}>
+              {text}
+            </span>
+            {alert && (
+              <div
+                className={`absolute right-2 w-2 h-2 rounded bg-indigo-400 ${expanded ? '' : 'top-2'}`}
+              />
+            )}
+
+            {!expanded && (
+              <div
+                className={`
+        absolute left-full rounded-md px-2 py-1 ml-6
+        bg-indigo-100 text-indigo-800 text-sm
+        invisible opacity-20 -translate-x-3 transition-all
+        group-hover:visible group-hover:opacity-100 group-hover:translate-x-0
+        `}
+              >
+                {text}
+              </div>
+            )}
+          </div>
+      }
+
+    </>
   )
 }

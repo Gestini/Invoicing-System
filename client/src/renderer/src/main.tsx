@@ -6,6 +6,8 @@ import App from './App'
 import { HashRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import store from './redux/store/store'
+import './styles/main.scss'
+import "./styles/theme.scss"
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
