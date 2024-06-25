@@ -32,11 +32,12 @@ public class SupplierService {
             existingSupplier.setEmail(supplier.getEmail());
             existingSupplier.setWebsite(supplier.getWebsite());
             existingSupplier.setSupplierType(supplier.getSupplierType());
+            existingSupplier.setDni(supplier.getDni());
+            existingSupplier.setReasonSocial(supplier.getReasonSocial());
+            existingSupplier.setSaleCondition(supplier.getSaleCondition());
 
             return supplierRepository.save(existingSupplier);
         } else {
-            // Manejar la lógica para proveedor no encontrado
-            // Puedes lanzar una excepción o manejar el error según sea necesario
             return null;
         }
     }
@@ -53,7 +54,6 @@ public class SupplierService {
         return supplierRepository.findAll();
     }
 
-    // Ejemplo de búsqueda por nombre
     public List<SupplierModel> findSuppliersByName(String name) {
         return supplierRepository.findByNameContainingIgnoreCase(name);
     }
