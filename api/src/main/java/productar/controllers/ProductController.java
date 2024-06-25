@@ -61,4 +61,23 @@ public class ProductController {
         List<ProductModel> products = productService.getProductsByBusinessUnit(businessUnitId);
         return ResponseEntity.ok(products);
     }
+
+    @GetMapping("/by-category/{category}")
+    public ResponseEntity<List<ProductModel>> getProductsByCategory(@PathVariable("category") String category) {
+        List<ProductModel> products = productService.getProductsByCategory(category);
+        return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/by-name/{name}")
+    public ResponseEntity<List<ProductModel>> getProductsByName(@PathVariable("name") String name) {
+        List<ProductModel> products = productService.getProductsByName(name);
+        return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/by-reference-code/{referenceCode}")
+    public ResponseEntity<List<ProductModel>> getProductsByReferenceCode(
+            @PathVariable("referenceCode") String referenceCode) {
+        List<ProductModel> products = productService.getProductsByReferenceCode(referenceCode);
+        return ResponseEntity.ok(products);
+    }
 }
