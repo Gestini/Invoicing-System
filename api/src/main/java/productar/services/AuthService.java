@@ -1,6 +1,5 @@
 package productar.services;
 
-import org.apache.catalina.authenticator.SpnegoAuthenticator.AuthenticateAction;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,7 +18,6 @@ import productar.repositories.UserRepository;
 @RequiredArgsConstructor
 
 public class AuthService {
-
     private final UserRepository userRepository;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
@@ -27,8 +25,10 @@ public class AuthService {
 
     public AuthResponse login(LoginRequest request) {
         authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+                .authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(),
+                        request.getPassword()));
         UserDetails user = userRepository.findByUsername(request.getUsername()).orElseThrow();
+
         String token = jwtService.getToken(user);
         return AuthResponse.builder()
                 .token(token)
