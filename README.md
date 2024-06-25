@@ -1,4 +1,3 @@
-
 # Git Repository
 
 ## Formato para realizar commits
@@ -80,6 +79,46 @@ hotfix/correccion-critica
 3. Hacer un pull request (PR) hacia `develop`.
 4. El PR debe ser revisado y aprobado por al menos otro miembro del equipo antes de hacer merge.
 
----
+## Crear y eliminar ramas
 
-Este README ahora incluye instrucciones claras sobre cómo nombrar y estructurar las nuevas ramas para mantener un flujo de trabajo ordenado.
+### Crear una rama
+
+Para crear una nueva rama, utiliza el siguiente comando:
+
+```
+git checkout -b nombre-de-la-rama
+```
+
+Ejemplo:
+
+```
+git checkout -b feature/nueva-funcionalidad
+```
+
+### Eliminar una rama
+
+Después de mergear la rama, puedes eliminarla tanto localmente como remotamente.
+
+#### Eliminar una rama localmente
+
+```
+git branch -d nombre-de-la-rama
+```
+
+Ejemplo:
+
+```
+git branch -d feature/nueva-funcionalidad
+```
+
+#### Eliminar una rama remotamente
+
+```
+git push origin --delete nombre-de-la-rama
+```
+
+Ejemplo:
+
+```
+git push origin --delete feature/nueva-funcionalidad
+```
