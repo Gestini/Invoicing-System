@@ -43,5 +43,4 @@ public class BusinessUnitsController {
         return this.businessUnitsService.deleteBusinessUnitById(id);
     }
 
-    /*  */
 }
