@@ -16,7 +16,7 @@ import {
 const Navbartop = () => {
   return (
     <nav className="h-[50px] bg-white border-b flex items-center ">
-      <div className="w-full h-full px-[35px]">
+      <div className="w-full h-full px-[18px]">
         <div className="relative flex items-center justify-between w-full h-full  ">
           <div className=" inset-y-0 left-0 flex items-center w-[50px] flex justify-center items-center text-gray-600 hover:bg-[#eaddff] cursor-pointer">
             <BiMenu className=" text-gray-600  text-[20px] w-[25px]  h-[50px]  " />
