@@ -1,7 +1,6 @@
-import { useState, ReactNode, createContext, useContext } from 'react'
-import { MoreVertical, ChevronLast, ChevronFirst } from 'lucide-react'
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from '@nextui-org/react'
 import { NavLink } from 'react-router-dom'
+
+import { ReactNode, createContext, useContext, useState } from 'react'
 
 // Define types for props
 interface SidebarProps {
@@ -49,9 +48,9 @@ export function SidebarItem({ path, icon, text, alert }: SidebarItemProps) {
         <NavLink
           to={path}
           className={({ isActive }) => `
-            flex items-center py-3 px-2 
+            flex items-center py-3 px-2
             font-medium cursor-pointer flex-col
-            transition-colors group 
+            transition-colors group
             ${isActive ? 'text-[#721ff7] bg-[#eadeff]' : 'hover:bg-c-primary-hover2 text-gray-600'}
             ${expanded ? '' : 'rounded-md'}
           `}
@@ -80,7 +79,7 @@ export function SidebarItem({ path, icon, text, alert }: SidebarItemProps) {
       ) : (
         <div
           className={`
-            relative flex items-center py-3 px-2 font-medium cursor-pointer flex-col transition-colors group   
+            relative flex items-center py-3 px-2 font-medium cursor-pointer flex-col transition-colors group
             text-[#721ff7] hover:bg-[#721ff7] hover:text-[#ffffff] ]
             ${expanded ? '' : 'rounded-md'}
           `}
@@ -98,7 +97,7 @@ export function SidebarItem({ path, icon, text, alert }: SidebarItemProps) {
                 absolute left-full rounded-md px-2 py-1 ml-6
                 bg-indigo-100 text-indigo-800 text-sm
                 invisible opacity-20 -translate-x-3 transition-all
-    
+
               `}
             >
               {text}

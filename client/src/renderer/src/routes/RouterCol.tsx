@@ -1,28 +1,16 @@
-import { FaHome } from 'react-icons/fa'
-import { FaCrown } from 'react-icons/fa6'
-import { FaChartArea } from 'react-icons/fa'
-import { FaTag } from 'react-icons/fa6'
-import { FaCheckSquare } from 'react-icons/fa'
-import { FaCartShopping } from 'react-icons/fa6'
-import { FaSheetPlastic } from 'react-icons/fa6'
-import { FaCalculator } from 'react-icons/fa'
-import { FaCog } from 'react-icons/fa'
-import { FaQuestionCircle } from 'react-icons/fa'
-import Sidebar from '@renderer/components/navbar/Navbar'
-import { SidebarItem } from '@renderer/components/navbar/Navbar'
-import { ChangeTheme } from '@renderer/components/Theme'
+import Sidebar, { SidebarItem } from '@renderer/components/navbar/Navbar'
 import {
-  BiHome,
-  BiLabel,
-  BiCrown,
-  BiCart,
-  BiBadgeCheck,
-  BiCalculator,
-  BiDetail,
   BiCog,
-  BiHelpCircle,
+  BiHome,
+  BiMoon,
+  BiCart,
+  BiLabel,
   BiStats,
-  BiMoon
+  BiCrown,
+  BiDetail,
+  BiHelpCircle,
+  BiBadgeCheck,
+  BiCalculator
 } from 'react-icons/bi'
 
 const RouterCol = () => {
