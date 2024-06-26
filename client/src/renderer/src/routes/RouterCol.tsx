@@ -28,9 +28,10 @@ import {
 const RouterCol = () => {
   return (
     <div className="flex h-full sticky top-0">
+        
       <Sidebar>
         <SidebarItem path="" icon={<BiCrown />} text={'Premium'} />
-        <SidebarItem path="/" icon={<BiHome />} text={'General'} />
+        <SidebarItem path="/general" icon={<BiHome />} text={'General'} />
         <SidebarItem path="/ventas" icon={<BiLabel />} text={'Ventas'} />
         <SidebarItem path="/stock" icon={<BiCart />} text={'Stock'} />
         <SidebarItem path="/pedidos" icon={<BiBadgeCheck />} text={'Pedidos'} />

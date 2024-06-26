@@ -2,6 +2,7 @@ import { useState, ReactNode, createContext, useContext } from 'react'
 import { MoreVertical, ChevronLast, ChevronFirst } from 'lucide-react'
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from '@nextui-org/react'
 import { NavLink } from 'react-router-dom'
+import "./Navbar.scss"
 
 // Define types for props
 interface SidebarProps {
@@ -21,7 +22,7 @@ export default function Sidebar({ children }: SidebarProps) {
   const [expanded, setExpanded] = useState<boolean>(false)
 
   return (
-    <aside className="flex min-h-[100vh]">
+    <aside className="flex navbaraside">
       <nav className="h-full flex flex-col bg-white border-r shadow-sm">
         <SidebarContext.Provider value={{ expanded }}>
           <div className="h-full px-1 mt-[10px] flex-col gap-[30px] ">{children}</div>
