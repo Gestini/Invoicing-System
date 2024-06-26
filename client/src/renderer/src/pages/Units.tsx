@@ -1,11 +1,29 @@
+import { BiMenu } from 'react-icons/bi'
 import AvatarHelp from '@renderer/components/Avatar/Avatar'
-import React from 'react'
-import { BiMenu, BiCog, BiBell } from 'react-icons/bi'
+import { useNavigate } from 'react-router-dom'
 
 const Units = () => {
+  const navigate = useNavigate()
+  const handleNavigate = () => navigate('/general')
+
+  const businessUnits = [
+    {
+      name: 'El Electricista',
+      description: 'Materiales electricos'
+    },
+    {
+      name: 'El Electricista',
+      description: 'Materiales electricos'
+    },
+    {
+      name: 'El Electricista',
+      description: 'Materiales electricos'
+    }
+  ]
+
   return (
     <div className="flex flex-col">
-      <div className="navunits w-full  py-[30px] absolute px-[30px]  flex justify-between ">
+      <div className="navunits w-full py-[30px] absolute px-[30px] flex justify-between ">
         <BiMenu className=" text-[50px] text-gray-600 " />
         <AvatarHelp />
       </div>
@@ -18,29 +36,16 @@ const Units = () => {
             + add units
           </div>
         </div>
-
-        <div className=" flex w-full lg:justify-between   md:justify-start flex-wrap justify-center">
-          <div className="cardunits cursor-pointer  m-5">
-            <div className="imagecard w-[370px] h-[250px] bg-[#721ff7]  "></div>
-            <div className="textcard flex flex-col py-[15px]">
-              <h3 className=" font-[600] ">El Electricista</h3>
-              <h4>Materiales electricos</h4>
+        <div className=" flex w-full lg:justify-between md:justify-start flex-wrap justify-center">
+          {businessUnits.map((item, index) => (
+            <div className="cardunits cursor-pointer" key={index} onClick={() => handleNavigate()}>
+              <div className="imagecard w-[370px] h-[250px] bg-[#721ff7]"></div>
+              <div className="textcard flex flex-col py-[15px]">
+                <h3 className=" font-[600] ">{item.name}</h3>
+                <h4>{item.description}</h4>
+              </div>
             </div>
-          </div>
-          <div className="cardunits cursor-pointer m-5">
-            <div className="imagecard w-[370px] h-[250px] bg-[#721ff7] "></div>
-            <div className="textcard flex flex-col py-[15px] ">
-              <h3 className="font-[600]">El Electricista</h3>
-              <h4>Materiales electricos</h4>
-            </div>
-          </div>
-          <div className="cardunits cursor-pointer m-5">
-            <div className="imagecard w-[370px] h-[250px] bg-[#721ff7] "></div>
-            <div className="textcard flex flex-col py-[15px]">
-              <h3 className="font-[600]">El Electricista</h3>
-              <h4>Materiales electricos</h4>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
       <div className="h-[100vh] bg-[#a41bff]"></div>
