@@ -2,6 +2,7 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { Navigate, useLocation, useNavigate, Outlet } from 'react-router-dom'
 import RouterCol from '../RouterCol'
+import Navbartop from '@renderer/components/navbar/Navbartop'
 
 const ProtectedRouteAuth = () => {
   const location = useLocation()
@@ -41,10 +42,13 @@ const ProtectedRouteAuth = () => {
   const handleNavigate = (path: string) => navigate(path)
 
   return (
-    <div className='flex'>
-      <RouterCol />
-      <Outlet />
-    </div>
+    <>
+      <Navbartop />
+      <div className="flex">
+        <RouterCol />
+        <Outlet />
+      </div>
+    </>
   )
 }
 
