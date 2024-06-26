@@ -18,11 +18,11 @@ const RouterCol = () => {
     <div className="flex h-full sticky navbaraside top-0 ">
       <Sidebar>
         <SidebarItem path="/general" icon={<BiHome />} text={'General'} />
-        <SidebarItem path="/ventas" icon={<BiLabel />} text={'Ventas'} />
-        <SidebarItem path="/stock" icon={<BiCart />} text={'Stock'} />
-        <SidebarItem path="/pedidos" icon={<BiBadgeCheck />} text={'Pedidos'} />
         <SidebarItem path="/facturar" icon={<BiCalculator />} text={'Facturar'} />
+        <SidebarItem path="/stock" icon={<BiCart />} text={'Stock'} />
         <SidebarItem path="/presupuestos" icon={<BiDetail />} text={'Presupuestos'} />
+        <SidebarItem path="/ventas" icon={<BiLabel />} text={'Ventas'} />
+        <SidebarItem path="/pedidos" icon={<BiBadgeCheck />} text={'Pedidos'} />
         <SidebarItem path="/informes" icon={<BiStats />} text={'Informes'} />
       </Sidebar>
     </div>

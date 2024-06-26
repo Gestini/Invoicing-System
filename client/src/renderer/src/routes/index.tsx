@@ -11,6 +11,7 @@ import Facturar from '@renderer/pages/Facturar'
 import { Route, Routes } from 'react-router-dom'
 import ProtectedRouteSession from './middlewares/ProtectedRouteSession'
 import ProtectedRouteAuth from './middlewares/ProtectedRouteAuth'
+import Units from '@renderer/pages/Units'
 
 const Router = () => {
   return (
@@ -23,7 +24,7 @@ const Router = () => {
           </>
         }
       />
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<Units />} />
       <Route element={<ProtectedRouteSession />}>
         <Route path="/general" element={<Home />} />
         <Route path="/ventas" element={<Ventas />} />
