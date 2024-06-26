@@ -46,7 +46,7 @@ const Home = () => {
 
   return (
     <div className="px-3 py-4 w-full h-full flex flex-col gap-4">
-      <h5 className="text-4xl font-semibold text-[#721ff7] mb-5">General</h5>
+      <h5 className="text-4xl font-semibold text-[#721ff7]">General</h5>
       <div className="flex gap-4">
         {cards.map((item, index) => (
           <Card className="w-full" key={index}>
