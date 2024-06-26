@@ -2,7 +2,7 @@ import { useState, ReactNode, createContext, useContext } from 'react'
 import { MoreVertical, ChevronLast, ChevronFirst } from 'lucide-react'
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from '@nextui-org/react'
 import { NavLink } from 'react-router-dom'
-import "./Navbar.scss"
+import './Navbar.scss'
 
 // Define types for props
 interface SidebarProps {

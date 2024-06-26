@@ -27,8 +27,7 @@ import {
 
 const RouterCol = () => {
   return (
-    <div className="flex h-full sticky top-0">
-        
+    <div className="flex h-full sticky navbaraside top-0">
       <Sidebar>
         <SidebarItem path="" icon={<BiCrown />} text={'Premium'} />
         <SidebarItem path="/general" icon={<BiHome />} text={'General'} />
