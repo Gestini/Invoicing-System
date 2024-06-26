@@ -52,7 +52,7 @@ export function SidebarItem({ path, icon, text, alert }: SidebarItemProps) {
             flex items-center py-3 px-2
             font-medium cursor-pointer flex-col
             transition-colors group
-            ${isActive ? 'text-[#721ff7] bg-[#eadeff]' : 'hover:bg-c-primary-hover2 text-gray-600'}
+            ${isActive ? 'text-c-primary bg-[#eadeff]' : 'hover:bg-c-primary-hover2 text-gray-600'}
             ${expanded ? '' : 'rounded-md'}
           `}
         >
@@ -67,11 +67,11 @@ export function SidebarItem({ path, icon, text, alert }: SidebarItemProps) {
             <div
               className={`
                 absolute left-full rounded-md px-2 py-1 ml-6
-                bg-[#eaddff] text-[#721ff7] font-[400]
+                bg-[#eaddff] text-c-primary font-[400]
                 invisible opacity-20 -translate-x-3 transition-all
               `}
-              // Para agregar texto que sale hacia afuera
-              // group-hover:visible group-hover:opacity-100 group-hover:translate-x-0
+            // Para agregar texto que sale hacia afuera
+            // group-hover:visible group-hover:opacity-100 group-hover:translate-x-0
             >
               {text}
             </div>
@@ -81,7 +81,7 @@ export function SidebarItem({ path, icon, text, alert }: SidebarItemProps) {
         <div
           className={`
             relative flex items-center py-3 px-2 font-medium cursor-pointer flex-col transition-colors group
-            text-[#721ff7] hover:bg-[#721ff7] hover:text-[#ffffff] ]
+            text-c-primary hover:bg-c-primary hover:text-[#ffffff] ]
             ${expanded ? '' : 'rounded-md'}
           `}
         >
