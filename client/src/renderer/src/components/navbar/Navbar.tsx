@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import "./Navbar.scss"
+import './Navbar.scss'
 
 import { ReactNode, createContext, useContext, useState } from 'react'
 
