@@ -15,9 +15,17 @@ import ProtectedRouteAuth from './middlewares/ProtectedRouteAuth'
 const Router = () => {
   return (
     <Routes>
-      <Route path='*' element={<><h1>ERROR 404</h1></>} />
+      <Route
+        path="*"
+        element={
+          <>
+            <h1>ERROR 404</h1>
+          </>
+        }
+      />
+      <Route path="/" element={<Home />} />
       <Route element={<ProtectedRouteSession />}>
-        <Route path="/" element={<Home />} />
+        <Route path="/general" element={<Home />} />
         <Route path="/ventas" element={<Ventas />} />
         <Route path="/Facturar" element={<Facturar />} />
         <Route path="/pedidos" element={<Pedidos />} />
@@ -29,8 +37,8 @@ const Router = () => {
         <Route path="/ayuda" element={<Ayuda />} />
       </Route>
       <Route element={<ProtectedRouteAuth />}>
-        <Route path='/login' element={<></>} />
-        <Route path='/register' element={<></>} />
+        <Route path="/login" element={<></>} />
+        <Route path="/register" element={<></>} />
       </Route>
     </Routes>
   )

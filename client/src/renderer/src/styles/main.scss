@@ -11,6 +11,10 @@
 
 @import 'tailwindcss/utilities';
 
+*{
+  box-sizing: border-box;
+}
+
 body {
   background-color: #f4f7fe;
 }

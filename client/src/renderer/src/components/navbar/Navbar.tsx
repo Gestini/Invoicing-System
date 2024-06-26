@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom'
+import "./Navbar.scss"
 
 import { ReactNode, createContext, useContext, useState } from 'react'
 
@@ -20,7 +21,7 @@ export default function Sidebar({ children }: SidebarProps) {
   const [expanded, setExpanded] = useState<boolean>(false)
 
   return (
-    <aside className="flex min-h-[100vh]">
+    <aside className="flex navbaraside">
       <nav className="h-full flex flex-col bg-white border-r shadow-sm">
         <SidebarContext.Provider value={{ expanded }}>
           <div className="h-full px-1 mt-[10px] flex-col gap-[30px] ">{children}</div>
