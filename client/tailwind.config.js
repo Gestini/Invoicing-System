@@ -28,7 +28,7 @@ module.exports = {
         navBackground: '#F5F2F0',
       },
       colors: {
-        'c-primary': '#007bff', // Color principal
+        'c-primary': '#721ff7', // Color principal
         'c-secondary': '#33BBCF', // Color secundario
         'c-error': '#B93B3B', // Color para errores
         'c-grey': ' #0000008A', //Color clarito para detalles

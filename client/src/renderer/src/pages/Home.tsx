@@ -46,12 +46,12 @@ const Home = () => {
 
   return (
     <div className="px-3 py-4 w-full h-full flex flex-col gap-4">
-      <h5 className="text-4xl font-semibold text-[#721ff7]">General</h5>
+      <h5 className="text-4xl font-semibold text-c-primary">General</h5>
       <div className="flex gap-4">
         {cards.map((item, index) => (
           <Card className="w-full" key={index}>
             <CardBody>
-              <span className="dashboardIcon text-[#721ff7] w-fit p-2.5 bg-[#f4f4f5] rounded text-xl">
+              <span className="dashboardIcon text-c-primary w-fit p-2.5 bg-[#f4f4f5] rounded text-xl">
                 {item.icon}
               </span>
               <div className="flex flex-col ">

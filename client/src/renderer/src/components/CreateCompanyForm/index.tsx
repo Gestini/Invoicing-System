@@ -12,12 +12,6 @@ const MultiStepForm: React.FC<MultiStepFormProps> = ({ onClose }) => {
     const [step, setStep] = useState(1);
     const [loading, setLoading] = React.useState(true)
 
-    const nextStep = () => {
-        if (step < 2) {
-            setStep(step + 1);
-        }
-    };
-
     const prevStep = () => {
         if (step > 1) {
             setStep(step - 1);
@@ -57,11 +51,10 @@ const MultiStepForm: React.FC<MultiStepFormProps> = ({ onClose }) => {
                     </div>
                     <h1 className="text-3xl font-bold mb-2" style={{ fontFamily: 'Roboto, sans-serif', fontSize: '27px' }}>You're only 2 steps away from starting your gantt chart</h1>
                     <h2 className="text-lg font-medium mb-4" style={{ fontFamily: 'Roboto, sans-serif' }}>Create your FREE account and get immediate access to the app</h2>
-                    <p className="mb-4 text-sm font-medium text-gray-600" style={{ fontFamily: 'Roboto, sans-serif' }}>Step {step} of 2</p>
+                    <p className="mb-4 text-sm font-medium text-gray-600" style={{ fontFamily: 'Roboto, sans-serif' }}>Step {step} of 1</p>
                 </div>
                 <div className="flex justify-center mb-6">
                     <div onClick={prevStep} className={`w-8 h-3 mx-1 rounded ${step === 1 ? 'bg-c-primary' : 'bg-gray-100'}`}></div>
-                    <div onClick={nextStep} className={`w-8 h-3 mx-1 rounded ${step === 2 ? 'bg-c-primary' : 'bg-gray-100'}`}></div>
                 </div>
                 {step === 1 && (
                     <div className=''>

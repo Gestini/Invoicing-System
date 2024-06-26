@@ -41,7 +41,7 @@ const Units = () => {
           <h1 className="  font-[500] text-start md:text-[20px] xl:text-[40px]  ">
             Unidades de negocio
           </h1>
-          <div onClick={() => setShowForm(true)} className=" xl:h-[40px] xl:w-[150px] xl:text-[20px] bg-[#721ff7] rounded-2xl text-white flex justify-center items-center  font-[500] md:h-[30px] md:w-[100px] md:text-[15px] text-[10px] w-[100px] h-[30px] ">
+          <div onClick={() => setShowForm(true)} className=" xl:h-[40px] xl:w-[150px] xl:text-[20px] bg-c-primary rounded-2xl text-white flex justify-center items-center  font-[500] md:h-[30px] md:w-[100px] md:text-[15px] text-[10px] w-[100px] h-[30px] ">
             + add units
           </div>
           {showForm && <MultiStepForm onClose={handleClose} />}
@@ -49,7 +49,7 @@ const Units = () => {
         <div className=" flex w-full lg:justify-between md:justify-start flex-wrap justify-center">
           {businessUnits.map((item, index) => (
             <div className="cardunits cursor-pointer" key={index} onClick={() => handleNavigate()}>
-              <div className="imagecard w-[370px] h-[250px] bg-[#721ff7]"></div>
+              <div className="imagecard w-[370px] h-[250px] bg-c-primary"></div>
               <div className="textcard flex flex-col py-[15px]">
                 <h3 className=" font-[600] ">{item.name}</h3>
                 <h4>{item.description}</h4>
