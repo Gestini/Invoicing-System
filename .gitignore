@@ -1,4 +1,3 @@
-.vscode
 # aplication properties
 application.properties
 
@@ -35,3 +34,10 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### 
+node_modules
+dist
+out
+.DS_Store
+*.log*
