@@ -1,4 +1,4 @@
-import { AvatarHelp } from '../Avatar'
+import { NavbarUserOptions } from './NavbarUserOption'
 import { BiBell, BiCog, BiMenu } from 'react-icons/bi'
 
 export const Navbar = () => {
@@ -34,7 +34,7 @@ export const Navbar = () => {
               <BiBell className=' h-full  text-[20px] text-gray-600  ' />
             </div>
             <div className='  h-[50px] w-[50px] flex justify-center items-center '>
-              <AvatarHelp />
+              <NavbarUserOptions />
             </div>
           </div>
         </div>
