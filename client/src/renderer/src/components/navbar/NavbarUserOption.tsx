@@ -16,12 +16,12 @@ export const NavbarUserOptions = () => {
     return (
       <Dropdown>
         <DropdownTrigger>
-          <Avatar isBordered as='button' color='primary' size='sm' />
+          <Avatar isBordered as='button' color='secondary' size='sm' />
         </DropdownTrigger>
         <DropdownMenu aria-label='Profile Actions' variant='flat'>
           <DropdownItem key='profile' className='h-14 gap-2 default-text-color'>
             <p className='font-semibold'>Registrado como</p>
-            <p className='font-semibold'>{user?.email}</p>
+            <p className='font-semibold'>{user?.username}</p>
           </DropdownItem>
           <DropdownItem
             key='logout'
@@ -36,7 +36,7 @@ export const NavbarUserOptions = () => {
     )
   } else {
     return (
-      <Avatar as='button' size='sm' color='primary' className='transition-transform' isBordered />
+      <Avatar as='button' size='sm' color='secondary' className='transition-transform' isBordered />
     )
   }
 }
