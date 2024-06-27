@@ -1,0 +1,19 @@
+@media (max-width: 960px) {
+  .rightlogin {
+    display: none;
+    opacity: 0;
+  }
+  .formlogin {
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 450px){
+  .formlogin{
+    padding: 0 25px;
+  }
+
+  .formlogin {
+    
+  }
+}

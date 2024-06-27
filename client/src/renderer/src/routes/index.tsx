@@ -12,6 +12,8 @@ import { Route, Routes } from 'react-router-dom'
 import ProtectedRouteSession from './middlewares/ProtectedRouteSession'
 import ProtectedRouteAuth from './middlewares/ProtectedRouteAuth'
 import Units from '@renderer/pages/Units'
+import Login from '@renderer/pages/Login'
+import Register from '@renderer/pages/Register'
 
 const Router = () => {
   return (
@@ -25,6 +27,8 @@ const Router = () => {
         }
       />
       <Route path="/" element={<Units />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
       <Route element={<ProtectedRouteSession />}>
         <Route path="/general" element={<Home />} />
         <Route path="/ventas" element={<Ventas />} />
