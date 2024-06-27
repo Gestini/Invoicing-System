@@ -102,7 +102,7 @@ Después de mergear la rama, puedes eliminarla tanto localmente como remotamente
 #### Eliminar una rama localmente
 
 ```
-git branch -d nombre-de-la-rama
+git branch -D nombre-de-la-rama
 ```
 
 Ejemplo:
