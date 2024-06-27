@@ -9,36 +9,42 @@ interface MultiStepFormProps {
 
 const MultiStepForm: React.FC<MultiStepFormProps> = ({ onClose }) => {
   const [step, setStep] = React.useState(1)
-  const [loading, setLoading] = React.useState(true)
-
-  const prevStep = () => {
-    if (step > 1) {
-      setStep(step - 1)
-    }
-  }
+  const [email, setEmail] = React.useState('')
+  const [error, setError] = React.useState(false)
+  const [loading, setLoading] = React.useState(false)
 
   React.useEffect(() => {
-    // Bloquea el scroll del cuerpo cuando el componente está montado
     document.body.style.overflow = 'hidden'
     return () => {
-      // Restaura el scroll del cuerpo cuando el componente se desmonta
       document.body.style.overflow = 'auto'
     }
   }, [])
 
-  const [email, setEmail] = React.useState('')
-  const validateEmail = (value: string) => {
-    // Expresión regular para validar el correo electrónico
-    return /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(value)
-  }
-
-  const isInvalid = React.useMemo(() => {
-    // Validar el correo electrónico cuando el valor no esté vacío
-    return email === '' || !validateEmail(email)
+  React.useEffect(() => {
+    if (email.trim() !== '') {
+      const validation = validateEmail(email)
+      setError(!validation)
+      if (!validation) return
+    }
   }, [email])
 
-  const handleChange = (e) => {
-    setEmail(e.target.value)
+  const validateEmail = (email: string) => {
+    const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
+    return regex.test(email.trim())
+  }
+
+  const prevStep = () => {
+    if (step > 1) setStep(step - 1)
+  }
+
+  const handleSend = () => {
+    const validation = validateEmail(email)
+    setError(!validation)
+    if (!validation) return
+    setLoading(true)
+    setTimeout(() => {
+      setLoading(false)
+    }, 2000)
   }
 
   return (
@@ -84,28 +90,19 @@ const MultiStepForm: React.FC<MultiStepFormProps> = ({ onClose }) => {
               label='Email'
               value={email}
               radius='sm'
-              // color={isInvalid ? "danger" : "primary"}
-              // onChange={handleChange}
-              // isInvalid={isInvalid}
+              onChange={(e) => setEmail(e.target.value)}
+              isInvalid={error}
               placeholder='Enter your email'
               errorMessage='Please enter a valid email'
               className='mb-4'
             />
-            <Input
-              type='email'
-              variant='bordered'
-              label='Email'
-              value={email}
-              radius='sm'
-              // color={isInvalid ? "danger" : "primary"}
-              // onChange={handleChange}
-              // isInvalid={isInvalid}
-              placeholder='Enter your email'
-              errorMessage='Please enter a valid email'
-              className='mb-4'
-            />
-            <Button color='secondary' className='w-full' isLoading={loading}>
-              {loading ? 'Cargando ...' : 'Crear'}
+            <Button
+              color='secondary'
+              className='w-full'
+              isLoading={loading}
+              onClick={() => handleSend()}
+            >
+              {loading ? 'Cargando...' : 'Crear'}
             </Button>
           </div>
         )}
