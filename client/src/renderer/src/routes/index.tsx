@@ -12,38 +12,40 @@ import { Route, Routes } from 'react-router-dom'
 import ProtectedRouteSession from './middlewares/ProtectedRouteSession'
 import ProtectedRouteAuth from './middlewares/ProtectedRouteAuth'
 import Units from '@renderer/pages/Units'
-import Login from '@renderer/pages/Login'
-import Register from '@renderer/pages/Register'
+import Login from '@renderer/pages/Auth/Login'
+import Register from '@renderer/pages/Auth/Register'
+import SidebarMiddleware from './middlewares/SidebarMiddleware'
 
 const Router = () => {
   return (
     <Routes>
       <Route
-        path="*"
+        path='*'
         element={
           <>
             <h1>ERROR 404</h1>
           </>
         }
       />
-      <Route path="/" element={<Units />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+
       <Route element={<ProtectedRouteSession />}>
-        <Route path="/general" element={<Home />} />
-        <Route path="/ventas" element={<Ventas />} />
-        <Route path="/Facturar" element={<Facturar />} />
-        <Route path="/pedidos" element={<Pedidos />} />
-        <Route path="/stock" element={<Stock />} />
-        <Route path="/usuario" element={<User />} />
-        <Route path="/informes" element={<Informes />} />
-        <Route path="/presupuestos" element={<Presupuestos />} />
-        <Route path="/ajustes" element={<Ajustes />} />
-        <Route path="/ayuda" element={<Ayuda />} />
+        <Route path='/' element={<Units />} />
+        <Route element={<SidebarMiddleware />}>
+          <Route path='/general' element={<Home />} />
+          <Route path='/ventas' element={<Ventas />} />
+          <Route path='/Facturar' element={<Facturar />} />
+          <Route path='/pedidos' element={<Pedidos />} />
+          <Route path='/stock' element={<Stock />} />
+          <Route path='/usuario' element={<User />} />
+          <Route path='/informes' element={<Informes />} />
+          <Route path='/presupuestos' element={<Presupuestos />} />
+          <Route path='/ajustes' element={<Ajustes />} />
+          <Route path='/ayuda' element={<Ayuda />} />
+        </Route>
       </Route>
       <Route element={<ProtectedRouteAuth />}>
-        <Route path="/login" element={<></>} />
-        <Route path="/register" element={<></>} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} />
       </Route>
     </Routes>
   )
