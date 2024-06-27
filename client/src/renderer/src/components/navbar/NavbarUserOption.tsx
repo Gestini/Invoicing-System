@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux'
 import { Avatar, Dropdown, DropdownMenu, DropdownItem, DropdownTrigger } from '@nextui-org/react'
 
 export const NavbarUserOptions = () => {
-//   const user = useSelector((state: any) => state.user)
+  const user = useSelector((state: any) => state.user)
   const token = localStorage.getItem('token')
 
   const logOut = () => {
@@ -12,21 +12,21 @@ export const NavbarUserOptions = () => {
     }
   }
 
-  if (token) {
+  if (user) {
     return (
       <Dropdown>
         <DropdownTrigger>
-          <Avatar isBordered as="button" color="primary" size="sm" />
+          <Avatar isBordered as='button' color='primary' size='sm' />
         </DropdownTrigger>
-        <DropdownMenu aria-label="Profile Actions" variant="flat">
-          <DropdownItem key="profile" className="h-14 gap-2 default-text-color">
-            <p className="font-semibold">Registrado como</p>
-            {/* <p className="font-semibold">{user?.email}</p> */}
+        <DropdownMenu aria-label='Profile Actions' variant='flat'>
+          <DropdownItem key='profile' className='h-14 gap-2 default-text-color'>
+            <p className='font-semibold'>Registrado como</p>
+            <p className='font-semibold'>{user?.email}</p>
           </DropdownItem>
           <DropdownItem
-            key="logout"
-            className="text-danger"
-            color="danger"
+            key='logout'
+            className='text-danger'
+            color='danger'
             onClick={() => logOut()}
           >
             Cerrar sesión
@@ -36,7 +36,7 @@ export const NavbarUserOptions = () => {
     )
   } else {
     return (
-      <Avatar as="button" size="sm" color="primary" className="transition-transform" isBordered />
+      <Avatar as='button' size='sm' color='primary' className='transition-transform' isBordered />
     )
   }
 }
