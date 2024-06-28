@@ -15,22 +15,16 @@ import Units from '@renderer/pages/Units'
 import Login from '@renderer/pages/Auth/Login'
 import Register from '@renderer/pages/Auth/Register'
 import SidebarMiddleware from './middlewares/SidebarMiddleware'
+import Companies from '@renderer/pages/Companies'
 
 const Router = () => {
   return (
     <Routes>
-      <Route
-        path='*'
-        element={
-          <>
-            <h1>ERROR 404</h1>
-          </>
-        }
-      />
+      <Route element={<SidebarMiddleware />}>
+        <Route path='prueba' element={<Companies />} />
 
-      <Route element={<ProtectedRouteSession />}>
-        <Route path='/' element={<Units />} />
-        <Route element={<SidebarMiddleware />}>
+        <Route element={<ProtectedRouteSession />}>
+          <Route path='/' element={<Units />} />
           <Route path='/general' element={<Home />} />
           <Route path='/ventas' element={<Ventas />} />
           <Route path='/Facturar' element={<Facturar />} />

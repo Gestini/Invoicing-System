@@ -13,9 +13,12 @@ module.exports = {
       height: {
         'calc-sidebar': 'calc(100vh - 50px)',
       },
+      width: {
+        navbar: 'calc(100% - 50px)'
+      },
       gridTemplateColumns: {
         // Define a custom grid template for auto-fill with minmax
-        'auto-fill-minmax-cards': 'repeat(auto-fill, minmax(250px, 1fr))',
+        'auto-fill-cards': 'repeat(auto-fill, minmax(240px, 1fr))',
       },
       boxShadow: {
         cards: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
@@ -38,6 +41,7 @@ module.exports = {
         'c-borde': '#003399', // Color para botones grises transparentes
         'c-primary-hover': '#eaf6ff',
         'c-primary-hover2': '#f7fcff',
+        'c-company-bg-color': '#f4f7fe'
 
         // color para hover de botones
 

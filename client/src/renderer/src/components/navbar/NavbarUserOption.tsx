@@ -36,7 +36,21 @@ export const NavbarUserOptions = () => {
     )
   } else {
     return (
-      <Avatar as='button' size='sm' color='secondary' className='transition-transform' isBordered />
+      <Dropdown>
+        <DropdownTrigger>
+          <Avatar isBordered as='button' color='secondary' size='sm' />
+        </DropdownTrigger>
+        <DropdownMenu aria-label='Profile Actions' variant='flat'>
+          <DropdownItem
+            key='logout'
+            // className='text-'
+            color='secondary'
+          // onClick={() => logOut()}
+          >
+            Log in
+          </DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
     )
   }
 }
