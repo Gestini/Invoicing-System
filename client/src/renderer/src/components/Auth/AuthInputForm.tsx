@@ -15,7 +15,7 @@ const AuthFormItem = ({ item, handleChange, error }) => {
         type={item.type == 'password' ? (isVisible ? 'text' : 'password') : ''}
         name={item.name}
         placeholder={item.placeholder}
-        className='mb-[5px]'
+        className=' inputsesion mb-[5px]'
         variant='bordered'
         onChange={(e) => handleChange(e)}
         isInvalid={!!error}
@@ -38,7 +38,7 @@ const AuthFormItem = ({ item, handleChange, error }) => {
 
 export const AuthForm = ({ inputs, handleChange, errors }) => {
   return (
-    <div className='w-full'>
+    <div className='w-full inputsesion'>
       {inputs.map((item: any, index: any) => (
         <AuthFormItem
           item={item}
