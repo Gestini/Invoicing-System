@@ -3,7 +3,7 @@ import { BiMenu } from 'react-icons/bi'
 import { PlusIcon } from '@renderer/components/Icons/PlusIcon'
 import { useNavigate } from 'react-router-dom'
 import MultiStepForm from '@renderer/components/CreateCompanyForm'
-import { NavbarUserOptions } from '@renderer/components/Navbar/NavbarUserOption'
+import { NavbarUserOptions } from '@renderer/components/navbar/NavbarUserOption'
 import { Button } from '@nextui-org/react'
 const Units = () => {
   const navigate = useNavigate()
