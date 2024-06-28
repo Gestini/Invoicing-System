@@ -11,32 +11,11 @@
 
 @import 'tailwindcss/utilities';
 
-*{
+* {
   box-sizing: border-box;
 }
 
 body {
+  height: 100vh;
   background-color: #f4f7fe;
-}
-
-.mainContent {}
-
-.mainContainer {}
-
-main {}
-
-.iconSVG {}
-
-.changeThemeIcon {
-  cursor: pointer;
-
-  svg {}
-}
-
-.default-text-color {}
-
-.max-w-table {}
-
-.dropdownCheckboxIcon {
-  svg {}
 }

@@ -3,19 +3,22 @@ const { nextui } = require('@nextui-org/react')
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
+    './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
 
     './src/renderer/*.{js,ts,jsx,tsx,mdx}',
-    './src/renderer/src/**/*.{js,ts,jsx,tsx,mdx}'
+    './src/renderer/src/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {
+      height: {
+        'calc-sidebar': 'calc(100vh - 50px)',
+      },
       gridTemplateColumns: {
         // Define a custom grid template for auto-fill with minmax
         'auto-fill-minmax-cards': 'repeat(auto-fill, minmax(250px, 1fr))',
       },
       boxShadow: {
-        'cards': 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
+        cards: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
       },
       spacing: {
         '25px': '25px',
@@ -32,19 +35,18 @@ module.exports = {
         'c-secondary': '#33BBCF', // Color secundario
         'c-error': '#B93B3B', // Color para errores
         'c-grey': ' #0000008A', //Color clarito para detalles
-        'c-borde': '#003399',        // Color para botones grises transparentes
+        'c-borde': '#003399', // Color para botones grises transparentes
         'c-primary-hover': '#eaf6ff',
-        'c-primary-hover2': '#f7fcff'
+        'c-primary-hover2': '#f7fcff',
 
-        // color para hover de botones 
-
+        // color para hover de botones
 
         /* ***********************************
-  
-        Solo pongan los colores así como aparece aquí arriba, no se cuestionen el porqué. 
-        No hay nada más que hacer, así lo quieren tailwind y next ui y no sirven bien las cosas de otra forma. fin. 
-        No hay necesidad de extender y configurar esto con componentes de next ui!!!! 
-        
+
+        Solo pongan los colores así como aparece aquí arriba, no se cuestionen el porqué.
+        No hay nada más que hacer, así lo quieren tailwind y next ui y no sirven bien las cosas de otra forma. fin.
+        No hay necesidad de extender y configurar esto con componentes de next ui!!!!
+
         *********************************** */
       },
     },
@@ -78,6 +80,5 @@ module.exports = {
     },
   },
   darkMode: 'class',
-  plugins: [nextui()]
-
+  plugins: [nextui()],
 }

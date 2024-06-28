@@ -1,55 +1,35 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
-import { Navigate, useLocation, useNavigate, Outlet } from 'react-router-dom'
-import RouterCol from '../RouterCol'
-import Navbartop from '@renderer/components/navbar/Navbartop'
+import { Outlet } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
+import { setMyUser } from '@renderer/features/userSlice'
+import { useLocation } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { reqAuthLoadProfileByToken } from '@renderer/api/requests'
 
 const ProtectedRouteAuth = () => {
   const location = useLocation()
-  const dispatch = useDispatch()
   const token = localStorage.getItem('token')
-  const navigate = useNavigate()
+  const dispatch = useDispatch()
 
-  // if (!token) return <Navigate to='/login' />
+  if (!token) return <Navigate to='/login' />
+  const user = useSelector((state: any) => state.user)
 
-  // React.useEffect(() => {
-  //     const loadProfile = async () => {
-  //         try {
-  //             if (token) {
-  //                 const response = await authLoadProfileByToken(token)
-  //                 dispatch(setMyUser(response.data))
-  //             }
-  //         } catch (error) {
-  //             localStorage.removeItem('token')
-  //             console.log(error)
-  //         }
-  //     }
-  //     loadProfile()
-  // }, [token])
+  React.useEffect(() => {
+    const loadProfile = async () => {
+      try {
+        if (token) {
+          const response = await reqAuthLoadProfileByToken(token)
+          dispatch(setMyUser(response.data))
+        }
+      } catch (error) {
+        localStorage.removeItem('token')
+        window.location.reload()
+      }
+    }
+    loadProfile()
+  }, [token, location])
 
-  // React.useEffect(() => {
-  //     const loadHospitalStats = async () => {
-  //         try {
-  //             const response = await reqGetHospitalStats()
-  //             dispatch(setHospitalStats(response.data))
-  //         } catch (error) {
-  //             localStorage.removeItem('token')
-  //         }
-  //     }
-  //     loadHospitalStats()
-  // })
-
-  const handleNavigate = (path: string) => navigate(path)
-
-  return (
-    <>
-      <Navbartop />
-      <div className="flex">
-        <RouterCol />
-        <Outlet />
-      </div>
-    </>
-  )
+  if (user !== null) return <Outlet />
 }
 
 export default ProtectedRouteAuth

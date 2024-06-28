@@ -1,10 +1,15 @@
 .dark {
   --text: #dbdbdb;
   --bgColor: black;
+  --scrollBg: #4845d2;
+  --mainColor: #4845d2;
+  --scrollBgHover: #6462e2;
 }
 
 .light {
   --text: #313136;
-  --mainColor: #4845d2;
   --bgColor: #f4f7fe;
+  --scrollBg: #4845d2;
+  --mainColor: #4845d2;
+  --scrollBgHover: #6462e2;
 }
