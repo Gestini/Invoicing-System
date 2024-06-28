@@ -7,7 +7,7 @@ import { useLocation } from 'react-router-dom'
 import { reqAuthLoadProfileByToken } from '@renderer/api/requests'
 
 const ProtectedRouteAuth = () => {
-  const localtion = useLocation()
+  const location = useLocation()
   const token = localStorage.getItem('token')
   const dispatch = useDispatch()
   if (!token) return <Navigate to='/login' />
@@ -25,7 +25,7 @@ const ProtectedRouteAuth = () => {
       }
     }
     loadProfile()
-  }, [token, localtion])
+  }, [token, location])
 
   return <Outlet />
 }
