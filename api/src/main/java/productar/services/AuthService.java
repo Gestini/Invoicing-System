@@ -1,5 +1,7 @@
 package productar.services;
 
+import java.util.Optional;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -49,23 +51,22 @@ public class AuthService {
     }
 
     public ResponseEntity<String> register(RegisterRequest request) {
-
         try {
+            // Validación de campos y verificación de contraseñas
 
-            String email = request.getEmail();
-            String password = request.getPassword();
-            String username = request.getUsername();
-            String repeatPassword = request.getRepeatPassword();
-
-            String fields[] = { email, password, username, repeatPassword };
-            if (!validateFields.Validate(fields)) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Entrada de datos no válida");
+            // Verificar si el usuario ya existe por nombre de usuario
+            Optional<User> existingUser = userRepository.findByUsername(request.getUsername());
+            if (existingUser.isPresent()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El nombre de usuario ya está en uso");
             }
 
-            if (!password.equals(repeatPassword)) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Las contraseñas no coinciden");
+            // Verificar si el usuario ya existe por correo electrónico
+            existingUser = userRepository.findByEmail(request.getEmail());
+            if (existingUser.isPresent()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El correo electrónico ya está registrado");
             }
 
+            // Crear el nuevo usuario y guardarlo
             User user = User.builder()
                     .username(request.getUsername())
                     .password(passwordEncoder.encode(request.getPassword()))
@@ -78,11 +79,12 @@ public class AuthService {
 
             userRepository.save(user);
 
-            return ResponseEntity.status(HttpStatus.OK).body("Usuario registrado");
+            return ResponseEntity.status(HttpStatus.OK).body("Usuario registrado correctamente");
 
         } catch (Exception e) {
             System.out.println(e);
-            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("Ocurrió un error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Ocurrió un error al registrar el usuario");
         }
     }
 

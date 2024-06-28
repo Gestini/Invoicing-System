@@ -2,12 +2,12 @@ import React from 'react'
 import { Input } from '@nextui-org/react'
 import { BsEye, BsEyeSlash } from 'react-icons/bs'
 
-const AuthFormItem = ({ item, handleChange }) => {
+const AuthFormItem = ({ item, handleChange, error }) => {
   const [isVisible, setIsVisible] = React.useState(false)
   const toggleVisibility = () => setIsVisible(!isVisible)
 
   return (
-    <div>
+    <div className=' h-[90px] '>
       <label className='flex text-left text-sm font-medium leading-normal transition-opacity duration-300 opacity-100 mr-3 mb-2 ml-1 text-navy-700'>
         {item.label}
       </label>
@@ -18,6 +18,8 @@ const AuthFormItem = ({ item, handleChange }) => {
         className='mb-[5px]'
         variant='bordered'
         onChange={(e) => handleChange(e)}
+        isInvalid={!!error}
+        errorMessage={error}
         endContent={
           item.type == 'password' && (
             <button className='focus:outline-none' type='button' onClick={toggleVisibility}>
@@ -34,11 +36,16 @@ const AuthFormItem = ({ item, handleChange }) => {
   )
 }
 
-export const AuthForm = ({ inputs, handleChange }) => {
+export const AuthForm = ({ inputs, handleChange, errors }) => {
   return (
     <div className='w-full'>
       {inputs.map((item: any, index: any) => (
-        <AuthFormItem item={item} key={index} handleChange={handleChange} />
+        <AuthFormItem
+          item={item}
+          key={index}
+          handleChange={handleChange}
+          error={errors[item.name]}
+        />
       ))}
     </div>
   )

@@ -16,14 +16,72 @@ const Login = () => {
     password: '',
   })
 
-  const handleChange = (e: { target: { name: any; value: any } }) => {
+  const [errors, setErrors] = React.useState({
+    username: '',
+    password: '',
+  })
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
     setData({
       ...data,
-      [e.target.name]: e.target.value,
+      [name]: value,
     })
+
+    handleValidation(name, value)
+  }
+
+  const handleBlur = (e) => {
+    const { name, value } = e.target
+    handleValidation(name, value)
+  }
+
+  const handleValidation = (name, value) => {
+    let newErrors = { ...errors }
+
+    switch (name) {
+      case 'username':
+        if (value.trim() === '') {
+          newErrors.username = 'Por favor, ingresa tu nombre de usuario.'
+        } else {
+          newErrors.username = ''
+        }
+        break
+      case 'password':
+        if (value.trim() === '') {
+          newErrors.password = 'Por favor, ingresa tu contraseña.'
+        } else {
+          newErrors.password = ''
+        }
+        break
+      default:
+        break
+    }
+
+    setErrors(newErrors)
   }
 
   const handleLogin = async () => {
+    const newErrors = {
+      username: '',
+      password: '',
+    }
+    let valid = true
+
+    if (data.username.trim() === '') {
+      newErrors.username = 'Por favor, ingresa tu nombre de usuario.'
+      valid = false
+    }
+
+    if (data.password.trim() === '') {
+      newErrors.password = 'Por favor, ingresa tu contraseña.'
+      valid = false
+    }
+
+    setErrors(newErrors)
+
+    if (!valid) return
+
     try {
       const token = localStorage.getItem('token')
       const response = await reqAuthLogin(data)
@@ -32,7 +90,7 @@ const Login = () => {
         localStorage.setItem('token', response.data)
         window.location.reload()
       }
-    } catch (error: any) {
+    } catch (error) {
       console.log(error)
     }
   }
@@ -43,12 +101,16 @@ const Login = () => {
       name: 'username',
       type: 'text',
       placeholder: 'Enter your username',
+      onBlur: handleBlur,
+      onChange: handleChange,
     },
     {
       label: 'Password',
       name: 'password',
       type: 'password',
       placeholder: 'Enter your password',
+      onBlur: handleBlur,
+      onChange: handleChange,
     },
   ]
 
@@ -57,7 +119,7 @@ const Login = () => {
       <AuthHeader title='Sign In' description='Enter your email and password to sign in!' />
       <ContinueWithGoogle />
       <Or />
-      <AuthForm inputs={inputs} handleChange={handleChange} />
+      <AuthForm inputs={inputs} handleChange={handleChange} errors={errors} />
       <AuthLoginOptions />
       <AuthSubmit label='Sign In' onClick={() => handleLogin()} />
       <AuthFooter href='/#/register' label='Not registered yet?' hrefLabel='Create an Account' />
