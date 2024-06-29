@@ -24,7 +24,7 @@ export const BottomContent = ({ pages, page, setPage, selectedKeys, filteredItem
         isCompact
         showControls
         showShadow
-        color='primary'
+        color='secondary'
         page={page}
         total={pages}
         onChange={setPage}
