@@ -106,8 +106,6 @@ const Companies = () => {
           <div className="w-full h-[230px] rounded-lg bg-c-primary"></div>
           <div className="w-full h-[230px] rounded-lg bg-c-primary"></div>
           <div className="w-full h-[230px] rounded-lg bg-c-primary"></div>
-
-
         </div>
       </div>
 
