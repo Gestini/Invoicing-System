@@ -1,8 +1,11 @@
 import Home from '@renderer/pages/Home'
 
 import Login from '@renderer/pages/Auth/Login'
+import Informes from '@renderer/pages/Informes'
 import Register from '@renderer/pages/Auth/Register'
 import Companies from '@renderer/pages/Companies'
+
+import './middlewares/unidadeseccion.scss'
 
 import { SalesTable } from '@renderer/pages/SalesTable'
 import { StockTable } from '@renderer/pages/StockTable'
@@ -15,14 +18,21 @@ import ProtectedRouteSession from './middlewares/ProtectedRouteSession'
 const Router = () => {
   return (
     <Routes>
-      <Route path='*' element={<h3>404</h3>} />
+      <Route element={<SidebarMiddleware />} />
       <Route element={<ProtectedRouteSession />}>
-        {/* <Route path='/' element={<Units />} /> */}
         <Route element={<SidebarMiddleware />}>
-          <Route path='/' element={<Companies />} />
+          <Route
+            path='/'
+            element={
+              <div className='unidadeseccion'>
+                <Companies />
+              </div>
+            }
+          />
           <Route path='/general' element={<Home />} />
           <Route path='/stock' element={<StockTable />} />
           <Route path='/ventas' element={<SalesTable />} />
+          <Route path='/informes' element={<Informes />} />
           <Route path='/proveedores' element={<SupplierTable />} />
         </Route>
       </Route>
