@@ -39,7 +39,7 @@ export const SupplierTable = () => {
 
   const newUserModal = {
     title: 'Agrega un nuevo proveedor',
-    buttonTitle: 'Agregar proveedor',
+    buttonTitle: 'Agregar',
     ...modalInputs,
     action: tableActions.create,
   }

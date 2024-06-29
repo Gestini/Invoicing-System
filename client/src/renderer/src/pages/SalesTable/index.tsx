@@ -38,8 +38,8 @@ export const SalesTable = () => {
   }
 
   const newUserModal = {
-    title: 'Agrega ua nueva venta',
-    buttonTitle: 'Agregar venta',
+    title: 'Agrega una nueva venta',
+    buttonTitle: 'Agregar',
     ...modalInputs,
     action: tableActions.create,
   }
