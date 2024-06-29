@@ -60,19 +60,6 @@ const Companies = () => {
       <div className='  rounded-md bg-white h-full overflow-scroll overflow-x-hidden  '>
         <div className='grid grid-cols-auto-fill-cards gap-5 p-5 h-full'>
           <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
         </div>
       </div>
     </div>
