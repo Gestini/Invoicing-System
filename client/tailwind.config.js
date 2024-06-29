@@ -12,6 +12,8 @@ module.exports = {
     extend: {
       height: {
         'calc-sidebar': 'calc(100vh - 50px)',
+        'seccio-general': 'calc(100vh - 45px)',
+        'seccion-tabla': 'calc(100vh - 125px)'
       },
       width: {
         navbar: 'calc(100% - 50px)'

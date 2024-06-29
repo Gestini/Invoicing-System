@@ -21,18 +21,20 @@ import './middlewares/unidadeseccion.scss'
 const Router = () => {
   return (
     <Routes>
-      <Route element={<SidebarMiddleware />}>
-        <Route
-          path='prueba'
-          element={
-            <div className='unidadeseccion'>
-              <Companies />{' '}
-            </div>
-          }
-        />
+      <Route element={<SidebarMiddleware />} />
+      <Route
+        path='prueba'
+        element={
+          <div className='unidadeseccion'>
+            <Companies />{' '}
+          </div>
+        }
+      />
 
-        <Route element={<ProtectedRouteSession />}>
-          <Route path='/' element={<Units />} />
+      <Route element={<ProtectedRouteSession />}>
+        {/* <Route path='/' element={<Units />} /> */}
+        <Route element={<SidebarMiddleware />}>
+          <Route path='/' element={<Companies />} />
           <Route path='/general' element={<Home />} />
           <Route path='/ventas' element={<Ventas />} />
           <Route path='/Facturar' element={<Facturar />} />
