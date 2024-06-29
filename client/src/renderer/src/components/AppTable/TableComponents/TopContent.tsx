@@ -10,6 +10,7 @@ import { SearchIcon } from '../../Icons/SearchIcon'
 import { capitalize } from './utils'
 import { useSelector } from 'react-redux'
 import { ChevronDownIcon } from '../../Icons/ChevronDownIcon'
+import { ExportTableDropdown } from '../Exports/ExportTableDropdown'
 
 export const TopContent = ({
   setPage,
@@ -50,7 +51,7 @@ export const TopContent = ({
         <div className='flex justify-between gap-3 items-end'>
           <Input
             isClearable
-            className='w-full sm:max-w-[44%]'
+            className='w-full sm:max-w-[44%] bg-white'
             placeholder='Buscar por nombre...'
             startContent={<SearchIcon />}
             value={filterValue}
@@ -58,6 +59,7 @@ export const TopContent = ({
             onValueChange={onSearchChange}
           />
           <div className='flex gap-3'>
+            <ExportTableDropdown />
             {columnsData?.statusOptions && (
               <Dropdown>
                 <DropdownTrigger className='sm:flex'>
@@ -104,7 +106,6 @@ export const TopContent = ({
                 </DropdownMenu>
               </Dropdown>
             )}
-
             {addItemModal}
           </div>
         </div>
