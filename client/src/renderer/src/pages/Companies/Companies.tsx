@@ -8,7 +8,7 @@ import {
 } from '@nextui-org/react'
 import { ChevronDownIcon, PlusIcon, SearchIcon } from '@renderer/components/Icons'
 import { productStatusOptions } from '@renderer/components/Tables/ProductTable/data'
-import "../routes/middlewares/unidadeseccion.scss"
+import './unidadeseccion.scss'
 import Card from './Card'
 
 const Companies = () => {
@@ -59,6 +59,19 @@ const Companies = () => {
       </div>
       <div className='  rounded-md bg-white h-full overflow-scroll overflow-x-hidden  '>
         <div className='grid grid-cols-auto-fill-cards gap-5 p-5 h-full'>
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
+          <Card />
           <Card />
         </div>
       </div>
