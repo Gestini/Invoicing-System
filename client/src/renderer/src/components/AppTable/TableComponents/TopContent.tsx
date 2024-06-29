@@ -51,13 +51,14 @@ export const TopContent = ({
         <div className='flex justify-between gap-3 items-end'>
           <Input
             isClearable
-            className='w-full sm:max-w-[44%] bg-white'
+            className='w-full'
             placeholder='Buscar por nombre...'
             startContent={<SearchIcon />}
             value={filterValue}
             onClear={() => onClear()}
             onValueChange={onSearchChange}
           />
+
           <div className='flex gap-3'>
             <ExportTableDropdown />
             {columnsData?.statusOptions && (

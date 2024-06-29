@@ -1,12 +1,11 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
+import { Navbar } from '@renderer/components/Navbar'
 import { Navigate } from 'react-router-dom'
 import { setMyUser } from '@renderer/features/userSlice'
 import { useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { reqAuthLoadProfileByToken } from '@renderer/api/requests'
-import { NavbarUserOptions } from '@renderer/components/Navbar/NavbarUserOption'
-import { Navbar } from '@renderer/components/Navbar'
 
 export const ProtectedRouteSession = () => {
   const location = useLocation()
@@ -33,13 +32,11 @@ export const ProtectedRouteSession = () => {
 
   if (user !== null)
     return (
-
       <>
         <Navbar />
-        <div className='bodymain' >
+        <div className='bodymain'>
           <Outlet />
         </div>
       </>
-
     )
 }

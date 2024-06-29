@@ -107,9 +107,9 @@ export const GraphView = () => {
           <PieChart
             style={{ maxWidth: '220px' }}
             data={[
-              { title: 'One', value: 10, color: 'rgba(160, 214, 255)' },
-              { title: 'Two', value: 15, color: 'rgba(76, 159, 255, 0.28)' },
-              { title: 'Three', value: 20, color: 'rgba(0, 123, 255' },
+              { title: 'One', value: 10, color: '#2e0dbb' },
+              { title: 'Two', value: 10, color: '#6ad2ff' },
+              { title: 'Three', value: 5, color: '#eff4fb' },
             ]}
           />
         </CardBody>
