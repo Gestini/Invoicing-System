@@ -9,7 +9,7 @@ import {
 } from '@nextui-org/react'
 import { ChevronDownIcon, PlusIcon, SearchIcon } from '@renderer/components/Icons'
 import { productStatusOptions } from '@renderer/components/Tables/ProductTable/data'
-import "../routes/middlewares/unidadeseccion.scss"
+import '../routes/middlewares/unidadeseccion.scss'
 
 const Companies = () => {
   const topContent = React.useMemo(() => {
