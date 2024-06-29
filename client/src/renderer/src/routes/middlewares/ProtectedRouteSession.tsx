@@ -5,6 +5,8 @@ import { setMyUser } from '@renderer/features/userSlice'
 import { useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { reqAuthLoadProfileByToken } from '@renderer/api/requests'
+import { NavbarUserOptions } from '@renderer/components/Navbar/NavbarUserOption'
+import { Navbar } from '@renderer/components/Navbar'
 
 const ProtectedRouteAuth = () => {
   const location = useLocation()
@@ -29,7 +31,17 @@ const ProtectedRouteAuth = () => {
     loadProfile()
   }, [token, location])
 
-  if (user !== null) return <Outlet />
+  if (user !== null)
+    return (
+
+      <>
+        <Navbar />
+        <div className='bodymain' >
+          <Outlet />
+        </div>
+      </>
+
+    )
 }
 
 export default ProtectedRouteAuth

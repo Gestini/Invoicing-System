@@ -6,8 +6,7 @@ import "./bodymain.scss"
 const SidebarMiddleware = () => {
   return (
     <>
-      <Navbar />
-      <div className='ml-[45px] p-[10px] bodymain ' >
+      <div className='ml-[55px] p-[10px] bodymain ' >
         <Sidebar />
         <Outlet />
       </div>

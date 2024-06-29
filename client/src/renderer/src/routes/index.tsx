@@ -24,15 +24,8 @@ const Router = () => {
       />
 
       <Route element={<ProtectedRouteSession />}>
+        <Route path='/' element={<div className='unidadeseccion'><Companies /></div>} />
         <Route element={<SidebarMiddleware />}>
-          <Route
-            path='/'
-            element={
-              <div className='unidadeseccion'>
-                <Companies />
-              </div>
-            }
-          />
           <Route path='/general' element={<Home />} />
           <Route path='/stock' element={<StockTable />} />
           <Route path='/ventas' element={<SalesTable />} />

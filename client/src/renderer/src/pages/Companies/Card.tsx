@@ -2,18 +2,42 @@ import React from 'react'
 import { SlOptions } from 'react-icons/sl'
 import Logo from '@renderer/assets/image/google.svg'
 import { FaExternalLinkAlt } from "react-icons/fa";
+import { Link, useNavigate } from 'react-router-dom';
+import { Dropdown, DropdownTrigger, Button, DropdownMenu, DropdownItem } from '@nextui-org/react';
 
 
 const Card = () => {
+
+    const navigate = useNavigate()
+
+    const handleNavigate = () => {
+        navigate('/general')
+    }
+
     return (
-        <div className='w-full h-[200px] rounded-lg bg-white shadow-sm p-3'>
+        <div onDoubleClick={handleNavigate} className='cursor-pointer w-full h-[200px] rounded-lg bg-white shadow-sm p-3'>
             <div className='flex justify-between items-center mb-3'>
                 <div className='w-10 bg-[#f7f7f7] p-1 rounded-lg flex'>
                     <img src={Logo} className='w-full' alt='' />
                 </div>
-                <div>
-                    <SlOptions className='text-gray-300 w-4 h-4 cursor-pointer' />
-                </div>
+                <Dropdown placement="bottom-start">
+                    <DropdownTrigger>
+                        <div>
+                            <SlOptions className='text-gray-300 w-4 h-4 cursor-pointer' />
+                        </div>
+                    </DropdownTrigger>
+                    <DropdownMenu aria-label="Static Actions">
+                        <DropdownItem key="Edit" onClick={handleNavigate} >
+                            <b>
+                                Abrir
+                            </b>
+                        </DropdownItem>
+                        <DropdownItem key="Edit">Editar unidad</DropdownItem>
+                        <DropdownItem key="delete" className="text-danger" color="danger">
+                            Eliminar unidad
+                        </DropdownItem>
+                    </DropdownMenu>
+                </Dropdown>
             </div>
             <div className='text-[16px] font-semibold mb-[1px]'>
                 Google
