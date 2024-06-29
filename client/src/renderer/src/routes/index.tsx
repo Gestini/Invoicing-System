@@ -15,7 +15,7 @@ import Units from '@renderer/pages/Units'
 import Login from '@renderer/pages/Auth/Login'
 import Register from '@renderer/pages/Auth/Register'
 import SidebarMiddleware from './middlewares/SidebarMiddleware'
-import Companies from '@renderer/pages/Companies'
+import Companies from '@renderer/pages/Companies/Companies'
 
 const Router = () => {
   return (
@@ -32,7 +32,14 @@ const Router = () => {
       <Route element={<ProtectedRouteSession />}>
         {/* <Route path='/' element={<Units />} /> */}
         <Route element={<SidebarMiddleware />}>
-          <Route path='/' element={<Companies />} />
+          <Route
+            path='/'
+            element={
+              <div className='unidadeseccion'>
+                <Companies />
+              </div>
+            }
+          />
           <Route path='/general' element={<Home />} />
           <Route path='/ventas' element={<Ventas />} />
           <Route path='/Facturar' element={<Facturar />} />

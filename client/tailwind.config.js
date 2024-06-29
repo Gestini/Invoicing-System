@@ -20,7 +20,7 @@ module.exports = {
       },
       gridTemplateColumns: {
         // Define a custom grid template for auto-fill with minmax
-        'auto-fill-cards': 'repeat(auto-fill, minmax(240px, 1fr))',
+        'auto-fill-cards': 'repeat(auto-fill, minmax(250px, 1fr))',
       },
       boxShadow: {
         cards: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',

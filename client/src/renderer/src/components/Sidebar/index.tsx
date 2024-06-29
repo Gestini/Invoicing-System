@@ -84,6 +84,5 @@ export const Sidebar = () => {
       </div>
       <SlOptions className='text-white w-4 h-4 cursor-pointer' />
     </nav>
-
   )
 }
