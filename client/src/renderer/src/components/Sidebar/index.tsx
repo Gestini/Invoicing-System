@@ -24,7 +24,7 @@ const SidebarItem = ({ path, icon, text }: SidebarItemProps) => {
     <NavLink
       to={path}
       className={({ isActive }) =>
-        `text-white rounded-md relative flex items-center py-3 px-3 font-medium cursor-pointer flex-col transition-colors group ${isActive ? 'text-c-primary bg-[#eadeff]' : 'hover:bg-[#893fff] text-gray-600'} `
+        `text-white rounded-md relative flex items-center py-3 px-3 font-medium cursor-pointer flex-col transition-colors group ${isActive ? 'text-c-primary bg-[#8132ff]' : 'hover:bg-[#5c1bc4] text-gray-600'} `
       }
     >
       {icon}
@@ -75,9 +75,9 @@ export const Sidebar = () => {
 
   return (
 
-    <nav className='flex w-[45px] fixed left-0 top-0 h-screen items-center py-4 flex-col justify-between bg-c-primary '>
+    <nav className='flex w-[47px] fixed px-2 z-10 left-0 top-0 h-screen items-center py-4 flex-col justify-between bg-c-primary '>
       <IoGridOutline className='text-white w-5 h-5 cursor-pointer' />
-      <div className='px-1 mt-[10px] flex-col justify-between items-center gap-[30px]'>
+      <div className='px-1 mt-[10px] flex flex-col gap-[1px]'>
         {sidebarItems.map((item, index) => (
           <SidebarItem key={index} path={item.path} icon={item.icon} text={item.text} />
         ))}

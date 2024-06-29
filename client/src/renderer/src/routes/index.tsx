@@ -20,11 +20,19 @@ import Companies from '@renderer/pages/Companies'
 const Router = () => {
   return (
     <Routes>
-      <Route element={<SidebarMiddleware />}>
-        <Route path='prueba' element={<Companies />} />
+      <Route
+        path='*'
+        element={
+          <>
+            <h1>ERROR 404</h1>
+          </>
+        }
+      />
 
-        <Route element={<ProtectedRouteSession />}>
-          <Route path='/' element={<Units />} />
+      <Route element={<ProtectedRouteSession />}>
+        {/* <Route path='/' element={<Units />} /> */}
+        <Route element={<SidebarMiddleware />}>
+          <Route path='/' element={<Companies />} />
           <Route path='/general' element={<Home />} />
           <Route path='/ventas' element={<Ventas />} />
           <Route path='/Facturar' element={<Facturar />} />

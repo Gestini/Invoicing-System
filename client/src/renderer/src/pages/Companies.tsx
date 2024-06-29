@@ -7,7 +7,7 @@ import { productStatusOptions } from "@renderer/components/Tables/ProductTable/d
 const Companies = () => {
   const topContent = React.useMemo(() => {
     return (
-      <div className="flex flex-col w-full mb-5 gap-4">
+      <div className="flex p-2 m-5 my-2 rounded-md bg-white flex-col gap-4">
         <div className="flex justify-between gap-3 items-end">
           <Input
             isClearable
@@ -87,7 +87,7 @@ const Companies = () => {
   return (
     <>
       {topContent}
-      <div className="m-5 p-5 mb-0  rounded-md bg-white overflow-hidden h-screen">
+      <div className="m-5 mt-2 p-5 mb-0  rounded-md bg-white overflow-auto h-seccion-tabla">
 
         {/* <div className="flex flex-wrap gap-3">
         <div className="w-[250px] h-[250px] bg-c-primary"></div>
