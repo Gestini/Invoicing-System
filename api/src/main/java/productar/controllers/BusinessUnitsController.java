@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,8 +26,9 @@ public class BusinessUnitsController {
     private BusinessUnitsService businessUnitsService;
 
     @PostMapping("/save")
-    public ResponseEntity<String> saveBusinessUnit(@RequestBody BusinessUnitsModel data) {
-        return businessUnitsService.saveBusinessUnit(data);
+    public ResponseEntity<String> saveBusinessUnit(@RequestBody BusinessUnitsModel data,
+            Authentication authentication) {
+        return businessUnitsService.saveBusinessUnit(data, authentication.getName());
     }
 
     @GetMapping("/get-all")

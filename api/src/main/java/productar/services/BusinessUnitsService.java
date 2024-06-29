@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import productar.models.BusinessUnitsModel;
@@ -30,15 +31,16 @@ public class BusinessUnitsService {
         return (ArrayList<BusinessUnitsModel>) businessUnitsRepository.findAll();
     }
 
-    public ResponseEntity<String> saveBusinessUnit(BusinessUnitsModel businessUnits) {
+    public ResponseEntity<String> saveBusinessUnit(BusinessUnitsModel businessUnit, String username) {
         try {
-            User owner = userRepository.findById(businessUnits.getOwner().getId())
-                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-            businessUnits.setOwner(owner);
-            businessUnitsRepository.save(businessUnits);
+            User owner = userRepository.findByUsername(username)
+                    .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+
+            businessUnit.setOwner(owner);
+            businessUnitsRepository.save(businessUnit);
             return ResponseEntity.status(HttpStatus.OK).body("Unidad de negocio creada correctamente");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("Ocurrió un error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error");
         }
     }
 

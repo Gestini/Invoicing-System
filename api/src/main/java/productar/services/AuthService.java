@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import java.util.regex.Pattern;
 
 import lombok.RequiredArgsConstructor;
 import productar.dto.LoginRequest;
@@ -21,13 +22,12 @@ import productar.utils.ValidateFields;
 
 @Service
 @RequiredArgsConstructor
-
 public class AuthService {
     private final UserRepository userRepository;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
-    public final ValidateFields validateFields;
+    private final ValidateFields validateFields;
 
     public ResponseEntity<String> login(LoginRequest request) {
         String password = request.getPassword();
@@ -53,6 +53,25 @@ public class AuthService {
     public ResponseEntity<String> register(RegisterRequest request) {
         try {
             // Validación de campos y verificación de contraseñas
+            if (!validateEmail(request.getEmail())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("Por favor, ingresa un correo electrónico válido.");
+            }
+
+            if (!validateUsername(request.getUsername())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("El username solo puede contener letras, números y guiones bajos (_).");
+            }
+
+            String passwordError = validatePassword(request.getPassword());
+            if (passwordError != null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(passwordError);
+            }
+
+            if (!request.getPassword().equals(request.getRepeatPassword())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body("Las contraseñas no coinciden. Por favor, verifica y vuelve a intentarlo.");
+            }
 
             // Verificar si el usuario ya existe por nombre de usuario
             Optional<User> existingUser = userRepository.findByUsername(request.getUsername());
@@ -95,4 +114,33 @@ public class AuthService {
         return user;
     }
 
+    // Métodos de validación
+    private boolean validateEmail(String email) {
+        // Expresión regular para validar el formato de email
+        String regex = "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$";
+        return Pattern.compile(regex).matcher(email).matches();
+    }
+
+    private boolean validateUsername(String username) {
+        // Verificar longitud y caracteres permitidos en el username
+        String regex = "^[a-zA-Z0-9_]+$";
+        return username.length() >= 3 && username.length() <= 20 && Pattern.compile(regex).matcher(username).matches();
+    }
+
+    private String validatePassword(String password) {
+        // Verificar longitud y patrón de la contraseña
+        if (password.length() < 8) {
+            return "La contraseña debe tener al menos 8 caracteres.";
+        }
+        if (password.length() > 20) {
+            return "La contraseña no puede tener más de 20 caracteres.";
+        }
+
+        String regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[\\W_])[A-Za-z\\d\\W_]{8,}$";
+        if (!Pattern.compile(regex).matcher(password).matches()) {
+            return "La contraseña debe incluir una mayúscula, un número y un carácter especial.";
+        }
+
+        return null;
+    }
 }

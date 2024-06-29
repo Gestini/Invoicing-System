@@ -1,16 +1,15 @@
 import Home from '@renderer/pages/Home'
 
-import Units from '@renderer/pages/Units'
 import Login from '@renderer/pages/Auth/Login'
 import Register from '@renderer/pages/Auth/Register'
+import Companies from '@renderer/pages/Companies'
 
 import { SalesTable } from '@renderer/pages/SalesTable'
 import { StockTable } from '@renderer/pages/StockTable'
 import { SupplierTable } from '@renderer/pages/SupplierTable'
 import { Route, Routes } from 'react-router-dom'
-
 import SidebarMiddleware from './middlewares/SidebarMiddleware'
-import ProtectedRouteAuth from './middlewares/ProtectedRouteAuth'
+import ProtectedRouteAuth from './middlewares/ProtectedRouteSession'
 import ProtectedRouteSession from './middlewares/ProtectedRouteSession'
 
 const Router = () => {
@@ -18,8 +17,9 @@ const Router = () => {
     <Routes>
       <Route path='*' element={<h3>404</h3>} />
       <Route element={<ProtectedRouteSession />}>
-        <Route path='/' element={<Units />} />
+        {/* <Route path='/' element={<Units />} /> */}
         <Route element={<SidebarMiddleware />}>
+          <Route path='/' element={<Companies />} />
           <Route path='/general' element={<Home />} />
           <Route path='/stock' element={<StockTable />} />
           <Route path='/ventas' element={<SalesTable />} />
