@@ -6,9 +6,11 @@ const SidebarMiddleware = () => {
   return (
     <>
       <Navbar />
-      <div className='flex'>
+      <div className='flex w-full'>
         <Sidebar />
-        <Outlet />
+        <div className='px-3 py-3 w-full h-full flex flex-col gap-4'>
+          <Outlet />
+        </div>
       </div>
     </>
   )
