@@ -6,7 +6,7 @@ import { useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { reqAuthLoadProfileByToken } from '@renderer/api/requests'
 
-const ProtectedRouteAuth = () => {
+export const ProtectedRouteSession = () => {
   const location = useLocation()
   const token = localStorage.getItem('token')
   const dispatch = useDispatch()
@@ -31,5 +31,3 @@ const ProtectedRouteAuth = () => {
 
   if (user !== null) return <Outlet />
 }
-
-export default ProtectedRouteAuth
