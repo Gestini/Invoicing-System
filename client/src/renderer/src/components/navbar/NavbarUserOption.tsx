@@ -45,7 +45,7 @@ export const NavbarUserOptions = () => {
             key='logout'
             // className='text-'
             color='secondary'
-          // onClick={() => logOut()}
+            // onClick={() => logOut()}
           >
             Log in
           </DropdownItem>

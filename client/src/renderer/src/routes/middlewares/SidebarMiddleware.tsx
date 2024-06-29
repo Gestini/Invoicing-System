@@ -1,12 +1,12 @@
 import { Outlet } from 'react-router-dom'
-import { Navbar } from '@renderer/components/navbar'
+import { Navbar } from '@renderer/components/Navbar'
 import { Sidebar } from '@renderer/components/Sidebar'
 
 const SidebarMiddleware = () => {
   return (
     <>
       <Navbar />
-      <div className='ml-[45px] overflow-auto '>
+      <div className=' ml-[45px]   '>
         <Sidebar />
         <Outlet />
       </div>

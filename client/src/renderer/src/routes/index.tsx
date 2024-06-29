@@ -16,12 +16,20 @@ import Login from '@renderer/pages/Auth/Login'
 import Register from '@renderer/pages/Auth/Register'
 import SidebarMiddleware from './middlewares/SidebarMiddleware'
 import Companies from '@renderer/pages/Companies'
+import './middlewares/unidadeseccion.scss'
 
 const Router = () => {
   return (
     <Routes>
       <Route element={<SidebarMiddleware />}>
-        <Route path='prueba' element={<Companies />} />
+        <Route
+          path='prueba'
+          element={
+            <div className='unidadeseccion'>
+              <Companies />{' '}
+            </div>
+          }
+        />
 
         <Route element={<ProtectedRouteSession />}>
           <Route path='/' element={<Units />} />
