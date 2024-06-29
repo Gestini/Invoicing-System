@@ -45,7 +45,7 @@ const Home = () => {
   ]
 
   return (
-    <div className='px-3 py-4 w-full h-full flex flex-col gap-4'>
+    <div className='w-full h-full flex flex-col gap-4'>
       <h5 className='text-4xl font-semibold text-c-primary'>General</h5>
       <div className='flex gap-4'>
         {cards.map((item, index) => (

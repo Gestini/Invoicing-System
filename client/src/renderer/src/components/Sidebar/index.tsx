@@ -2,6 +2,7 @@ import {
   BiHome,
   BiCart,
   BiLabel,
+  BiCrown,
   BiStats,
   BiDetail,
   BiBadgeCheck,
@@ -42,24 +43,29 @@ export const Sidebar = () => {
       text: 'General',
     },
     {
-      path: '/facturar',
-      icon: <BiCalculator />,
-      text: 'Facturar',
-    },
-    {
       path: '/stock',
       icon: <BiCart />,
       text: 'Stock',
     },
     {
-      path: '/presupuestos',
-      icon: <BiDetail />,
-      text: 'Presupuestos',
-    },
-    {
       path: '/ventas',
       icon: <BiLabel />,
       text: 'Ventas',
+    },
+    {
+      path: '/proveedores',
+      icon: <BiCrown />,
+      text: 'Proveedores',
+    },
+    {
+      path: '/facturar',
+      icon: <BiCalculator />,
+      text: 'Facturar',
+    },
+    {
+      path: '/presupuestos',
+      icon: <BiDetail />,
+      text: 'Presupuestos',
     },
     {
       path: '/pedidos',

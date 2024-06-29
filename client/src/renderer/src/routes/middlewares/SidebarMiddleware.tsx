@@ -6,7 +6,7 @@ const SidebarMiddleware = () => {
   return (
     <>
       <Navbar />
-      <div className=' ml-[45px]   '>
+      <div className='ml-[45px] p-3'>
         <Sidebar />
         <Outlet />
       </div>
