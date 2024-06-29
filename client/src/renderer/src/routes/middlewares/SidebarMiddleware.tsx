@@ -1,9 +1,9 @@
 import { Outlet } from 'react-router-dom'
 import { Navbar } from '@renderer/components/Navbar'
 import { Sidebar } from '@renderer/components/Sidebar'
-import "./bodymain.scss"
+import './bodymain.scss'
 
-const SidebarMiddleware = () => {
+export const SidebarMiddleware = () => {
   return (
     <>
       <div className='ml-[55px] p-[10px] bodymain ' >
@@ -13,5 +13,3 @@ const SidebarMiddleware = () => {
     </>
   )
 }
-
-export default SidebarMiddleware

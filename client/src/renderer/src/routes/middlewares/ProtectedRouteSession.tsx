@@ -8,7 +8,7 @@ import { reqAuthLoadProfileByToken } from '@renderer/api/requests'
 import { NavbarUserOptions } from '@renderer/components/Navbar/NavbarUserOption'
 import { Navbar } from '@renderer/components/Navbar'
 
-const ProtectedRouteAuth = () => {
+export const ProtectedRouteSession = () => {
   const location = useLocation()
   const token = localStorage.getItem('token')
   const dispatch = useDispatch()
@@ -43,5 +43,3 @@ const ProtectedRouteAuth = () => {
 
     )
 }
-
-export default ProtectedRouteAuth
