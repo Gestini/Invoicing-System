@@ -1,9 +1,23 @@
+import { NavLink } from 'react-router-dom'
 import { NavbarUserOptions } from './NavbarUserOption'
 import { BiBell, BiCog, BiMenu } from 'react-icons/bi'
 
 
 export const Navbar = () => {
-  const pathList = ['Workspaces', 'Dashboard', 'API Network']
+  const pathList = [
+    {
+      name: 'Workspaces',
+      path: '/'
+    },
+    {
+      name: 'Dashboard',
+      path: '/general'
+    },
+    {
+      name: 'API Network',
+      path: '/nose'
+    }
+  ]
 
   return (
     <nav className='h-[45px] w-full bg-white pl-[50px] flex items-center'>
@@ -16,13 +30,13 @@ export const Navbar = () => {
             <div className='hidden sm:block '>
               <div className='flex space-x-4'>
                 {pathList.map((item, index) => (
-                  <a
+                  <NavLink
                     key={index}
-                    href='#'
-                    className='text-gray-600 hover:bg-c-primary hover:text-white transition-all duration-300 px-3 py-2 rounded-md text-sm font-medium'
+                    to={item.path}
+                    className={({ isActive }) => `text-gray-600 hover:bg-c-primary-route-hover hover:text-white transition-all duration-300 px-3 py-2 rounded-md text-sm font-medium ${isActive ? 'bg-c-primary-route-active hover:bg-c-primary-route-active text-white' : ''} `}
                   >
-                    {item}
-                  </a>
+                    {item.name}
+                  </NavLink>
                 ))}
               </div>
             </div>

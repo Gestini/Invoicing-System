@@ -43,7 +43,9 @@ module.exports = {
         'c-borde': '#003399', // Color para botones grises transparentes
         'c-primary-hover': '#eaf6ff',
         'c-primary-hover2': '#f7fcff',
-        'c-company-bg-color': '#f4f7fe'
+        'c-company-bg-color': '#f4f7fe', //bg-fondo
+        'c-primary-route-active': '#5c1bc4',
+        'c-primary-route-hover': '#8132ff',
 
         // color para hover de botones
 

@@ -11,8 +11,7 @@ export const SidebarMiddleware = () => {
 
   return (
     <>
-      <Navbar />
-      <div className='ml-[45px] p-[20px] bodymain '>
+      <div className='ml-[55px] p-[10px] bodymain ' >
         <Sidebar />
         <div className='w-full h-full flex flex-col gap-4'>
           <h5 className='text-4xl font-semibold text-c-primary'>{capitalize(name)}</h5>

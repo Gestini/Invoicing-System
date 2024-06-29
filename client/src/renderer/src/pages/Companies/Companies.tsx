@@ -51,27 +51,14 @@ const Companies = () => {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button className='bg-foreground text-background' endContent={<PlusIcon />} size='sm'>
+            <Button className='bg-secondary text-background' endContent={<PlusIcon />} size='sm'>
               Add New
             </Button>
           </div>
         </div>
       </div>
-      <div className='  rounded-md bg-white h-full overflow-scroll overflow-x-hidden  '>
-        <div className='grid grid-cols-auto-fill-cards gap-5 p-5 h-full'>
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
-          <Card />
+      <div className='rounded-md bg-white h-full overflow-scroll'>
+        <div className='grid grid-cols-auto-fill-cards gap-5 p-5 w-[100%] h-full'>
           <Card />
         </div>
       </div>
