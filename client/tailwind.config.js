@@ -46,45 +46,24 @@ module.exports = {
         'c-company-bg-color': '#f4f7fe', //bg-fondo
         'c-primary-route-active': '#5c1bc4',
         'c-primary-route-hover': '#8132ff',
-
-        // color para hover de botones
-
-        /* ***********************************
-
-        Solo pongan los colores así como aparece aquí arriba, no se cuestionen el porqué.
-        No hay nada más que hacer, así lo quieren tailwind y next ui y no sirven bien las cosas de otra forma. fin.
-        No hay necesidad de extender y configurar esto con componentes de next ui!!!!
-
-        *********************************** */
       },
     },
     screens: {
       sm: '640px',
-      // => @media (min-width: 640px) { ... }
 
       md: '768px',
-      // => @media (min-width: 768px) { ... }
 
       lg: '1024px',
-      // => @media (min-width: 1024px) { ... }
 
       xl: '1280px',
-      // => @media (min-width: 1280px) { ... }
 
       '2xl': '1536px',
-      // => @media (min-width: 1536px) { ... }
 
       '2k': '2129px',
-      //'2k': '2560px',
-      // => @media (min-width: 1536px) { ... }
 
       '3k': '3326px',
 
-      //'4k': '3840px',
-      // => @media (min-width: 1536px) { ... }
-
       '5k': '5120px',
-      // => @media (min-width: 1536px) { ... }
     },
   },
   darkMode: 'class',

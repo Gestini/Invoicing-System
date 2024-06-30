@@ -26,11 +26,11 @@ const SidebarItem = ({ path, icon, text }: SidebarItemProps) => {
     <NavLink
       to={path}
       className={({ isActive }) =>
-        `text-white rounded-md relative flex items-center py-3 px-3 font-medium cursor-pointer flex-col transition-colors group ${isActive ? 'text-c-primary bg-c-primary-route-active' : 'hover:bg-c-primary-route-hover text-gray-600'} `
+        `text-white rounded-md relative flex items-center py-3 px-3 font-medium cursor-pointer flex-col transition-colors group ${isActive ? 'text-[var(--c-primary)] bg-[var(--c-primary)]-route-active' : 'hover:bg-[var(--c-primary)]-route-hover text-gray-600'} `
       }
     >
       {icon}
-      <span className='text-[10px] bg-[#893fff] rounded-sm absolute p-1 top-2 left-0 opacity-0 group-hover:left-12 group-hover:opacity-100 transition-all duration-300'>{text}</span>
+      <span className='text-[10px] bg-[var(--c-primary)] rounded-sm absolute p-1 top-2 left-0 opacity-0 group-hover:left-12 group-hover:opacity-100 transition-all duration-300'>{text}</span>
     </NavLink>
 
   )
@@ -82,7 +82,7 @@ export const Sidebar = () => {
 
   return (
 
-    <nav className='flex w-[55px] fixed z-10 left-0 top-0 h-screen items-center py-4 flex-col justify-between bg-c-primary '>
+    <nav className='flex w-[55px] fixed z-10 left-0 top-0 h-screen items-center py-4 flex-col justify-between bg-[var(--c-primary)] '>
       <IoGridOutline className='text-white w-5 h-5 cursor-pointer' />
       <div className='flex flex-col gap-[1px]'>
         {sidebarItems.map((item, index) => (
@@ -91,7 +91,7 @@ export const Sidebar = () => {
       </div>
       <Dropdown placement="top-start">
         <DropdownTrigger>
-          <Button className='bg-c-primary w-[100%] min-w-0'>
+          <Button className='bg-[var(--c-primary)] w-[100%] min-w-0'>
             <SlOptions className='text-white w-4 h-4 cursor-pointer' />
           </Button>
         </DropdownTrigger>

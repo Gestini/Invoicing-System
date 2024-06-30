@@ -15,7 +15,7 @@ const Card = () => {
     }
 
     return (
-        <div onDoubleClick={handleNavigate} className='cursor-pointer w-full h-[200px] rounded-lg bg-white shadow-sm p-3'>
+        <div onDoubleClick={handleNavigate} className='cursor-pointer w-full h-[200px] rounded-lg bg-[var(--c-bgcolor)] shadow-md p-3'>
             <div className='flex justify-between items-center mb-3'>
                 <div className='w-10 bg-[#f7f7f7] p-1 rounded-lg flex'>
                     <img src={Logo} className='w-full' alt='' />
@@ -39,7 +39,7 @@ const Card = () => {
                     </DropdownMenu>
                 </Dropdown>
             </div>
-            <div className='text-[16px] font-semibold mb-[1px]'>
+            <div className='text-[16px] text-[var(--c-title)] font-semibold mb-[1px]'>
                 Google
             </div>
             <div className='text-[12px] text-gray-400 flex items-center gap-1 mb-2'>

@@ -1,5 +1,6 @@
 import React from 'react'
 import { Themes } from './Themes'
+import { Checkbox } from '@nextui-org/react'
 
 export const ChangeTheme = () => {
   const [theme, setTheme] = React.useState(Themes.light)
@@ -25,9 +26,16 @@ export const ChangeTheme = () => {
     setTheme(nuevoTema)
   }
 
+  const [selected, setSelected] = React.useState(false)
+
+  const handleSelected = () => {
+    setSelected(!selected)
+  }
+
   return (
-    <span onClick={changeTheme} className='changeThemeIcon'>
-      {theme.icon}
-    </span>
+    <>
+      <Checkbox className='block mt-2' onClick={changeTheme} isSelected={!selected} color="primary">Light</Checkbox>
+      <Checkbox className='block mb-2' onClick={changeTheme} isSelected={selected} color="default" >Dark</Checkbox>
+    </>
   )
 }

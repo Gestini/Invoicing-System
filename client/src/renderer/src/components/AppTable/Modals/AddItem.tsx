@@ -31,7 +31,7 @@ export const AddItemModal = ({ modal }) => {
 
   return (
     <div className='flex flex-col gap-2'>
-      <Button onPress={onOpen} className='bg-c-primary' color='secondary' endContent={<PlusIcon />}>
+      <Button onPress={onOpen} className='bg-[var(--c-primary)]' color='secondary' endContent={<PlusIcon />}>
         {modal?.buttonTitle}
       </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} scrollBehavior={'inside'} backdrop='blur'>

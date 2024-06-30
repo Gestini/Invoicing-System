@@ -13,7 +13,7 @@ export const SidebarMiddleware = () => {
       <div className='ml-[55px] p-[20px] bodymain ' >
         <Sidebar />
         <div className='w-full h-full flex flex-col gap-4'>
-          <h5 className='text-4xl font-semibold text-c-primary'>{capitalize(name)}</h5>
+          <h5 className='text-4xl font-semibold text-[var(--c-primary)]'>{capitalize(name)}</h5>
           <Outlet />
         </div>
       </div>

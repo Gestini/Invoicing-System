@@ -79,7 +79,7 @@ const MultiStepForm: React.FC<MultiStepFormProps> = ({ onClose }) => {
         <div className='flex justify-center mb-6'>
           <div
             onClick={prevStep}
-            className={`w-8 h-3 mx-1 rounded ${step === 1 ? 'bg-c-primary' : 'bg-gray-100'}`}
+            className={`w-8 h-3 mx-1 rounded ${step === 1 ? 'bg-[var(--c-primary)]' : 'bg-gray-100'}`}
           ></div>
         </div>
         {step === 1 && (
