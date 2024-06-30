@@ -14,7 +14,7 @@ import Card from './Card'
 const Companies = () => {
   return (
     <div className=' flex flex-col  generalunidades'>
-      <div className='flex flex-col w-full mb-2 rounded-md bg-[var(--c-bgcolor)] p-5 gap-4'>
+      <div className='flex flex-col w-full mb-2 rounded-md bg-c-bg-color p-5 gap-4'>
         <div className='flex justify-between gap-3 items-end'>
           <Input
             isClearable
@@ -51,13 +51,13 @@ const Companies = () => {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button className='bg-[var(--c-primary)] text-background' endContent={<PlusIcon />} size='sm'>
+            <Button className='bg-c-primary text-background' endContent={<PlusIcon />} size='sm'>
               Add New
             </Button>
           </div>
         </div>
       </div>
-      <div className='rounded-md bg-[var(--c-bgcolor)] h-full overflow-scroll'>
+      <div className='rounded-md bg-c-bg-color h-full overflow-scroll'>
         <div className='grid grid-cols-auto-fill-cards gap-5 p-5 w-[100%] h-full'>
           <Card />
         </div>

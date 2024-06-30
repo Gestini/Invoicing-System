@@ -20,10 +20,10 @@ export const Navbar = () => {
   ]
 
   return (
-    <nav className='h-[45px] w-full bg-[var(--c-bgcolor)] pl-[50px] flex items-center'>
+    <nav className='h-[45px] w-full bg-c-bg-color pl-[50px] flex items-center'>
       <div className='w-full h-full px-[18px]'>
         <div className='relative flex items-center justify-between w-full h-full '>
-          <div className='flex items-center justify-center text-[var(--c-title)]  cursor-pointer'>
+          <div className='flex items-center justify-center text-c-title  cursor-pointer'>
             My Space
           </div>
           <div className='flex items-center justify-between'>
@@ -33,7 +33,7 @@ export const Navbar = () => {
                   <NavLink
                     key={index}
                     to={item.path}
-                    className={({ isActive }) => `text-gray-600 hover:bg-[var(--c-primary-route-hover)] hover:text-white transition-all duration-300 px-3 py-2 rounded-md text-sm font-medium ${isActive ? 'bg-[var(--c-primary-route-active)] hover:bg-[var(--c-primary-route-active)] text-white' : ''} `}
+                    className={({ isActive }) => `text-gray-600 hover:bg-c-primary-route-hover hover:text-white transition-all duration-300 px-3 py-2 rounded-md text-sm font-medium ${isActive ? 'bg-c-primary-route-active hover:bg-c-primary-route-active text-white' : ''} `}
                   >
                     {item.name}
                   </NavLink>

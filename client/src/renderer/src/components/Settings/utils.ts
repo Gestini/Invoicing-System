@@ -5,7 +5,7 @@ export const useColorManagement = () => {
     const [colors, setColors] = React.useState([
         { color: '#3b82f6', icon: true, name: 'blue' },
         { color: '#ef4444', icon: false, name: 'red' },
-        { color: '#8b5cf6', icon: false, name: 'violet' },
+     { color: '#8b5cf6', icon: false, name: 'violet' },
         { color: '#ec4899', icon: false, name: 'pink' },
     ])
 

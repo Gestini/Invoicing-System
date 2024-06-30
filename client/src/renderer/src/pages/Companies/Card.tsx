@@ -15,7 +15,7 @@ const Card = () => {
     }
 
     return (
-        <div onDoubleClick={handleNavigate} className='cursor-pointer w-full h-[200px] rounded-lg bg-[var(--c-bgcolor)] shadow-md p-3'>
+        <div onDoubleClick={handleNavigate} className='cursor-pointer w-full h-[200px] rounded-lg bg-c-bg-color shadow-md p-3'>
             <div className='flex justify-between items-center mb-3'>
                 <div className='w-10 bg-[#f7f7f7] p-1 rounded-lg flex'>
                     <img src={Logo} className='w-full' alt='' />
@@ -23,10 +23,10 @@ const Card = () => {
                 <Dropdown placement="bottom-start">
                     <DropdownTrigger>
                         <div>
-                            <SlOptions className='text-gray-300 w-4 h-4 cursor-pointer' />
+                            <SlOptions className='text-c-title w-4 h-4 cursor-pointer' />
                         </div>
                     </DropdownTrigger>
-                    <DropdownMenu aria-label="Static Actions">
+                    <DropdownMenu aria-label="Static Actions" className='text-c-title bg-c-bg-color'>
                         <DropdownItem key="Edit" onClick={handleNavigate} >
                             <b>
                                 Abrir
@@ -39,7 +39,7 @@ const Card = () => {
                     </DropdownMenu>
                 </Dropdown>
             </div>
-            <div className='text-[16px] text-[var(--c-title)] font-semibold mb-[1px]'>
+            <div className='text-[16px] text-c-title font-semibold mb-[1px]'>
                 Google
             </div>
             <div className='text-[12px] text-gray-400 flex items-center gap-1 mb-2'>

@@ -17,39 +17,58 @@
 
 .light {
   --c-title: black;
-  --c-primary-hover: #721ff7;
-  --c-primary-hover2: #f7fcff;
-  --c-primary-route-active: #5c1bc4;
-  --c-primary-route-hover: #8132ff;
-  --c-primary: #721ff7;
-  --c-secondary: #33BBCF;
-  --c-bgcolor: #ffffff;
+  --c-bg-color: #ffffff;
+  --c-bg-color-2: #ececec;
 }
 
 .dark {
   --c-title: #fff;
-  --c-primary-hover: #eaf6ff;
+  --c-bg-color: #1c1e24;
+  --c-bg-color-2: #202225;
+}
+
+
+#variantOne {
+  --c-primary: #3b82f6;
+  --c-primary-hover: #4377ca;
+  --c-primary-route-active: #3b82f6;
+  --c-primary-route-hover: #3b82f6;
+  --c-secondary: #f56565;
   --c-primary-hover2: #f7fcff;
-  --c-primary-route-active: #3156a5;
-  --c-primary-route-hover: #3f67bd;
-  --c-primary: #2d64da;
+}
+
+#variantTwo {
+  --c-primary: #ef4444;
+  --c-primary-hover: #f7fcff;
+  --c-primary-route-active: #ef4444;
+  --c-primary-route-hover: #ef4444;
+  --c-secondary: #6b46c1;
+  --c-primary-hover2: #f7fcff;
+}
+
+#variantThree {
+  --c-primary: #721ff7;
+  --c-primary-hover: #721ff7;
+  --c-primary-route-active: #5c1bc4;
+  --c-primary-route-hover: #8132ff;
   --c-secondary: #33BBCF;
-  --c-bgcolor: #16191f;
+  --c-primary-hover2: #f7fcff;
 }
 
-
-.variantOne {
-  --mainColor: red
+#variantFour {
+  --c-primary: #ec4899;
+  --c-primary-hover: #f7fcff;
+  --c-primary-route-active: #ec4899;
+  --c-primary-route-hover: #ec4899;
+  --c-secondary: #10b981;
+  --c-primary-hover2: #f7fcff;
 }
 
-.variantTwo {
-  --mainColor: red
-}
-
-.variantThree {
-  --mainColor: red
-}
-
-.variantFour {
-  --mainColor: red
+#variantFive {
+  --c-primary: #ff9900;
+  --c-primary-hover: #ffc266;
+  --c-primary-route-active: #ff9900;
+  --c-primary-route-hover: #ff9900;
+  --c-secondary: #33BBCF;
+  --c-primary-hover2: #f7fcff;
 }

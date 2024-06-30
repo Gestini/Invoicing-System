@@ -9,29 +9,29 @@ import { reqAuthLoadProfileByToken } from '@renderer/api/requests'
 import Settings from '@renderer/components/Settings'
 
 export const ProtectedRouteSession = () => {
-  // const location = useLocation()
-  // const token = localStorage.getItem('token')
-  // const dispatch = useDispatch()
+  const location = useLocation()
+  const token = localStorage.getItem('token')
+  const dispatch = useDispatch()
 
-  // if (!token) return <Navigate to='/login' />
-  // const user = useSelector((state: any) => state.user)
+  if (!token) return <Navigate to='/login' />
+  const user = useSelector((state: any) => state.user)
 
-  // React.useEffect(() => {
-  //   const loadProfile = async () => {
-  //     try {
-  //       if (token) {
-  //         const response = await reqAuthLoadProfileByToken(token)
-  //         dispatch(setMyUser(response.data))
-  //       }
-  //     } catch (error) {
-  //       localStorage.removeItem('token')
-  //       window.location.reload()
-  //     }
-  //   }
-  //   loadProfile()
-  // }, [token, location])
+  React.useEffect(() => {
+    const loadProfile = async () => {
+      try {
+        if (token) {
+          const response = await reqAuthLoadProfileByToken(token)
+          dispatch(setMyUser(response.data))
+        }
+      } catch (error) {
+        localStorage.removeItem('token')
+        window.location.reload()
+      }
+    }
+    loadProfile()
+  }, [token, location])
 
-  // if (user !== null)
+  if (user !== null)
   return (
     <>
       <Navbar />

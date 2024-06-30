@@ -36,16 +36,18 @@ module.exports = {
         navBackground: '#F5F2F0',
       },
       colors: {
-        'c-primary': '#721ff7', // Color principal
-        'c-secondary': '#33BBCF', // Color secundario
-        'c-error': '#B93B3B', // Color para errores
-        'c-grey': ' #0000008A', //Color clarito para detalles
-        'c-borde': '#003399', // Color para botones grises transparentes
-        'c-primary-hover': '#eaf6ff',
-        'c-primary-hover2': '#f7fcff',
-        'c-company-bg-color': '#f4f7fe', //bg-fondo
-        'c-primary-route-active': '#5c1bc4',
-        'c-primary-route-hover': '#8132ff',
+        'c-primary': 'var(--c-primary)',
+        'c-primary-hover': 'var(--c-primary-hover)',
+        'c-primary-hover2': 'var(--c-primary-hover2)',
+        'c-company-bg-color': 'var(--c-company-bg-color)',
+        'c-primary-route-active': 'var(--c-primary-route-active)',
+        'c-primary-route-hover': 'var(--c-primary-route-hover)',
+        'c-secondary': 'var(--c-secondary)',
+        'c-title': 'var(--c-title)',
+        'c-bg-color-2': 'var(--c-bg-color-2)',
+        'c-error': '#B93B3B',
+        'c-grey': ' #0000008A',
+        'c-borde': '#003399',
       },
     },
     screens: {

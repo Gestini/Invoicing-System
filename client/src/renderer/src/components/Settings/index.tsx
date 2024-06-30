@@ -1,51 +1,29 @@
-import { Button, Checkbox, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Tooltip } from "@nextui-org/react";
 import React from 'react';
-import { FaCheck } from "react-icons/fa";
-import { FaPlus } from "react-icons/fa6";
 import { IoSettingsOutline } from "react-icons/io5";
-import { useColorManagement } from './utils';
 import { ChangeTheme } from "../Theme";
+import MainColor from "../Theme/MainColor";
+import { useColorManagement } from './utils';
 
 const Index = () => {
     const {
         colors,
         setColors,
-        color,
-        setColor,
-        errorMessage,
         drawerOpen,
-        addColor,
-        onCloseAndClear,
-        isOpen,
         toggleDrawer,
-        handleOpen,
     } = useColorManagement();
 
-    const selectColor = (index) => {
-        const updatedColors = colors.map((item, idx) => ({
-            ...item,
-            icon: idx === index
-        }));
-        setColors(updatedColors);
-    };
 
     React.useEffect(() => {
         console.log(colors)
     }, [colors])
 
-    const handleChangeColor = (e) => {
-        setColor({
-            ...color,
-            [e.target.name]: e.target.value,
-        })
-        console.log(color)
-    }
+
 
     return (
         <>
-            <div className="text-center absolute right-[10vh] bottom-[4vw]">
+            <div className="text-center absolute  z-10 right-[10vh] bottom-[4vw]">
                 <button
-                    className="text-white rounded-full transition-all duration-300 bg-[var(--c-primary)] hover:bg-[var(--c-primary-hover)] focus:ring-4 focus:ring-blue-300 font-medium text-sm px-4 py-4 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                    className="text-white rounded-full transition-all duration-300 bg-c-primary hover:bg-c-primary-hover focus:ring-4 focus:ring-blue-300 font-medium text-sm px-4 py-4 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                     type="button"
                     onClick={toggleDrawer}
                 >
@@ -59,7 +37,7 @@ const Index = () => {
                 tabIndex={-1}
                 aria-labelledby="drawer-navigation-label"
             >
-                <h5 id="drawer-navigation-label" className="text-base font-semibold mb-5 text-[var(--c-title)]">Settings</h5>
+                <h5 id="drawer-navigation-label" className="text-base font-semibold mb-5 text-c-title">Settings</h5>
                 <hr />
                 <button
                     type="button"
@@ -73,80 +51,11 @@ const Index = () => {
                     <span className="sr-only">Close menu</span>
                 </button>
                 <div className='mt-3'>
-                    <span className='font-medium text-[var(--c-title)]'>Theme Option</span>
+                    <span className='font-medium text-c-title'>Theme Option</span>
                     <ChangeTheme />
                 </div>
-
                 <div>
-                    <span className='font-medium text-[var(--c-title)]'>Theme Colors</span>
-                    <div className='flex flex-wrap gap-2 mt-2'>
-                        {colors.map((item, index) => (
-                            <Tooltip key={index} content={item.name}>
-                                <div
-                                    className="cursor-pointer w-8 h-8 rounded-full flex justify-center items-center"
-                                    style={{ backgroundColor: item.color }}
-                                    onClick={() => selectColor(index)}
-                                >
-                                    {item.icon && <FaCheck className='text-white h-3 w-3' />}
-                                </div>
-                            </Tooltip>
-                        ))}
-                        <Tooltip content="crear">
-                            <div
-                                className={`cursor-pointer w-8 h-8 rounded-full flex justify-center items-center bg-gray-300`}
-                                onClick={handleOpen}
-                            >
-                                <FaPlus className='text-white h-3 w-3' />
-                            </div>
-                        </Tooltip>
-                    </div>
-                    <Modal backdrop='blur' isOpen={isOpen} onClose={onCloseAndClear}>
-                        <ModalContent>
-                            <>
-                                <form onSubmit={addColor}>
-                                    <ModalHeader className="flex flex-col gap-1">Modal Title</ModalHeader>
-                                    <ModalBody>
-                                        <p>Choose a theme color</p>
-                                        <Input
-                                            type="text"
-                                            variant='bordered'
-                                            label="Name"
-                                            onChange={handleChangeColor}
-                                            value={color.name}
-                                            name='name'
-                                            maxLength={10}
-                                            errorMessage={errorMessage.field === 'name' ? errorMessage.text : ''}
-                                            isInvalid={errorMessage.field === 'name'}
-                                        />
-                                        <div>
-                                            <div className="inline-block w-10 h-10 rounded-full overflow-hidden">
-                                                <input
-                                                    type="color"
-                                                    className="w-full h-full border-none p-0 rounded-full cursor-pointer"
-                                                    value={color.color}
-                                                    onChange={handleChangeColor}
-                                                    name='color'
-                                                />
-                                            </div>
-                                            <span className='text-[#f31260] block text-xs'>
-                                                {errorMessage.field === 'color' && errorMessage.text}
-                                            </span>
-                                        </div>
-                                    </ModalBody>
-                                    <ModalFooter>
-                                        <Button color="danger" variant="light" onPress={onCloseAndClear}>
-                                            Close
-                                        </Button>
-                                        <Button
-                                            color="primary" type='submit'
-                                        >
-                                            Crear
-                                        </Button>
-                                    </ModalFooter>
-                                </form>
-                            </>
-                        </ModalContent>
-                    </Modal>
+                    <MainColor />
                 </div>
             </div>
         </>
