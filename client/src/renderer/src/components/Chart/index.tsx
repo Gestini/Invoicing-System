@@ -4,7 +4,7 @@ import { ColorType, createChart } from 'lightweight-charts';
 import { Card, CardBody, CardHeader } from '@nextui-org/react';
 
 // Función para convertir un color hex a HSL
-const hexToHSL = (hex) => {
+const hexToHSL = (hex: string): [number, number, number] => {
   hex = hex.replace('#', '');
   const r = parseInt(hex.slice(0, 2), 16) / 255;
   const g = parseInt(hex.slice(2, 4), 16) / 255;
@@ -32,16 +32,16 @@ const hexToHSL = (hex) => {
 };
 
 // Función para generar variantes del color principal
-const generateColorVariants = (mainColor, count) => {
+const generateColorVariants = (mainColor: string, count: number): string[] => {
   const [h, s, l] = hexToHSL(mainColor);
-  const variants = [];
+  const variants: string[] = [];
 
   for (let i = 0; i < count; i++) {
     const newL = (l + (i * 3.5)) % 100; // ajustar el nivel de luz
     variants.push(`hsl(${h}, ${s}%, ${newL}%)`);
   }
 
-  console.log(variants)
+  console.log(variants);
   return variants;
 };
 
