@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { NavbarUserOptions } from './NavbarUserOption';
 import { BiBell, BiCog } from 'react-icons/bi';
+import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/react';
 
 export const Navbar = () => {
   const location = useLocation();
@@ -53,9 +54,20 @@ export const Navbar = () => {
             {/* <div className='settings w-[50px] flex justify-center h-[50px] hover:bg-[#eaddff] cursor-pointer'>
               <BiCog className='h-full text-[20px] text-gray-600' />
             </div> */}
-            <div className='settings w-[50px] flex justify-center h-[50px] hover:bg-[#eaddff] cursor-pointer'>
-              <BiBell className='h-full text-[20px] text-gray-600' />
-            </div>
+
+            <Dropdown className='text-c-title bg-c-card'>
+              <DropdownTrigger>
+                <div className='settings w-[50px] flex justify-center h-[50px] rounded-full transition-all duration-300 cursor-pointer'>
+                  <BiBell className='h-full text-[20px] text-gray-600 transition-colors duration-300 hover:text-c-primary' />
+                </div>
+              </DropdownTrigger>
+              <DropdownMenu aria-label='Profile Actions' variant='flat'>
+                <DropdownItem key='profile' className=' gap-2 text-c-title'>
+                  <p className='font-semibold'>Mis notificaciones</p>
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+
             <div className='h-[50px] w-[50px] flex justify-center items-center'>
               <NavbarUserOptions />
             </div>
