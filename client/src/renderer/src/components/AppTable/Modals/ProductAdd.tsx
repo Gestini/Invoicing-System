@@ -15,6 +15,7 @@ import {
 } from '@nextui-org/react'
 import { BiDollar } from 'react-icons/bi'
 import { Checkbox } from '@nextui-org/react'
+import './ProductAdd.scss'
 
 export const AddProductModal = ({ modal }) => {
   const [data, setData] = React.useState<any>({})
@@ -220,7 +221,7 @@ export const AddProductModal = ({ modal }) => {
                   }
                 />
               </div>
-              <div className='mrowmodaladdproduct flex gap-3'>
+              <div className='rowmodalpricesproduct flex gap-3'>
                 <Select
                   label='Proveedores'
                   labelPlacement='outside'
