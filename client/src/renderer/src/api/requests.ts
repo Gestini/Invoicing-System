@@ -8,3 +8,7 @@ export const reqAuthLoadProfileByToken = async (token: string) =>
 
 /* Rutas para crear unidades */
 export const reqCreateUnit = async (data: any) => api.post('/business-unit/save', data)
+
+/* Rutas productos */
+export const reqCreateProduct = async (data: any) => api.post('/products', data)
+export const reqGetProductByUnit = async (id: any) => api.get(`/products/by-business-unit/${id}`)

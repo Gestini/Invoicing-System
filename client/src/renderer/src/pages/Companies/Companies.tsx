@@ -16,6 +16,7 @@ import MultiStepForm from '@renderer/components/CreateCompanyForm'
 const Companies = () => {
   const [showForm, setShowForm] = React.useState(false)
 
+  
   const handleClose = () => {
     setShowForm(false)
   }
