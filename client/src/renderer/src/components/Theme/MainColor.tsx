@@ -1,8 +1,8 @@
 import React from 'react'
 import { MainColorData } from './Themes'
-import { Button, Checkbox, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Tooltip } from "@nextui-org/react";
+import { Tooltip } from "@nextui-org/react";
 import { useColorManagement } from '../Settings/utils'
-import { FaCheck, FaPlus } from 'react-icons/fa'
+import { FaCheck } from 'react-icons/fa'
 
 const MainColor: React.FC = () => {
     const [mainColor, setMainColor] = React.useState(MainColorData.variantOne)
@@ -14,20 +14,24 @@ const MainColor: React.FC = () => {
         setMainColor(selectedColor);
         setSelected(index);
         document.body.id = selectedColorKey; // Establecer el ID del body con la clave del color seleccionado
+        localStorage.setItem('mainColor', selectedColorKey); // Guardar el color seleccionado en localStorage
     }
+
+    React.useEffect(() => {
+        const savedColorKey = localStorage.getItem('mainColor');
+        if (savedColorKey && MainColorData[savedColorKey]) {
+            const savedColor = MainColorData[savedColorKey];
+            setMainColor(savedColor);
+            setSelected(Object.keys(MainColorData).indexOf(savedColorKey));
+            document.body.id = savedColorKey;
+        } else {
+            document.body.id = 'variantOne';
+        }
+    }, []);
 
     const {
         colors,
         setColors,
-        // color,
-        // setColor,
-        // errorMessage,
-        // drawerOpen,
-        // addColor,
-        // onCloseAndClear,
-        // isOpen,
-        // toggleDrawer,
-        // handleOpen,
     } = useColorManagement();
 
     const selectColor = (index: number) => {
@@ -61,8 +65,8 @@ const MainColor: React.FC = () => {
                         <FaPlus className='text-white h-3 w-3' />
                     </div>
                 </Tooltip> */}
-            </div>
-            {/* <Modal backdrop='blur' isOpen={isOpen} onClose={onCloseAndClear}>
+
+                {/* <Modal backdrop='blur' isOpen={isOpen} onClose={onCloseAndClear}>
                 <ModalContent>
                     <>
                         <form onSubmit={addColor}>
@@ -109,8 +113,12 @@ const MainColor: React.FC = () => {
                     </>
                 </ModalContent>
             </Modal> */}
+            </div>
         </>
     )
 }
 
 export default MainColor
+
+
+
