@@ -89,7 +89,7 @@ export const Sidebar = () => {
           <SidebarItem key={index} path={item.path} icon={item.icon} text={item.text} />
         ))}
       </div>
-      <Dropdown placement="top-start" className='bg-c-card'>
+      <Dropdown placement="top-start" className='bg-c-card text-c-title'>
         <DropdownTrigger>
           <Button className='bg-[transparent] w-[100%] min-w-0'>
             <SlOptions className='text-gray-300 w-4 h-4 cursor-pointer' />

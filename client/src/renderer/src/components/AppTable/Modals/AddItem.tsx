@@ -30,7 +30,7 @@ export const AddItemModal = ({ modal }) => {
   }
 
   return (
-    <div className='flex flex-col gap-2'>
+    <div className='flex flex-col gap-2 bg-c-card'>
       <Button onPress={onOpen} className='bg-c-primary' color='secondary' endContent={<PlusIcon />}>
         {modal?.buttonTitle}
       </Button>

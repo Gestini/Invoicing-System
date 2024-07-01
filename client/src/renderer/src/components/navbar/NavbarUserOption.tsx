@@ -14,7 +14,7 @@ export const NavbarUserOptions = () => {
 
   if (user) {
     return (
-      <Dropdown className='bg-c-card'>
+      <Dropdown className='text-c-title bg-c-card'>
         <DropdownTrigger>
           <Avatar isBordered as='button' color='default' size='sm' />
         </DropdownTrigger>

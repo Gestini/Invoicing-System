@@ -46,3 +46,16 @@ input[type="color"]::-webkit-color-swatch {
   border: none;
   border-radius: 50%;
 }
+
+.bg-content1 {
+  background-color: var(--c-card) !important;
+  color: var(--c-title);
+}
+
+th {
+  background: var(--c-card-2) !important;
+}
+
+input {
+  color: var(--c-title);
+}

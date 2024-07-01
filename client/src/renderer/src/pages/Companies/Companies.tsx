@@ -15,7 +15,7 @@ const Companies = () => {
   return (
     <div className=' flex flex-col  generalunidades'>
       <div className='flex flex-col w-full mb-2 rounded-md bg-c-bg-color p-5 gap-4'>
-        <div className='flex justify-between gap-3 items-end'>
+      <div className='flex justify-between gap-3 items-end'>
           <Input
             isClearable
             classNames={{

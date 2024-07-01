@@ -91,8 +91,7 @@ export const AddProductModal = ({ modal }) => {
                   onChange={handleChange}
                 ></Input>
               </div>
-              <div className='rowmodaladdproduct flex gap-3'>
-                {' '}
+              <div className='rowmodaladdproduct select flex gap-3'>
                 <Select
                   label='Proveedores'
                   labelPlacement='outside'
@@ -101,6 +100,7 @@ export const AddProductModal = ({ modal }) => {
                   name='suppliers'
                   onChange={handleChange}
                   size='sm'
+                  className='text-c-title'
                 >
                   <SelectItem key={2}>Proveedor</SelectItem>
                 </Select>
@@ -113,6 +113,7 @@ export const AddProductModal = ({ modal }) => {
                   name='stock'
                   onChange={handleChange}
                   size='sm'
+                  className='text-c-title'
                 >
                   <SelectItem value={'disponible'} key={'disponible'}>
                     Disponible
@@ -164,6 +165,7 @@ export const AddProductModal = ({ modal }) => {
                   onChange={handleChange}
                   defaultSelectedKeys={['cero']}
                   size='sm'
+                  className='text-c-title'
                 >
                   <SelectItem value={'cero'} key={'cero'}>
                     cero
@@ -180,6 +182,7 @@ export const AddProductModal = ({ modal }) => {
                 onChange={handleChange}
                 defaultSelectedKeys={['cero']}
                 size='sm'
+                className='text-c-title'
               >
                 <SelectItem value={'cero'} key={'cero'}>
                   cero
@@ -260,6 +263,7 @@ export const AddProductModal = ({ modal }) => {
                   name='ivarate'
                   onChange={handleChange}
                   size='sm'
+                  className='text-c-title'
                 >
                   <SelectItem key={2}>IVA 21%</SelectItem>
                 </Select>
