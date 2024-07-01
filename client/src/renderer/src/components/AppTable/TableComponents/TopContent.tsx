@@ -52,7 +52,7 @@ export const TopContent = ({
           <Input
             isClearable
             variant='bordered'
-            className='w-full text-[#71717a]'
+            className='w-full text-c-gray'
             placeholder='Buscar por nombre...'
             startContent={<SearchIcon />}
             value={filterValue}

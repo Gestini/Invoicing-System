@@ -1,3 +1,5 @@
+import React from 'react'
+import Card from './Card'
 import {
   Button,
   Dropdown,
@@ -9,22 +11,28 @@ import {
 import { ChevronDownIcon, PlusIcon, SearchIcon } from '@renderer/components/Icons'
 import { productStatusOptions } from '@renderer/components/Tables/ProductTable/data'
 import './unidadeseccion.scss'
-import Card from './Card'
+import MultiStepForm from '@renderer/components/CreateCompanyForm'
 
 const Companies = () => {
+  const [showForm, setShowForm] = React.useState(false)
+
+  const handleClose = () => {
+    setShowForm(false)
+  }
   return (
     <div className=' flex flex-col  generalunidades'>
       <div className='flex flex-col w-full mb-2 rounded-md bg-c-bg-color p-5 gap-4'>
-      <div className='flex justify-between gap-3 items-end'>
+        <div className='flex justify-between gap-3 items-end'>
           <Input
             isClearable
+            className='text-c-gray'
             classNames={{
               base: 'w-full sm:max-w-[44%]',
               inputWrapper: 'border-1',
             }}
             placeholder='Search by name...'
             size='sm'
-            startContent={<SearchIcon className='text-default-300' />}
+            startContent={<SearchIcon className='text-c-title' />}
             variant='bordered'
           />
           <div className='flex gap-3'>
@@ -33,7 +41,7 @@ const Companies = () => {
                 <Button
                   endContent={<ChevronDownIcon className='text-small' />}
                   size='sm'
-                  variant='flat'
+                  variant='bordered'
                 >
                   Status
                 </Button>
@@ -51,9 +59,10 @@ const Companies = () => {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button className='bg-c-primary text-background' endContent={<PlusIcon />} size='sm'>
+            <Button className='bg-c-primary text-c-title' onClick={() => setShowForm(true)} endContent={<PlusIcon />} size='sm'>
               Add New
             </Button>
+            {showForm && <MultiStepForm onClose={handleClose} />}
           </div>
         </div>
       </div>

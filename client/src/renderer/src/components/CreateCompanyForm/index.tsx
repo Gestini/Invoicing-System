@@ -49,11 +49,11 @@ const MultiStepForm: React.FC<MultiStepFormProps> = ({ onClose }) => {
 
   return (
     <div
-      className='z-10 fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 backdrop-blur-sm'
+      className='z-20 fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 backdrop-blur-sm'
       onClick={onClose}
     >
       <div
-        className='animate-zoom-in-out w-full max-w-3xl py-8 px-48 bg-white rounded shadow-lg relative overflow-hidden'
+        className='animate-zoom-in-out w-full max-w-3xl py-8 px-48 bg-c-card rounded shadow-lg relative overflow-hidden'
         onClick={(e) => e.stopPropagation()}
       >
         <div className='text-center mb-6'>
@@ -61,12 +61,12 @@ const MultiStepForm: React.FC<MultiStepFormProps> = ({ onClose }) => {
             <img className='w-8 h-8 mb-4' src={Logo} alt='logo' />
           </div>
           <h1
-            className='text-3xl font-bold mb-2'
+            className='text-3xl font-bold mb-2 text-c-title'
             style={{ fontFamily: 'Roboto, sans-serif', fontSize: '27px' }}
           >
             You're only 2 steps away from starting your gantt chart
           </h1>
-          <h2 className='text-lg font-medium mb-4' style={{ fontFamily: 'Roboto, sans-serif' }}>
+          <h2 className='text-lg font-medium mb-4 text-c-gray' style={{ fontFamily: 'Roboto, sans-serif' }}>
             Create your FREE account and get immediate access to the app
           </h2>
           <p
@@ -87,18 +87,16 @@ const MultiStepForm: React.FC<MultiStepFormProps> = ({ onClose }) => {
             <Input
               type='email'
               variant='bordered'
-              label='Email'
+              label='Nombre'
               value={email}
               radius='sm'
               onChange={(e) => setEmail(e.target.value)}
-              isInvalid={error}
-              placeholder='Enter your email'
-              errorMessage='Please enter a valid email'
+              placeholder='Nombre de la empresa'
               className='mb-4'
             />
             <Button
               color='secondary'
-              className='w-full'
+              className='bg-c-primary'
               isLoading={loading}
               onClick={() => handleSend()}
             >
