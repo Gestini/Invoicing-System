@@ -82,7 +82,7 @@ export const Sidebar = () => {
 
   return (
 
-    <nav className='flex w-[55px] fixed z-10 left-0 top-0 h-screen items-center py-4 flex-col justify-between bg-c-primary '>
+    <nav className='flex w-[55px] fixed z-10 left-0 top-0 h-screen items-center py-4 flex-col justify-between bg-c-primary-sidebar '>
       <IoGridOutline className='text-white w-5 h-5 cursor-pointer' />
       <div className='flex flex-col gap-[1px]'>
         {sidebarItems.map((item, index) => (

@@ -19,19 +19,21 @@
   --c-title: black;
   --c-bg-color: #ffffff;
   --c-bg-color-2: #ececec;
+  --c-primary-sidebar: var(--c-primary)
 }
 
 .dark {
   --c-title: #fff;
   --c-bg-color: #1c1e24;
   --c-bg-color-2: #202225;
+  --c-primary-sidebar: #1f2937
 }
 
 
 #variantOne {
   --c-primary: #3b82f6;
   --c-primary-hover: #4377ca;
-  --c-primary-route-active: #3b82f6;
+  --c-primary-route-active: #1d5dc4;
   --c-primary-route-hover: #3b82f6;
   --c-secondary: #f56565;
   --c-primary-hover2: #f7fcff;
@@ -39,8 +41,8 @@
 
 #variantTwo {
   --c-primary: #ef4444;
-  --c-primary-hover: #f7fcff;
-  --c-primary-route-active: #ef4444;
+  --c-primary-hover: #ce2323;
+  --c-primary-route-active: #ce2323;
   --c-primary-route-hover: #ef4444;
   --c-secondary: #6b46c1;
   --c-primary-hover2: #f7fcff;
@@ -57,8 +59,8 @@
 
 #variantFour {
   --c-primary: #ec4899;
-  --c-primary-hover: #f7fcff;
-  --c-primary-route-active: #ec4899;
+  --c-primary-hover: #ec4899;
+  --c-primary-route-active: #c62072;
   --c-primary-route-hover: #ec4899;
   --c-secondary: #10b981;
   --c-primary-hover2: #f7fcff;
@@ -67,7 +69,7 @@
 #variantFive {
   --c-primary: #ff9900;
   --c-primary-hover: #ffc266;
-  --c-primary-route-active: #ff9900;
+  --c-primary-route-active: #be7f20;
   --c-primary-route-hover: #ff9900;
   --c-secondary: #33BBCF;
   --c-primary-hover2: #f7fcff;

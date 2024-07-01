@@ -12,13 +12,6 @@ const Index = () => {
         toggleDrawer,
     } = useColorManagement();
 
-
-    React.useEffect(() => {
-        console.log(colors)
-    }, [colors])
-
-
-
     return (
         <>
             <div className="text-center absolute  z-10 right-[10vh] bottom-[4vw]">

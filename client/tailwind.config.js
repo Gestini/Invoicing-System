@@ -45,6 +45,7 @@ module.exports = {
         'c-secondary': 'var(--c-secondary)',
         'c-title': 'var(--c-title)',
         'c-bg-color-2': 'var(--c-bg-color-2)',
+        'c-primary-sidebar': 'var(--c-primary-sidebar)',
         'c-error': '#B93B3B',
         'c-grey': ' #0000008A',
         'c-borde': '#003399',
