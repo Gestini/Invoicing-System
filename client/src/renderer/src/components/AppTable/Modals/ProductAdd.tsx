@@ -26,6 +26,7 @@ export const AddProductModal = ({ modal }) => {
       ...data,
       [e.target.name]: e.target.value,
     })
+    console.log(data)
   }
 
   const handleAddNewUser = () => {
@@ -52,33 +53,41 @@ export const AddProductModal = ({ modal }) => {
           <ModalBody>
             <div className='productsmodaladd w-full flex flex-col gap-4 '>
               <Input
+                name='name'
                 label='Nombre'
                 size='sm'
                 labelPlacement='outside'
                 placeholder='Nombre del producto'
                 variant='bordered'
+                onChange={handleChange}
               ></Input>
               <div className='rowmodaladdproduct flex gap-3'>
                 <Input
                   label='Codigo'
                   size='sm'
+                  name='code#1'
                   labelPlacement='outside'
                   placeholder='Codigo #1'
                   variant='bordered'
+                  onChange={handleChange}
                 ></Input>
                 <Input
                   label='Codigo'
                   size='sm'
+                  name='code#2'
                   labelPlacement='outside'
                   placeholder='Codigo #2'
                   variant='bordered'
+                  onChange={handleChange}
                 ></Input>
                 <Input
                   label='Codigo de barras'
                   size='sm'
+                  name='codebar'
                   labelPlacement='outside'
                   placeholder='Codigo de barras'
                   variant='bordered'
+                  onChange={handleChange}
                 ></Input>
               </div>
               <div className='rowmodaladdproduct flex gap-3'>
@@ -88,6 +97,8 @@ export const AddProductModal = ({ modal }) => {
                   labelPlacement='outside'
                   placeholder='Selecciona un proveedor'
                   variant='bordered'
+                  name='suppliers'
+                  onChange={handleChange}
                   size='sm'
                 >
                   <SelectItem key={2}>Proveedor</SelectItem>
@@ -98,6 +109,8 @@ export const AddProductModal = ({ modal }) => {
                   placeholder='Disponibilidad'
                   variant='bordered'
                   defaultSelectedKeys={['disponible']}
+                  name='stock'
+                  onChange={handleChange}
                   size='sm'
                 >
                   <SelectItem value={'disponible'} key={'disponible'}>
@@ -117,6 +130,8 @@ export const AddProductModal = ({ modal }) => {
                   placeholder='0.00'
                   variant='bordered'
                   size='sm'
+                  name='purchaseprice'
+                  onChange={handleChange}
                   endContent={
                     <div className='pointer-events-none flex items-center'>
                       <span className='text-default-400 text-small'>$</span>
@@ -130,6 +145,8 @@ export const AddProductModal = ({ modal }) => {
                   placeholder='0.00'
                   variant='bordered'
                   size='sm'
+                  name='costprice'
+                  onChange={handleChange}
                   endContent={
                     <div className='pointer-events-none flex items-center'>
                       <span className='text-default-400 text-small'>$</span>
@@ -142,6 +159,8 @@ export const AddProductModal = ({ modal }) => {
                   placeholder='Select an animal'
                   labelPlacement='outside'
                   variant='bordered'
+                  name='pricecalculation'
+                  onChange={handleChange}
                   defaultSelectedKeys={['cero']}
                   size='sm'
                 >
@@ -156,6 +175,8 @@ export const AddProductModal = ({ modal }) => {
                 labelPlacement='outside'
                 placeholder='Select an animal'
                 variant='bordered'
+                name='pricepolicy'
+                onChange={handleChange}
                 defaultSelectedKeys={['cero']}
                 size='sm'
               >
@@ -171,6 +192,8 @@ export const AddProductModal = ({ modal }) => {
                   labelPlacement='outside'
                   placeholder='0.00'
                   variant='bordered'
+                  name='net#1'
+                  onChange={handleChange}
                   size='sm'
                   endContent={
                     <div className='pointer-events-none flex items-center'>
@@ -185,6 +208,8 @@ export const AddProductModal = ({ modal }) => {
                   isDisabled
                   placeholder='0.00'
                   variant='bordered'
+                  name='net#2'
+                  onChange={handleChange}
                   size='sm'
                   endContent={
                     <div className='pointer-events-none flex items-center'>
@@ -199,6 +224,8 @@ export const AddProductModal = ({ modal }) => {
                   placeholder='0.00'
                   isDisabled
                   variant='bordered'
+                  name='net#3'
+                  onChange={handleChange}
                   size='sm'
                   endContent={
                     <div className='pointer-events-none flex items-center'>
@@ -213,6 +240,8 @@ export const AddProductModal = ({ modal }) => {
                   placeholder='0.00'
                   isDisabled
                   variant='bordered'
+                  name='net#4'
+                  onChange={handleChange}
                   size='sm'
                   endContent={
                     <div className='pointer-events-none flex items-center'>
@@ -223,13 +252,15 @@ export const AddProductModal = ({ modal }) => {
               </div>
               <div className='rowmodalpricesproduct flex gap-3'>
                 <Select
-                  label='Proveedores'
+                  label='Tipo IVA'
                   labelPlacement='outside'
-                  placeholder='Selecciona un proveedor'
+                  placeholder='Selecciona un tipo'
                   variant='bordered'
+                  name='ivarate'
+                  onChange={handleChange}
                   size='sm'
                 >
-                  <SelectItem key={2}>Proveedor</SelectItem>
+                  <SelectItem key={2}>IVA 21%</SelectItem>
                 </Select>
                 <Input
                   type='number'
@@ -237,6 +268,8 @@ export const AddProductModal = ({ modal }) => {
                   labelPlacement='outside'
                   placeholder='0.00'
                   variant='bordered'
+                  name='financedprice'
+                  onChange={handleChange}
                   size='sm'
                   endContent={
                     <div className='pointer-events-none flex items-center'>
@@ -250,6 +283,8 @@ export const AddProductModal = ({ modal }) => {
                   labelPlacement='outside'
                   placeholder='0.00'
                   variant='bordered'
+                  name='friendprice'
+                  onChange={handleChange}
                   size='sm'
                   endContent={
                     <div className='pointer-events-none flex items-center'>
@@ -262,6 +297,8 @@ export const AddProductModal = ({ modal }) => {
                   label='Precio tarjeta'
                   labelPlacement='outside'
                   placeholder='0.00'
+                  name='cardprice'
+                  onChange={handleChange}
                   variant='bordered'
                   size='sm'
                   endContent={
@@ -272,12 +309,16 @@ export const AddProductModal = ({ modal }) => {
                 />
               </div>
 
-              <Checkbox defaultSelected>Producto envasado</Checkbox>
+              <Checkbox defaultSelected name='envasedproduct' onChange={handleChange}>
+                Producto envasado
+              </Checkbox>
               <Input
                 type='number'
                 label='Cantidad x paquete'
                 labelPlacement='outside'
                 placeholder='0.00'
+                name='quantityperpackage'
+                onChange={handleChange}
                 variant='bordered'
                 isDisabled
                 size='sm'
@@ -290,6 +331,8 @@ export const AddProductModal = ({ modal }) => {
               <Textarea
                 label='Description'
                 variant='bordered'
+                name='description'
+                onChange={handleChange}
                 labelPlacement='outside'
                 placeholder='Enter your description'
               ></Textarea>
