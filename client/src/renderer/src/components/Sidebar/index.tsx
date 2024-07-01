@@ -91,8 +91,8 @@ export const Sidebar = () => {
       </div>
       <Dropdown placement="top-start">
         <DropdownTrigger>
-          <Button className='bg-c-primary w-[100%] min-w-0'>
-            <SlOptions className='text-white w-4 h-4 cursor-pointer' />
+          <Button className='bg-[transparent] w-[100%] min-w-0'>
+            <SlOptions className='text-white  w-4 h-4 cursor-pointer' />
           </Button>
         </DropdownTrigger>
         <DropdownMenu aria-label="Static Actions">
