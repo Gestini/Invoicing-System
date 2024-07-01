@@ -2,6 +2,7 @@ import React from 'react'
 import Logo from '../../assets/electron.svg'
 import { Button, Input } from '@nextui-org/react'
 import './createCompany.scss'
+import { reqCreateUnit } from '@renderer/api/requests'
 
 interface MultiStepFormProps {
   onClose: () => void
@@ -9,7 +10,11 @@ interface MultiStepFormProps {
 
 const MultiStepForm: React.FC<MultiStepFormProps> = ({ onClose }) => {
   const [step, setStep] = React.useState(1)
-  const [email, setEmail] = React.useState('')
+  const [data, setData] = React.useState<any>({
+    name: '',
+    description: '',
+    link: '',
+  })
   const [error, setError] = React.useState(false)
   const [loading, setLoading] = React.useState(false)
 
@@ -20,40 +25,28 @@ const MultiStepForm: React.FC<MultiStepFormProps> = ({ onClose }) => {
     }
   }, [])
 
-  React.useEffect(() => {
-    if (email.trim() !== '') {
-      const validation = validateEmail(email)
-      setError(!validation)
-      if (!validation) return
-    }
-  }, [email])
-
-  const validateEmail = (email: string) => {
-    const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
-    return regex.test(email.trim())
-  }
-
   const prevStep = () => {
     if (step > 1) setStep(step - 1)
   }
 
-  const handleSend = () => {
-    const validation = validateEmail(email)
-    setError(!validation)
-    if (!validation) return
-    setLoading(true)
-    setTimeout(() => {
-      setLoading(false)
-    }, 2000)
+  const handleInputChange = (e) => {
+    const { name, value } = e.target
+    setData((prev) => ({ ...prev, [name]: value }))
+    console.log(data)
+  }
+
+  const handleSubmit = () => {
+    reqCreateUnit(data)
   }
 
   return (
     <div
-      className='z-10 fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 backdrop-blur-sm'
+      className='z-20 fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 backdrop-blur-sm'
       onClick={onClose}
     >
-      <div
-        className='animate-zoom-in-out w-full max-w-3xl py-8 px-48 bg-white rounded shadow-lg relative overflow-hidden'
+      <form
+        onSubmit={handleSubmit}
+        className='animate-zoom-in-out w-full max-w-3xl py-8 px-48 bg-c-card rounded shadow-lg relative overflow-hidden'
         onClick={(e) => e.stopPropagation()}
       >
         <div className='text-center mb-6'>
@@ -61,12 +54,15 @@ const MultiStepForm: React.FC<MultiStepFormProps> = ({ onClose }) => {
             <img className='w-8 h-8 mb-4' src={Logo} alt='logo' />
           </div>
           <h1
-            className='text-3xl font-bold mb-2'
+            className='text-3xl font-bold mb-2 text-c-title'
             style={{ fontFamily: 'Roboto, sans-serif', fontSize: '27px' }}
           >
             You're only 2 steps away from starting your gantt chart
           </h1>
-          <h2 className='text-lg font-medium mb-4' style={{ fontFamily: 'Roboto, sans-serif' }}>
+          <h2
+            className='text-lg font-medium mb-4 text-c-gray'
+            style={{ fontFamily: 'Roboto, sans-serif' }}
+          >
             Create your FREE account and get immediate access to the app
           </h2>
           <p
@@ -85,28 +81,51 @@ const MultiStepForm: React.FC<MultiStepFormProps> = ({ onClose }) => {
         {step === 1 && (
           <div className=''>
             <Input
-              type='email'
+              type='text'
               variant='bordered'
-              label='Email'
-              value={email}
+              label='Nombre'
+              name='name'
+              value={data.name}
               radius='sm'
-              onChange={(e) => setEmail(e.target.value)}
-              isInvalid={error}
-              placeholder='Enter your email'
-              errorMessage='Please enter a valid email'
+              onChange={handleInputChange}
+              placeholder='Nombre de la empresa'
+              className='mb-4'
+            />
+            <Input
+              type='text'
+              variant='bordered'
+              label='Descripcion'
+              name='description'
+              value={data.description}
+              radius='sm'
+              onChange={handleInputChange}
+              placeholder='Descripcion de la empresa'
+              className='mb-4'
+            />
+            <Input
+              type='text'
+              variant='bordered'
+              label='Link'
+              name='link'
+              value={data.link}
+              radius='sm'
+              onChange={handleInputChange}
+              placeholder='Url de la empresa'
               className='mb-4'
             />
             <Button
               color='secondary'
-              className='w-full'
+              className='bg-c-primary'
               isLoading={loading}
-              onClick={() => handleSend()}
+              type='submit'
+
+              // onClick={() => handleSend()}
             >
               {loading ? 'Cargando...' : 'Crear'}
             </Button>
           </div>
         )}
-      </div>
+      </form>
     </div>
   )
 }

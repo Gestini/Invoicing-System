@@ -1,8 +1,6 @@
-import React from 'react'
-import { PlusIcon } from '@renderer/components/Icons/PlusIcon'
 import {
-  Modal,
   Input,
+  Modal,
   Button,
   Select,
   ModalBody,
@@ -11,51 +9,37 @@ import {
   ModalHeader,
   ModalContent,
   useDisclosure,
+  Checkbox,
   Textarea,
 } from '@nextui-org/react'
-import { BiDollar } from 'react-icons/bi'
-import { Checkbox } from '@nextui-org/react'
-import './ProductAdd.scss'
+import React from 'react'
+import { setCurrentItemId } from '@renderer/features/tableSlice'
+import { useDispatch, useSelector } from 'react-redux'
 
-export const AddProductModal = ({ modal }) => {
-  const [data, setData] = React.useState<any>({
-    name: '',
-    category: null,
-    quantity: null,
-    codigo1: null,
-    codigo2: null,
-    barcode: null,
-    suppliers: null,
-    status: true, // default value
-    purchasePrice: null,
-    costPrice: null,
-    priceCalculation: 'cero', // default value
-    pricePolicy: 'cero', // default value
-    net1: null,
-    net2: null,
-    net3: null,
-    net4: null,
-    taxType: 'IVA 21%', // default value
-    financedPrice: null,
-    friendPrice: null,
-    cardPrice: null,
-    businessUnit: {
-      id: 1,
-      name: 'Main Unit',
-    },
-  })
-
+export const EditProductModal = ({ modal }) => {
+  const dispatch = useDispatch()
+  const [data, setData] = React.useState({})
   const [errors, setErrors] = React.useState({
     name: '',
   })
+  const users = useSelector((state: any) => state.table.data)
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
+  const currentItemIdEdit = useSelector((state: any) => state.table.currentItemIdEdit)
+  const currentUserEdit = users.find((item: { id: any }) => item.id == currentItemIdEdit)
+
+  React.useEffect(() => {
+    if (currentItemIdEdit !== -1) onOpen()
+  }, [currentItemIdEdit])
 
   const handleChange = (e: any) => {
+    let name = e.target.name
+    let value = e.target.value
+    let intValues = ['age']
+
     setData({
       ...data,
-      [e.target.name]: e.target.value,
+      [name]: intValues.includes(name) ? parseInt(value) : value,
     })
-    console.log(data)
     handleValidation(e.target.name, e.target.value)
   }
 
@@ -77,72 +61,34 @@ export const AddProductModal = ({ modal }) => {
     setErrors(newErrors)
   }
 
-  const handleSubmit = () => {
-    let valid = true
-    const newErrors = {
-      name: '',
-    }
-
-    if (!validateName(data.name)) {
-      newErrors.name = 'Por favor, ingresa un nombre válido.'
-      valid = false
-    }
-
-    setErrors(newErrors)
-    if (!valid) {
-      return
-    }
-    modal.action(data)
-    setData({
-      name: '',
-      category: null,
-      quantity: null,
-      codigo1: null,
-      codigo2: null,
-      barcode: null,
-      suppliers: null,
-      status: true, // default value
-      purchasePrice: null,
-      costPrice: null,
-      priceCalculation: 'cero', // default value
-      pricePolicy: 'cero', // default value
-      net1: null,
-      net2: null,
-      net3: null,
-      net4: null,
-      taxType: 'IVA 21%', // default value
-      financedPrice: null,
-      friendPrice: null,
-      cardPrice: null,
-      businessUnit: {
-        id: 1,
-        name: 'Main Unit',
-      },
-    })
-    onClose()
-  }
   const validateName = (name) => {
     if (!name.trim()) {
       return false // Nombre está vacío
     }
     return true // Nombre no está vacío
   }
+
+  const handleResetCurrentIdEdit = () => dispatch(setCurrentItemId(-1))
+
+  const handleAddNewUser = async () => {
+    modal.action(data, currentUserEdit)
+    handleResetCurrentIdEdit()
+    onClose()
+  }
+
   return (
     <div className='flex flex-col gap-2'>
-      <Button onPress={onOpen} className='bg-c-primary' color='secondary' endContent={<PlusIcon />}>
-        {modal?.buttonTitle}
-      </Button>
       <Modal
         isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        size='5xl'
-        scrollBehavior={'inside'}
+        onClose={handleResetCurrentIdEdit}
         backdrop='blur'
-        className='bg-c-card'
+        onOpenChange={onOpenChange}
+        scrollBehavior={'inside'}
+        size='5xl'
       >
         <ModalContent>
           <ModalHeader className='flex flex-col gap-1'>
-            <h3 className='text-c-title'>{modal?.title}</h3>
+            <h3 className='default-text-color'>{modal?.title}</h3>
           </ModalHeader>
           <ModalBody>
             <div className='productsmodaladd w-full flex flex-col gap-3  '>
@@ -467,11 +413,18 @@ export const AddProductModal = ({ modal }) => {
             </div>
           </ModalBody>
           <ModalFooter>
-            <Button color='danger' variant='light' onPress={onClose}>
+            <Button
+              color='danger'
+              variant='light'
+              onPress={() => {
+                handleResetCurrentIdEdit()
+                onClose()
+              }}
+            >
               Cerrar
             </Button>
-            <Button color='primary' onPress={handleSubmit}>
-              Agregar
+            <Button color='primary' onPress={() => handleAddNewUser()}>
+              Guardar
             </Button>
           </ModalFooter>
         </ModalContent>

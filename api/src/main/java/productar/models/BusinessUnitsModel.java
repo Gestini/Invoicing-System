@@ -25,10 +25,21 @@ public class BusinessUnitsModel {
     @Column
     private String description;
 
+    @Column
+    private String link;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "owner_id", nullable = false)
     @NotNull(message = "Owner id cannot be null")
     private User owner;
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
 
     public Long getId() {
         return id;

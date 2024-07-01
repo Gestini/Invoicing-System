@@ -46,6 +46,8 @@ export default function App() {
 
     const hasSearchFilter = Boolean(filterValue);
 
+    
+
     const headerColumns = React.useMemo(() => {
         if (visibleColumns === "all") return productColumns;
 

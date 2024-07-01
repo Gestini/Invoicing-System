@@ -9,11 +9,6 @@ import { NavbarUserOptions } from '@renderer/components/Navbar/NavbarUserOption'
 const Units = () => {
   const navigate = useNavigate()
   const handleNavigate = () => navigate('/general')
-  const [showForm, setShowForm] = React.useState(false)
-
-  const handleClose = () => {
-    setShowForm(false)
-  }
 
   const businessUnits = [
     {
@@ -42,14 +37,13 @@ const Units = () => {
             Unidades de negocio
           </h1>
           <Button
-            onClick={() => setShowForm(true)}
             color='secondary'
             className=' bg-c-primary'
             endContent={<PlusIcon />}
           >
             Add units
           </Button>
-          {showForm && <MultiStepForm onClose={handleClose} />}
+
         </div>
         <div className=' flex w-full lg:justify-between md:justify-start flex-wrap justify-center'>
           {businessUnits.map((item, index) => (

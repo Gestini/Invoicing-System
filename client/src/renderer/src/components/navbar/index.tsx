@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { NavbarUserOptions } from './NavbarUserOption';
 import { BiBell, BiCog } from 'react-icons/bi';
+import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/react';
 
 export const Navbar = () => {
   const location = useLocation();
@@ -29,12 +30,10 @@ export const Navbar = () => {
   const isDashboardActive = pathList[1] && pathList[1].paths && pathList[1].paths.includes(location.pathname);
 
   return (
-    <nav className='h-[45px] w-full bg-c-bg-color pl-[50px] flex items-center'>
+    <nav className='h-[45px] w-full bg-c-bg-color flex items-center'>
       <div className='w-full h-full px-[18px]'>
         <div className='relative flex items-center justify-between w-full h-full'>
-          <div className='flex items-center justify-center text-c-title cursor-pointer'>
-            My Space
-          </div>
+          <div className='flex items-center justify-center text-c-title cursor-pointer w-16'></div>
           <div className='flex items-center justify-between'>
             <div className='hidden sm:block'>
               <div className='flex space-x-4'>
@@ -52,12 +51,23 @@ export const Navbar = () => {
             </div>
           </div>
           <div className='inset-y-0 right-0 flex items-center'>
-            <div className='settings w-[50px] flex justify-center h-[50px] hover:bg-[#eaddff] cursor-pointer'>
+            {/* <div className='settings w-[50px] flex justify-center h-[50px] hover:bg-[#eaddff] cursor-pointer'>
               <BiCog className='h-full text-[20px] text-gray-600' />
-            </div>
-            <div className='settings w-[50px] flex justify-center h-[50px] hover:bg-[#eaddff] cursor-pointer'>
-              <BiBell className='h-full text-[20px] text-gray-600' />
-            </div>
+            </div> */}
+
+            <Dropdown className='text-c-title bg-c-card'>
+              <DropdownTrigger>
+                <div className='settings w-[50px] flex justify-center h-[50px] rounded-full transition-all duration-300 cursor-pointer'>
+                  <BiBell className='h-full text-[20px] text-gray-600 transition-colors duration-300 hover:text-c-primary' />
+                </div>
+              </DropdownTrigger>
+              <DropdownMenu aria-label='Profile Actions' variant='flat'>
+                <DropdownItem key='profile' className=' gap-2 text-c-title'>
+                  <p className='font-semibold'>Mis notificaciones</p>
+                </DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+
             <div className='h-[50px] w-[50px] flex justify-center items-center'>
               <NavbarUserOptions />
             </div>
