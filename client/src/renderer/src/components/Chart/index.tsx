@@ -1,14 +1,60 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { PieChart } from 'react-minimal-pie-chart';
 import { ColorType, createChart } from 'lightweight-charts';
 import { Card, CardBody, CardHeader } from '@nextui-org/react';
 
-const ChartComponent = ({ data, colors }) => {
-  const chartContainerRef = React.useRef();
+// Función para convertir un color hex a HSL
+const hexToHSL = (hex: string): [number, number, number] => {
+  hex = hex.replace('#', '');
+  const r = parseInt(hex.slice(0, 2), 16) / 255;
+  const g = parseInt(hex.slice(2, 4), 16) / 255;
+  const b = parseInt(hex.slice(4, 6), 16) / 255;
 
-  React.useEffect(() => {
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  let h, s, l = (max + min) / 2;
+
+  if (max === min) {
+    h = s = 0; // achromatic
+  } else {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    switch (max) {
+      case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+      case g: h = (b - r) / d + 2; break;
+      case b: h = (r - g) / d + 4; break;
+      default: break;
+    }
+    h /= 6;
+  }
+
+  return [h * 360, s * 100, l * 100];
+};
+
+// Función para generar variantes del color principal
+const generateColorVariants = (mainColor: string, count: number): string[] => {
+  const [h, s, l] = hexToHSL(mainColor);
+  const variants: string[] = [];
+
+  for (let i = 0; i < count; i++) {
+    const newL = (l + (i * 3.5)) % 100; // ajustar el nivel de luz
+    variants.push(`hsl(${h}, ${s}%, ${newL}%)`);
+  }
+
+  console.log(variants);
+  return variants;
+};
+
+const ChartComponent = ({ data, colors }) => {
+  const chartContainerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!chartContainerRef.current) return;
+
     const handleResize = () => {
-      chart.applyOptions({ width: chartContainerRef.current.clientWidth });
+      if (chartContainerRef.current) {
+        chart.applyOptions({ width: chartContainerRef.current.clientWidth });
+      }
     };
 
     const chart = createChart(chartContainerRef.current, {
@@ -58,7 +104,6 @@ export const GraphView = () => {
     const observer = new MutationObserver((mutationsList) => {
       for (let mutation of mutationsList) {
         if (mutation.type === 'attributes' && mutation.attributeName === 'id') {
-          const bodyId = document.body.id;
           const newMainColor = getComputedStyle(document.body).getPropertyValue('--c-primary').trim();
           setMainColor(newMainColor);
         }
@@ -79,7 +124,7 @@ export const GraphView = () => {
         backgroundColor: 'transparent',
         lineColor: mainColor,
         textColor: '#71717a',
-        areaTopColor: '#007BFF',
+        areaTopColor: mainColor,
         areaBottomColor: `rgba(${parseInt(mainColor.slice(1, 3), 16)}, ${parseInt(mainColor.slice(3, 5), 16)}, ${parseInt(mainColor.slice(5, 7), 16)}, 0.1)`,
       },
       initialData: [
@@ -101,7 +146,7 @@ export const GraphView = () => {
         backgroundColor: 'transparent',
         lineColor: mainColor,
         textColor: '#71717a',
-        areaTopColor: '#4C9EFF',
+        areaTopColor: mainColor,
         areaBottomColor: `rgba(${parseInt(mainColor.slice(1, 3), 16)}, ${parseInt(mainColor.slice(3, 5), 16)}, ${parseInt(mainColor.slice(5, 7), 16)}, 0.1)`,
       },
       initialData: [
@@ -119,25 +164,27 @@ export const GraphView = () => {
     },
   ];
 
+  const pieChartData = generateColorVariants(mainColor, 7).map((color, index) => ({
+    title: `Variant ${index + 1}`,
+    value: 10, // o cualquier otro valor que necesites
+    color,
+  }));
+
   return (
     <div className='flex gap-4'>
-      <Card className='w-full'>
+      <Card className='w-full bg-c-card'>
         <CardHeader>
           <h3 className='font-medium'>Stock</h3>
         </CardHeader>
         <CardBody className='flex items-center'>
           <PieChart
             style={{ maxWidth: '220px' }}
-            data={[
-              { title: 'One', value: 10, color: mainColor },
-              { title: 'Two', value: 10, color: '#6ad2ff' },
-              { title: 'Three', value: 5, color: '#eff4fb' },
-            ]}
+            data={pieChartData}
           />
         </CardBody>
       </Card>
       {graphList.map((item, index) => (
-        <Card className='w-full' key={index}>
+        <Card className='w-full bg-c-card' key={index}>
           <CardHeader>
             <h3 className='font-medium'>{item.title}</h3>
           </CardHeader>

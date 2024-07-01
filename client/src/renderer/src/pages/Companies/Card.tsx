@@ -20,7 +20,7 @@ const Card = () => {
                 <div className='w-10 bg-[#f7f7f7] p-1 rounded-lg flex'>
                     <img src={Logo} className='w-full' alt='' />
                 </div>
-                <Dropdown placement="bottom-start">
+                <Dropdown placement="bottom-start" className='bg-c-card text-c-title'>
                     <DropdownTrigger>
                         <div>
                             <SlOptions className='text-c-title w-4 h-4 cursor-pointer' />

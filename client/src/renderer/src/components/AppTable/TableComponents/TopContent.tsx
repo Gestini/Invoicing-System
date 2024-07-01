@@ -51,7 +51,8 @@ export const TopContent = ({
         <div className='flex justify-between gap-3 items-end'>
           <Input
             isClearable
-            className='w-full'
+            variant='bordered'
+            className='w-full text-[#71717a]'
             placeholder='Buscar por nombre...'
             startContent={<SearchIcon />}
             value={filterValue}
@@ -62,9 +63,9 @@ export const TopContent = ({
           <div className='flex gap-3'>
             <ExportTableDropdown />
             {columnsData?.statusOptions && (
-              <Dropdown>
+              <Dropdown className='bg-c-card text-c-title'>
                 <DropdownTrigger className='sm:flex'>
-                  <Button endContent={<ChevronDownIcon className='text-small' />} variant='flat'>
+                  <Button endContent={<ChevronDownIcon className='text-small' />} variant='bordered'>
                     Estado
                   </Button>
                 </DropdownTrigger>
@@ -87,7 +88,7 @@ export const TopContent = ({
             {columnsData?.columns && (
               <Dropdown>
                 <DropdownTrigger className='sm:flex'>
-                  <Button endContent={<ChevronDownIcon className='text-small' />} variant='flat'>
+                  <Button endContent={<ChevronDownIcon className='text-small' />} variant='bordered'>
                     Columnas
                   </Button>
                 </DropdownTrigger>

@@ -16,7 +16,7 @@ const Index = () => {
         <>
             <div className="text-center absolute  z-10 right-[10vh] bottom-[4vw]">
                 <button
-                    className="text-white rounded-full transition-all duration-300 bg-c-primary hover:bg-c-primary-hover focus:ring-4 focus:ring-blue-300 font-medium text-sm px-4 py-4 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                    className="text-white rounded-full transition-all duration-300 bg-c-primary hover:bg-c-primary-hover focus:ring-4 focus:ring-blue-300 font-medium text-sm px-4 py-4 focus:outline-none"
                     type="button"
                     onClick={toggleDrawer}
                 >

@@ -48,7 +48,7 @@ const Home = () => {
     <>
       <div className='flex gap-4'>
         {cards.map((item, index) => (
-          <Card className='w-full' key={index}>
+          <Card className='w-full bg-c-card' key={index}>
             <CardBody>
               <span className='dashboardIcon text-c-primary w-fit p-2.5 bg-c-bg-color-2 rounded text-xl'>
                 {item.icon}
