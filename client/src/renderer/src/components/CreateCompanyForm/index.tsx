@@ -12,6 +12,8 @@ const MultiStepForm: React.FC<MultiStepFormProps> = ({ onClose }) => {
   const [step, setStep] = React.useState(1)
   const [data, setData] = React.useState<any>({
     name: '',
+    description: '',
+    link: '',
   })
   const [error, setError] = React.useState(false)
   const [loading, setLoading] = React.useState(false)
@@ -87,6 +89,28 @@ const MultiStepForm: React.FC<MultiStepFormProps> = ({ onClose }) => {
               radius='sm'
               onChange={handleInputChange}
               placeholder='Nombre de la empresa'
+              className='mb-4'
+            />
+            <Input
+              type='text'
+              variant='bordered'
+              label='Descripcion'
+              name='description'
+              value={data.description}
+              radius='sm'
+              onChange={handleInputChange}
+              placeholder='Descripcion de la empresa'
+              className='mb-4'
+            />
+            <Input
+              type='text'
+              variant='bordered'
+              label='Link'
+              name='link'
+              value={data.link}
+              radius='sm'
+              onChange={handleInputChange}
+              placeholder='Url de la empresa'
               className='mb-4'
             />
             <Button

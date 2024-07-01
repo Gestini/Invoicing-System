@@ -1,11 +1,15 @@
 package productar.services;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +33,16 @@ public class BusinessUnitsService {
 
     public ArrayList<BusinessUnitsModel> getAllBusinessUnit() {
         return (ArrayList<BusinessUnitsModel>) businessUnitsRepository.findAll();
+    }
+
+    public List<BusinessUnitsModel> getBusinessUnitsByToken() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = ((UserDetails) authentication.getPrincipal()).getUsername();
+
+        // Buscar las unidades de negocio asociadas al usuario
+        List<BusinessUnitsModel> businessUnits = businessUnitsRepository.findByOwnerUsername(username);
+
+        return businessUnits;
     }
 
     public ResponseEntity<String> saveBusinessUnit(BusinessUnitsModel businessUnit, String username) {

@@ -52,4 +52,9 @@ public class ProductService {
     public List<ProductModel> getProductsByReferenceCode(String referenceCode) {
         return productRepository.findByReferenceCode(referenceCode);
     }
+
+    public void deleteProductsByBusinessUnit(Long businessUnitId) {
+        List<ProductModel> products = productRepository.findByBusinessUnitId(businessUnitId);
+        products.forEach(product -> productRepository.deleteById(product.getId()));
+    }
 }
