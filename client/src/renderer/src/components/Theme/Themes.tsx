@@ -16,7 +16,8 @@ export const useColorManagement = () => {
         { name: 'red', color: '#ef4444', variant: 'variantTwo' },
         { name: 'violet', color: '#8b5cf6', variant: 'variantThree' },
         { name: 'pink', color: '#ec4899', variant: 'variantFour' },
-        { name: 'orange', color: '#ff9900', variant: 'variantFive' }
+        { name: 'orange', color: '#ff9900', variant: 'variantFive' },
+        { name: 'Green', color: '#86dd8b', variant: 'variantSix' }
     ]);
 
     const [color, setColor] = React.useState({ name: '', color: '', variant: '' });

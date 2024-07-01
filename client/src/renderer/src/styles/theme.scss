@@ -72,10 +72,19 @@
 }
 
 #variantFive {
-  --c-primary: #ff9900;
+  --c-primary: #dd872c;
   --c-primary-hover: #ffc266;
-  --c-primary-route-active: #be7f20;
+  --c-primary-route-active: #dd872c;
   --c-primary-route-hover: #ff9900;
   --c-secondary: #33BBCF;
   --c-primary-hover2: #f7fcff;
+}
+
+#variantSix {
+  --c-primary: #62b167;
+  --c-primary-hover: #71bd75;
+  --c-primary-route-active: #71bd75;
+  --c-primary-route-hover: #71bd75;
+  --c-secondary: #f56565;
+  --c-primary-hover2: #71bd7570;
 }

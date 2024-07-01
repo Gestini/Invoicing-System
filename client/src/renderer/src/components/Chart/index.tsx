@@ -37,10 +37,11 @@ const generateColorVariants = (mainColor, count) => {
   const variants = [];
 
   for (let i = 0; i < count; i++) {
-    const newL = (l + (i * 10)) % 100; // ajustar el nivel de luz
+    const newL = (l + (i * 3.5)) % 100; // ajustar el nivel de luz
     variants.push(`hsl(${h}, ${s}%, ${newL}%)`);
   }
 
+  console.log(variants)
   return variants;
 };
 
@@ -163,7 +164,7 @@ export const GraphView = () => {
     },
   ];
 
-  const pieChartData = generateColorVariants(mainColor, 3).map((color, index) => ({
+  const pieChartData = generateColorVariants(mainColor, 7).map((color, index) => ({
     title: `Variant ${index + 1}`,
     value: 10, // o cualquier otro valor que necesites
     color,
