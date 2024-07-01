@@ -1,6 +1,6 @@
 import toast from 'react-hot-toast'
 import { AppTable } from '@renderer/components/AppTable'
-import { AddItemModal } from '@renderer/components/AppTable/Modals/AddItem'
+import { AddProductModal } from '@renderer/components/AppTable/Modals/ProductAdd'
 import { EditItemModal } from '@renderer/components/AppTable/Modals/EditItem'
 import { useDispatch, useSelector } from 'react-redux'
 import { columnsData, modalInputs } from './data'
@@ -54,7 +54,7 @@ export const StockTable = () => {
     <AppTable
       columnsData={columnsData}
       tableActions={tableActions}
-      addItemModal={<AddItemModal modal={newUserModal} />}
+      addItemModal={<AddProductModal modal={newUserModal} />}
       editItemModal={<EditItemModal modal={editUserModal} />}
     />
   )
