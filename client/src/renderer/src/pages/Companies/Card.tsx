@@ -15,7 +15,7 @@ const Card = () => {
     }
 
     return (
-        <div onDoubleClick={handleNavigate} className='cursor-pointer w-full h-[200px] rounded-lg bg-c-bg-color shadow-md p-3'>
+        <div onDoubleClick={handleNavigate} className='cursor-pointer w-full h-[200px] rounded-lg bg-c-card shadow-md p-3'>
             <div className='flex justify-between items-center mb-3'>
                 <div className='w-10 bg-[#f7f7f7] p-1 rounded-lg flex'>
                     <img src={Logo} className='w-full' alt='' />
