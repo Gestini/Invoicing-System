@@ -45,10 +45,11 @@ export const AddProductModal = ({ modal }) => {
         size='5xl'
         scrollBehavior={'inside'}
         backdrop='blur'
+        className='bg-c-card'
       >
         <ModalContent>
           <ModalHeader className='flex flex-col gap-1'>
-            <h3 className='default-text-color'>{modal?.title}</h3>
+            <h3 className='text-c-title'>{modal?.title}</h3>
           </ModalHeader>
           <ModalBody>
             <div className='productsmodaladd w-full flex flex-col gap-4 '>

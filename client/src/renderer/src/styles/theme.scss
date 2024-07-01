@@ -19,14 +19,16 @@
   --c-title: black;
   --c-bg-color: #ffffff;
   --c-bg-color-2: #ececec;
-  --c-primary-sidebar: var(--c-primary)
+  --c-primary-sidebar: var(--c-primary);
+  --c-card: #fff;
 }
 
 .dark {
   --c-title: #fff;
   --c-bg-color: #1c1e24;
-  --c-bg-color-2: #202225;
-  --c-primary-sidebar: #1f2937
+  --c-bg-color-2: #253143;
+  --c-primary-sidebar: #1f2937;
+  --c-card: #1f2937;
 }
 
 
