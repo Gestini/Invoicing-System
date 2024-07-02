@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import Card from './Card'
+import React, { useEffect, useState } from 'react';
+import Card from './Card';
 import {
   Button,
   Dropdown,
@@ -7,46 +7,44 @@ import {
   DropdownMenu,
   DropdownTrigger,
   Input,
-} from '@nextui-org/react'
-import { ChevronDownIcon, PlusIcon, SearchIcon } from '@renderer/components/Icons'
-import { productStatusOptions } from '@renderer/components/Tables/ProductTable/data'
-import './unidadeseccion.scss'
-import MultiStepForm from '@renderer/components/CreateCompanyForm'
-import { reqGetUnitByOwner } from '@renderer/api/requests'
+  useDisclosure,
+} from '@nextui-org/react';
+import { ChevronDownIcon, PlusIcon, SearchIcon } from '@renderer/components/Icons';
+import { productStatusOptions } from '@renderer/components/Tables/ProductTable/data';
+import './unidadeseccion.scss';
+import MultiStepForm from '@renderer/components/CreateCompanyForm';
+import { reqGetUnitByOwner } from '@renderer/api/requests';
+import { useDispatch, useSelector } from 'react-redux'
+import { setUnits } from '@renderer/features/unitsSlice';
+
+interface BusinessUnit {
+  link: string;
+  description: string;
+  id: number;
+  name: string;
+}
 
 const Companies = () => {
-  const [showForm, setShowForm] = React.useState(false)
-  const [businessUnits, setBusinessUnits] = useState<BusinessUnit[]>([])
+  const companies = useSelector((state: any) => state.units.data)
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const dispatch = useDispatch()
 
-  interface BusinessUnit {
-    link: string
-    description: string
-    id: number
-    name: string // Asegúrate de tener otros campos de tu modelo de unidad de negocio
-    // Agrega otros campos necesarios de tu modelo
-  }
-
-  useEffect(() => {
-    // Función para cargar las unidades de negocio por propietario
-    const loadBusinessUnits = async () => {
+  React.useEffect(() => {
+    const loadUserCompanies = async () => {
       try {
-        const response = await reqGetUnitByOwner() // Llama a tu función de API para obtener las unidades
-        if (response.status === 200) {
-          setBusinessUnits(response.data) // Actualiza el estado con las unidades de negocio obtenidas
+        const res = await reqGetUnitByOwner();
+        if (res.status === 200) {
+          dispatch(setUnits(res.data));
         } else {
-          console.error('Error fetching business units:', response.data)
+          console.error('Error fetching business units:', res.data);
         }
       } catch (error) {
-        console.error('Error fetching business units:', error)
+        console.error('Error fetching business units:', error);
       }
-    }
+    };
+    loadUserCompanies();
+  }, []);
 
-    loadBusinessUnits() // Llama a la función al cargar el componente
-  }, [])
-
-  const handleClose = () => {
-    setShowForm(false)
-  }
   return (
     <div className=' flex flex-col  generalunidades'>
       <div className='flex flex-col w-full mb-2 rounded-md bg-c-bg-color p-5 gap-4'>
@@ -89,25 +87,25 @@ const Companies = () => {
             </Dropdown>
             <Button
               className='bg-c-primary text-c-title'
-              onClick={() => setShowForm(true)}
+              onClick={onOpen}
               endContent={<PlusIcon />}
               size='sm'
             >
               Add New
             </Button>
-            {showForm && <MultiStepForm onClose={handleClose} />}
+            <MultiStepForm isOpen={isOpen} onClose={onClose} />
           </div>
         </div>
       </div>
       <div className='rounded-md bg-c-bg-color h-full overflow-scroll'>
         <div className='grid grid-cols-auto-fill-cards gap-5 p-5 w-[100%] h-full'>
-          {businessUnits.map((unit) => (
+          {companies.map((unit) => (
             <Card key={unit.id} unit={unit} />
-          ))}{' '}
+          ))}
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Companies
+export default Companies;
