@@ -11,6 +11,7 @@ import {
 import { NavLink } from 'react-router-dom'
 import { ReactNode } from 'react'
 import { IoGridOutline } from "react-icons/io5";
+import Settings from '@renderer/components/Settings'
 import { SlOptions } from "react-icons/sl";
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/react';
 
@@ -89,19 +90,9 @@ export const Sidebar = () => {
           <SidebarItem key={index} path={item.path} icon={item.icon} text={item.text} />
         ))}
       </div>
-      <Dropdown placement="top-start" className='bg-c-card text-c-title'>
-        <DropdownTrigger>
-          <Button className='bg-[transparent] w-[100%] min-w-0'>
-            <SlOptions className='text-gray-300 w-4 h-4 cursor-pointer' />
-          </Button>
-        </DropdownTrigger>
-        <DropdownMenu aria-label="Static Actions" className='text-c-title '>
-          <DropdownItem key="Edit">Editar unidad</DropdownItem>
-          <DropdownItem key="delete" className="text-danger" color="danger">
-            Delete file
-          </DropdownItem>
-        </DropdownMenu>
-      </Dropdown>
+
+      <Settings />
+
     </nav>
   )
 }

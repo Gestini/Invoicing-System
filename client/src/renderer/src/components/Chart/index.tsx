@@ -172,7 +172,7 @@ export const GraphView = () => {
 
   return (
     <div className='flex gap-4'>
-      <Card className='w-full bg-c-card'>
+      <Card className='w-full bg-c-card z-0'>
         <CardHeader>
           <h3 className='font-medium'>Stock</h3>
         </CardHeader>
@@ -184,7 +184,7 @@ export const GraphView = () => {
         </CardBody>
       </Card>
       {graphList.map((item, index) => (
-        <Card className='w-full bg-c-card' key={index}>
+        <Card className='w-full bg-c-card z-0' key={index}>
           <CardHeader>
             <h3 className='font-medium'>{item.title}</h3>
           </CardHeader>
