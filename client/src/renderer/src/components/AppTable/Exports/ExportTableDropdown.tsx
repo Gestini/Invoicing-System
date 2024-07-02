@@ -8,9 +8,9 @@ export const ExportTableDropdown = () => {
   const data = useSelector((state: any) => state.table.data)
 
   return (
-    <Dropdown>
+    <Dropdown className='bg-c-card text-c-title'>
       <DropdownTrigger>
-        <Button endContent={<ChevronDownIcon className='text-small' />} variant='flat'>
+        <Button endContent={<ChevronDownIcon className='text-small' />} variant='bordered'>
           Exportar
         </Button>
       </DropdownTrigger>

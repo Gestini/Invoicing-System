@@ -75,7 +75,7 @@ export const EditItemModal = ({ modal }) => {
               </div>
             )}
             {modal?.selectInputs && (
-              <div className='flex w-full flex-wrap md:flex-nowrap gap-4'>
+              <div className='flex flex-col w-full flex-wrap md:flex-nowrap gap-4'>
                 {modal.selectInputs.map((item: any, index: number) => (
                   <Select
                     key={index}

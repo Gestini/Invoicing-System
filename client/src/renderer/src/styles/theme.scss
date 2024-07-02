@@ -17,39 +17,76 @@
 
 .light {
   --c-title: black;
-  --c-primary-hover: #721ff7;
-  --c-primary-hover2: #f7fcff;
-  --c-primary-route-active: #5c1bc4;
-  --c-primary-route-hover: #8132ff;
-  --c-primary: #721ff7;
-  --c-secondary: #33BBCF;
-  --c-bgcolor: #ffffff;
+  --c-bg-color: #ffffff;
+  --c-bg-color-2: #ececec;
+  --c-primary-sidebar: var(--c-primary);
+  --c-card: #fff;
+  --select: #fff;
+  --c-card-2: #fff;
+  --c-gray: #cacaca;
 }
 
 .dark {
-  --c-title: #fff;
-  --c-primary-hover: #eaf6ff;
+  --c-title: #e4e4e4;
+  --c-bg-color: #1c1e24;
+  --c-bg-color-2: #253143;
+  --c-primary-sidebar: #1f2937;
+  --c-card: #1f2937;
+  --c-card-2: #28303d;
+  --c-gray: #cacaca;
+}
+
+
+#variantOne {
+  --c-primary: #3b82f6;
+  --c-primary-hover: #4377ca;
+  --c-primary-route-active: #1d5dc4;
+  --c-primary-route-hover: #3b82f6;
+  --c-secondary: #f56565;
   --c-primary-hover2: #f7fcff;
-  --c-primary-route-active: #3156a5;
-  --c-primary-route-hover: #3f67bd;
-  --c-primary: #2d64da;
+}
+
+#variantTwo {
+  --c-primary: #ef4444;
+  --c-primary-hover: #ce2323;
+  --c-primary-route-active: #ce2323;
+  --c-primary-route-hover: #ef4444;
+  --c-secondary: #6b46c1;
+  --c-primary-hover2: #f7fcff;
+}
+
+#variantThree {
+  --c-primary: #721ff7;
+  --c-primary-hover: #721ff7;
+  --c-primary-route-active: #5c1bc4;
+  --c-primary-route-hover: #8132ff;
   --c-secondary: #33BBCF;
-  --c-bgcolor: #16191f;
+  --c-primary-hover2: #f7fcff;
 }
 
-
-.variantOne {
-  --mainColor: red
+#variantFour {
+  --c-primary: #ec4899;
+  --c-primary-hover: #ec4899;
+  --c-primary-route-active: #c62072;
+  --c-primary-route-hover: #ec4899;
+  --c-secondary: #10b981;
+  --c-primary-hover2: #f7fcff;
 }
 
-.variantTwo {
-  --mainColor: red
+#variantFive {
+  --c-primary: #dd872c;
+  --c-primary-hover: #ffc266;
+  --c-primary-route-active: #dd872c;
+  --c-primary-route-hover: #ff9900;
+  --c-secondary: #33BBCF;
+  --c-primary-hover2: #f7fcff;
 }
 
-.variantThree {
-  --mainColor: red
-}
-
-.variantFour {
-  --mainColor: red
+#variantSix {
+  --c-primary: #62b167;
+  --c-primary-hover: #669c68;
+  --c-primary-route-active: #71bd75;
+  --c-primary-route-hover: #71bd75;
+  --c-secondary: #f56565;
+  --c-primary-hover2: #71bd7570;
 }

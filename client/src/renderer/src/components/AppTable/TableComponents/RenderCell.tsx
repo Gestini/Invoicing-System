@@ -32,7 +32,7 @@ export const RenderCell = (
       )
     case 'actions':
       return (
-        <div className='relative flex justify-end items-center gap-2'>
+        <div className='bg-c-card relative flex justify-end items-center gap-2'>
           <ActionDropdown
             editAction={() => handleSetCurrentIdEdit(user.id)}
             deleteAction={() => handleDeleteItem(user.id)}

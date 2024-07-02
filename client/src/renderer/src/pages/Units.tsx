@@ -9,11 +9,6 @@ import { NavbarUserOptions } from '@renderer/components/Navbar/NavbarUserOption'
 const Units = () => {
   const navigate = useNavigate()
   const handleNavigate = () => navigate('/general')
-  const [showForm, setShowForm] = React.useState(false)
-
-  const handleClose = () => {
-    setShowForm(false)
-  }
 
   const businessUnits = [
     {
@@ -42,19 +37,18 @@ const Units = () => {
             Unidades de negocio
           </h1>
           <Button
-            onClick={() => setShowForm(true)}
             color='secondary'
-            className=' bg-[var(--c-primary)]'
+            className=' bg-c-primary'
             endContent={<PlusIcon />}
           >
             Add units
           </Button>
-          {showForm && <MultiStepForm onClose={handleClose} />}
+
         </div>
         <div className=' flex w-full lg:justify-between md:justify-start flex-wrap justify-center'>
           {businessUnits.map((item, index) => (
             <div className='cardunits cursor-pointer' key={index} onClick={() => handleNavigate()}>
-              <div className='imagecard w-[370px] h-[250px] bg-[var(--c-primary)] rounded-xl'></div>
+              <div className='imagecard w-[370px] h-[250px] bg-c-primary rounded-xl'></div>
               <div className='textcard flex flex-col py-[15px]'>
                 <h3 className=' font-[600] '>{item.name}</h3>
                 <h4>{item.description}</h4>

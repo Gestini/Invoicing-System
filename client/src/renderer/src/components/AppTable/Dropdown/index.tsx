@@ -14,7 +14,7 @@ export const ActionDropdown = ({ deleteAction, editAction }) => {
   const iconClasses = 'text-xl text-default-500 pointer-events-none flex-shrink-0'
 
   return (
-    <Dropdown>
+    <Dropdown className='text-c-title bg-c-card'>
       <DropdownTrigger>
         <Button isIconOnly size='sm' variant='light'>
           <VerticalDotsIcon className='text-default-300' />

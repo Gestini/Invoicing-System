@@ -46,6 +46,8 @@ export default function App() {
 
     const hasSearchFilter = Boolean(filterValue);
 
+    
+
     const headerColumns = React.useMemo(() => {
         if (visibleColumns === "all") return productColumns;
 
@@ -108,7 +110,7 @@ export default function App() {
             case "actions":
                 return (
                     <div className="relative flex justify-end items-center gap-2">
-                        <Dropdown>
+                        <Dropdown className="text-c-title bg-c-card">
                             <DropdownTrigger>
                                 <Button isIconOnly size="sm" variant="light">
                                     <VerticalDotsIcon className="text-default-300" />

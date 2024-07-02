@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDisclosure } from '@nextui-org/react';
 
 export const useColorManagement = () => {

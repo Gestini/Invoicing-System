@@ -66,6 +66,10 @@ public class SupplierModel {
         return businessUnit;
     }
 
+    public void setBusinessUnit(BusinessUnitsModel businessUnit) {
+        this.businessUnit = businessUnit;
+    }
+
     public String getReasonSocial() {
         return reasonSocial;
     }
@@ -88,10 +92,6 @@ public class SupplierModel {
 
     public void setSaleCondition(String saleCondition) {
         this.saleCondition = saleCondition;
-    }
-
-    public void setBusinessUnit(BusinessUnitsModel businessUnit) {
-        this.businessUnit = businessUnit;
     }
 
     public Long getId() {

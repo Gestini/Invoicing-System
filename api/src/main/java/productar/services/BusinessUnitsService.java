@@ -1,11 +1,15 @@
 package productar.services;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -31,17 +35,24 @@ public class BusinessUnitsService {
         return (ArrayList<BusinessUnitsModel>) businessUnitsRepository.findAll();
     }
 
-    public ResponseEntity<String> saveBusinessUnit(BusinessUnitsModel businessUnit, String username) {
-        try {
-            User owner = userRepository.findByUsername(username)
-                    .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+    public List<BusinessUnitsModel> getBusinessUnitsByToken() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = ((UserDetails) authentication.getPrincipal()).getUsername();
 
-            businessUnit.setOwner(owner);
-            businessUnitsRepository.save(businessUnit);
-            return ResponseEntity.status(HttpStatus.OK).body("Unidad de negocio creada correctamente");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error");
-        }
+        // Buscar las unidades de negocio asociadas al usuario
+        List<BusinessUnitsModel> businessUnits = businessUnitsRepository.findByOwnerUsername(username);
+
+        return businessUnits;
+    }
+
+    public ResponseEntity<BusinessUnitsModel> saveBusinessUnit(BusinessUnitsModel businessUnit, String username) {
+        User owner = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+
+        businessUnit.setOwner(owner);
+        BusinessUnitsModel saved = businessUnitsRepository.save(businessUnit);
+
+        return ResponseEntity.status(HttpStatus.OK).body(saved);
     }
 
     public Optional<BusinessUnitsModel> getBusinessUnitById(Long id) {
@@ -49,9 +60,16 @@ public class BusinessUnitsService {
     }
 
     public ResponseEntity<String> deleteBusinessUnitById(Long id) {
-        Boolean businessExsits = this.BusinessExists(id);
-        if (!businessExsits)
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Unidad de negocio no encontrada");
+        BusinessUnitsModel businessUnit = businessUnitsRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("Unidad de negocio no encontrada"));
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        User owner = businessUnit.getOwner();
+
+        if (!owner.getId().equals(user.getId())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No tienes permisos suficientes");
+        }
 
         try {
             businessUnitsRepository.deleteById(id);

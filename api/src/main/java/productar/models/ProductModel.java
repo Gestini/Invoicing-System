@@ -26,74 +26,78 @@ public class ProductModel {
     private Long id;
 
     @Column
+    @Size(max = 100, message = "El código 1 debe tener como máximo 100 caracteres")
     private String codigo1;
 
     @Column
+    @Size(max = 100, message = "El código 2 debe tener como máximo 100 caracteres")
     private String codigo2;
 
     @Column
+    @Size(max = 255, message = "El código de barras debe tener como máximo 255 caracteres")
     private String barcode;
 
     @Column
     private String image;
 
-    @Column(nullable = false)
-    @NotNull(message = "Price cannot be null")
-    @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than zero")
+    @Column
+    @DecimalMin(value = "0.0", message = "El precio debe ser mayor o igual que cero")
     private Double price;
 
-    @Column
+    @Column(name = "card_price")
+    @DecimalMin(value = "0.0", message = "El precio de tarjeta debe ser mayor o igual que cero")
     private Double cardPrice;
 
-    @Column
+    @Column(name = "financed_price")
+    @DecimalMin(value = "0.0", message = "El precio financiado debe ser mayor o igual que cero")
     private Double financedPrice;
 
-    @Column
+    @Column(name = "friend_price")
+    @DecimalMin(value = "0.0", message = "El precio de amigo debe ser mayor o igual que cero")
     private Double friendPrice;
 
-    @Column
+    @Column(name = "purchase_price")
+    @DecimalMin(value = "0.0", message = "El precio de compra debe ser mayor o igual que cero")
     private Double purchasePrice;
 
-    @Column
-    private Double priceCalculation;
+    @Column(name = "price_calculation")
+    private String priceCalculation;
 
-    @Column
+    @Column(name = "cost_price")
     private Double costPrice;
 
-    @Column(nullable = false)
-    @NotNull(message = "Quantity cannot be null")
-    @Min(value = 0, message = "Quantity must be greater than or equal to zero")
+    @Column
+    @Min(value = 0, message = "La cantidad debe ser mayor o igual que cero")
     private Integer quantity;
 
-    @Column(nullable = false)
-    @NotNull(message = "Category cannot be null")
-    @Size(min = 1, max = 100, message = "Category must be between 1 and 100 characters")
+    @Column
+    @Size(min = 1, max = 100, message = "La categoría debe tener entre 1 y 100 caracteres")
     private String category;
 
-    @Column(nullable = false)
-    @NotNull(message = "Name cannot be null")
-    @Size(min = 1, max = 100, message = "Name must be between 1 and 100 characters")
+    @Column
+    @NotNull(message = "El nombre no puede ser nulo")
+    @Size(min = 1, max = 100, message = "El nombre debe tener entre 1 y 100 caracteres")
     private String name;
 
-    @Column(nullable = false)
-    @Size(max = 255, message = "Description must be less than 255 characters")
+    @Column
+    @Size(max = 255, message = "La descripción debe tener menos de 255 caracteres")
     private String description;
 
-    @Column(nullable = false, updatable = false)
+    @Column
     private LocalDateTime createdAt;
 
-    @Column(nullable = false)
+    @Column
     private LocalDateTime updatedAt;
 
-    @Column(nullable = false)
+    @Column
     private Boolean status = true;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "business_unit_id", nullable = false)
-    @NotNull(message = "Business unit cannot be null")
+    @NotNull(message = "La unidad de negocio no puede ser nula")
     private BusinessUnitsModel businessUnit;
 
-    @Column
+    @Column(name = "price_policy")
     private String pricePolicy;
 
     @Column
@@ -108,16 +112,16 @@ public class ProductModel {
     @Column
     private Double net4;
 
-    @Column
+    @Column(name = "tax_type")
     private String taxType;
 
-    @Column
+    @Column(name = "reference_code")
     private String referenceCode;
 
-    @Column
+    @Column(name = "package_product")
     private Boolean packageProduct;
 
-    @Column
+    @Column(name = "quantity_per_package")
     private Integer quantityPerPackage;
 
     public String getCodigo1() {
@@ -176,11 +180,11 @@ public class ProductModel {
         this.purchasePrice = purchasePrice;
     }
 
-    public Double getPriceCalculation() {
+    public String getPriceCalculation() {
         return priceCalculation;
     }
 
-    public void setPriceCalculation(Double priceCalculation) {
+    public void setPriceCalculation(String priceCalculation) {
         this.priceCalculation = priceCalculation;
     }
 
