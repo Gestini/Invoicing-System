@@ -33,12 +33,13 @@ export const ChangeTheme: React.FC = () => {
   }
 
   return (
-    <>
+    <div className='mt-3'>
+      <span className='font-medium text-c-title'>Theme Option</span>
       <Checkbox
         className='block mt-2'
         onChange={() => changeTheme(0)}
         isSelected={selected === 0}
-        color="primary"
+        color='primary'
       >
         Light
       </Checkbox>
@@ -46,10 +47,10 @@ export const ChangeTheme: React.FC = () => {
         className='block mb-2'
         onChange={() => changeTheme(1)}
         isSelected={selected === 1}
-        color="default"
+        color='default'
       >
         Dark
       </Checkbox>
-    </>
+    </div>
   )
 }

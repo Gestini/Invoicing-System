@@ -46,7 +46,6 @@ export const TabProduct = () => {
         className='flex gap-4 text-c-primary'
         selectedKey={selectedKey}
         onSelectionChange={(e: any) => {
-          console.log(e)
           setSelectedKey(e)
         }}
       >
