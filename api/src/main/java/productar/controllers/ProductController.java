@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import productar.dto.ProductResponseDTO;
 import productar.models.ProductModel;
 import productar.services.ProductService;
 
@@ -43,7 +44,7 @@ public class ProductController {
         return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
     }
 
-    @PostMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ProductModel> updateProduct(@PathVariable("id") Long id, @RequestBody ProductModel product) {
         // Asignar el ID recibido en la URL al objeto product
         product.setId(id);
@@ -59,9 +60,9 @@ public class ProductController {
     }
 
     @GetMapping("/by-business-unit/{businessUnitId}")
-    public ResponseEntity<List<ProductModel>> getProductsByBusinessUnit(
+    public ResponseEntity<List<ProductResponseDTO>> getProductsByBusinessUnit(
             @PathVariable("businessUnitId") Long businessUnitId) {
-        List<ProductModel> products = productService.getProductsByBusinessUnit(businessUnitId);
+        List<ProductResponseDTO> products = productService.getProductsByBusinessUnit(businessUnitId);
         return ResponseEntity.ok(products);
     }
 

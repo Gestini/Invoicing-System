@@ -30,6 +30,12 @@ export const EditProductModal = ({ modal }) => {
 
   const [errors, setErrors] = React.useState({
     name: '',
+    purchasePrice: '',
+    costPrice: '',
+    financedPrice: '',
+    friendPrice: '',
+    cardPrice: '',
+    quantity: '',
   })
   const users = useSelector((state: any) => state.table.data)
 
@@ -59,11 +65,15 @@ export const EditProductModal = ({ modal }) => {
 
     switch (name) {
       case 'name':
-        if (!validateName(value)) {
-          newErrors.name = 'Por favor, ingresa un nombre válido.'
-        } else {
-          newErrors.name = ''
-        }
+        newErrors.name = validateName(value) ? '' : 'Por favor, ingresa un nombre válido.'
+        break
+      case 'purchasePrice':
+      case 'costPrice':
+      case 'financedPrice':
+      case 'friendPrice':
+      case 'cardPrice':
+      case 'quantity':
+        newErrors[name] = validateNumber(value) ? '' : 'Ingrese un número válido.'
         break
       default:
         break
@@ -71,25 +81,31 @@ export const EditProductModal = ({ modal }) => {
 
     setErrors(newErrors)
   }
-
   const validateName = (name) => {
-    if (!name.trim()) {
-      return false // Nombre está vacío
-    }
-    return true // Nombre no está vacío
+    return name.trim() !== ''
+  }
+
+  const validateNumber = (value) => {
+    return !isNaN(value) && parseFloat(value) >= 0 // Validación básica de número positivo
   }
 
   const handleResetCurrentIdEdit = () => dispatch(setCurrentItemId(-1))
 
   const handleAddNewUser = async () => {
-    modal.action(currentUserEdit.id, data)
-    handleResetCurrentIdEdit()
-    setData({
-      businessUnit: {
-        id: params.id,
-      },
-    })
-    onClose()
+    // Aquí puedes verificar si no hay errores antes de guardar
+    const isValid = Object.values(errors).every((error) => error === '')
+    if (isValid) {
+      modal.action(currentUserEdit.id, data)
+      handleResetCurrentIdEdit()
+      setData({
+        businessUnit: {
+          id: params.id,
+        },
+      })
+      onClose()
+    } else {
+      console.log('Hay errores de validación en el formulario.')
+    }
   }
 
   return (
@@ -142,6 +158,7 @@ export const EditProductModal = ({ modal }) => {
                   size='sm'
                   labelPlacement='outside'
                   placeholder='Cantidad de productos'
+                  isInvalid={!!errors.quantity}
                   variant='bordered'
                   onChange={handleChange}
                   defaultValue={currentUserEdit ? currentUserEdit.quantity : ''}
@@ -223,6 +240,7 @@ export const EditProductModal = ({ modal }) => {
                   variant='bordered'
                   size='sm'
                   name='purchasePrice'
+                  isInvalid={!!errors.purchasePrice}
                   defaultValue={currentUserEdit ? currentUserEdit.purchasePrice : ''}
                   onChange={handleChange}
                   endContent={
@@ -240,6 +258,7 @@ export const EditProductModal = ({ modal }) => {
                   defaultValue={currentUserEdit ? currentUserEdit.costPrice : ''}
                   size='sm'
                   name='costPrice'
+                  isInvalid={!!errors.costPrice}
                   onChange={handleChange}
                   endContent={
                     <div className='pointer-events-none flex items-center'>
@@ -381,6 +400,7 @@ export const EditProductModal = ({ modal }) => {
                   variant='bordered'
                   name='financedPrice'
                   defaultValue={currentUserEdit ? currentUserEdit.financedPrice : ''}
+                  isInvalid={!!errors.financedPrice}
                   onChange={handleChange}
                   size='sm'
                   endContent={
@@ -398,6 +418,7 @@ export const EditProductModal = ({ modal }) => {
                   name='friendPrice'
                   defaultValue={currentUserEdit ? currentUserEdit.friendPrice : ''}
                   onChange={handleChange}
+                  isInvalid={!!errors.friendPrice}
                   size='sm'
                   endContent={
                     <div className='pointer-events-none flex items-center'>
@@ -412,6 +433,7 @@ export const EditProductModal = ({ modal }) => {
                   placeholder='0.00'
                   name='cardPrice'
                   onChange={handleChange}
+                  isInvalid={!!errors.cardPrice}
                   variant='bordered'
                   defaultValue={currentUserEdit ? currentUserEdit.cardPrice : ''}
                   size='sm'

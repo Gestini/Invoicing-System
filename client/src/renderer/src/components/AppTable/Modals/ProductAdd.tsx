@@ -50,6 +50,12 @@ export const AddProductModal = ({ modal }) => {
 
   const [errors, setErrors] = React.useState({
     name: '',
+    quantity: '',
+    purchasePrice: '',
+    costPrice: '',
+    financedPrice: '',
+    friendPrice: '',
+    cardPrice: '',
   })
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
 
@@ -73,6 +79,18 @@ export const AddProductModal = ({ modal }) => {
           newErrors.name = ''
         }
         break
+      case 'quantity':
+      case 'purchasePrice':
+      case 'costPrice':
+      case 'financedPrice':
+      case 'friendPrice':
+      case 'cardPrice':
+        if (value && !validateNumber(value)) {
+          newErrors[name] = 'Por favor, ingresa un número válido.'
+        } else {
+          newErrors[name] = ''
+        }
+        break
       default:
         break
     }
@@ -84,6 +102,12 @@ export const AddProductModal = ({ modal }) => {
     let valid = true
     const newErrors = {
       name: '',
+      quantity: '',
+      purchasePrice: '',
+      costPrice: '',
+      financedPrice: '',
+      friendPrice: '',
+      cardPrice: '',
     }
 
     if (!validateName(data.name)) {
@@ -91,10 +115,41 @@ export const AddProductModal = ({ modal }) => {
       valid = false
     }
 
+    if (data.quantity && !validateNumber(data.quantity)) {
+      newErrors.quantity = 'Por favor, ingresa una cantidad válida.'
+      valid = false
+    }
+
+    if (data.purchasePrice && !validateNumber(data.purchasePrice)) {
+      newErrors.purchasePrice = 'Por favor, ingresa un número válido para el precio de compra.'
+      valid = false
+    }
+
+    if (data.costPrice && !validateNumber(data.costPrice)) {
+      newErrors.costPrice = 'Por favor, ingresa un número válido para el precio de costo.'
+      valid = false
+    }
+
+    if (data.financedPrice && !validateNumber(data.financedPrice)) {
+      newErrors.financedPrice = 'Por favor, ingresa un número válido para el precio financiado.'
+      valid = false
+    }
+
+    if (data.friendPrice && !validateNumber(data.friendPrice)) {
+      newErrors.friendPrice = 'Por favor, ingresa un número válido para el precio amigo.'
+      valid = false
+    }
+
+    if (data.cardPrice && !validateNumber(data.cardPrice)) {
+      newErrors.cardPrice = 'Por favor, ingresa un número válido para el precio de tarjeta.'
+      valid = false
+    }
+
     setErrors(newErrors)
     if (!valid) {
       return
     }
+
     modal.action(data)
     setData({
       name: '',
@@ -124,12 +179,18 @@ export const AddProductModal = ({ modal }) => {
     })
     onClose()
   }
+
   const validateName = (name) => {
     if (!name.trim()) {
       return false // Nombre está vacío
     }
     return true // Nombre no está vacío
   }
+
+  const validateNumber = (number) => {
+    return !isNaN(number)
+  }
+
   return (
     <div className='flex flex-col gap-2'>
       <Button onPress={onOpen} className='bg-c-primary' color='secondary' endContent={<PlusIcon />}>
@@ -176,12 +237,13 @@ export const AddProductModal = ({ modal }) => {
                 </Select>
                 <Input
                   name='quantity'
-                  type='cantidad'
+                  type='number'
                   label='cantidad'
                   size='sm'
                   labelPlacement='outside'
                   placeholder='Cantidad de productos'
                   variant='bordered'
+                  isInvalid={!!errors.quantity}
                   onChange={handleChange}
                 ></Input>
               </div>
@@ -257,6 +319,7 @@ export const AddProductModal = ({ modal }) => {
                   variant='bordered'
                   size='sm'
                   name='purchasePrice'
+                  isInvalid={!!errors.purchasePrice}
                   onChange={handleChange}
                   endContent={
                     <div className='pointer-events-none flex items-center'>
@@ -272,6 +335,7 @@ export const AddProductModal = ({ modal }) => {
                   variant='bordered'
                   size='sm'
                   name='costPrice'
+                  isInvalid={!!errors.costPrice}
                   onChange={handleChange}
                   endContent={
                     <div className='pointer-events-none flex items-center'>
@@ -409,6 +473,7 @@ export const AddProductModal = ({ modal }) => {
                   variant='bordered'
                   name='financedPrice'
                   onChange={handleChange}
+                  isInvalid={!!errors.financedPrice}
                   size='sm'
                   endContent={
                     <div className='pointer-events-none flex items-center'>
@@ -423,6 +488,7 @@ export const AddProductModal = ({ modal }) => {
                   placeholder='0.00'
                   variant='bordered'
                   name='friendPrice'
+                  isInvalid={!!errors.friendPrice}
                   onChange={handleChange}
                   size='sm'
                   endContent={
@@ -437,6 +503,7 @@ export const AddProductModal = ({ modal }) => {
                   labelPlacement='outside'
                   placeholder='0.00'
                   name='cardPrice'
+                  isInvalid={!!errors.cardPrice}
                   onChange={handleChange}
                   variant='bordered'
                   size='sm'
