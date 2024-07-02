@@ -5,8 +5,9 @@ import { EditItemModal } from '@renderer/components/AppTable/Modals/EditItem'
 import { useDispatch, useSelector } from 'react-redux'
 import { columnsData, modalInputs } from './data'
 import { addItem, editItem, deleteItem, setData } from '@renderer/features/tableSlice'
-import { reqCreateSupplier, reqGetSupplier } from '@renderer/api/requests'
+import { reqCreateSupplier, reqEditSupplier, reqGetSupplier } from '@renderer/api/requests'
 import { useEffect } from 'react'
+import { EditSupplierModal } from '@renderer/components/AppTable/Modals/SupplierEdit'
 
 export const SupplierTable = () => {
   const dispatch = useDispatch()
@@ -40,9 +41,10 @@ export const SupplierTable = () => {
         toast.error(error.response.data.message)
       }
     },
-    edit: async (data: any, currentUserEdit: any) => {
+    edit: async (id: any, data: any) => {
       try {
-        dispatch(editItem({ data, id: currentUserEdit?.id }))
+        reqEditSupplier(id, data)
+        dispatch(editItem({ data, id: id }))
         toast.success('Proveedor editado correctamente')
       } catch (error) {
         console.log(error)
@@ -68,7 +70,7 @@ export const SupplierTable = () => {
       columnsData={columnsData}
       tableActions={tableActions}
       addItemModal={<AddSupplierModal modal={newUserModal} />}
-      editItemModal={<EditItemModal modal={editUserModal} />}
+      editItemModal={<EditSupplierModal modal={editUserModal} />}
     />
   )
 }

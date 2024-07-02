@@ -58,7 +58,7 @@ public class SupplierController {
         return new ResponseEntity<>(createdSupplier, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
+    @PostMapping("/{id}")
     public ResponseEntity<SupplierModel> updateSupplier(@PathVariable("id") Long id,
             @RequestBody SupplierModel supplier) {
         SupplierModel updatedSupplier = supplierService.updateSupplier(id, supplier);
