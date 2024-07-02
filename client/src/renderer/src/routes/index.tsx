@@ -29,12 +29,12 @@ const Router = () => {
           }
         />
         <Route element={<SidebarMiddleware />}>
-          <Route path='/general' element={<Home />} />
-          <Route path='/stock' element={<StockTable />} />
-          <Route path='/ventas' element={<SalesTable />} />
-          <Route path='/facturar' element={<InvoicingTable />} />
-          <Route path='/informes' element={<Informes />} />
-          <Route path='/proveedores' element={<SupplierTable />} />
+          <Route path='/general/:id' element={<Home />} />
+          <Route path='/stock/:id' element={<StockTable />} />
+          <Route path='/ventas/:id' element={<SalesTable />} />
+          <Route path='/facturar/:id' element={<InvoicingTable />} />
+          <Route path='/informes/:id' element={<Informes />} />
+          <Route path='/proveedores/:id' element={<SupplierTable />} />
         </Route>
       </Route>
       <Route element={<ProtectedRouteAuth />}>

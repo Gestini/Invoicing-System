@@ -1,12 +1,13 @@
 import React from 'react'
 import Logo from '@renderer/assets/image/google.svg'
 import { SlOptions } from 'react-icons/sl'
-import { deleteUnit } from '@renderer/features/unitsSlice'
+import { deleteUnit, currentUnit } from '@renderer/features/unitsSlice'
 import { useNavigate } from 'react-router-dom'
 import { FaExternalLinkAlt } from 'react-icons/fa'
 import { reqDeleteUnitById } from '@renderer/api/requests'
 import { useDispatch, useSelector } from 'react-redux'
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/react'
+import { setUnit } from '@renderer/features/currentUnitSlice'
 
 interface Owner {
   id: number
@@ -28,7 +29,12 @@ const Card: React.FC<CardProps> = ({ unit }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const user = useSelector((state: any) => state.user)
-  const handleNavigate = () => navigate('/general')
+  
+  const handleNavigate = () => {
+    dispatch(setUnit(unit))
+    navigate(`/general/${unit?.id}`)
+  }
+
 
   const handleDeleteUnit = () => {
     try {
