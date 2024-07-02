@@ -45,17 +45,14 @@ public class BusinessUnitsService {
         return businessUnits;
     }
 
-    public ResponseEntity<String> saveBusinessUnit(BusinessUnitsModel businessUnit, String username) {
-        try {
-            User owner = userRepository.findByUsername(username)
-                    .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+    public ResponseEntity<BusinessUnitsModel> saveBusinessUnit(BusinessUnitsModel businessUnit, String username) {
+        User owner = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
 
-            businessUnit.setOwner(owner);
-            businessUnitsRepository.save(businessUnit);
-            return ResponseEntity.status(HttpStatus.OK).body("Unidad de negocio creada correctamente");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error");
-        }
+        businessUnit.setOwner(owner);
+        BusinessUnitsModel saved = businessUnitsRepository.save(businessUnit);
+
+        return ResponseEntity.status(HttpStatus.OK).body(saved);
     }
 
     public Optional<BusinessUnitsModel> getBusinessUnitById(Long id) {
@@ -63,9 +60,16 @@ public class BusinessUnitsService {
     }
 
     public ResponseEntity<String> deleteBusinessUnitById(Long id) {
-        Boolean businessExsits = this.BusinessExists(id);
-        if (!businessExsits)
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Unidad de negocio no encontrada");
+        BusinessUnitsModel businessUnit = businessUnitsRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("Unidad de negocio no encontrada"));
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        User owner = businessUnit.getOwner();
+
+        if (!owner.getId().equals(user.getId())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No tienes permisos suficientes");
+        }
 
         try {
             businessUnitsRepository.deleteById(id);
