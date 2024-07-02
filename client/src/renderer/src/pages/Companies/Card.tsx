@@ -1,7 +1,7 @@
 import React from 'react'
 import Logo from '@renderer/assets/image/google.svg'
 import { SlOptions } from 'react-icons/sl'
-import { deleteUnit, currentUnit } from '@renderer/features/unitsSlice'
+import { deleteUnit } from '@renderer/features/unitsSlice'
 import { useNavigate } from 'react-router-dom'
 import { FaExternalLinkAlt } from 'react-icons/fa'
 import { reqDeleteUnitById } from '@renderer/api/requests'
@@ -29,12 +29,11 @@ const Card: React.FC<CardProps> = ({ unit }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const user = useSelector((state: any) => state.user)
-  
+
   const handleNavigate = () => {
     dispatch(setUnit(unit))
     navigate(`/general/${unit?.id}`)
   }
-
 
   const handleDeleteUnit = () => {
     try {

@@ -1,26 +1,22 @@
+import React from 'react'
 import toast from 'react-hot-toast'
 import { AppTable } from '@renderer/components/AppTable'
+import { useParams } from 'react-router-dom'
 import { AddSupplierModal } from '@renderer/components/AppTable/Modals/SupplierAdd'
-import { EditItemModal } from '@renderer/components/AppTable/Modals/EditItem'
+import { EditSupplierModal } from '@renderer/components/AppTable/Modals/SupplierEdit'
 import { useDispatch, useSelector } from 'react-redux'
 import { columnsData, modalInputs } from './data'
 import { addItem, editItem, deleteItem, setData } from '@renderer/features/tableSlice'
 import { reqCreateSupplier, reqEditSupplier, reqGetSupplier } from '@renderer/api/requests'
-import { useEffect } from 'react'
-import { EditSupplierModal } from '@renderer/components/AppTable/Modals/SupplierEdit'
-import { useParams } from 'react-router-dom'
 
 export const SupplierTable = () => {
   const dispatch = useDispatch()
   const table = useSelector((state: any) => state.table)
-  const unit = useSelector((state: any) => state.currentUnit)
   const params = useParams()
 
-  useEffect(() => {
+  React.useEffect(() => {
     const GetSupplier = async () => {
       const response = await reqGetSupplier(params.id)
-      console.log(response)
-
       dispatch(setData(response.data))
     }
     GetSupplier()
