@@ -2,6 +2,8 @@ package productar.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,17 +29,19 @@ public class SupplierService {
         Optional<SupplierModel> existingSupplierOptional = supplierRepository.findById(id);
         if (existingSupplierOptional.isPresent()) {
             SupplierModel existingSupplier = existingSupplierOptional.get();
-            // Actualizar solo los campos relevantes
-            existingSupplier.setName(supplier.getName());
-            existingSupplier.setDescription(supplier.getDescription());
-            existingSupplier.setPhone(supplier.getPhone());
-            existingSupplier.setAddress(supplier.getAddress());
-            existingSupplier.setEmail(supplier.getEmail());
-            existingSupplier.setWebsite(supplier.getWebsite());
-            existingSupplier.setSupplierType(supplier.getSupplierType());
-            existingSupplier.setDni(supplier.getDni());
-            existingSupplier.setReasonSocial(supplier.getReasonSocial());
-            existingSupplier.setSaleCondition(supplier.getSaleCondition());
+            Field[] fields = SupplierModel.class.getDeclaredFields();
+
+            for (Field field : fields) {
+                field.setAccessible(true);
+                try {
+                    Object value = field.get(supplier);
+                    if (value != null) {
+                        field.set(existingSupplier, value);
+                    }
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
 
             return supplierRepository.save(existingSupplier);
         } else {
