@@ -17,7 +17,7 @@ export const StockTable = () => {
 
   useEffect(() => {
     const GetProduct = async () => {
-      const response = await reqGetProductByUnit(1)
+      const response = await reqGetProductByUnit(6)
       console.log(response)
 
       dispatch(setData(response.data))

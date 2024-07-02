@@ -1,14 +1,13 @@
 export const columnsData = {
   columns: [
     { name: 'NOMBRE', uid: 'name' },
-    { name: 'APELLIDO', uid: 'lastName' },
-    { name: 'ID', uid: 'id' },
-    { name: 'CEDULA', uid: 'CI' },
-    { name: 'RAZON SOCIAL', uid: 'company' },
     { name: 'EMAIL', uid: 'email' },
-    { name: 'TELÉFONO', uid: 'phone' },
-    { name: 'DIRECCIÓN', uid: 'address' },
     { name: 'SITIO WEB', uid: 'website' },
+    { name: 'DIRECCIÓN', uid: 'address' },
+    { name: 'TELÉFONO', uid: 'phone' },
+    { name: 'CEDULA', uid: 'dni' },
+    // { name: 'RAZON SOCIAL', uid: 'company' },
+   
     { name: 'ESTADO', uid: 'status', sortable: true },
     { name: 'ACCIÓN', uid: 'actions' },
   ],
@@ -17,15 +16,15 @@ export const columnsData = {
     { name: 'Inactivo', uid: 'INACTIVE' },
   ],
   InitialVisibleColumns: [
-    'CI',
-    'company',
-    'phone',
-    'address',
-    'website',
     'name',
+    'email',
+    'website',
+    'address',
+    'phone',
+    'dni',
     'status',
     'actions',
-    'lastName',
+
   ],
 }
 

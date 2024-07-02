@@ -40,7 +40,7 @@ export const AddProductModal = ({ modal }) => {
     friendPrice: null,
     cardPrice: null,
     businessUnit: {
-      id: 1,
+      id: 6,
       name: 'Main Unit',
     },
   })
@@ -115,7 +115,7 @@ export const AddProductModal = ({ modal }) => {
       friendPrice: null,
       cardPrice: null,
       businessUnit: {
-        id: 1,
+        id: 6,
         name: 'Main Unit',
       },
     })

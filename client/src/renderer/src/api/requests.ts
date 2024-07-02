@@ -14,3 +14,7 @@ export const reqDeleteUnitById = async (id: any) => api.post(`/business-unit/del
 /* Rutas productos */
 export const reqCreateProduct = async (data: any) => api.post('/products', data)
 export const reqGetProductByUnit = async (id: any) => api.get(`/products/by-business-unit/${id}`)
+
+/* Rutas proveedores */
+export const reqCreateSupplier = async (data: any) => api.post('/suppliers', data)
+export const reqGetSupplier = async (id: any) => api.get(`/suppliers/by-business-unit/${id}`)
