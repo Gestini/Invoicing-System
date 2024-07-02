@@ -20,3 +20,4 @@ export const reqGetProductByUnit = async (id: any) => api.get(`/products/by-busi
 /* Rutas proveedores */
 export const reqCreateSupplier = async (data: any) => api.post('/suppliers', data)
 export const reqGetSupplier = async (id: any) => api.get(`/suppliers/by-business-unit/${id}`)
+export const reqEditSupplier = async (id: any, data:any) => api.post(`/suppliers/${id}`, data)

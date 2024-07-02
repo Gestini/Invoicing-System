@@ -148,7 +148,8 @@ export const AddSupplierModal = ({ modal }) => {
                   size='sm'
                   className='text-c-title'
                 >
-                  <SelectItem key={2}>Productos</SelectItem>
+                  <SelectItem key={'productos'}>Productos</SelectItem>
+                  <SelectItem key={'servicios'}>servicios</SelectItem>
                 </Select>
                 <Select
                   label='Condicion de venta'
@@ -160,7 +161,8 @@ export const AddSupplierModal = ({ modal }) => {
                   size='sm'
                   className='text-c-title'
                 >
-                  <SelectItem key={2}>Contado</SelectItem>
+                  <SelectItem key={'contado'}>contado</SelectItem>
+                  <SelectItem key={'financiado'}>financiado</SelectItem>
                 </Select>
               </div>
               <div className='rowmodaladdproduct justify-start items-start flex gap-3'>
