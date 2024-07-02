@@ -179,7 +179,7 @@ export const AddProductModal = ({ modal }) => {
                 </Select>
                 <Input
                   name='quantity'
-                  type='cantidad'
+                  type='number'
                   label='cantidad'
                   size='sm'
                   labelPlacement='outside'
