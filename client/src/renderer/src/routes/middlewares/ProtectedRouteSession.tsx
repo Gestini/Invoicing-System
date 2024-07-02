@@ -2,11 +2,11 @@ import React from 'react'
 import { Outlet } from 'react-router-dom'
 import { Navbar } from '@renderer/components/Navbar'
 import { Navigate } from 'react-router-dom'
+import { Settings } from '@renderer/components/Settings'
 import { setMyUser } from '@renderer/features/userSlice'
 import { useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { reqAuthLoadProfileByToken } from '@renderer/api/requests'
-import Settings from '@renderer/components/Settings'
 
 export const ProtectedRouteSession = () => {
   const location = useLocation()
@@ -31,14 +31,32 @@ export const ProtectedRouteSession = () => {
     loadProfile()
   }, [token, location])
 
+  React.useEffect(() => {
+    const savedColorKey = localStorage.getItem('mainColor')
+    if (savedColorKey) {
+      document.body.id = savedColorKey
+    } else {
+      document.body.id = 'variantOne'
+    }
+  }, [])
+
+  React.useEffect(() => {
+    const temaGuardado = localStorage.getItem('theme')
+    if (temaGuardado) {
+      document.body.classList.add(temaGuardado)
+    } else {
+      document.body.classList.add('light')
+    }
+  }, [])
+
   if (user !== null)
-  return (
-    <>
-      <Navbar />
-      <div className='bodymain'>
-        <Outlet />
-        <Settings />
-      </div>
-    </>
-  )
+    return (
+      <>
+        <Navbar />
+        <div className='bodymain'>
+          <Outlet />
+          <Settings />
+        </div>
+      </>
+    )
 }

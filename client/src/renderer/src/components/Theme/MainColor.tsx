@@ -1,50 +1,72 @@
-import React from 'react';
-import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Tooltip } from "@nextui-org/react";
-import { useColorManagement } from './Themes';
-import { FaCheck, FaPlus } from 'react-icons/fa';
+import React from 'react'
+import {
+  Button,
+  Input,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  Tooltip,
+} from '@nextui-org/react'
+import { useColorManagement } from './Themes'
+import { FaCheck, FaPlus } from 'react-icons/fa'
 
 const MainColor: React.FC = () => {
-    const [mainColor, setMainColor] = React.useState({ name: '', color: '', variant: '' });
-    const [selected, setSelected] = React.useState(0);
-    const {
-        colors,
-        setColors,
-        setColor,
-        color,
-        handleOpen,
-        addColor,
-        isOpen,
-        onCloseAndClear,
-        errorMessage
-    } = useColorManagement();
+  const [mainColor, setMainColor] = React.useState({ name: '', color: '', variant: '' })
+  const [selected, setSelected] = React.useState(0)
+  const {
+    colors,
+    setColors,
+    setColor,
+    color,
+    handleOpen,
+    addColor,
+    isOpen,
+    onCloseAndClear,
+    errorMessage,
+  } = useColorManagement()
 
-    const handleChangeColor = (index: number) => {
-        const selectedColor = colors[index];
-        setMainColor(selectedColor);
-        console.log(selectedColor)
-        setSelected(index);
-        document.body.id = selectedColor.variant;
-        localStorage.setItem('mainColor', selectedColor.variant);
-    };
+  const handleChangeColor = (index: number) => {
+    const selectedColor = colors[index]
+    setMainColor(selectedColor)
+    console.log(selectedColor)
+    setSelected(index)
+    document.body.id = selectedColor.variant
+    localStorage.setItem('mainColor', selectedColor.variant)
+  }
 
-   
+  React.useEffect(() => {
+    const savedColorKey = localStorage.getItem('mainColor')
+    if (savedColorKey) {
+      const savedColorIndex = colors.findIndex((c) => c.variant === savedColorKey)
+      if (savedColorIndex !== -1) {
+        const savedColor = colors[savedColorIndex]
+        setMainColor(savedColor)
+        setSelected(savedColorIndex)
+        document.body.id = savedColorKey
+      }
+    } else {
+      document.body.id = 'variantOne'
+    }
+  }, [colors])
 
-    return (
-        <>
-            <span className='font-medium text-c-title'>Theme Colors</span>
-            <div className='flex flex-wrap gap-2 mt-2'>
-                {colors.map((item, index) => (
-                    <Tooltip key={index} content={item.name} className='text-c-title'>
-                        <div
-                            className={`cursor-pointer w-8 h-8 rounded-full flex justify-center items-center`}
-                            style={{ backgroundColor: item.color }}
-                            onClick={() => handleChangeColor(index)}
-                        >
-                            {selected === index && <FaCheck className='text-white h-3 w-3' />}
-                        </div>
-                    </Tooltip>
-                ))}
-                {/* <Tooltip content="crear">
+  return (
+    <>
+      <span className='font-medium text-c-title'>Theme Colors</span>
+      <div className='flex flex-wrap gap-2 mt-2'>
+        {colors.map((item, index) => (
+          <Tooltip key={index} content={item.name} className='text-c-title'>
+            <div
+              className={`cursor-pointer w-8 h-8 rounded-full flex justify-center items-center`}
+              style={{ backgroundColor: item.color }}
+              onClick={() => handleChangeColor(index)}
+            >
+              {selected === index && <FaCheck className='text-white h-3 w-3' />}
+            </div>
+          </Tooltip>
+        ))}
+        {/* <Tooltip content="crear">
                     <div
                         className={`cursor-pointer w-8 h-8 rounded-full flex justify-center items-center bg-gray-300`}
                         onClick={handleOpen}
@@ -100,9 +122,9 @@ const MainColor: React.FC = () => {
                         </>
                     </ModalContent>
                 </Modal> */}
-            </div>
-        </>
-    );
-};
+      </div>
+    </>
+  )
+}
 
-export default MainColor;
+export default MainColor

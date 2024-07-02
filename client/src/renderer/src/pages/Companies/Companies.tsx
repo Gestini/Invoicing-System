@@ -1,49 +1,38 @@
-import React, { useEffect, useState } from 'react';
-import Card from './Card';
+import React from 'react'
+import Card from './Card'
 import {
+  Input,
   Button,
   Dropdown,
   DropdownItem,
   DropdownMenu,
-  DropdownTrigger,
-  Input,
   useDisclosure,
-} from '@nextui-org/react';
-import { ChevronDownIcon, PlusIcon, SearchIcon } from '@renderer/components/Icons';
-import { productStatusOptions } from '@renderer/components/Tables/ProductTable/data';
-import './unidadeseccion.scss';
-import MultiStepForm from '@renderer/components/CreateCompanyForm';
-import { reqGetUnitByOwner } from '@renderer/api/requests';
+  DropdownTrigger,
+} from '@nextui-org/react'
+import { setUnits } from '@renderer/features/unitsSlice'
+import MultiStepForm from '@renderer/components/CreateCompanyForm'
+import { reqGetUnitByOwner } from '@renderer/api/requests'
+import { productStatusOptions } from '@renderer/components/Tables/ProductTable/data'
 import { useDispatch, useSelector } from 'react-redux'
-import { setUnits } from '@renderer/features/unitsSlice';
-
-interface BusinessUnit {
-  link: string;
-  description: string;
-  id: number;
-  name: string;
-}
+import { ChevronDownIcon, PlusIcon, SearchIcon } from '@renderer/components/Icons'
+import './unidadeseccion.scss'
 
 const Companies = () => {
   const companies = useSelector((state: any) => state.units.data)
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const dispatch = useDispatch()
 
   React.useEffect(() => {
     const loadUserCompanies = async () => {
       try {
-        const res = await reqGetUnitByOwner();
-        if (res.status === 200) {
-          dispatch(setUnits(res.data));
-        } else {
-          console.error('Error fetching business units:', res.data);
-        }
+        const response = await reqGetUnitByOwner()
+        dispatch(setUnits(response.data))
       } catch (error) {
-        console.error('Error fetching business units:', error);
+        console.error('Error fetching business units:', error)
       }
-    };
-    loadUserCompanies();
-  }, []);
+    }
+    loadUserCompanies()
+  }, [])
 
   return (
     <div className=' flex flex-col  generalunidades'>
@@ -105,7 +94,7 @@ const Companies = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Companies;
+export default Companies

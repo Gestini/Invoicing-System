@@ -1,11 +1,10 @@
 import toast from 'react-hot-toast'
-import { AppTable } from '@renderer/components/AppTable'
-import { AddItemModal } from '@renderer/components/AppTable/Modals/AddItem'
-import { EditItemModal } from '@renderer/components/AppTable/Modals/EditItem'
+import { Totals } from './Totals'
+import ViewProducts from './ViewProducts'
+import { TabProduct } from './ViewProducts/TabProduct'
+import { InvoiceForm } from './InvoiceForm'
 import { useDispatch, useSelector } from 'react-redux'
-import { columnsData, modalInputs } from './data'
-import { addItem, editItem, deleteItem } from '@renderer/features/tableSlice'
-import { InvoicingModal } from '@renderer/components/modal/InvoicingModal'
+import { addItem, deleteItem, editItem } from '@renderer/features/tableSlice'
 
 export const InvoicingTable = () => {
   const dispatch = useDispatch()
@@ -38,32 +37,15 @@ export const InvoicingTable = () => {
     },
   }
 
-  const newUserModal = {
-    title: 'Agrega una nueva venta',
-    buttonTitle: 'Agregar',
-    ...modalInputs,
-    action: tableActions.create,
-  }
-
-  const editUserModal = {
-    title: 'Editar venta',
-    ...modalInputs,
-    action: tableActions.edit,
-  }
-
-  const invocicingModal = {
-    title: 'Facturar',
-    buttonTitle: 'Agregar',
-    ...modalInputs,
-    action: tableActions.edit,
-  }
-
   return (
-    <AppTable
-      columnsData={columnsData}
-      tableActions={tableActions}
-      addItemModal={<InvoicingModal modal={invocicingModal} />}
-      editItemModal={<EditItemModal modal={editUserModal} />}
-    />
+    <>
+      <TabProduct />
+      <InvoiceForm />
+
+      <div className='flex gap-4'>
+        <ViewProducts />
+        <Totals />
+      </div>
+    </>
   )
 }
