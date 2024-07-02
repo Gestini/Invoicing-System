@@ -1,14 +1,26 @@
 import toast from 'react-hot-toast'
 import { AppTable } from '@renderer/components/AppTable'
-import { AddItemModal } from '@renderer/components/AppTable/Modals/AddItem'
+import { AddSupplierModal } from '@renderer/components/AppTable/Modals/SupplierAdd'
 import { EditItemModal } from '@renderer/components/AppTable/Modals/EditItem'
 import { useDispatch, useSelector } from 'react-redux'
 import { columnsData, modalInputs } from './data'
-import { addItem, editItem, deleteItem } from '@renderer/features/tableSlice'
+import { addItem, editItem, deleteItem, setData } from '@renderer/features/tableSlice'
+import { reqCreateSupplier, reqGetSupplier } from '@renderer/api/requests'
+import { useEffect } from 'react'
 
 export const SupplierTable = () => {
   const dispatch = useDispatch()
   const table = useSelector((state: any) => state.table)
+
+  useEffect(() => {
+    const GetSupplier = async () => {
+      const response = await reqGetSupplier(6)
+      console.log(response)
+
+      dispatch(setData(response.data))
+    }
+    GetSupplier()
+  }, [])
 
   const tableActions = {
     delete: async (id: any) => {
@@ -21,6 +33,7 @@ export const SupplierTable = () => {
     },
     create: async (data: any) => {
       try {
+        reqCreateSupplier(data)
         dispatch(addItem({ ...data, id: table.data.length }))
         toast.success('Proveedor guardado correctamente')
       } catch (error: any) {
@@ -54,7 +67,7 @@ export const SupplierTable = () => {
     <AppTable
       columnsData={columnsData}
       tableActions={tableActions}
-      addItemModal={<AddItemModal modal={newUserModal} />}
+      addItemModal={<AddSupplierModal modal={newUserModal} />}
       editItemModal={<EditItemModal modal={editUserModal} />}
     />
   )

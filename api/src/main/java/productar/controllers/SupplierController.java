@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import productar.dto.SupplierDTO;
 import productar.models.BusinessUnitsModel;
 import productar.models.SupplierModel;
 import productar.services.SupplierService;
@@ -39,10 +40,8 @@ public class SupplierController {
     }
 
     @GetMapping("/by-business-unit/{businessUnitId}")
-    public ResponseEntity<List<SupplierModel>> getSuppliersByBusinessUnit(
-            @PathVariable("businessUnitId") Long businessUnitId) {
-        List<SupplierModel> suppliers = supplierService.getSuppliersByBusinessUnit(businessUnitId);
-        return ResponseEntity.ok(suppliers);
+    public List<SupplierDTO> getSuppliersByBusinessUnit(@PathVariable Long businessUnitId) {
+        return supplierService.getSuppliersByBusinessUnit(businessUnitId);
     }
 
     @PostMapping

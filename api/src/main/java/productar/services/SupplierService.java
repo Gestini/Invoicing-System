@@ -4,10 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import productar.dto.SupplierDTO;
 import productar.models.BusinessUnitsModel;
 import productar.models.SupplierModel;
 import productar.repositories.SupplierRepository;
+import productar.dto.SupplierDTO;;
 
 @Service
 public class SupplierService {
@@ -58,7 +61,27 @@ public class SupplierService {
         return supplierRepository.findByNameContainingIgnoreCase(name);
     }
 
-    public List<SupplierModel> getSuppliersByBusinessUnit(Long businessUnitId) {
-        return supplierRepository.findByBusinessUnitId(businessUnitId);
+    public List<SupplierDTO> getSuppliersByBusinessUnit(Long businessUnitId) {
+        return supplierRepository.findByBusinessUnitId(businessUnitId)
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    private SupplierDTO convertToDTO(SupplierModel supplier) {
+        SupplierDTO dto = new SupplierDTO();
+        dto.setId(supplier.getId());
+        dto.setName(supplier.getName());
+        dto.setDescription(supplier.getDescription());
+        dto.setPhone(supplier.getPhone());
+        dto.setEmail(supplier.getEmail());
+        dto.setWebsite(supplier.getWebsite());
+        dto.setSupplierType(supplier.getSupplierType());
+        dto.setReasonSocial(supplier.getReasonSocial());
+        dto.setAddress(supplier.getAddress());
+        dto.setDni(supplier.getDni());
+        dto.setSaleCondition(supplier.getSaleCondition());
+        dto.setBusinessUnitId(supplier.getBusinessUnit().getId());
+        return dto;
     }
 }
