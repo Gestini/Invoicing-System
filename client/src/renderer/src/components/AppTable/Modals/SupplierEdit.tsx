@@ -15,14 +15,16 @@ import {
 import React from 'react'
 import { setCurrentItemId } from '@renderer/features/tableSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
 
 export const EditSupplierModal = ({ modal }) => {
   const dispatch = useDispatch()
+  const params = useParams()
   const unit = useSelector((state: any) => state.currentUnit)
 
   const [data, setData] = React.useState({
     businessUnit: {
-      id: unit.id,
+      id: params.id,
     },
   })
 
@@ -80,12 +82,11 @@ export const EditSupplierModal = ({ modal }) => {
   const handleResetCurrentIdEdit = () => dispatch(setCurrentItemId(-1))
 
   const handleAddNewUser = async () => {
-
     modal.action(currentUserEdit.id, data)
     handleResetCurrentIdEdit()
     setData({
       businessUnit: {
-        id: unit.id,
+        id: params.id,
       },
     })
     onClose()

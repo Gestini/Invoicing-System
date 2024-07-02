@@ -10,15 +10,17 @@ import axios from 'axios'
 import { reqCreateProduct, reqEditProduct, reqGetProductByUnit } from '@renderer/api/requests'
 import { useEffect } from 'react'
 import { setData } from '@renderer/features/tableSlice'
+import { useParams } from 'react-router-dom'
 
 export const StockTable = () => {
   const dispatch = useDispatch()
   const table = useSelector((state: any) => state.table)
   const unit = useSelector((state: any) => state.currentUnit)
+  const params = useParams()
 
   useEffect(() => {
     const GetProduct = async () => {
-      const response = await reqGetProductByUnit(unit.id)
+      const response = await reqGetProductByUnit(params.id)
       console.log(response)
 
       dispatch(setData(response.data))

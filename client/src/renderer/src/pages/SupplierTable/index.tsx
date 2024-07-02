@@ -8,15 +8,17 @@ import { addItem, editItem, deleteItem, setData } from '@renderer/features/table
 import { reqCreateSupplier, reqEditSupplier, reqGetSupplier } from '@renderer/api/requests'
 import { useEffect } from 'react'
 import { EditSupplierModal } from '@renderer/components/AppTable/Modals/SupplierEdit'
+import { useParams } from 'react-router-dom'
 
 export const SupplierTable = () => {
   const dispatch = useDispatch()
   const table = useSelector((state: any) => state.table)
   const unit = useSelector((state: any) => state.currentUnit)
+  const params = useParams()
 
   useEffect(() => {
     const GetSupplier = async () => {
-      const response = await reqGetSupplier(unit.id)
+      const response = await reqGetSupplier(params.id)
       console.log(response)
 
       dispatch(setData(response.data))
