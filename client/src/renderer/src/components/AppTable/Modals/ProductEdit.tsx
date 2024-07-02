@@ -17,10 +17,12 @@ import { setCurrentItemId } from '@renderer/features/tableSlice'
 import { useDispatch, useSelector } from 'react-redux'
 
 export const EditProductModal = ({ modal }) => {
+  const unit = useSelector((state: any) => state.currentUnit)
+
   const dispatch = useDispatch()
   const [data, setData] = React.useState({
     businessUnit: {
-      id: 6,
+      id: unit.id,
     },
   })
 
@@ -82,7 +84,7 @@ export const EditProductModal = ({ modal }) => {
     handleResetCurrentIdEdit()
     setData({
       businessUnit: {
-        id: 6,
+        id: unit.id,
       },
     })
     onClose()

@@ -18,9 +18,11 @@ import { useDispatch, useSelector } from 'react-redux'
 
 export const EditSupplierModal = ({ modal }) => {
   const dispatch = useDispatch()
+  const unit = useSelector((state: any) => state.currentUnit)
+
   const [data, setData] = React.useState({
     businessUnit: {
-      id: 6,
+      id: unit.id,
     },
   })
 
@@ -78,11 +80,12 @@ export const EditSupplierModal = ({ modal }) => {
   const handleResetCurrentIdEdit = () => dispatch(setCurrentItemId(-1))
 
   const handleAddNewUser = async () => {
+
     modal.action(currentUserEdit.id, data)
     handleResetCurrentIdEdit()
     setData({
       businessUnit: {
-        id: 6,
+        id: unit.id,
       },
     })
     onClose()

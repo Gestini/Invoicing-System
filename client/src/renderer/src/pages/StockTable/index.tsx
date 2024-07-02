@@ -14,10 +14,11 @@ import { setData } from '@renderer/features/tableSlice'
 export const StockTable = () => {
   const dispatch = useDispatch()
   const table = useSelector((state: any) => state.table)
+  const unit = useSelector((state: any) => state.currentUnit)
 
   useEffect(() => {
     const GetProduct = async () => {
-      const response = await reqGetProductByUnit(6)
+      const response = await reqGetProductByUnit(unit.id)
       console.log(response)
 
       dispatch(setData(response.data))

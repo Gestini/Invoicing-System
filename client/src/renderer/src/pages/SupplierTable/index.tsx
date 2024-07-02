@@ -12,10 +12,11 @@ import { EditSupplierModal } from '@renderer/components/AppTable/Modals/Supplier
 export const SupplierTable = () => {
   const dispatch = useDispatch()
   const table = useSelector((state: any) => state.table)
+  const unit = useSelector((state: any) => state.currentUnit)
 
   useEffect(() => {
     const GetSupplier = async () => {
-      const response = await reqGetSupplier(6)
+      const response = await reqGetSupplier(unit.id)
       console.log(response)
 
       dispatch(setData(response.data))

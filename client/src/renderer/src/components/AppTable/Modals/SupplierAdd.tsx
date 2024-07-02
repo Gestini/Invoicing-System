@@ -16,8 +16,10 @@ import {
 import { BiDollar } from 'react-icons/bi'
 import { Checkbox } from '@nextui-org/react'
 import './ProductAdd.scss'
+import { useSelector } from 'react-redux'
 
 export const AddSupplierModal = ({ modal }) => {
+  const unit = useSelector((state: any) => state.currentUnit)
   const [data, setData] = React.useState<any>({
     name: '',
     description: null,
@@ -30,7 +32,7 @@ export const AddSupplierModal = ({ modal }) => {
     dni: null,
     saleCondition: null,
     businessUnit: {
-      id: 6,
+      id: unit.id,
       name: 'Main Unit',
     },
   })
@@ -95,7 +97,7 @@ export const AddSupplierModal = ({ modal }) => {
       dni: null,
       saleCondition: null,
       businessUnit: {
-        id: 6,
+        id: unit.id,
         name: 'Main Unit',
       },
     })
