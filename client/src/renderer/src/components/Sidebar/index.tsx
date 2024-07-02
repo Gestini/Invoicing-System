@@ -12,12 +12,14 @@ import { NavLink } from 'react-router-dom'
 import { Settings } from '@renderer/components/Settings'
 import { ReactNode } from 'react'
 import { IoGridOutline } from 'react-icons/io5'
+import { useSelector } from 'react-redux'
 
 interface SidebarItemProps {
   icon: ReactNode
   text: string
   path: string
 }
+
 
 const SidebarItem = ({ path, icon, text }: SidebarItemProps) => {
   return (
@@ -36,44 +38,46 @@ const SidebarItem = ({ path, icon, text }: SidebarItemProps) => {
 }
 
 export const Sidebar = () => {
+  const unit = useSelector((state: any) => state.currentUnit)
+  console.log(unit?.id)
   const sidebarItems = [
     {
-      path: '/general',
+      path: `/general/${unit?.id}`,
       icon: <BiHome />,
       text: 'General',
     },
     {
-      path: '/stock',
+      path: `/stock/${unit?.id}`,
       icon: <BiCart />,
       text: 'Stock',
     },
     {
-      path: '/ventas',
+      path: `/ventas/${unit?.id}`,
       icon: <BiLabel />,
       text: 'Ventas',
     },
     {
-      path: '/proveedores',
+      path: `/proveedores/${unit?.id}`,
       icon: <BiCrown />,
       text: 'Proveedores',
     },
     {
-      path: '/facturar',
+      path: `/facturar/${unit?.id}`,
       icon: <BiCalculator />,
       text: 'Facturar',
     },
     {
-      path: '/presupuestos',
+      path: `/presupuestos/${unit?.id}`,
       icon: <BiDetail />,
       text: 'Presupuestos',
     },
     {
-      path: '/pedidos',
+      path: `/pedidos/${unit?.id}`,
       icon: <BiBadgeCheck />,
       text: 'Pedidos',
     },
     {
-      path: '/informes',
+      path: `/informes/${unit?.id}`,
       icon: <BiStats />,
       text: 'Informes',
     },
