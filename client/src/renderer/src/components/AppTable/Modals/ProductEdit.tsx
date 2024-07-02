@@ -18,11 +18,17 @@ import { useDispatch, useSelector } from 'react-redux'
 
 export const EditProductModal = ({ modal }) => {
   const dispatch = useDispatch()
-  const [data, setData] = React.useState({})
+  const [data, setData] = React.useState({
+    businessUnit: {
+      id: 6,
+    },
+  })
+
   const [errors, setErrors] = React.useState({
     name: '',
   })
   const users = useSelector((state: any) => state.table.data)
+
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const currentItemIdEdit = useSelector((state: any) => state.table.currentItemIdEdit)
   const currentUserEdit = users.find((item: { id: any }) => item.id == currentItemIdEdit)
@@ -40,6 +46,7 @@ export const EditProductModal = ({ modal }) => {
       ...data,
       [name]: intValues.includes(name) ? parseInt(value) : value,
     })
+    console.log(data)
     handleValidation(e.target.name, e.target.value)
   }
 
@@ -60,7 +67,7 @@ export const EditProductModal = ({ modal }) => {
 
     setErrors(newErrors)
   }
-
+  console.log(currentUserEdit)
   const validateName = (name) => {
     if (!name.trim()) {
       return false // Nombre está vacío
@@ -71,8 +78,13 @@ export const EditProductModal = ({ modal }) => {
   const handleResetCurrentIdEdit = () => dispatch(setCurrentItemId(-1))
 
   const handleAddNewUser = async () => {
-    modal.action(data, currentUserEdit)
+    modal.action(currentUserEdit.id, data)
     handleResetCurrentIdEdit()
+    setData({
+      businessUnit: {
+        id: 6,
+      },
+    })
     onClose()
   }
 
@@ -103,6 +115,7 @@ export const EditProductModal = ({ modal }) => {
                   variant='bordered'
                   onChange={handleChange}
                   isInvalid={!!errors.name}
+                  defaultValue={currentUserEdit ? currentUserEdit.name : ''}
                 ></Input>
                 <Select
                   label='Categoria'
@@ -113,8 +126,10 @@ export const EditProductModal = ({ modal }) => {
                   onChange={handleChange}
                   size='sm'
                   className='text-c-title'
+                  defaultSelectedKeys={[currentUserEdit && currentUserEdit.category]}
                 >
-                  <SelectItem key={2}>Proveedor</SelectItem>
+                  <SelectItem key={'electricidad'}>Proveedor</SelectItem>
+                  <SelectItem key={'materiales'}>materiales</SelectItem>
                 </Select>
                 <Input
                   name='quantity'
@@ -125,6 +140,7 @@ export const EditProductModal = ({ modal }) => {
                   placeholder='Cantidad de productos'
                   variant='bordered'
                   onChange={handleChange}
+                  defaultValue={currentUserEdit ? currentUserEdit.quantity : ''}
                 ></Input>
               </div>
               <div className='rowmodaladdproduct flex gap-3'>
@@ -134,6 +150,7 @@ export const EditProductModal = ({ modal }) => {
                   name='codigo1'
                   labelPlacement='outside'
                   placeholder='Codigo #1'
+                  defaultValue={currentUserEdit ? currentUserEdit.codigo1 : ''}
                   variant='bordered'
                   onChange={handleChange}
                 ></Input>
@@ -141,6 +158,7 @@ export const EditProductModal = ({ modal }) => {
                   label='Codigo'
                   size='sm'
                   name='codigo2'
+                  defaultValue={currentUserEdit ? currentUserEdit.codigo2 : ''}
                   labelPlacement='outside'
                   placeholder='Codigo #2'
                   variant='bordered'
@@ -150,6 +168,7 @@ export const EditProductModal = ({ modal }) => {
                   label='Codigo de barras'
                   size='sm'
                   name='barcode'
+                  defaultValue={currentUserEdit ? currentUserEdit.barcode : ''}
                   labelPlacement='outside'
                   placeholder='Codigo de barras'
                   variant='bordered'
@@ -166,19 +185,21 @@ export const EditProductModal = ({ modal }) => {
                   onChange={handleChange}
                   size='sm'
                   className='text-c-title'
+                  defaultSelectedKeys={[currentUserEdit ? String(currentUserEdit.suppliers) : '']}
                 >
-                  <SelectItem key={2}>Proveedor</SelectItem>
+                  <SelectItem key={'enjambreSRL'}>enjambreSRL</SelectItem>
+                  <SelectItem key={'PistonesSRL'}>PistonesSRL</SelectItem>
                 </Select>
                 <Select
                   label='Estado'
                   labelPlacement='outside'
                   placeholder='Disponibilidad'
                   variant='bordered'
-                  defaultSelectedKeys={['true']}
                   name='status'
                   onChange={handleChange}
                   size='sm'
                   className='text-c-title'
+                  defaultSelectedKeys={[currentUserEdit ? String(currentUserEdit.status) : '']}
                 >
                   <SelectItem value={'true'} key={'true'}>
                     Disponible
@@ -198,6 +219,7 @@ export const EditProductModal = ({ modal }) => {
                   variant='bordered'
                   size='sm'
                   name='purchasePrice'
+                  defaultValue={currentUserEdit ? currentUserEdit.purchasePrice : ''}
                   onChange={handleChange}
                   endContent={
                     <div className='pointer-events-none flex items-center'>
@@ -211,6 +233,7 @@ export const EditProductModal = ({ modal }) => {
                   labelPlacement='outside'
                   placeholder='0.00'
                   variant='bordered'
+                  defaultValue={currentUserEdit ? currentUserEdit.costPrice : ''}
                   size='sm'
                   name='costPrice'
                   onChange={handleChange}
@@ -228,14 +251,16 @@ export const EditProductModal = ({ modal }) => {
                   variant='bordered'
                   name='priceCalculation'
                   onChange={handleChange}
-                  defaultSelectedKeys={['cero']}
+                  defaultSelectedKeys={[currentUserEdit ? currentUserEdit.priceCalculation : '']}
                   size='sm'
                   className='text-c-title'
                 >
                   <SelectItem value={'cero'} key={'cero'}>
                     cero
                   </SelectItem>
-                  <SelectItem key={2}>cero</SelectItem>
+                  <SelectItem value={'uno'} key={'uno'}>
+                    uno
+                  </SelectItem>
                 </Select>
               </div>
               <div className='rowmodaladdproduct flex items-start justify-start gap-3'>
@@ -246,12 +271,15 @@ export const EditProductModal = ({ modal }) => {
                   variant='bordered'
                   name='pricePolicy'
                   onChange={handleChange}
-                  defaultSelectedKeys={['cero']}
+                  defaultSelectedKeys={[currentUserEdit ? currentUserEdit.pricePolicy : '']}
                   size='sm'
                   className='text-c-title  '
                 >
-                  <SelectItem value={'cero'} key={'cero'}>
-                    cero
+                  <SelectItem value={'politicone'} key={'politictone'}>
+                    one
+                  </SelectItem>
+                  <SelectItem value={'politictwo'} key={'politictwo'}>
+                    two
                   </SelectItem>
                 </Select>
               </div>
@@ -266,6 +294,7 @@ export const EditProductModal = ({ modal }) => {
                   variant='bordered'
                   name='net1'
                   onChange={handleChange}
+                  defaultValue={currentUserEdit ? currentUserEdit.net1 : ''}
                   size='sm'
                   endContent={
                     <div className='pointer-events-none flex items-center'>
@@ -280,6 +309,7 @@ export const EditProductModal = ({ modal }) => {
                   isDisabled
                   placeholder='0.00'
                   variant='bordered'
+                  defaultValue={currentUserEdit ? currentUserEdit.net2 : ''}
                   name='net2'
                   onChange={handleChange}
                   size='sm'
@@ -296,6 +326,7 @@ export const EditProductModal = ({ modal }) => {
                   placeholder='0.00'
                   isDisabled
                   variant='bordered'
+                  defaultValue={currentUserEdit ? currentUserEdit.net3 : ''}
                   name='net3'
                   onChange={handleChange}
                   size='sm'
@@ -311,6 +342,7 @@ export const EditProductModal = ({ modal }) => {
                   label='Neto 4'
                   placeholder='0.00'
                   isDisabled
+                  defaultValue={currentUserEdit ? currentUserEdit.net4 : ''}
                   variant='bordered'
                   name='net4'
                   onChange={handleChange}
@@ -329,12 +361,13 @@ export const EditProductModal = ({ modal }) => {
                   placeholder='Selecciona un tipo'
                   variant='bordered'
                   name='taxType'
-                  defaultSelectedKeys={['IVA21%']}
+                  defaultSelectedKeys={[currentUserEdit ? currentUserEdit.taxType : '']}
                   onChange={handleChange}
                   size='sm'
                   className='text-c-title'
                 >
                   <SelectItem key={'IVA21%'}>IVA 21%</SelectItem>
+                  <SelectItem key={'IVA24%'}>IVA 24%</SelectItem>
                 </Select>
                 <Input
                   type='number'
@@ -343,6 +376,7 @@ export const EditProductModal = ({ modal }) => {
                   placeholder='0.00'
                   variant='bordered'
                   name='financedPrice'
+                  defaultValue={currentUserEdit ? currentUserEdit.financedPrice : ''}
                   onChange={handleChange}
                   size='sm'
                   endContent={
@@ -358,6 +392,7 @@ export const EditProductModal = ({ modal }) => {
                   placeholder='0.00'
                   variant='bordered'
                   name='friendPrice'
+                  defaultValue={currentUserEdit ? currentUserEdit.friendPrice : ''}
                   onChange={handleChange}
                   size='sm'
                   endContent={
@@ -374,6 +409,7 @@ export const EditProductModal = ({ modal }) => {
                   name='cardPrice'
                   onChange={handleChange}
                   variant='bordered'
+                  defaultValue={currentUserEdit ? currentUserEdit.cardPrice : ''}
                   size='sm'
                   endContent={
                     <div className='pointer-events-none flex items-center'>
@@ -394,6 +430,7 @@ export const EditProductModal = ({ modal }) => {
                 name='quantityPerPackage'
                 onChange={handleChange}
                 variant='bordered'
+                defaultValue={currentUserEdit ? currentUserEdit.quantityPerPackage : ''}
                 isDisabled
                 size='sm'
                 endContent={
@@ -407,6 +444,7 @@ export const EditProductModal = ({ modal }) => {
                 variant='bordered'
                 name='description'
                 onChange={handleChange}
+                defaultValue={currentUserEdit ? currentUserEdit.description : ''}
                 labelPlacement='outside'
                 placeholder='Enter your description'
               ></Textarea>

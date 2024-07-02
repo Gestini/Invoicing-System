@@ -168,7 +168,8 @@ export const AddProductModal = ({ modal }) => {
                   size='sm'
                   className='text-c-title'
                 >
-                  <SelectItem key={2}>Proveedor</SelectItem>
+                  <SelectItem key={'electricidad'}>Proveedor</SelectItem>
+                  <SelectItem key={'materiales'}>materiales</SelectItem>
                 </Select>
                 <Input
                   name='quantity'
@@ -221,7 +222,8 @@ export const AddProductModal = ({ modal }) => {
                   size='sm'
                   className='text-c-title'
                 >
-                  <SelectItem key={2}>Proveedor</SelectItem>
+                  <SelectItem key={'enjambreSRL'}>enjambreSRL</SelectItem>
+                  <SelectItem key={'PistonesSRL'}>PistonesSRL</SelectItem>
                 </Select>
                 <Select
                   label='Estado'
@@ -289,23 +291,28 @@ export const AddProductModal = ({ modal }) => {
                   <SelectItem value={'cero'} key={'cero'}>
                     cero
                   </SelectItem>
-                  <SelectItem key={2}>cero</SelectItem>
+                  <SelectItem value={'uno'} key={'uno'}>
+                    uno
+                  </SelectItem>
                 </Select>
               </div>
               <div className='rowmodaladdproduct flex items-start justify-start gap-3'>
                 <Select
                   label='Politica de precio'
                   labelPlacement='outside'
-                  placeholder='Select an animal'
+                  placeholder='Selecciona una politica'
                   variant='bordered'
                   name='pricePolicy'
                   onChange={handleChange}
-                  defaultSelectedKeys={['cero']}
+                  defaultSelectedKeys={['politictone']}
                   size='sm'
                   className='text-c-title  '
                 >
-                  <SelectItem value={'cero'} key={'cero'}>
-                    cero
+                  <SelectItem value={'politicone'} key={'politictone'}>
+                    one
+                  </SelectItem>
+                  <SelectItem value={'politictwo'} key={'politictwo'}>
+                    two
                   </SelectItem>
                 </Select>
               </div>
@@ -389,6 +396,7 @@ export const AddProductModal = ({ modal }) => {
                   className='text-c-title'
                 >
                   <SelectItem key={'IVA21%'}>IVA 21%</SelectItem>
+                  <SelectItem key={'IVA24%'}>IVA 24%</SelectItem>
                 </Select>
                 <Input
                   type='number'

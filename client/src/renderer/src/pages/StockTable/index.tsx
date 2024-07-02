@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { columnsData, modalInputs } from './data'
 import { addItem, editItem, deleteItem } from '@renderer/features/tableSlice'
 import axios from 'axios'
-import { reqCreateProduct, reqGetProductByUnit } from '@renderer/api/requests'
+import { reqCreateProduct, reqEditProduct, reqGetProductByUnit } from '@renderer/api/requests'
 import { useEffect } from 'react'
 import { setData } from '@renderer/features/tableSlice'
 
@@ -43,9 +43,10 @@ export const StockTable = () => {
         toast.error(error.response.data.message)
       }
     },
-    edit: async (data: any, currentUserEdit: any) => {
+    edit: async (id: any, data: any) => {
       try {
-        dispatch(editItem({ data, id: currentUserEdit?.id }))
+        reqEditProduct(id, data)
+        dispatch(editItem({ data, id: id }))
         toast.success('Producto editado correctamente')
       } catch (error) {
         console.log(error)
