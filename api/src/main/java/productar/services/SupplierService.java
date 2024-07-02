@@ -12,7 +12,6 @@ import productar.dto.SupplierDTO;
 import productar.models.BusinessUnitsModel;
 import productar.models.SupplierModel;
 import productar.repositories.SupplierRepository;
-import productar.dto.SupplierDTO;;
 
 @Service
 public class SupplierService {
