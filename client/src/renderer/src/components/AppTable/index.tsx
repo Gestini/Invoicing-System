@@ -86,6 +86,7 @@ export const AppTable = ({ columnsData, tableActions, addItemModal, editItemModa
   return (
     <div className='max-w-table'>
       <Table
+        isStriped
         aria-label='Example table with custom cells, pagination and sorting'
         isHeaderSticky
         bottomContent={
@@ -135,7 +136,7 @@ export const AppTable = ({ columnsData, tableActions, addItemModal, editItemModa
           {(item) => (
             <TableRow key={item.id}>
               {(columnKey) => (
-                <TableCell className='default-text-color'>
+                <TableCell className='default-text-color  '>
                   {RenderCell(item, columnKey, handleDeleteItem, handleSetCurrentIdEdit)}
                 </TableCell>
               )}

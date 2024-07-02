@@ -31,6 +31,7 @@ export const StockTable = () => {
   const tableActions = {
     delete: async (id: any) => {
       try {
+        console.log(id)
         dispatch(deleteItem(id))
         toast.success('Producto eliminado correctamente')
       } catch (error: any) {
@@ -70,12 +71,15 @@ export const StockTable = () => {
     action: tableActions.edit,
   }
 
+
   return (
     <AppTable
       columnsData={columnsData}
       tableActions={tableActions}
       addItemModal={<AddProductModal modal={newUserModal} />}
       editItemModal={<EditProductModal modal={editUserModal} />}
+      
+      
     />
   )
 }
