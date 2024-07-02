@@ -5,6 +5,8 @@ import { FaExternalLinkAlt } from 'react-icons/fa'
 import { Link, useNavigate } from 'react-router-dom'
 import { Dropdown, DropdownTrigger, Button, DropdownMenu, DropdownItem } from '@nextui-org/react'
 import { reqDeleteUnitById } from '@renderer/api/requests'
+import { deleteUnit } from '@renderer/features/unitsSlice'
+import { useDispatch } from 'react-redux'
 
 interface BusinessUnit {
   description: string
@@ -18,8 +20,8 @@ interface CardProps {
 }
 
 const Card: React.FC<CardProps> = ({ unit }) => {
-  console.log(unit)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const handleNavigate = () => {
     navigate('/general')
@@ -28,11 +30,9 @@ const Card: React.FC<CardProps> = ({ unit }) => {
   const handleDeleteUnit = async () => {
     try {
       const response = await reqDeleteUnitById(unit.id)
-      console.log(response.data) // Muestra el mensaje de éxito o maneja según necesites
-      // Implementa cualquier lógica adicional después de eliminar la unidad, como actualizar la lista de unidades mostradas, etc.
+      dispatch(deleteUnit(unit.id))
     } catch (error) {
       console.error('Error al eliminar la unidad:', error)
-      // Maneja errores de eliminación aquí
     }
   }
 
@@ -72,7 +72,7 @@ const Card: React.FC<CardProps> = ({ unit }) => {
         <FaExternalLinkAlt />
         {unit.link}
       </div>
-      <div className='text-[14px] text-gray-500'>{unit.description}</div>
+      <div className='text-[14px] text-gray-500 line-clamp-3'>{unit.description}</div>
     </div>
   )
 }
