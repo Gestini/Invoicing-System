@@ -1,15 +1,18 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
 import { Navbar } from '@renderer/components/Navbar'
+import { setUnit } from '@renderer/features/currentUnitSlice'
 import { Navigate } from 'react-router-dom'
 import { Settings } from '@renderer/components/Settings'
+import { useParams } from 'react-router-dom'
 import { setMyUser } from '@renderer/features/userSlice'
 import { useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { reqAuthLoadProfileByToken } from '@renderer/api/requests'
+import { reqAuthLoadProfileByToken, reqGetUnitById } from '@renderer/api/requests'
 
 export const ProtectedRouteSession = () => {
   const location = useLocation()
+  const params = useParams()
   const token = localStorage.getItem('token')
   const dispatch = useDispatch()
 
@@ -47,6 +50,19 @@ export const ProtectedRouteSession = () => {
     } else {
       document.body.classList.add('light')
     }
+  }, [])
+
+  React.useEffect(() => {
+    const loadUserCompanies = async () => {
+      try {
+        if (!params.id) return
+        const response = await reqGetUnitById(params.id)
+        dispatch(setUnit(response.data))
+      } catch (error) {
+        console.error('Error fetching business units:', error)
+      }
+    }
+    loadUserCompanies()
   }, [])
 
   if (user !== null)
