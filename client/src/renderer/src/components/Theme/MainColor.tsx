@@ -27,20 +27,7 @@ const MainColor: React.FC = () => {
         localStorage.setItem('mainColor', selectedColor.variant);
     };
 
-    React.useEffect(() => {
-        const savedColorKey = localStorage.getItem('mainColor');
-        if (savedColorKey) {
-            const savedColorIndex = colors.findIndex(c => c.variant === savedColorKey);
-            if (savedColorIndex !== -1) {
-                const savedColor = colors[savedColorIndex];
-                setMainColor(savedColor);
-                setSelected(savedColorIndex);
-                document.body.id = savedColorKey;
-            }
-        } else {
-            document.body.id = 'variantOne';
-        }
-    }, [colors]);
+   
 
     return (
         <>

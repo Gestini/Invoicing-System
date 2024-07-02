@@ -11,7 +11,6 @@ import {
 import { NavLink } from 'react-router-dom'
 import { ReactNode } from 'react'
 import { IoGridOutline } from "react-icons/io5";
-import Settings from '@renderer/components/Settings'
 import { SlOptions } from "react-icons/sl";
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/react';
 
@@ -91,7 +90,10 @@ export const Sidebar = () => {
         ))}
       </div>
 
-      <Settings />
+
+      <Button className='bg-[transparent] w-[100%] min-w-0'>
+        <SlOptions className='text-gray-300 w-4 h-4 cursor-pointer' />
+      </Button>
 
     </nav>
   )
