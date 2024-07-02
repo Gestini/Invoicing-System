@@ -10,7 +10,7 @@ import './bodymain.scss'
 
 export const SidebarMiddleware = () => {
   const location = useLocation()
-  const name = location.pathname.replace('/', '')
+  const name = location.pathname.replace(/[\/\d]/g, '')
   const params = useParams()
   const dispatch = useDispatch()
   const unit = useSelector((state: any) => state.currentUnit)
