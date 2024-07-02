@@ -1,36 +1,39 @@
 import React from 'react'
-import { SlOptions } from 'react-icons/sl'
 import Logo from '@renderer/assets/image/google.svg'
-import { FaExternalLinkAlt } from 'react-icons/fa'
-import { Link, useNavigate } from 'react-router-dom'
-import { Dropdown, DropdownTrigger, Button, DropdownMenu, DropdownItem } from '@nextui-org/react'
-import { reqDeleteUnitById } from '@renderer/api/requests'
+import { SlOptions } from 'react-icons/sl'
 import { deleteUnit } from '@renderer/features/unitsSlice'
-import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { FaExternalLinkAlt } from 'react-icons/fa'
+import { reqDeleteUnitById } from '@renderer/api/requests'
+import { useDispatch, useSelector } from 'react-redux'
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/react'
+
+interface Owner {
+  id: number
+}
 
 interface BusinessUnit {
-  description: string
-  link: string
   id: number
-  name: string // Asegúrate de tener otros campos de tu modelo de unidad de negocio
-  // Agrega otros campos necesarios de tu modelo
+  link: string
+  name: string
+  owner: Owner
+  description: string
 }
+
 interface CardProps {
-  unit: BusinessUnit // Define una interfaz para las props de Card
+  unit: BusinessUnit
 }
 
 const Card: React.FC<CardProps> = ({ unit }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const user = useSelector((state: any) => state.user)
+  const handleNavigate = () => navigate('/general')
 
-  const handleNavigate = () => {
-    navigate('/general')
-  }
-
-  const handleDeleteUnit = async () => {
+  const handleDeleteUnit = () => {
     try {
-      const response = await reqDeleteUnitById(unit.id)
       dispatch(deleteUnit(unit.id))
+      reqDeleteUnitById(unit.id)
     } catch (error) {
       console.error('Error al eliminar la unidad:', error)
     }
@@ -45,27 +48,43 @@ const Card: React.FC<CardProps> = ({ unit }) => {
         <div className='w-10 bg-[#f7f7f7] p-1 rounded-lg flex'>
           <img src={Logo} className='w-full' alt='' />
         </div>
-        <Dropdown placement='bottom-start' className='bg-c-card text-c-title'>
-          <DropdownTrigger>
-            <div>
-              <SlOptions className='text-c-title w-4 h-4 cursor-pointer' />
-            </div>
-          </DropdownTrigger>
-          <DropdownMenu aria-label='Static Actions' className='text-c-title bg-c-bg-color'>
-            <DropdownItem key='Edit' onClick={handleNavigate}>
-              <b>Abrir</b>
-            </DropdownItem>
-            <DropdownItem key='Edit'>Editar unidad</DropdownItem>
-            <DropdownItem
-              key='delete'
-              className='text-danger'
-              color='danger'
-              onClick={handleDeleteUnit}
-            >
-              Eliminar unidad
-            </DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
+        {user.id == unit.owner.id ? (
+          <Dropdown placement='bottom-start' className='bg-c-card text-c-title'>
+            <DropdownTrigger>
+              <div>
+                <SlOptions className='text-c-title w-4 h-4 cursor-pointer' />
+              </div>
+            </DropdownTrigger>
+            <DropdownMenu aria-label='Static Actions' className='text-c-title bg-c-bg-color'>
+              <DropdownItem key='Edit' onClick={handleNavigate}>
+                <b>Abrir</b>
+              </DropdownItem>
+              <DropdownItem key='Edit'>Editar unidad</DropdownItem>
+              <DropdownItem
+                key='delete'
+                className='text-danger'
+                showDivider={false}
+                color='danger'
+                onClick={handleDeleteUnit}
+              >
+                Eliminar unidad
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+        ) : (
+          <Dropdown placement='bottom-start' className='bg-c-card text-c-title'>
+            <DropdownTrigger>
+              <div>
+                <SlOptions className='text-c-title w-4 h-4 cursor-pointer' />
+              </div>
+            </DropdownTrigger>
+            <DropdownMenu aria-label='Static Actions' className='text-c-title bg-c-bg-color'>
+              <DropdownItem key='Edit' onClick={handleNavigate}>
+                <b>Abrir</b>
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+        )}
       </div>
       <div className='text-[16px] text-c-title font-semibold mb-[1px]'>{unit.name}</div>
       <div className='text-[12px] text-gray-400 flex items-center gap-1 mb-2'>

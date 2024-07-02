@@ -38,19 +38,79 @@ export const modalInputs = {
       label: 'Nombre del Producto',
     },
     {
-      type: 'text',
-      name: 'category',
-      label: 'Categoría',
-    },
-    {
       type: 'number',
       name: 'code',
       label: 'Código',
     },
     {
       type: 'number',
+      name: 'code',
+      label: 'Código #2',
+    },
+    {
+      type: 'number',
+      name: 'code',
+      label: 'Código de barra',
+    },
+    {
+      type: 'number',
       name: 'price',
       label: 'Precio',
+    },
+    {
+      type: 'number',
+      name: 'price',
+      label: 'Precio de compra',
+    },
+    {
+      type: 'number',
+      name: 'price',
+      label: 'Calculo de precio',
+    },
+    {
+      type: 'number',
+      name: 'price',
+      label: 'Precio de costo',
+    },
+    {
+      type: 'number',
+      name: 'price',
+      label: 'Neto #1',
+    },
+    {
+      type: 'number',
+      name: 'price',
+      label: 'Precio de contado',
+    },
+    {
+      type: 'number',
+      name: 'price',
+      label: 'Precio de tarjeta',
+    },
+    {
+      type: 'number',
+      name: 'price',
+      label: 'Precio financiado',
+    },
+    {
+      type: 'number',
+      name: 'price',
+      label: 'Precio de amigo',
+    },
+    {
+      type: 'number',
+      name: 'price',
+      label: 'Neto #2',
+    },
+    {
+      type: 'number',
+      name: 'price',
+      label: 'Neto #3',
+    },
+    {
+      type: 'number',
+      name: 'price',
+      label: 'Neto #4',
     },
     {
       type: 'number',
@@ -62,11 +122,44 @@ export const modalInputs = {
       name: 'supplier',
       label: 'Proveedor',
     },
+    {
+      type: 'text',
+      name: 'category',
+      label: 'Categoría',
+    },
+    {
+      type: 'text',
+      name: 'category',
+      label: 'Codigo de referencia',
+    },
   ],
   selectInputs: [
     {
       name: 'status',
-      label: 'Estado del producto',
+      label: 'Rubro',
+      options: [{ label: 'Opción 1', value: 'Opción_1' }],
+    },
+    {
+      name: 'status',
+      label: 'Tipo iva',
+      options: [{ label: 'Opción 1', value: 'Opción_1' }],
+    },
+    {
+      name: 'status',
+      label: 'Proveedor',
+      options: [{ label: 'Opción 1', value: 'Opción_1' }],
+    },
+    {
+      name: 'status',
+      label: 'Envasado',
+      options: [
+        { label: 'Sí', value: true },
+        { label: 'No', value: false },
+      ],
+    },
+    {
+      name: 'status',
+      label: 'Estado',
       options: [
         { label: 'Disponible', value: 'AVAILABLE' },
         { label: 'Agotado', value: 'OUT_OF_STOCK' },

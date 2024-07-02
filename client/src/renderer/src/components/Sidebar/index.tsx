@@ -9,12 +9,9 @@ import {
   BiCalculator,
 } from 'react-icons/bi'
 import { NavLink } from 'react-router-dom'
+import { Settings } from '@renderer/components/Settings'
 import { ReactNode } from 'react'
-import { IoGridOutline } from "react-icons/io5";
-import Settings from '@renderer/components/Settings'
-import { SlOptions } from "react-icons/sl";
-import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/react';
-
+import { IoGridOutline } from 'react-icons/io5'
 
 interface SidebarItemProps {
   icon: ReactNode
@@ -31,9 +28,10 @@ const SidebarItem = ({ path, icon, text }: SidebarItemProps) => {
       }
     >
       {icon}
-      <span className='text-[10px] bg-c-primary rounded-sm absolute p-1 top-2 left-0 opacity-0 group-hover:left-12 group-hover:opacity-100 transition-all duration-300'>{text}</span>
+      <span className='text-[10px] bg-c-primary rounded-sm absolute p-1 top-2 left-0 opacity-0 group-hover:left-12 group-hover:opacity-100 transition-all duration-300'>
+        {text}
+      </span>
     </NavLink>
-
   )
 }
 
@@ -82,7 +80,6 @@ export const Sidebar = () => {
   ]
 
   return (
-
     <nav className='flex w-[55px] fixed z-10 left-0 top-0 h-screen items-center py-4 flex-col justify-between bg-c-primary-sidebar '>
       <IoGridOutline className='text-white w-5 h-5 cursor-pointer' />
       <div className='flex flex-col gap-[1px]'>
@@ -90,9 +87,7 @@ export const Sidebar = () => {
           <SidebarItem key={index} path={item.path} icon={item.icon} text={item.text} />
         ))}
       </div>
-
       <Settings />
-
     </nav>
   )
 }
