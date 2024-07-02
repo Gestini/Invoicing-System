@@ -1,6 +1,6 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
-import { Navbar } from '@renderer/components/Navbar'
+import { Navbar } from '@renderer/components/navbar'
 import { Navigate } from 'react-router-dom'
 import { setMyUser } from '@renderer/features/userSlice'
 import { useLocation } from 'react-router-dom'
