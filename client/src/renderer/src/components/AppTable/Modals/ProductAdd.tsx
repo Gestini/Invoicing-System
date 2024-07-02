@@ -13,16 +13,13 @@ import {
   useDisclosure,
   Textarea,
 } from '@nextui-org/react'
-import { BiDollar } from 'react-icons/bi'
+
 import { Checkbox } from '@nextui-org/react'
 import './ProductAdd.scss'
-import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
 export const AddProductModal = ({ modal }) => {
-  const unit = useSelector((state: any) => state.currentUnit)
   const params = useParams()
-  console.log(unit)
 
   const [data, setData] = React.useState<any>({
     name: '',
@@ -61,7 +58,7 @@ export const AddProductModal = ({ modal }) => {
       ...data,
       [e.target.name]: e.target.value,
     })
-    console.log(data)
+   
     handleValidation(e.target.name, e.target.value)
   }
 

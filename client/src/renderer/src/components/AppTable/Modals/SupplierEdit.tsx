@@ -50,7 +50,7 @@ export const EditSupplierModal = ({ modal }) => {
       ...data,
       [name]: intValues.includes(name) ? parseInt(value) : value,
     })
-    console.log(data)
+   
     handleValidation(e.target.name, e.target.value)
   }
 
@@ -71,7 +71,7 @@ export const EditSupplierModal = ({ modal }) => {
 
     setErrors(newErrors)
   }
-  console.log(currentUserEdit)
+
   const validateName = (name) => {
     if (!name.trim()) {
       return false // Nombre está vacío
