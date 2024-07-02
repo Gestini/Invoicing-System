@@ -52,19 +52,6 @@ export const ProtectedRouteSession = () => {
     }
   }, [])
 
-  React.useEffect(() => {
-    const loadUserCompanies = async () => {
-      try {
-        if (!params.id) return
-        const response = await reqGetUnitById(params.id)
-        dispatch(setUnit(response.data))
-      } catch (error) {
-        console.error('Error fetching business units:', error)
-      }
-    }
-    loadUserCompanies()
-  }, [])
-
   if (user !== null)
     return (
       <>
