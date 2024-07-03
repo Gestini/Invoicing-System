@@ -35,7 +35,6 @@ const Card: React.FC<CardProps> = ({ unit }) => {
     navigate(`/general/${unit?.id}`)
   }
 
-
   const handleDeleteUnit = () => {
     try {
       dispatch(deleteUnit(unit.id))

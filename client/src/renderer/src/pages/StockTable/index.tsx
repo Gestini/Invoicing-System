@@ -1,28 +1,23 @@
+import React from 'react'
 import toast from 'react-hot-toast'
+import { setData } from '@renderer/features/tableSlice'
 import { AppTable } from '@renderer/components/AppTable'
+import { useParams } from 'react-router-dom'
 import { AddProductModal } from '@renderer/components/AppTable/Modals/ProductAdd'
 import { EditProductModal } from '@renderer/components/AppTable/Modals/ProductEdit'
-import { EditItemModal } from '@renderer/components/AppTable/Modals/EditItem'
 import { useDispatch, useSelector } from 'react-redux'
 import { columnsData, modalInputs } from './data'
 import { addItem, editItem, deleteItem } from '@renderer/features/tableSlice'
-import axios from 'axios'
 import { reqCreateProduct, reqEditProduct, reqGetProductByUnit } from '@renderer/api/requests'
-import { useEffect } from 'react'
-import { setData } from '@renderer/features/tableSlice'
-import { useParams } from 'react-router-dom'
 
 export const StockTable = () => {
   const dispatch = useDispatch()
   const table = useSelector((state: any) => state.table)
-  const unit = useSelector((state: any) => state.currentUnit)
   const params = useParams()
 
-  useEffect(() => {
+  React.useEffect(() => {
     const GetProduct = async () => {
       const response = await reqGetProductByUnit(params.id)
-      console.log(response)
-
       dispatch(setData(response.data))
     }
     GetProduct()

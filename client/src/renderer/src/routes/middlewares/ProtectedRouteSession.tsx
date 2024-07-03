@@ -1,18 +1,14 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
 import { Navbar } from '@renderer/components/Navbar'
-import { setUnit } from '@renderer/features/currentUnitSlice'
 import { Navigate } from 'react-router-dom'
-import { Settings } from '@renderer/components/Settings'
-import { useParams } from 'react-router-dom'
 import { setMyUser } from '@renderer/features/userSlice'
 import { useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { reqAuthLoadProfileByToken, reqGetUnitById } from '@renderer/api/requests'
+import { reqAuthLoadProfileByToken } from '@renderer/api/requests'
 
 export const ProtectedRouteSession = () => {
   const location = useLocation()
-  const params = useParams()
   const token = localStorage.getItem('token')
   const dispatch = useDispatch()
 

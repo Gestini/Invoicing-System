@@ -18,7 +18,6 @@ const Router = () => {
   return (
     <Routes>
       <Route path='*' element={<h1>ERROR 404</h1>} />
-
       <Route element={<ProtectedRouteSession />}>
         <Route
           path='/'
@@ -34,7 +33,9 @@ const Router = () => {
           <Route path='/ventas/:id' element={<SalesTable />} />
           <Route path='/facturar/:id' element={<InvoicingTable />} />
           <Route path='/informes/:id' element={<Informes />} />
+          <Route path='/pedidos/:id' element={<></>} />
           <Route path='/proveedores/:id' element={<SupplierTable />} />
+          <Route path='/presupuestos/:id' element={<></>} />
         </Route>
       </Route>
       <Route element={<ProtectedRouteAuth />}>

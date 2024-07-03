@@ -1,41 +1,20 @@
-import React from 'react'
 import { BiX, BiPlus } from 'react-icons/bi'
 import { Tabs, Tab, Tooltip } from '@nextui-org/react'
+import { useDispatch, useSelector } from 'react-redux'
+import { closeTab, addTab, setCurrentTabId } from '@renderer/features/tabSlice'
+import React from 'react'
 
 export const TabProduct = () => {
-  const [selectedKey, setSelectedKey] = React.useState('1')
-  const [tabs, setTabs] = React.useState([
-    {
-      title: 'Pestaña',
-      id: '1',
-    },
-    {
-      title: 'Pestaña',
-      id: '2',
-    },
-    {
-      title: 'Pestaña',
-      id: '3',
-    },
-  ])
+  const dispatch = useDispatch()
+  const tabs = useSelector((state: any) => state.tabs)
+  const [current, setCurrent] = React.useState(tabs.currentTabId)
+  const handleAddTab = () => dispatch(addTab(null))
+  const handleCloseTab = (id: number) => dispatch(closeTab(id))
+  const handleSetCurrentTab = (id: string) => dispatch(setCurrentTabId(id))
 
-  const handleAddTab = () => {
-    const prev = [...tabs]
-    const newTab = {
-      title: 'Pestaña #' + (tabs.length + 1),
-      id: new Date().getTime().toString(),
-    }
-    prev.push(newTab)
-    setTabs(prev)
-    setSelectedKey(newTab.id)
-  }
-
-  const handleCloseTab = (index: number) => {
-    if (tabs.length == 1) return
-    const prev = [...tabs]
-    prev.splice(index, 1)
-    setTabs(prev)
-  }
+  React.useEffect(() => {
+    setCurrent(tabs.currentTabId)
+  }, [tabs])
 
   return (
     <div className='flex flex-wrap gap-4 items-center select-none'>
@@ -44,20 +23,20 @@ export const TabProduct = () => {
         aria-label='Tabs variants'
         color='secondary'
         className='flex gap-4 text-c-primary'
-        selectedKey={selectedKey}
+        selectedKey={current}
         onSelectionChange={(e: any) => {
-          setSelectedKey(e)
+          setCurrent(e)
         }}
       >
-        {tabs.map((item, index) => (
+        {tabs.data.map((item) => (
           <Tab
             key={item.id}
             title={
               <div className='flex items-center gap-2'>
                 {item.title}
-                <Tooltip content='Cerrar pestaña'>
+                <Tooltip content='Cerrar pestaña' delay={500}>
                   <div>
-                    <BiX onClick={() => handleCloseTab(index)} />
+                    <BiX onClick={() => handleCloseTab(item.id)} />
                   </div>
                 </Tooltip>
               </div>
@@ -65,7 +44,7 @@ export const TabProduct = () => {
           />
         ))}
       </Tabs>
-      <Tooltip content='Nuena pestaña'>
+      <Tooltip content='Nuena pestaña' delay={500}>
         <div>
           <BiPlus onClick={() => handleAddTab()} className='cursor-pointer' />
         </div>
