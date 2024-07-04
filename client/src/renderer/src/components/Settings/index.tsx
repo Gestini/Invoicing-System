@@ -16,7 +16,8 @@ export const Settings = () => {
 
   return (
     <div>
-      <SlOptions onClick={onOpen} className='text-gray-300 w-4 h-4 cursor-pointer bg-transparent' />
+      <SlOptions onClick={onOpen} className='text-gray-300 w-4 cursor-pointer bg-transparent' />
+
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} scrollBehavior={'inside'} backdrop='blur'>
         <ModalContent>
           <ModalHeader className='flex flex-col gap-1'>

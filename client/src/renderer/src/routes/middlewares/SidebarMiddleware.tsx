@@ -10,10 +10,13 @@ import './bodymain.scss'
 
 export const SidebarMiddleware = () => {
   const location = useLocation()
-  const name = location.pathname.replace(/[\/\d]/g, '')
+  const pathname = location.pathname;
+  const parts = pathname.split('/');
+  const name = parts[1]; 
+
+  const unit = useSelector((state: any) => state.currentUnit)
   const params = useParams()
   const dispatch = useDispatch()
-  const unit = useSelector((state: any) => state.currentUnit)
 
   React.useEffect(() => {
     const loadUserCompanies = async () => {
