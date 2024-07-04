@@ -7,7 +7,10 @@ type Product = (typeof products)[0]
 
 export const EditAmount = ({ product }: { product: Product }) => {
   const dispatch = useDispatch()
-  const handleClick = (handleType: string) => dispatch(editAmount({ id: product.id, handleType }))
+
+  const handleClick = (handleType: string) => {
+    dispatch(editAmount({ id: product.id, handleType }))
+  }
 
   return (
     <div className='flex gap-4 items-center content-center select-none'>

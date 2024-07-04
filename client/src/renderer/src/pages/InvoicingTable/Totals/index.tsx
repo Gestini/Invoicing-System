@@ -6,9 +6,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Card, CardHeader, CardBody, Divider } from '@nextui-org/react'
 
 export const Totals = () => {
+  const dispatch = useDispatch()
   const invoice = useSelector((state: any) => state.invoicing)
 
-  const dispatch = useDispatch()
   React.useEffect(() => {
     dispatch(setTotal(null))
   }, [invoice.data])

@@ -20,7 +20,6 @@ interface SidebarItemProps {
   path: string
 }
 
-
 const SidebarItem = ({ path, icon, text }: SidebarItemProps) => {
   return (
     <NavLink
@@ -39,7 +38,7 @@ const SidebarItem = ({ path, icon, text }: SidebarItemProps) => {
 
 export const Sidebar = () => {
   const unit = useSelector((state: any) => state.currentUnit)
-  console.log(unit?.id)
+
   const sidebarItems = [
     {
       path: `/general/${unit?.id}`,

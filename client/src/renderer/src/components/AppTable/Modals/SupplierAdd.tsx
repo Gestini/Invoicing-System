@@ -49,7 +49,7 @@ export const AddSupplierModal = ({ modal }) => {
       ...data,
       [e.target.name]: e.target.value,
     })
-    console.log(data)
+   
     handleValidation(e.target.name, e.target.value)
   }
 
