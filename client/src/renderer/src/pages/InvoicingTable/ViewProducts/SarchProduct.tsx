@@ -6,11 +6,13 @@ import { Autocomplete, AutocompleteItem } from '@nextui-org/react'
 
 export const SearchProduct = () => {
   const dispatch = useDispatch()
-  const handleAddProduct = (product: any) => dispatch(addProduct(product))
   const data = useSelector((state: any) => state.invoicing.data)
+  const handleAddProduct = (product: any) => dispatch(addProduct(product))
   const filteredData = products.filter(
     (product) => !data.some((item: any) => item.id == product.id),
   )
+
+  const handleChange = (e: any) => console.log(e)
 
   return (
     <Autocomplete
@@ -24,6 +26,7 @@ export const SearchProduct = () => {
           input: 'w-full',
         },
       }}
+      onInputChange={handleChange}
       listboxProps={{
         hideSelectedIcon: true,
         itemClasses: {
