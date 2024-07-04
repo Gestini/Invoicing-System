@@ -7,6 +7,9 @@ import { DeleteProduct } from './DeleteProduct'
 import { Table, TableRow, TableBody, TableCell, TableColumn, TableHeader } from '@nextui-org/react'
 
 export default function ViewProducts() {
+  const newInvoicing = useSelector((state: any) => state.newInvoicing)
+  const currentTab = newInvoicing.tabs.find((item) => item.id == newInvoicing.currentTabId)
+
   const products = useSelector((state: any) => state.invoicing)
   type Product = (typeof products.data)[0]
 
@@ -32,7 +35,7 @@ export default function ViewProducts() {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody items={products.data}>
+      <TableBody items={currentTab?.products || []}>
         {(item: Product) => (
           <TableRow key={item?.id}>
             {(columnKey) => (

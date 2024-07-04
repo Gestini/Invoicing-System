@@ -1,5 +1,5 @@
 import React from 'react'
-import { setTotal } from '@renderer/features/invoicingSlice'
+import { setTotal } from '@renderer/features/newInvoicing'
 import { BiDollar } from 'react-icons/bi'
 import { TotalsInputs } from './Totals'
 import { useDispatch, useSelector } from 'react-redux'
@@ -7,11 +7,13 @@ import { Card, CardHeader, CardBody, Divider } from '@nextui-org/react'
 
 export const Totals = () => {
   const dispatch = useDispatch()
-  const invoice = useSelector((state: any) => state.invoicing)
+  const newInvoicing = useSelector((state: any) => state.newInvoicing)
+
+  const currentTab = newInvoicing.tabs.find((item: any) => item.id == newInvoicing.currentTabId)
 
   React.useEffect(() => {
     dispatch(setTotal(null))
-  }, [invoice.data])
+  }, [currentTab])
 
   return (
     <Card className='max-w-[400px]'>
@@ -21,7 +23,7 @@ export const Totals = () => {
         </span>
         <div className='flex justify-center items-center gap-4'>
           <h3 className='text-default-500 text-3xl'>Total:</h3>
-          <span className='text-default-500 text-3xl font-medium'>{invoice.total}$</span>
+          <span className='text-default-500 text-3xl font-medium'>{currentTab?.total}$</span>
         </div>
       </CardHeader>
       <Divider />

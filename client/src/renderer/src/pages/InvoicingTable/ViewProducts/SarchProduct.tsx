@@ -1,18 +1,19 @@
 import { products } from './data'
 import { SearchIcon } from '@renderer/components/Icons/SearchIcon'
-import { addProduct } from '@renderer/features/invoicingSlice'
+import { addProduct } from '@renderer/features/newInvoicing'
 import { useDispatch, useSelector } from 'react-redux'
 import { Autocomplete, AutocompleteItem } from '@nextui-org/react'
 
 export const SearchProduct = () => {
   const dispatch = useDispatch()
-  const data = useSelector((state: any) => state.invoicing.data)
-  const handleAddProduct = (product: any) => dispatch(addProduct(product))
+  const newInvoicing = useSelector((state: any) => state.newInvoicing)
+  const currentTab = newInvoicing.tabs.find((item: any) => item.id == newInvoicing.currentTabId)
   const filteredData = products.filter(
-    (product) => !data.some((item: any) => item.id == product.id),
+    (product) => !currentTab?.products.some((item: any) => item.id == product.id),
   )
 
   const handleChange = (e: any) => console.log(e)
+  const handleAddProduct = (product: any) => dispatch(addProduct({ product }))
 
   return (
     <Autocomplete
