@@ -23,10 +23,11 @@ export const BottomContent = ({ pages, page, setPage, selectedKeys, filteredItem
       <Pagination
         isCompact
         showControls
-        showShadow
-        color='default'
+        classNames={{
+          cursor: 'bg-[--c-primary]',
+        }}
         page={page}
-        total={pages}
+        total={pages || 1}
         onChange={setPage}
       />
       <div className='hidden sm:flex w-[30%] justify-end gap-2'>

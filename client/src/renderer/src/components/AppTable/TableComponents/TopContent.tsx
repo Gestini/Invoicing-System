@@ -17,13 +17,13 @@ export const TopContent = ({
   columnsData,
   filterValue,
   statusFilter,
+  addItemModal,
+  editItemModal,
   visibleColumns,
   setRowsPerPage,
   setFilterValue,
   setStatusFilter,
   setVisibleColumns,
-  addItemModal,
-  editItemModal,
 }) => {
   const users = useSelector((state: any) => state.table.data)
   const onRowsPerPageChange = (e: any) => {
@@ -51,7 +51,6 @@ export const TopContent = ({
         <div className='flex justify-between gap-3 items-end'>
           <Input
             isClearable
-            variant='bordered'
             className='w-full text-c-gray'
             placeholder='Buscar por nombre...'
             startContent={<SearchIcon />}
@@ -59,13 +58,15 @@ export const TopContent = ({
             onClear={() => onClear()}
             onValueChange={onSearchChange}
           />
-
           <div className='flex gap-3'>
             <ExportTableDropdown />
             {columnsData?.statusOptions && (
               <Dropdown className='bg-c-card text-c-title'>
                 <DropdownTrigger className='sm:flex'>
-                  <Button endContent={<ChevronDownIcon className='text-small' />} variant='bordered'>
+                  <Button
+                    endContent={<ChevronDownIcon className='text-small' />}
+                    variant='bordered'
+                  >
                     Estado
                   </Button>
                 </DropdownTrigger>
@@ -88,7 +89,10 @@ export const TopContent = ({
             {columnsData?.columns && (
               <Dropdown>
                 <DropdownTrigger className='sm:flex'>
-                  <Button endContent={<ChevronDownIcon className='text-small' />} variant='bordered'>
+                  <Button
+                    endContent={<ChevronDownIcon className='text-small' />}
+                    variant='bordered'
+                  >
                     Columnas
                   </Button>
                 </DropdownTrigger>

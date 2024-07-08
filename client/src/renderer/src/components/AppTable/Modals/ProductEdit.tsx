@@ -56,7 +56,7 @@ export const EditProductModal = ({ modal }) => {
       ...data,
       [name]: intValues.includes(name) ? parseInt(value) : value,
     })
-   
+
     handleValidation(e.target.name, e.target.value)
   }
 
@@ -445,7 +445,15 @@ export const EditProductModal = ({ modal }) => {
                 />
               </div>
 
-              <Checkbox defaultSelected name='envasedproduct' onChange={handleChange}>
+              <Checkbox
+                defaultSelected
+                name='envasedproduct'
+                color='primary'
+                classNames={{
+                  wrapper: 'after:bg-[var(--c-primary)]',
+                }}
+                onChange={handleChange}
+              >
                 Producto envasado
               </Checkbox>
               <Input

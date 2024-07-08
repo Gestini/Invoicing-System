@@ -14,12 +14,16 @@ export const TabProduct = () => {
     <div className='flex flex-wrap gap-4 items-center select-none'>
       <Tabs
         variant={'underlined'}
-        aria-label='Tabs variants'
-        color='secondary'
-        className='flex gap-4 text-c-primary'
+        color='default'
+        className='flex gap-4'
+        classNames={{
+          tabList: 'gap-6 w-full relative rounded-none p-0',
+          cursor: 'w-full bg-[var(--c-primary)]',
+          tabContent: 'group-data-[selected=true]:text-[var(--c-primary)]',
+        }}
         selectedKey={newInvoicing.currentTabId}
       >
-        {newInvoicing.tabs.map((item: any) => (
+        {newInvoicing?.tabs?.map((item: any) => (
           <Tab
             key={item.id}
             title={
@@ -36,7 +40,7 @@ export const TabProduct = () => {
         ))}
       </Tabs>
       <Tooltip content='Nuena pestaña' delay={500}>
-        <div>
+        <div className='text-c-primary'>
           <BiPlus onClick={() => handleAddTab()} className='cursor-pointer' />
         </div>
       </Tooltip>

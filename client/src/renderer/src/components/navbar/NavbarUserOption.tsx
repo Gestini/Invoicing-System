@@ -16,7 +16,14 @@ export const NavbarUserOptions = () => {
     return (
       <Dropdown className='text-c-title bg-c-card'>
         <DropdownTrigger>
-          <Avatar isBordered as='button' color='default' size='sm' />
+          <Avatar
+            as='button'
+            size='sm'
+            classNames={{
+              icon: 'text-[#ffffff]',
+              base: 'bg-[--c-primary]',
+            }}
+          />
         </DropdownTrigger>
         <DropdownMenu aria-label='Profile Actions' variant='flat'>
           <DropdownItem key='profile' className='h-14 gap-2 text-c-title'>
@@ -41,12 +48,7 @@ export const NavbarUserOptions = () => {
           <Avatar isBordered as='button' color='secondary' size='sm' />
         </DropdownTrigger>
         <DropdownMenu aria-label='Profile Actions' variant='flat'>
-          <DropdownItem
-            key='logout'
-            // className='text-'
-            color='secondary'
-          // onClick={() => logOut()}
-          >
+          <DropdownItem key='logout' color='secondary'>
             Log in
           </DropdownItem>
         </DropdownMenu>

@@ -10,9 +10,9 @@ import './bodymain.scss'
 
 export const SidebarMiddleware = () => {
   const location = useLocation()
-  const pathname = location.pathname;
-  const parts = pathname.split('/');
-  const name = parts[1]; 
+  const pathname = location.pathname
+  const parts = pathname.split('/')
+  const name = parts[1]
 
   const unit = useSelector((state: any) => state.currentUnit)
   const params = useParams()
@@ -22,6 +22,10 @@ export const SidebarMiddleware = () => {
     const loadUserCompanies = async () => {
       try {
         const response = await reqGetUnitById(params.id)
+        if (response.data == null) {
+          window.location.href = '/'
+        }
+        console.log(response.data)
         dispatch(setUnit(response.data))
       } catch (error) {
         console.error('Error fetching business units:', error)
@@ -31,16 +35,16 @@ export const SidebarMiddleware = () => {
   }, [])
 
   return (
-    <>
-      <div className='ml-[55px] p-[20px] bodymain '>
-        <Sidebar />
-        {unit !== null && (
+    <div className='ml-[55px] p-[20px] bodymain'>
+      {unit !== null && (
+        <>
+          <Sidebar />
           <div className='w-full h-full flex flex-col gap-4'>
             <h5 className='text-4xl font-semibold text-c-primary'>{capitalize(name)}</h5>
             <Outlet />
           </div>
-        )}
-      </div>
-    </>
+        </>
+      )}
+    </div>
   )
 }

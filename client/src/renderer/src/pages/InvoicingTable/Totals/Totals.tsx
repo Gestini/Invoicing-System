@@ -6,12 +6,11 @@ import { editTotal, handleTotal, setTotal } from '@renderer/features/newInvoicin
 
 export const TotalsInputs = () => {
   const dispatch = useDispatch()
-
   const newInvoicing = useSelector((state: any) => state.newInvoicing)
-  const currentTab = newInvoicing.tabs.find((item) => item.id == newInvoicing.currentTabId)
+  const currentTab = newInvoicing?.tabs?.find((item: any) => item.id == newInvoicing.currentTabId)
 
   React.useEffect(() => {
-    dispatch(setTotal(null))
+    dispatch(setTotal())
   }, [newInvoicing])
 
   const handleChange = (e: any) => {
@@ -39,7 +38,16 @@ export const TotalsInputs = () => {
               <span className='text-default-400 text-small'>$</span>
             </div>
           }
-          endContent={<Checkbox isSelected={item.apply} onChange={() => handleActive(item.name)} />}
+          endContent={
+            <Checkbox
+              isSelected={item.apply}
+              onChange={() => handleActive(item.name)}
+              color='primary'
+              classNames={{
+                wrapper: 'after:bg-[var(--c-primary)]',
+              }}
+            />
+          }
         />
       ))}
     </div>

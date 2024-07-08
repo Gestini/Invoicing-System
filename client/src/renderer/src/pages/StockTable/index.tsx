@@ -66,15 +66,12 @@ export const StockTable = () => {
     action: tableActions.edit,
   }
 
-
   return (
     <AppTable
       columnsData={columnsData}
       tableActions={tableActions}
       addItemModal={<AddProductModal modal={newUserModal} />}
       editItemModal={<EditProductModal modal={editUserModal} />}
-      
-      
     />
   )
 }

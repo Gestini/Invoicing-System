@@ -7,7 +7,7 @@ import { Autocomplete, AutocompleteItem } from '@nextui-org/react'
 export const SearchProduct = () => {
   const dispatch = useDispatch()
   const newInvoicing = useSelector((state: any) => state.newInvoicing)
-  const currentTab = newInvoicing.tabs.find((item: any) => item.id == newInvoicing.currentTabId)
+  const currentTab = newInvoicing?.tabs?.find((item: any) => item.id == newInvoicing.currentTabId)
   const filteredData = products.filter(
     (product) => !currentTab?.products.some((item: any) => item.id == product.id),
   )
@@ -20,12 +20,15 @@ export const SearchProduct = () => {
       classNames={{
         listboxWrapper: 'max-h-[320px]',
         selectorButton: 'text-default-500',
+        popoverContent: 'bg-[red]',
+        listbox: 'bg-[red]',
       }}
       defaultItems={filteredData}
       inputProps={{
         classNames: {
           input: 'w-full',
         },
+        variant: 'flat',
       }}
       onInputChange={handleChange}
       listboxProps={{
@@ -49,8 +52,8 @@ export const SearchProduct = () => {
       popoverProps={{
         offset: 10,
         classNames: {
-          base: 'rounded-large',
-          content: 'p-1 border-small border-default-100 bg-background ',
+          base: 'rounded-large ',
+          content: 'p-1 border-small border-default-100 bg-[--c-card] ',
         },
       }}
       startContent={<SearchIcon />}
