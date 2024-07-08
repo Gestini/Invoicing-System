@@ -9,10 +9,10 @@ export const Totals = () => {
   const dispatch = useDispatch()
   const newInvoicing = useSelector((state: any) => state.newInvoicing)
 
-  const currentTab = newInvoicing.tabs.find((item: any) => item.id == newInvoicing.currentTabId)
+  const currentTab = newInvoicing?.tabs?.find((item: any) => item.id == newInvoicing.currentTabId)
 
   React.useEffect(() => {
-    dispatch(setTotal(null))
+    dispatch(setTotal())
   }, [currentTab])
 
   return (
