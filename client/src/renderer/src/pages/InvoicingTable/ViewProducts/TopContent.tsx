@@ -1,4 +1,34 @@
+import { Button } from '@nextui-org/react'
+import { useSelector } from 'react-redux'
 import { SearchProduct } from './SarchProduct'
+import { reqCreateInvoice } from '@renderer/api/requests'
+
 export const TopContent = () => {
-  return <SearchProduct />
+  const unit = useSelector((state: any) => state.currentUnit)
+  const newInvoicing = useSelector((state: any) => state.newInvoicing)
+  const currentTab = newInvoicing?.tabs?.find((item: any) => item.id === newInvoicing.currentTabId)
+
+  const onSubmmit = async () => {
+    try {
+      const response = await reqCreateInvoice({
+        ...currentTab.formData,
+        businessUnit: {
+          id: unit?.id,
+        },
+        total: currentTab.total,
+      })
+      console.log(response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  return (
+    <div className='flex gap-2'>
+      <SearchProduct />
+      <Button className='bg-c-primary' color='secondary' onPress={() => onSubmmit()}>
+        Crear factura
+      </Button>
+    </div>
+  )
 }
