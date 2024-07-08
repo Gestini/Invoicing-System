@@ -13,10 +13,10 @@ module.exports = {
       height: {
         'calc-sidebar': 'calc(100vh - 50px)',
         'seccio-general': 'calc(100vh - 45px)',
-        'seccion-tabla': 'calc(100vh - 125px)'
+        'seccion-tabla': 'calc(100vh - 125px)',
       },
       width: {
-        navbar: 'calc(100% - 50px)'
+        navbar: 'calc(100% - 50px)',
       },
       gridTemplateColumns: {
         // Define a custom grid template for auto-fill with minmax
