@@ -1,20 +1,33 @@
+import React from 'react'
 import toast from 'react-hot-toast'
 import { AppTable } from '@renderer/components/AppTable'
+import { useParams } from 'react-router-dom'
 import { AddItemModal } from '@renderer/components/AppTable/Modals/AddItem'
 import { EditItemModal } from '@renderer/components/AppTable/Modals/EditItem'
 import { useDispatch, useSelector } from 'react-redux'
 import { columnsData, modalInputs } from './data'
-import { addItem, editItem, deleteItem } from '@renderer/features/tableSlice'
+import { addItem, editItem, deleteItem, setData } from '@renderer/features/tableSlice'
+import { reqGetAllInvoicesByUnit, reqDeleteInvoice } from '@renderer/api/requests'
 
 export const SalesTable = () => {
   const dispatch = useDispatch()
+  const params = useParams()
   const table = useSelector((state: any) => state.table)
+
+  React.useEffect(() => {
+    const GetProduct = async () => {
+      const response = await reqGetAllInvoicesByUnit(params.id)
+      dispatch(setData(response.data))
+    }
+    GetProduct()
+  }, [])
 
   const tableActions = {
     delete: async (id: any) => {
       try {
         dispatch(deleteItem(id))
         toast.success('Venta eliminada correctamente')
+        await reqDeleteInvoice(id)
       } catch (error: any) {
         toast.error(error.response.data.message)
       }
