@@ -1,4 +1,5 @@
 import React from 'react'
+import { Tab } from '@renderer/features/newInvoicing'
 import { columns } from './data'
 import { EditAmount } from './EditAmount'
 import { TopContent } from './TopContent'
@@ -8,7 +9,7 @@ import { Table, TableRow, TableBody, TableCell, TableColumn, TableHeader } from 
 
 export default function ViewProducts() {
   const newInvoicing = useSelector((state: any) => state.newInvoicing)
-  const currentTab = newInvoicing.tabs.find((item) => item.id == newInvoicing.currentTabId)
+  const currentTab = newInvoicing?.tabs?.find((tab: Tab) => tab.id == newInvoicing.currentTabId)
 
   const products = useSelector((state: any) => state.invoicing)
   type Product = (typeof products.data)[0]
@@ -35,11 +36,13 @@ export default function ViewProducts() {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody items={currentTab?.products || []}>
+      <TableBody items={currentTab?.products || []} emptyContent={'Tabla de productos vacía'}>
         {(item: Product) => (
           <TableRow key={item?.id}>
             {(columnKey) => (
-              <TableCell className='border-b-small'>{renderCell(item, columnKey)}</TableCell>
+              <TableCell className='border-b border-divider'>
+                {renderCell(item, columnKey)}
+              </TableCell>
             )}
           </TableRow>
         )}
