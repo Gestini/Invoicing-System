@@ -20,4 +20,11 @@ export const reqGetProductByUnit = async (id: any) => api.get(`/products/by-busi
 /* Rutas proveedores */
 export const reqCreateSupplier = async (data: any) => api.post('/suppliers', data)
 export const reqGetSupplier = async (id: any) => api.get(`/suppliers/by-business-unit/${id}`)
-export const reqEditSupplier = async (id: any, data:any) => api.put(`/suppliers/${id}`, data)
+export const reqEditSupplier = async (id: any, data: any) => api.put(`/suppliers/${id}`, data)
+
+/* Rutas facturacion */
+export const reqGetInvoiceId = async (id: any) => api.get(`/invoicing/get/${id}`)
+export const reqCreateInvoice = async (data: any) => api.post('/invoicing/save', data)
+export const reqDeleteInvoice = async (id: any) => api.delete(`/invoicing/delete/${id}`)
+export const reqUpdateInvoice = async (id: any, data: any) => api.put(`/invoicing/${id}`, data)
+export const reqGetAllInvoicesByUnit = async (id: any) => api.get(`/invoicing/get-by-unit/${id}`)
