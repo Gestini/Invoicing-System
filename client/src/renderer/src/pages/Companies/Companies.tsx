@@ -6,7 +6,6 @@ import {
   Dropdown,
   DropdownItem,
   DropdownMenu,
-  useDisclosure,
   DropdownTrigger,
 } from '@nextui-org/react'
 import { setUnits } from '@renderer/features/unitsSlice'
@@ -14,12 +13,12 @@ import MultiStepForm from '@renderer/components/CreateCompanyForm'
 import { reqGetUnitByOwner } from '@renderer/api/requests'
 import { productStatusOptions } from '@renderer/components/Tables/ProductTable/data'
 import { useDispatch, useSelector } from 'react-redux'
-import { ChevronDownIcon, PlusIcon, SearchIcon } from '@renderer/components/Icons'
+import { ChevronDownIcon, SearchIcon } from '@renderer/components/Icons'
 import './unidadeseccion.scss'
 
 const Companies = () => {
   const companies = useSelector((state: any) => state.units.data)
-  const { isOpen, onOpen, onClose } = useDisclosure()
+
   const dispatch = useDispatch()
 
   React.useEffect(() => {
@@ -74,15 +73,7 @@ const Companies = () => {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button
-              className='bg-c-primary text-c-title'
-              onClick={onOpen}
-              endContent={<PlusIcon />}
-              size='sm'
-            >
-              Add New
-            </Button>
-            <MultiStepForm isOpen={isOpen} onClose={onClose} />
+            <MultiStepForm />
           </div>
         </div>
       </div>
