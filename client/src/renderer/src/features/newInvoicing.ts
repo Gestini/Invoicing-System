@@ -1,42 +1,72 @@
 import { totalApply } from '@renderer/pages/InvoicingTable/ViewProducts/data'
 import { createSlice } from '@reduxjs/toolkit'
 
+interface TotalApplyItem {
+  name: string
+  value: number
+  apply: boolean
+}
+
+export interface Tab {
+  id: string
+  total: number
+  title: string
+  formData: Record<string, any>
+  products: any[]
+  totalApply: TotalApplyItem[]
+}
+
+interface NewInvoicingState {
+  tabs: Tab[]
+  currentTabId: string
+}
+
+const initialState: NewInvoicingState = {
+  tabs: [
+    {
+      id: '1',
+      total: 0.0,
+      title: 'Pestaña #1',
+      formData: {},
+      products: [],
+      totalApply: totalApply as TotalApplyItem[],
+    },
+    {
+      id: '2',
+      total: 0.0,
+      title: 'Pestaña #2',
+      formData: {},
+      products: [],
+      totalApply: totalApply as TotalApplyItem[],
+    },
+    {
+      id: '3',
+      total: 0.0,
+      title: 'Pestaña #3',
+      formData: {},
+      products: [],
+      totalApply: totalApply as TotalApplyItem[],
+    },
+  ],
+  currentTabId: '1',
+}
+
 export const newInvoicing = createSlice({
   name: 'newInvoicing',
-  initialState: {
-    tabs: <any[]>[
-      {
-        id: '1',
-        total: 0.0,
-        title: 'Pestaña #1',
-        products: <any[]>[],
-        totalApply,
-      },
-      {
-        id: '2',
-        total: 0.0,
-        title: 'Pestaña #2',
-        products: <any[]>[],
-        totalApply,
-      },
-      {
-        id: '3',
-        total: 0.0,
-        title: 'Pestaña #3',
-        products: <any[]>[],
-        totalApply,
-      },
-    ],
-    currentTabId: '1',
-  },
+  initialState,
   reducers: {
-    addTab: (state, _) => {
-      const obj = {
+    setInvoiceData: (state, action) => {
+      return { ...state, ...action.payload }
+    },
+    clearInvoiceData: () => initialState,
+    addTab: (state) => {
+      const obj: Tab = {
         id: new Date().getTime().toString(),
         total: 0.0,
-        title: 'Pestaña #' + (state.tabs.length + 1),
-        products: <any[]>[],
-        totalApply,
+        title: `Pestaña #${state.tabs.length + 1}`,
+        formData: {},
+        products: [],
+        totalApply: totalApply as TotalApplyItem[],
       }
       state.tabs.push(obj)
       state.currentTabId = obj.id
@@ -44,18 +74,14 @@ export const newInvoicing = createSlice({
     closeTab: (state, action) => {
       const id = action.payload
 
-      const index = state.tabs.findIndex((item) => item.id == id)
-      if (index == -1) return
-      if (state.tabs.length == 1) return
+      const index = state.tabs.findIndex((item) => item.id === id)
+      if (index === -1 || state.tabs.length === 1) return
 
-      /* La pestaña borrada no es el seleccionado y tampoco el ultimo */
-      if (state.currentTabId !== id && index == state.tabs.length - 1) {
+      if (state.currentTabId !== id && index === state.tabs.length - 1) {
         state.currentTabId = state.currentTabId
-      } else if (id == state.tabs[state.tabs.length - 1].id) {
-        /* La pestaña borrada es la ultima */
+      } else if (id === state.tabs[state.tabs.length - 1].id) {
         state.currentTabId = state.tabs[state.tabs.length - 2].id
       } else if (id !== state.tabs[state.tabs.length - 1].id && id !== state.currentTabId) {
-        /* La pestaba borrada no es la ultima y tampoco la seleccionada */
         state.currentTabId = state.currentTabId
       } else {
         state.currentTabId = state.tabs[state.tabs.length - 1].id
@@ -66,23 +92,19 @@ export const newInvoicing = createSlice({
     setCurrentTabId: (state, action) => {
       state.currentTabId = action.payload
     },
-    setTotal: (state, _) => {
+    setTotal: (state) => {
       let subtotal = 0.0
       let applyAmount = 0.0
 
-      /* Obtener pestaña actual */
-      const tabIndex = state.tabs.findIndex((item) => item.id == state.currentTabId)
-      if (tabIndex == -1) return
+      const tabIndex = state.tabs.findIndex((item) => item.id === state.currentTabId)
+      if (tabIndex === -1) return
 
-      /* Filtrar las condiciones establecidas para el total */
-      const apply = state.tabs[tabIndex].totalApply.filter((item: any) => item.apply)
+      const apply = state.tabs[tabIndex].totalApply.filter((item) => item.apply)
 
-      /* Sumatoria de las condiciones */
       for (let i = 0; i < apply.length; i++) {
         applyAmount += apply[i].value || 0.0
       }
 
-      /* Sumatoria del total */
       for (let i = 0; i < state.tabs[tabIndex].products.length; i++) {
         subtotal +=
           state.tabs[tabIndex].products[i].price * state.tabs[tabIndex].products[i].quantity
@@ -93,58 +115,69 @@ export const newInvoicing = createSlice({
     editTotal: (state, action) => {
       const { name, value } = action.payload
 
-      const tabIndex = state.tabs.findIndex((item) => item.id == state.currentTabId)
-      if (tabIndex == -1) return
+      const tabIndex = state.tabs.findIndex((item) => item.id === state.currentTabId)
+      if (tabIndex === -1) return
 
-      const index = state.tabs[tabIndex].totalApply.findIndex((item) => item.name == name)
-      if (index == -1) return
+      const index = state.tabs[tabIndex].totalApply.findIndex((item) => item.name === name)
+      if (index === -1) return
 
       state.tabs[tabIndex].totalApply[index].value = value
     },
     handleTotal: (state, action) => {
       const name = action.payload
 
-      const tabIndex = state.tabs.findIndex((item) => item.id == state.currentTabId)
-      if (tabIndex == -1) return
+      const tabIndex = state.tabs.findIndex((item) => item.id === state.currentTabId)
+      if (tabIndex === -1) return
 
-      const index = state.tabs[tabIndex].totalApply.findIndex((item) => item.name == name)
-      if (index == -1) return
+      const index = state.tabs[tabIndex].totalApply.findIndex((item) => item.name === name)
+      if (index === -1) return
 
       state.tabs[tabIndex].totalApply[index].apply = !state.tabs[tabIndex].totalApply[index].apply
     },
     addProduct: (state, action) => {
       const { product } = action.payload
 
-      const tabIndex = state.tabs.findIndex((item) => item.id == state.currentTabId)
-      if (tabIndex == -1) return
+      const tabIndex = state.tabs.findIndex((item) => item.id === state.currentTabId)
+      if (tabIndex === -1) return
 
       state.tabs[tabIndex].products.push(product)
     },
     deleteProduct: (state, action) => {
       const { id } = action.payload
 
-      const tabIndex = state.tabs.findIndex((item) => item.id == state.currentTabId)
-      if (tabIndex == -1) return
+      const tabIndex = state.tabs.findIndex((item) => item.id === state.currentTabId)
+      if (tabIndex === -1) return
 
-      const productIndex = state.tabs[tabIndex].products.findIndex((item) => item.id == id)
-      if (productIndex == -1) return
+      const productIndex = state.tabs[tabIndex].products.findIndex((item) => item.id === id)
+      if (productIndex === -1) return
 
       state.tabs[tabIndex].products.splice(productIndex, 1)
     },
     editAmount: (state, action) => {
       const { id, handleType } = action.payload
 
-      const tabIndex = state.tabs.findIndex((item) => item.id == state.currentTabId)
-      if (tabIndex == -1) return
+      const tabIndex = state.tabs.findIndex((item) => item.id === state.currentTabId)
+      if (tabIndex === -1) return
 
-      const productIndex = state.tabs[tabIndex].products.findIndex((item) => item.id == id)
-      if (productIndex == -1) return
+      const productIndex = state.tabs[tabIndex].products.findIndex((item) => item.id === id)
+      if (productIndex === -1) return
 
-      if (handleType == 'sum') {
+      if (handleType === 'sum') {
         state.tabs[tabIndex].products[productIndex].quantity += 1
       } else {
-        if (state.tabs[tabIndex].products[productIndex].quantity == 0) return
+        if (state.tabs[tabIndex].products[productIndex].quantity === 0) return
         state.tabs[tabIndex].products[productIndex].quantity -= 1
+      }
+    },
+    setFormData: (state, action) => {
+      const { name, value } = action.payload
+
+      const tabIndex = state.tabs.findIndex((item) => item.id === state.currentTabId)
+      if (tabIndex === -1) return
+
+      state.tabs[tabIndex].formData = {
+        ...state.tabs[tabIndex].formData,
+        [name]: value,
       }
     },
   },
@@ -158,6 +191,9 @@ export const {
   addProduct,
   editAmount,
   handleTotal,
+  setFormData,
   deleteProduct,
+  setInvoiceData,
   setCurrentTabId,
+  clearInvoiceData,
 } = newInvoicing.actions
