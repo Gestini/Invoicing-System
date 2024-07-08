@@ -42,13 +42,23 @@ export const AppTable = ({ columnsData, tableActions, addItemModal, editItemModa
   }, [visibleColumns])
 
   const hasSearchFilter = Boolean(filterValue)
+
   const filteredItems = React.useMemo(() => {
     let filteredUsers = [...users]
 
+    const filtroPersonalizado = (item: any, valorBusqueda: string) => {
+      for (const campo in item) {
+        if (typeof item[campo] == 'string') {
+          if (item[campo].toLowerCase().includes(valorBusqueda.toLowerCase())) {
+            return true
+          }
+        }
+      }
+      return false
+    }
+
     if (hasSearchFilter) {
-      filteredUsers = filteredUsers.filter((user) =>
-        user.name.toLowerCase().includes(filterValue.toLowerCase()),
-      )
+      filteredUsers = filteredUsers.filter((item) => filtroPersonalizado(item, filterValue))
     }
 
     if (
@@ -86,7 +96,6 @@ export const AppTable = ({ columnsData, tableActions, addItemModal, editItemModa
   return (
     <div className='max-w-table'>
       <Table
-        isStriped
         aria-label='Example table with custom cells, pagination and sorting'
         isHeaderSticky
         bottomContent={
@@ -100,7 +109,6 @@ export const AppTable = ({ columnsData, tableActions, addItemModal, editItemModa
         }
         bottomContentPlacement='outside'
         selectedKeys={selectedKeys}
-        selectionMode='multiple'
         sortDescriptor={sortDescriptor}
         topContent={
           <TopContent
@@ -136,7 +144,7 @@ export const AppTable = ({ columnsData, tableActions, addItemModal, editItemModa
           {(item) => (
             <TableRow key={item.id}>
               {(columnKey) => (
-                <TableCell className='default-text-color  '>
+                <TableCell className='default-text-color'>
                   {RenderCell(item, columnKey, handleDeleteItem, handleSetCurrentIdEdit)}
                 </TableCell>
               )}
