@@ -10,9 +10,10 @@ import {
 } from 'react-icons/bi'
 import { NavLink } from 'react-router-dom'
 import { Settings } from '@renderer/components/Settings'
-import { ReactNode } from 'react'
+import { ReactNode, useState } from 'react'
 import { IoGridOutline } from 'react-icons/io5'
 import { useSelector } from 'react-redux'
+import { Accordion } from '@nextui-org/react'
 
 interface SidebarItemProps {
   icon: ReactNode
@@ -22,22 +23,24 @@ interface SidebarItemProps {
 
 const SidebarItem = ({ path, icon, text }: SidebarItemProps) => {
   return (
-    <NavLink
-      to={path}
-      className={({ isActive }) =>
-        `text-white rounded-md relative flex items-center py-3 px-3 font-medium cursor-pointer flex-col transition-colors group ${isActive ? 'text-c-primary bg-c-primary-route-active' : 'hover:bg-c-primary-route-hover text-gray-600'} `
-      }
-    >
-      {icon}
-      <span className='text-[10px] bg-c-primary rounded-sm absolute p-1 top-2 left-0 opacity-0 group-hover:left-12 group-hover:opacity-100 transition-all duration-300'>
-        {text}
-      </span>
-    </NavLink>
+      <NavLink
+        to={path}
+        className={({ isActive }) =>
+          `text-white rounded-md relative flex items-center py-3 px-3 font-medium cursor-pointer flex-col transition-colors group ${isActive ? 'text-c-primary bg-c-primary-route-active' : 'hover:bg-c-primary-route-hover text-gray-600'
+          } `
+        }
+      >
+        {icon}
+        <span className='text-[10px] bg-c-primary rounded-sm absolute p-1 top-2 left-0 opacity-0 group-hover:left-12 group-hover:opacity-100 transition-all duration-300'>
+          {text}
+        </span>
+      </NavLink>
   )
 }
 
 export const Sidebar = () => {
   const unit = useSelector((state: any) => state.currentUnit)
+  const [isExpanded, setIsExpanded] = useState(false)
 
   const sidebarItems = [
     {
@@ -82,9 +85,19 @@ export const Sidebar = () => {
     },
   ]
 
+  const toggleSidebar = () => {
+    setIsExpanded(!isExpanded)
+  }
+
   return (
-    <nav className='flex w-[55px] fixed z-10 left-0 top-0 h-screen items-center py-4 flex-col justify-between bg-c-primary-sidebar '>
-      <IoGridOutline className='text-white w-5 h-5 cursor-pointer' />
+    <nav
+      className={`flex fixed z-10 left-0 top-0 h-screen items-center py-4 flex-col justify-between bg-c-primary-sidebar transition-all duration-300 ${isExpanded ? 'w-[250px]' : 'w-[55px]'
+        }`}
+    >
+      <IoGridOutline
+        className={`text-white w-5 h-5 cursor-pointer transition-transform duration-300 ${isExpanded ? 'rotate-180' : 'rotate-0'}`}
+        onClick={toggleSidebar}
+      />
       <div className='flex flex-col gap-[1px]'>
         {sidebarItems.map((item, index) => (
           <SidebarItem key={index} path={item.path} icon={item.icon} text={item.text} />

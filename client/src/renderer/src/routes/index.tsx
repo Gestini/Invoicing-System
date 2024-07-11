@@ -4,6 +4,7 @@ import Informes from '@renderer/pages/Informes'
 import Register from '@renderer/pages/Auth/Register'
 
 import Companies from '@renderer/pages/Companies/Companies'
+import Prueba from '@renderer/pages/Prueba'
 import { SalesTable } from '@renderer/pages/SalesTable'
 import { StockTable } from '@renderer/pages/StockTable'
 import { InvoicingTable } from '@renderer/pages/InvoicingTable'
@@ -19,14 +20,9 @@ const Router = () => {
     <Routes>
       <Route path='*' element={<h1>ERROR 404</h1>} />
       <Route element={<ProtectedRouteSession />}>
-        <Route
-          path='/'
-          element={
-            <div className='unidadeseccion'>
-              <Companies />
-            </div>
-          }
-        />
+        <Route path='/' element={<div className='unidadeseccion'><Companies /></div>} />
+        <Route path='/prueba' element={<Prueba />} />
+
         <Route element={<SidebarMiddleware />}>
           <Route path='/general/:id' element={<Home />} />
           <Route path='/stock/:id' element={<StockTable />} />

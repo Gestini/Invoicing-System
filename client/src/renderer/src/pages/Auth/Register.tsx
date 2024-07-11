@@ -84,7 +84,8 @@ const Register = () => {
     setErrors(newErrors)
   }
 
-  const handleRegister = async () => {
+  const handleRegister = async (e) => {
+    e.preventDefault()
     let valid = true
     const newErrors = {
       email: '',
@@ -200,12 +201,12 @@ const Register = () => {
   ]
 
   return (
-    <AuthBody>
+    <AuthBody onClick={(e) => handleRegister(e)}>
       <AuthHeader title='Register' description='Register a new account' />
       <ContinueWithGoogle />
       <Or />
       <AuthForm inputs={inputs} handleChange={handleChange} errors={errors} />
-      <AuthSubmit label='Register' onClick={() => handleRegister()} />
+      <AuthSubmit label='Register' />
       <AuthFooter href='/#/login' label='You registered yet?' hrefLabel='Click here' />
     </AuthBody>
   )

@@ -99,9 +99,8 @@ const MultiStepForm = () => {
               <div className='flex justify-center items-center'>
                 <img className='w-8 h-8 mb-4' src={Logo} alt='logo' />
               </div>
-              <h1 className='font-bold mb-2 text-gray-300 text-2xl'>
-                Llena los detalles de tu empresa para empezar a administrar ventas, inventario,
-                facturación y más.
+              <h1 className='font-bold mb-2 text-gray-500 text-2xl'>
+                Completa los datos de tu empresa para empezar a administrar tu unidad de negocio
               </h1>
             </div>
             <div>

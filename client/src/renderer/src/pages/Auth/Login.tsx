@@ -61,7 +61,8 @@ const Login = () => {
     setErrors(newErrors)
   }
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault()
     const newErrors = {
       username: '',
       password: '',
@@ -115,13 +116,13 @@ const Login = () => {
   ]
 
   return (
-    <AuthBody>
+    <AuthBody onClick={(e) => handleLogin(e)} >
       <AuthHeader title='Sign In' description='Enter your email and password to sign in!' />
       <ContinueWithGoogle />
       <Or />
       <AuthForm inputs={inputs} handleChange={handleChange} errors={errors} />
       <AuthLoginOptions />
-      <AuthSubmit label='Sign In' onClick={() => handleLogin()} />
+      <AuthSubmit label='Sign In' />
       <AuthFooter href='/#/register' label='Not registered yet?' hrefLabel='Create an Account' />
     </AuthBody>
   )
