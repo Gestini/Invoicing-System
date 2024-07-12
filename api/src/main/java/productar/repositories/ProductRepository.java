@@ -21,4 +21,7 @@ public interface ProductRepository extends JpaRepository<ProductModel, Long> {
     List<ProductModel> findByNameAndBusinessUnitId(@Param("name") String name, @Param("businessUnitId") Long businessUnitId);
 
     List<ProductModel> findByReferenceCode(String referenceCode);
+
+    List<ProductModel> findByDepositUnitId(Long depositUnitId);
+
 }

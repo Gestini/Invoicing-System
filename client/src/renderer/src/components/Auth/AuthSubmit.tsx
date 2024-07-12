@@ -1,10 +1,10 @@
 import { Button } from '@nextui-org/react'
 
-export const AuthSubmit = ({ onClick, label }) => {
+export const AuthSubmit = ({ label }) => {
   return (
     <Button
       color='secondary'
-      onClick={() => onClick()}
+      type='submit'
       className='buttonsubmitsesion bg-[#422afb] mt-[10px]  mb-[24px]'
     >
       {label}
