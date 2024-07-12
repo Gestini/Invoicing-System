@@ -5,7 +5,7 @@ import { closeTab, addTab, setCurrentTabId } from '@renderer/features/newInvoici
 
 export const TabProduct = () => {
   const dispatch = useDispatch()
-  const handleAddTab = () => dispatch(addTab(null))
+  const handleAddTab = () => dispatch(addTab())
   const handleCloseTab = (id: number) => dispatch(closeTab(id))
   const handleSetCurrentTab = (id: string) => dispatch(setCurrentTabId(id))
   const newInvoicing = useSelector((state: any) => state.newInvoicing)
