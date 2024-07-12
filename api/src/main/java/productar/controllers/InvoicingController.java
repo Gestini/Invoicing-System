@@ -25,8 +25,7 @@ public class InvoicingController {
     private InvoicingService invoicingService;
 
     @PostMapping("/save")
-    public ResponseEntity<InvoicingModel> saveInvoice(@RequestBody InvoicingModel data) {
-        System.out.println(data.getBusinessUnit());
+    public ResponseEntity<String> saveInvoice(@RequestBody InvoicingModel data) {
         return invoicingService.saveInvoicing(data);
     }
 
