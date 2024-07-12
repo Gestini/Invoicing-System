@@ -129,6 +129,11 @@ public class ProductService {
         return productRepository.findByName(name);
     }
 
+    // Método para obtener productos por nombre
+    public List<ProductModel> findByNameAndBusinessUnitId(String name, Long id) {
+        return productRepository.findByNameAndBusinessUnitId(name, id);
+    }
+
     // Método para obtener productos por código de referencia
     public List<ProductModel> getProductsByReferenceCode(String referenceCode) {
         return productRepository.findByReferenceCode(referenceCode);

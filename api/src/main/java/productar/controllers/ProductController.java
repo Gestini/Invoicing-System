@@ -78,6 +78,13 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
 
+    @GetMapping("/search/{name}/{id}")
+    public ResponseEntity<List<ProductModel>> findByNameAndBusinessUnitId(@PathVariable("name") String name,
+            @PathVariable("id") Long id) {
+        List<ProductModel> products = productService.findByNameAndBusinessUnitId(name, id);
+        return ResponseEntity.ok(products);
+    }
+
     @GetMapping("/by-reference-code/{referenceCode}")
     public ResponseEntity<List<ProductModel>> getProductsByReferenceCode(
             @PathVariable("referenceCode") String referenceCode) {
