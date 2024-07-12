@@ -32,6 +32,15 @@ public class ProductResponseDTO {
     private Boolean packageProduct;
     private Integer quantityPerPackage;
     private Long businessUnitId;
+    private Long depositUnitId;
+
+    public Long getDepositUnitId() {
+        return depositUnitId;
+    }
+
+    public void setDepositUnitId(Long depositUnitId) {
+        this.depositUnitId = depositUnitId;
+    }
 
     public Long getBusinessUnitId() {
         return businessUnitId;

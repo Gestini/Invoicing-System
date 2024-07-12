@@ -115,6 +115,7 @@ public class ProductService {
         dto.setPackageProduct(product.getPackageProduct());
         dto.setQuantityPerPackage(product.getQuantityPerPackage());
         dto.setBusinessUnitId(product.getBusinessUnit().getId());
+        dto.setDepositUnitId(product.getDepositUnit().getId());
 
         return dto;
     }
@@ -137,5 +138,12 @@ public class ProductService {
     public void deleteProductsByBusinessUnit(Long businessUnitId) {
         List<ProductModel> products = productRepository.findByBusinessUnitId(businessUnitId);
         products.forEach(product -> productRepository.deleteById(product.getId()));
+    }
+
+    public List<ProductResponseDTO> getProductsByDepositUnit(Long depositUnitId) {
+        List<ProductModel> products = productRepository.findByDepositUnitId(depositUnitId);
+        return products.stream()
+                .map(this::convertToResponseDTO)
+                .collect(Collectors.toList());
     }
 }

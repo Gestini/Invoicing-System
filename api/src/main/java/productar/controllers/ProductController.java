@@ -84,4 +84,10 @@ public class ProductController {
         List<ProductModel> products = productService.getProductsByReferenceCode(referenceCode);
         return ResponseEntity.ok(products);
     }
+
+    @GetMapping("/depositunit/{depositUnitId}")
+    public ResponseEntity<List<ProductResponseDTO>> getProductsByDepositUnit(@PathVariable Long depositUnitId) {
+        List<ProductResponseDTO> products = productService.getProductsByDepositUnit(depositUnitId);
+        return new ResponseEntity<>(products, HttpStatus.OK);
+    }
 }
