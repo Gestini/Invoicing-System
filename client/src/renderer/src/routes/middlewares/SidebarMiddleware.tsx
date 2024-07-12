@@ -25,7 +25,6 @@ export const SidebarMiddleware = () => {
         if (response.data == null) {
           window.location.href = '/'
         }
-        console.log(response.data)
         dispatch(setUnit(response.data))
       } catch (error) {
         console.error('Error fetching business units:', error)

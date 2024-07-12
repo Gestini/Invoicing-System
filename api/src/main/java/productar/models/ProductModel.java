@@ -97,6 +97,11 @@ public class ProductModel {
     @NotNull(message = "La unidad de negocio no puede ser nula")
     private BusinessUnitsModel businessUnit;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "deposit_unit_id", nullable = false)
+    @NotNull(message = "La unidad de depósito no puede ser nula")
+    private DepositUnitsModel depositUnit;
+
     @Column(name = "price_policy")
     private String pricePolicy;
 
@@ -123,6 +128,14 @@ public class ProductModel {
 
     @Column(name = "quantity_per_package")
     private Integer quantityPerPackage;
+
+    public DepositUnitsModel getDepositUnit() {
+        return depositUnit;
+    }
+
+    public void setDepositUnit(DepositUnitsModel depositUnit) {
+        this.depositUnit = depositUnit;
+    }
 
     public String getCodigo1() {
         return codigo1;

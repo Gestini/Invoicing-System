@@ -78,10 +78,23 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
 
+    @GetMapping("/search/{name}/{id}")
+    public ResponseEntity<List<ProductModel>> findByNameAndBusinessUnitId(@PathVariable("name") String name,
+            @PathVariable("id") Long id) {
+        List<ProductModel> products = productService.findByNameAndBusinessUnitId(name, id);
+        return ResponseEntity.ok(products);
+    }
+
     @GetMapping("/by-reference-code/{referenceCode}")
     public ResponseEntity<List<ProductModel>> getProductsByReferenceCode(
             @PathVariable("referenceCode") String referenceCode) {
         List<ProductModel> products = productService.getProductsByReferenceCode(referenceCode);
         return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/depositunit/{depositUnitId}")
+    public ResponseEntity<List<ProductResponseDTO>> getProductsByDepositUnit(@PathVariable Long depositUnitId) {
+        List<ProductResponseDTO> products = productService.getProductsByDepositUnit(depositUnitId);
+        return new ResponseEntity<>(products, HttpStatus.OK);
     }
 }

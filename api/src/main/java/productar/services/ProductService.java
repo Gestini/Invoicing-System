@@ -115,6 +115,7 @@ public class ProductService {
         dto.setPackageProduct(product.getPackageProduct());
         dto.setQuantityPerPackage(product.getQuantityPerPackage());
         dto.setBusinessUnitId(product.getBusinessUnit().getId());
+        dto.setDepositUnitId(product.getDepositUnit().getId());
 
         return dto;
     }
@@ -129,6 +130,11 @@ public class ProductService {
         return productRepository.findByName(name);
     }
 
+    // Método para obtener productos por nombre
+    public List<ProductModel> findByNameAndBusinessUnitId(String name, Long id) {
+        return productRepository.findByNameAndBusinessUnitId(name, id);
+    }
+
     // Método para obtener productos por código de referencia
     public List<ProductModel> getProductsByReferenceCode(String referenceCode) {
         return productRepository.findByReferenceCode(referenceCode);
@@ -137,5 +143,12 @@ public class ProductService {
     public void deleteProductsByBusinessUnit(Long businessUnitId) {
         List<ProductModel> products = productRepository.findByBusinessUnitId(businessUnitId);
         products.forEach(product -> productRepository.deleteById(product.getId()));
+    }
+
+    public List<ProductResponseDTO> getProductsByDepositUnit(Long depositUnitId) {
+        List<ProductModel> products = productRepository.findByDepositUnitId(depositUnitId);
+        return products.stream()
+                .map(this::convertToResponseDTO)
+                .collect(Collectors.toList());
     }
 }

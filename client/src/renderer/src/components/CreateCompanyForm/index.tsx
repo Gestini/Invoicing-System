@@ -111,9 +111,8 @@ const MultiStepForm = () => {
                   <input type='file' className='hidden' accept='image/*' />
                 </label>
               </div>
-              {fieldConfig.map((field) => {
+              {fieldConfig.map((field, index) => {
                 const commonProps = {
-                  key: field.name,
                   name: field.name,
                   value: data[field.name],
                   onChange: handleInputChange,
@@ -125,9 +124,16 @@ const MultiStepForm = () => {
                 }
 
                 return field.type === 'textarea' ? (
-                  <Textarea {...commonProps} variant='bordered' label={field.label} radius='sm' />
+                  <Textarea
+                    key={index}
+                    {...commonProps}
+                    variant='bordered'
+                    label={field.label}
+                    radius='sm'
+                  />
                 ) : (
                   <Input
+                    key={index}
                     {...commonProps}
                     type={field.type}
                     variant='bordered'

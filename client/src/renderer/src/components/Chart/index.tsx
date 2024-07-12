@@ -1,7 +1,7 @@
 import React from 'react'
 import { PieChart } from 'react-minimal-pie-chart'
 import { useSelector } from 'react-redux'
-import { ColorType, createChart } from 'lightweight-charts'
+import { ChartComponent } from './ChartComponent'
 import { Card, CardBody, CardHeader } from '@nextui-org/react'
 
 // Función para convertir un color hex a HSL
@@ -54,57 +54,9 @@ const generateColorVariants = (mainColor: string, count: number): string[] => {
   return variants
 }
 
-const ChartComponent = ({ data, colors }) => {
-  const chartContainerRef = React.useRef<HTMLDivElement | null>(null)
-
-  React.useEffect(() => {
-    if (!chartContainerRef.current) return
-
-    const handleResize = () => {
-      if (chartContainerRef.current) {
-        chart.applyOptions({ width: chartContainerRef.current.clientWidth })
-      }
-    }
-
-    const chart = createChart(chartContainerRef.current, {
-      layout: {
-        background: { type: ColorType.Solid, color: colors.backgroundColor },
-        textColor: colors.textColor,
-      },
-      width: chartContainerRef.current.clientWidth,
-      height: 300,
-      grid: {
-        vertLines: {
-          color: 'transparent',
-        },
-        horzLines: {
-          color: 'transparent',
-        },
-      },
-    })
-    chart.timeScale().fitContent()
-
-    const newSeries = chart.addAreaSeries({
-      lineColor: colors.lineColor,
-      topColor: colors.areaTopColor,
-      bottomColor: colors.areaBottomColor,
-    })
-    newSeries.setData(data)
-
-    window.addEventListener('resize', handleResize)
-
-    return () => {
-      window.removeEventListener('resize', handleResize)
-      chart.remove()
-    }
-  }, [data, colors])
-
-  return <div ref={chartContainerRef} />
-}
-
 export const GraphView = () => {
-  const [mainColor, setMainColor] = React.useState('')
-  const [parsedMainColor, setParsedMainColor] = React.useState('')
+  const [mainColor, setMainColor] = React.useState('transparent')
+  const [parsedMainColor, setParsedMainColor] = React.useState('transparent')
   const currentTheme = useSelector((state: any) => state.currentTheme)
 
   React.useEffect(() => {

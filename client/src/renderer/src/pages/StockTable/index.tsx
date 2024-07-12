@@ -15,6 +15,7 @@ import { SlOptions } from 'react-icons/sl'
 import { ChevronDownIcon, PlusIcon, SearchIcon } from '@renderer/components/Icons';
 import MultiStepForm from '@renderer/components/CreateCompanyForm';
 import { GoArrowSwitch } from "react-icons/go";
+import CreateWarehouse from './CreateWarehouse';
 
 
 export const StockTable = () => {
@@ -22,58 +23,7 @@ export const StockTable = () => {
   const dispatch = useDispatch()
   const table = useSelector((state: any) => state.table)
   const params = useParams()
-
-  React.useEffect(() => {
-    const GetProduct = async () => {
-      const response = await reqGetProductByUnit(params.id)
-      dispatch(setData(response.data))
-    }
-    GetProduct()
-  }, [])
-
-  const tableActions = {
-    delete: async (id: any) => {
-      try {
-        console.log(id)
-        dispatch(deleteItem(id))
-        toast.success('Producto eliminado correctamente')
-      } catch (error: any) {
-        toast.error(error.response.data.message)
-      }
-    },
-    create: async (data: any) => {
-      try {
-        reqCreateProduct(data)
-        dispatch(addItem({ ...data, id: table.data.length }))
-        toast.success('Producto guardado correctamente')
-      } catch (error: any) {
-        toast.error(error.response.data.message)
-      }
-    },
-    edit: async (id: any, data: any) => {
-      try {
-        reqEditProduct(id, data)
-        dispatch(editItem({ data, id: id }))
-        toast.success('Producto editado correctamente')
-      } catch (error) {
-        console.log(error)
-      }
-    },
-  }
-
-  const newUserModal = {
-    title: 'Agrega un nuevo producto',
-    buttonTitle: 'Agregar',
-    ...modalInputs,
-    action: tableActions.create,
-  }
-
-  const editUserModal = {
-    title: 'Editar producto',
-    ...modalInputs,
-    action: tableActions.edit,
-  }
-
+  const [searchTerm, setSearchTerm] = React.useState('');
   const data = [
     {
       title: 'Deposito',
@@ -116,6 +66,65 @@ export const StockTable = () => {
       ]
     }
   ]
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const filteredData = data.filter((ele) =>
+    ele.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  React.useEffect(() => {
+    const GetProduct = async () => {
+      const response = await reqGetProductByUnit(params.id)
+      dispatch(setData(response.data))
+    }
+    GetProduct()
+  }, [])
+
+  const tableActions = {
+    delete: async (id: any) => {
+      try {
+        dispatch(deleteItem(id))
+        toast.success('Producto eliminado correctamente')
+      } catch (error: any) {
+        toast.error(error.response.data.message)
+      }
+    },
+    create: async (data: any) => {
+      try {
+        reqCreateProduct(data)
+        dispatch(addItem({ ...data, id: table.data.length }))
+        toast.success('Producto guardado correctamente')
+      } catch (error: any) {
+        toast.error(error.response.data.message)
+      }
+    },
+    edit: async (id: any, data: any) => {
+      try {
+        reqEditProduct(id, data)
+        dispatch(editItem({ data, id: id }))
+        toast.success('Producto editado correctamente')
+      } catch (error) {
+        console.log(error)
+      }
+    },
+  }
+
+  const newUserModal = {
+    title: 'Agrega un nuevo producto',
+    buttonTitle: 'Agregar',
+    ...modalInputs,
+    action: tableActions.create,
+  }
+
+  const editUserModal = {
+    title: 'Editar producto',
+    ...modalInputs,
+    action: tableActions.edit,
+  }
+
+
 
   return (
     <>
@@ -129,30 +138,20 @@ export const StockTable = () => {
 
         <div className='flex flex-col w-full mb-2 rounded-md bg-c-bg-color gap-4'>
           <div className='flex justify-between gap-3 items-end'>
-            <Input
-              isClearable
-              className='text-c-gray'
-              classNames={{
-                base: 'w-full sm:max-w-[44%]',
-                inputWrapper: 'border-1',
-              }}
-              placeholder='Search by name...'
-              size='sm'
-              startContent={<SearchIcon className='text-c-title' />}
-              variant='bordered'
-            />
+          <Input
+          isClearable
+          className='text-c-gray'
+          classNames={{
+            base: 'w-full sm:max-w-[44%]',
+            inputWrapper: 'border-1',
+          }}
+          placeholder='Search by name...'
+          size='sm'
+          startContent={<SearchIcon className='text-c-title' />}
+          variant='bordered'
+          onChange={handleSearch}
+        />
             <div className='flex gap-3'>
-              <Dropdown>
-                <DropdownTrigger className='hidden sm:flex'>
-                  <Button
-                    endContent={<ChevronDownIcon className='text-small' />}
-                    size='sm'
-                    variant='bordered'
-                  >
-                    Status
-                  </Button>
-                </DropdownTrigger>
-              </Dropdown>
               <Button
                 onPress={onOpen}
                 className='bg-c-primary'
@@ -180,47 +179,39 @@ export const StockTable = () => {
                   )}
                 </ModalContent>
               </Modal>
-              {/* <DropdownMenu
-                  disallowEmptySelection
-                  aria-label='Table Columns'
-                  closeOnSelect={false}
-                  selectionMode='multiple'
-                >
-                  {productStatusOptions.map((status) => (
-                    <DropdownItem key={status.uid} className='capitalize'>
-                      {status.name}
-                    </DropdownItem>
-                  ))}
-                </DropdownMenu> */}
-              <MultiStepForm />
+              <CreateWarehouse />
             </div>
           </div>
         </div>
       </div>
 
-      <div className='flex gap-2 flex-wrap'>
-        {
-          data.map((ele, ind) =>
-            <div key={ind} className='h-[200px] p-5 w-[300px] rounded-md border-2 border-c-primary'>
-              <div className='flex justify-between'>
+      <div>
 
-                <h4 className='text-c-primary font-semibold text-2xl mb-3'>{ele.title + ' ' + ind}
-                </h4>
-                <SlOptions />
+
+        <div className='flex gap-2 flex-wrap mt-4'>
+          {filteredData.length > 0 ? (
+            filteredData.map((ele, ind) => (
+              <div key={ind} className='h-[200px] p-5 w-[300px] rounded-md border-2 border-c-primary'>
+                <div className='flex justify-between'>
+                  <h4 className='text-c-primary font-semibold text-2xl mb-3'>{ele.title + ' ' + ind}</h4>
+                  <SlOptions />
+                </div>
+                <ul>
+                  {ele.products.slice(0, 3).map((item, ind) => (
+                    <li key={ind}>{item.name}</li>
+                  ))}
+                  {ele.products.length > 3 && (
+                    <p className='text-blue-500 text-sm underline cursor-pointer mt-3'>
+                      Mostrar más productos...
+                    </p>
+                  )}
+                </ul>
               </div>
-              <ul>
-                {ele.products.slice(0, 3).map((item, ind) => (
-                  <li key={ind}>{item.name}</li>
-                ))}
-                {ele.products.length > 3 && (
-                  <p className='text-blue-500 text-sm underline cursor-pointer mt-3'>
-                    Mostrar más productos...
-                  </p>
-                )}
-              </ul>
-            </div>
-          )
-        }
+            ))
+          ) : (
+            <p>No hay resultados.</p>
+          )}
+        </div>
       </div>
     </>
   )

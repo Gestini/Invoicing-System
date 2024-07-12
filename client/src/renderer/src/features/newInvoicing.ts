@@ -140,7 +140,7 @@ export const newInvoicing = createSlice({
       const tabIndex = state.tabs.findIndex((item) => item.id === state.currentTabId)
       if (tabIndex === -1) return
 
-      state.tabs[tabIndex].products.push(product)
+      state.tabs[tabIndex].products.push({ ...product, quantity: 1, price: product.cardPrice })
     },
     deleteProduct: (state, action) => {
       const { id } = action.payload
