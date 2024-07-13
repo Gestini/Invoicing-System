@@ -15,11 +15,11 @@ export const SalesTable = () => {
   const table = useSelector((state: any) => state.table)
 
   React.useEffect(() => {
-    const GetProduct = async () => {
+    const loadData = async () => {
       const response = await reqGetAllInvoicesByUnit(params.id)
       dispatch(setData(response.data))
     }
-    GetProduct()
+    loadData()
   }, [])
 
   const tableActions = {
