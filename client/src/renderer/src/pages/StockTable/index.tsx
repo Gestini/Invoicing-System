@@ -8,7 +8,12 @@ import { EditProductModal } from '@renderer/components/AppTable/Modals/ProductEd
 import { useDispatch, useSelector } from 'react-redux'
 import { columnsData, modalInputs } from './data'
 import { addItem, editItem, deleteItem } from '@renderer/features/tableSlice'
-import { reqCreateProduct, reqEditProduct, reqGetProductByUnit } from '@renderer/api/requests'
+import {
+  reqCreateProduct,
+  reqEditProduct,
+  reqGetProductByUnit,
+  reqDeleteProduct,
+} from '@renderer/api/requests'
 
 export const StockTable = () => {
   const dispatch = useDispatch()
@@ -16,11 +21,11 @@ export const StockTable = () => {
   const params = useParams()
 
   React.useEffect(() => {
-    const GetProduct = async () => {
+    const loadData = async () => {
       const response = await reqGetProductByUnit(params.id)
       dispatch(setData(response.data))
     }
-    GetProduct()
+    loadData()
   }, [])
 
   const tableActions = {
@@ -28,26 +33,27 @@ export const StockTable = () => {
       try {
         dispatch(deleteItem(id))
         toast.success('Producto eliminado correctamente')
+        await reqDeleteProduct(id)
       } catch (error: any) {
         toast.error(error.response.data.message)
       }
     },
     create: async (data: any) => {
       try {
-        reqCreateProduct(data)
         dispatch(addItem({ ...data, id: table.data.length }))
         toast.success('Producto guardado correctamente')
+        await reqCreateProduct(data)
       } catch (error: any) {
         toast.error(error.response.data.message)
       }
     },
     edit: async (id: any, data: any) => {
       try {
-        reqEditProduct(id, data)
         dispatch(editItem({ data, id: id }))
         toast.success('Producto editado correctamente')
-      } catch (error) {
-        console.log(error)
+        await reqEditProduct(id, data)
+      } catch (error: any) {
+        toast.error(error.response.data.message)
       }
     },
   }

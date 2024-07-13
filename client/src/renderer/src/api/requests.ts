@@ -15,6 +15,7 @@ export const reqDeleteUnitById = async (id: any) => api.delete(`/business-unit/d
 /* Rutas productos */
 export const reqCreateProduct = async (data: any) => api.post('/products', data)
 export const reqEditProduct = async (id: any, data: any) => api.put(`/products/${id}`, data)
+export const reqDeleteProduct = async (id: any) => api.delete(`/products/${id}`)
 export const reqGetProductByUnit = async (id: any) => api.get(`/products/by-business-unit/${id}`)
 export const reqSearchProduct = async (name: string) =>
   api.get(`/products/by-name/${name}`)
