@@ -10,6 +10,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -64,8 +66,13 @@ public class ProductService {
         }
     }
 
-    public void deleteProduct(Long productId) {
-        productRepository.deleteById(productId);
+    public ResponseEntity<String> deleteProduct(Long productId) {
+        try {
+            productRepository.deleteById(productId);
+            return ResponseEntity.status(HttpStatus.OK).body("Producto eliminado correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("Ocurrio un error al eliminar el producto");
+        }
     }
 
     public ProductModel getProductById(Long productId) {
