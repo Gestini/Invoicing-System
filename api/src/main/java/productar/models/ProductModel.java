@@ -98,8 +98,7 @@ public class ProductModel {
     private BusinessUnitsModel businessUnit;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "deposit_unit_id", nullable = false)
-    @NotNull(message = "La unidad de depósito no puede ser nula")
+    @JoinColumn(name = "deposit_unit_id", nullable = true)
     private DepositUnitsModel depositUnit;
 
     @Column(name = "price_policy")
