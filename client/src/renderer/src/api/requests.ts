@@ -17,8 +17,7 @@ export const reqCreateProduct = async (data: any) => api.post('/products', data)
 export const reqEditProduct = async (id: any, data: any) => api.put(`/products/${id}`, data)
 export const reqDeleteProduct = async (id: any) => api.delete(`/products/${id}`)
 export const reqGetProductByUnit = async (id: any) => api.get(`/products/by-business-unit/${id}`)
-export const reqSearchProduct = async (name: string) =>
-  api.get(`/products/by-name/${name}`)
+export const reqSearchProduct = async (name: string) => api.get(`/products/by-name/${name}`)
 export const reqSearchProductByNameAndUnit = async (name: string, id: any) =>
   api.get(`/products/search/${name}/${id}`)
 
@@ -35,5 +34,7 @@ export const reqUpdateInvoice = async (id: any, data: any) => api.put(`/invoicin
 export const reqGetAllInvoicesByUnit = async (id: any) => api.get(`/invoicing/get-by-unit/${id}`)
 
 /* Rutas depositos */
-
-// export const req
+export const reqCreateDeposit = async (data: any) => api.post('/deposit/save', data)
+export const reqEditDeposit = async (id: any, data: any) => api.put(`/deposit/${id}`, data)
+export const reqDeleteDeposit = async (id: any) => api.delete(`/deposit/${id}`)
+export const reqGetDepositByUnit = async () => api.get('/deposit/by-owner/')
