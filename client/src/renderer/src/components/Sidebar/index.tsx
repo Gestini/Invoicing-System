@@ -10,10 +10,9 @@ import {
 } from 'react-icons/bi'
 import { NavLink } from 'react-router-dom'
 import { Settings } from '@renderer/components/Settings'
-import { ReactNode, useState } from 'react'
-import { IoGridOutline } from 'react-icons/io5'
 import { useSelector } from 'react-redux'
-import { Accordion } from '@nextui-org/react'
+import { IoGridOutline } from 'react-icons/io5'
+import { ReactNode, useState } from 'react'
 
 interface SidebarItemProps {
   icon: ReactNode
@@ -49,7 +48,7 @@ export const Sidebar = () => {
       text: 'General',
     },
     {
-      path: `/stock/${unit?.id}`,
+      path: `/depositos/${unit?.id}`,
       icon: <BiCart />,
       text: 'Stock',
     },
