@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/depositunits")
+@RequestMapping("/deposit")
 public class DepositUnitsController {
 
     @Autowired
@@ -48,7 +48,7 @@ public class DepositUnitsController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/byOwner")
+    @GetMapping("/by-owner")
     public ResponseEntity<List<Map<String, Object>>> getDepositUnitsByOwner() {
         List<Map<String, Object>> depositUnits = depositUnitsService.getDepositUnitsByOwner();
         return ResponseEntity.ok(depositUnits);
