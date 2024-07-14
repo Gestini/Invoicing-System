@@ -54,15 +54,14 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable("id") Long id) {
-        productService.deleteProduct(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<String> deleteProduct(@PathVariable("id") Long id) {
+        return productService.deleteProduct(id);
     }
 
     @GetMapping("/by-business-unit/{businessUnitId}")
-    public ResponseEntity<List<ProductResponseDTO>> getProductsByBusinessUnit(
+    public ResponseEntity<List<ProductModel>> getProductsByBusinessUnit(
             @PathVariable("businessUnitId") Long businessUnitId) {
-        List<ProductResponseDTO> products = productService.getProductsByBusinessUnit(businessUnitId);
+        List<ProductModel> products = productService.getProductsByBusinessUnit(businessUnitId);
         return ResponseEntity.ok(products);
     }
 
