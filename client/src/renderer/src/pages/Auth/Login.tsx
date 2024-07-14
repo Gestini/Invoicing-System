@@ -8,7 +8,6 @@ import { AuthSubmit } from '../../components/Auth/AuthSubmit'
 import { reqAuthLogin } from '@renderer/api/requests'
 import { AuthLoginOptions } from '@renderer/components/Auth/AuthLoginOptions'
 import { ContinueWithGoogle } from '../../components/Auth/ContinueWithGoogle'
-import Settings from '@renderer/components/Settings'
 import './Auth.scss'
 
 const Login = () => {

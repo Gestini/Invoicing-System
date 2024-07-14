@@ -61,8 +61,8 @@ const Card: React.FC<CardProps> = ({ unit }) => {
               </div>
             </DropdownTrigger>
             <DropdownMenu aria-label='Static Actions' className='text-c-title bg-c-bg-color'>
-              <DropdownItem key='Edit' onClick={handleNavigate}>
-                <b>Abrir</b>
+              <DropdownItem key='Open' onClick={handleNavigate}>
+                Abrir
               </DropdownItem>
               <DropdownItem key='Edit'>Editar unidad</DropdownItem>
               <DropdownItem
