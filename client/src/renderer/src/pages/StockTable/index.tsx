@@ -1,19 +1,18 @@
 import React from 'react'
 import toast from 'react-hot-toast'
-import { setData } from '@renderer/features/tableSlice'
+import {
+  reqEditProduct,
+  reqCreateProduct,
+  reqDeleteProduct,
+  reqGetProductByUnit,
+} from '@renderer/api/requests'
 import { AppTable } from '@renderer/components/AppTable'
 import { useParams } from 'react-router-dom'
 import { AddProductModal } from '@renderer/components/AppTable/Modals/ProductAdd'
 import { EditProductModal } from '@renderer/components/AppTable/Modals/ProductEdit'
 import { useDispatch, useSelector } from 'react-redux'
 import { columnsData, modalInputs } from './data'
-import { addItem, editItem, deleteItem } from '@renderer/features/tableSlice'
-import {
-  reqCreateProduct,
-  reqEditProduct,
-  reqGetProductByUnit,
-  reqDeleteProduct,
-} from '@renderer/api/requests'
+import { addItem, deleteItem, editItem, setData } from '@renderer/features/tableSlice'
 
 export const StockTable = () => {
   const dispatch = useDispatch()

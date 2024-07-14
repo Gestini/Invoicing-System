@@ -34,4 +34,6 @@ export const reqDeleteInvoice = async (id: any) => api.delete(`/invoicing/delete
 export const reqUpdateInvoice = async (id: any, data: any) => api.put(`/invoicing/${id}`, data)
 export const reqGetAllInvoicesByUnit = async (id: any) => api.get(`/invoicing/get-by-unit/${id}`)
 
-/* Rutas  */
+/* Rutas depositos */
+
+// export const req

@@ -5,6 +5,7 @@ import { manageUserSlice } from '@renderer/features/userSlice'
 import { manageTableSlice } from '@renderer/features/tableSlice'
 import { manageCurrentUnit } from '@renderer/features/currentUnitSlice'
 import { manageCurrentTheme } from '@renderer/features/currentTheme'
+import { manageStock } from '@renderer/features/currentStockSlice'
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     currentUnit: manageCurrentUnit.reducer,
     newInvoicing: newInvoicing.reducer,
     currentTheme: manageCurrentTheme.reducer,
+    currentStock: manageStock.reducer,
   },
 })
 
