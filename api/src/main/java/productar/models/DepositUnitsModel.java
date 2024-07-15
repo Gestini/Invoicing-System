@@ -22,9 +22,9 @@ public class DepositUnitsModel {
     private String name;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "owner_id", nullable = false)
-    @NotNull(message = "Owner id cannot be null")
-    private User owner;
+    @JoinColumn(name = "business_unit_id", nullable = false)
+    @NotNull(message = "La unidad de negocio no puede ser nula")
+    private BusinessUnitsModel businessUnit;
 
     public Long getId() {
         return id;
@@ -42,12 +42,12 @@ public class DepositUnitsModel {
         this.name = name;
     }
 
-    public User getOwner() {
-        return owner;
+    public BusinessUnitsModel getBusinessUnit() {
+        return businessUnit;
     }
 
-    public void setOwner(User owner) {
-        this.owner = owner;
+    public void setBusinessUnit(BusinessUnitsModel businessUnit) {
+        this.businessUnit = businessUnit;
     }
 
 }

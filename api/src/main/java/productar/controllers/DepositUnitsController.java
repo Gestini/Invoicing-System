@@ -1,16 +1,22 @@
 package productar.controllers;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import productar.models.DepositUnitsModel;
 import productar.services.DepositUnitsService;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/deposit")
@@ -20,9 +26,8 @@ public class DepositUnitsController {
     private DepositUnitsService depositUnitsService;
 
     @PostMapping("/save")
-    public ResponseEntity<DepositUnitsModel> saveDepositUnit(@RequestBody DepositUnitsModel depositUnit,
-            Authentication authentication) {
-        return depositUnitsService.saveDepositUnit(depositUnit, authentication.getName());
+    public DepositUnitsModel saveDepositUnit(@RequestBody DepositUnitsModel depositUnit) {
+        return depositUnitsService.saveDepositUnit(depositUnit);
     }
 
     @PutMapping("/{id}")
@@ -48,9 +53,8 @@ public class DepositUnitsController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/by-owner")
-    public ResponseEntity<List<Map<String, Object>>> getDepositUnitsByOwner() {
-        List<Map<String, Object>> depositUnits = depositUnitsService.getDepositUnitsByOwner();
-        return ResponseEntity.ok(depositUnits);
+    @GetMapping("/{id}")
+    public List<DepositUnitsModel> getDepositsByBusisnessUnitId(@PathVariable Long id) {
+        return depositUnitsService.findByBusinessUnitId(id);
     }
 }
