@@ -115,7 +115,7 @@ export const Warehouse = () => {
                             color='danger'
                             onPress={() => handleDelete(ele.id)}
                           >
-                            Eliminar deposito
+                            Eliminar depósito
                           </DropdownItem>
                         </DropdownMenu>
                       </Dropdown>
