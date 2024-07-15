@@ -9,5 +9,5 @@ import productar.models.DepositUnitsModel;
 
 @Repository
 public interface DepositUnitsRepository extends JpaRepository<DepositUnitsModel, Long> {
-    List<DepositUnitsModel> findByOwnerUsername(String username);
+    List<DepositUnitsModel> findByBusinessUnitId(Long businessUnitId);
 }
