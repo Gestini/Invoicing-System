@@ -6,18 +6,18 @@ import { AddSupplierModal } from '@renderer/components/AppTable/Modals/SupplierA
 import { EditSupplierModal } from '@renderer/components/AppTable/Modals/SupplierEdit'
 import { useDispatch, useSelector } from 'react-redux'
 import { columnsData, modalInputs } from './data'
-import { addItem, editItem, deleteItem, setData } from '@renderer/features/tableSlice'
+import { addItem, editItem, deleteItem, setTableData } from '@renderer/features/tableSlice'
 import { reqCreateSupplier, reqEditSupplier, reqGetSupplier } from '@renderer/api/requests'
 
 export const SupplierTable = () => {
-  const dispatch = useDispatch()
   const table = useSelector((state: any) => state.table)
   const params = useParams()
+  const dispatch = useDispatch()
 
   React.useEffect(() => {
     const GetSupplier = async () => {
       const response = await reqGetSupplier(params.id)
-      dispatch(setData(response.data))
+      dispatch(setTableData(response.data))
     }
     GetSupplier()
   }, [])

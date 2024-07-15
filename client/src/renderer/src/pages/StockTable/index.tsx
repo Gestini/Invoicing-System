@@ -12,7 +12,7 @@ import { AddProductModal } from '@renderer/components/AppTable/Modals/ProductAdd
 import { EditProductModal } from '@renderer/components/AppTable/Modals/ProductEdit'
 import { useDispatch, useSelector } from 'react-redux'
 import { columnsData, modalInputs } from './data'
-import { addItem, deleteItem, editItem, setData } from '@renderer/features/tableSlice'
+import { addItem, deleteItem, editItem, setTableData } from '@renderer/features/tableSlice'
 
 export const StockTable = () => {
   const dispatch = useDispatch()
@@ -22,7 +22,7 @@ export const StockTable = () => {
   React.useEffect(() => {
     const loadData = async () => {
       const response = await reqGetProductByDeposit(params.depositId)
-      dispatch(setData(response.data))
+      dispatch(setTableData(response.data))
     }
     loadData()
   }, [])

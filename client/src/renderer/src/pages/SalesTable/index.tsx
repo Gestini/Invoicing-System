@@ -6,7 +6,7 @@ import { AddItemModal } from '@renderer/components/AppTable/Modals/AddItem'
 import { EditItemModal } from '@renderer/components/AppTable/Modals/EditItem'
 import { useDispatch, useSelector } from 'react-redux'
 import { columnsData, modalInputs } from './data'
-import { addItem, editItem, deleteItem, setData } from '@renderer/features/tableSlice'
+import { addItem, editItem, deleteItem, setTableData } from '@renderer/features/tableSlice'
 import { reqGetAllInvoicesByUnit, reqDeleteInvoice } from '@renderer/api/requests'
 
 export const SalesTable = () => {
@@ -17,7 +17,7 @@ export const SalesTable = () => {
   React.useEffect(() => {
     const loadData = async () => {
       const response = await reqGetAllInvoicesByUnit(params.id)
-      dispatch(setData(response.data))
+      dispatch(setTableData(response.data))
     }
     loadData()
   }, [])

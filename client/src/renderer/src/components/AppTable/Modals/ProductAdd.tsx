@@ -16,11 +16,24 @@ import { PlusIcon } from '@renderer/components/Icons/PlusIcon'
 import { Checkbox } from '@nextui-org/react'
 import { useParams } from 'react-router-dom'
 import './ProductAdd.scss'
+import { setTableData } from '@renderer/features/tableSlice'
+import { reqGetSupplier } from '@renderer/api/requests'
+import { useDispatch, useSelector } from 'react-redux'
 
 export const AddProductModal = ({ modal }) => {
   const params = useParams()
+  const dispatch = useDispatch()
+  const suppliers = useSelector((state: any) => state.table.data)
 
-  const [data, setData] = React.useState<any>({
+  React.useEffect(() => {
+    const GetSupplier = async () => {
+      const response = await reqGetSupplier(params.id)
+      dispatch(setTableData(response.data))
+    }
+    GetSupplier()
+  }, [])
+
+  const [info, setInfo] = React.useState<any>({
     name: '',
     category: null,
     quantity: null,
@@ -61,8 +74,8 @@ export const AddProductModal = ({ modal }) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
 
   const handleChange = (e: any) => {
-    setData({
-      ...data,
+    setInfo({
+      ...info,
       [e.target.name]: e.target.value,
     })
 
@@ -111,37 +124,37 @@ export const AddProductModal = ({ modal }) => {
       cardPrice: '',
     }
 
-    if (!validateName(data.name)) {
+    if (!validateName(info.name)) {
       newErrors.name = 'Por favor, ingresa un nombre válido.'
       valid = false
     }
 
-    if (data.quantity && !validateNumber(data.quantity)) {
+    if (info.quantity && !validateNumber(info.quantity)) {
       newErrors.quantity = 'Por favor, ingresa una cantidad válida.'
       valid = false
     }
 
-    if (data.purchasePrice && !validateNumber(data.purchasePrice)) {
+    if (info.purchasePrice && !validateNumber(info.purchasePrice)) {
       newErrors.purchasePrice = 'Por favor, ingresa un número válido para el precio de compra.'
       valid = false
     }
 
-    if (data.costPrice && !validateNumber(data.costPrice)) {
+    if (info.costPrice && !validateNumber(info.costPrice)) {
       newErrors.costPrice = 'Por favor, ingresa un número válido para el precio de costo.'
       valid = false
     }
 
-    if (data.financedPrice && !validateNumber(data.financedPrice)) {
+    if (info.financedPrice && !validateNumber(info.financedPrice)) {
       newErrors.financedPrice = 'Por favor, ingresa un número válido para el precio financiado.'
       valid = false
     }
 
-    if (data.friendPrice && !validateNumber(data.friendPrice)) {
+    if (info.friendPrice && !validateNumber(info.friendPrice)) {
       newErrors.friendPrice = 'Por favor, ingresa un número válido para el precio amigo.'
       valid = false
     }
 
-    if (data.cardPrice && !validateNumber(data.cardPrice)) {
+    if (info.cardPrice && !validateNumber(info.cardPrice)) {
       newErrors.cardPrice = 'Por favor, ingresa un número válido para el precio de tarjeta.'
       valid = false
     }
@@ -151,8 +164,8 @@ export const AddProductModal = ({ modal }) => {
       return
     }
 
-    modal.action(data)
-    setData({
+    modal.action(info)
+    setInfo({
       name: '',
       category: null,
       quantity: null,
@@ -290,8 +303,11 @@ export const AddProductModal = ({ modal }) => {
                   size='sm'
                   className='text-c-title'
                 >
-                  <SelectItem key={'enjambreSRL'}>enjambreSRL</SelectItem>
-                  <SelectItem key={'PistonesSRL'}>PistonesSRL</SelectItem>
+                  {
+                    suppliers.map((ele, ind) =>
+                      <SelectItem key={ele.name}>{ele.name}</SelectItem>
+                    )
+                  }
                 </Select>
                 <Select
                   label='Estado'

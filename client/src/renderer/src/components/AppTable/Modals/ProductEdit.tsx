@@ -14,12 +14,25 @@ import {
 } from '@nextui-org/react'
 import React from 'react'
 import { setCurrentItemId } from '@renderer/features/tableSlice'
+import { reqGetSupplier } from '@renderer/api/requests'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import { setTableData } from '@renderer/features/tableSlice'
+
+
 
 export const EditProductModal = ({ modal }) => {
   const unit = useSelector((state: any) => state.currentUnit)
   const params = useParams()
+  const suppliers = useSelector((state: any) => state.table.data)
+
+  React.useEffect(() => {
+    const GetSupplier = async () => {
+      const response = await reqGetSupplier(params.id)
+      dispatch(setTableData(response.data))
+    }
+    GetSupplier()
+  }, [])
 
   const dispatch = useDispatch()
   const [data, setData] = React.useState({
@@ -208,8 +221,11 @@ export const EditProductModal = ({ modal }) => {
                   className='text-c-title'
                   defaultSelectedKeys={[currentUserEdit ? String(currentUserEdit.suppliers) : '']}
                 >
-                  <SelectItem key={'enjambreSRL'}>enjambreSRL</SelectItem>
-                  <SelectItem key={'PistonesSRL'}>PistonesSRL</SelectItem>
+                  {
+                    suppliers.map((ele, ind) =>
+                      <SelectItem key={ele.name}>{ele.name}</SelectItem>
+                    )
+                  }
                 </Select>
                 <Select
                   label='Estado'
