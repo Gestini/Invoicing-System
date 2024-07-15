@@ -2,6 +2,9 @@ package productar.models;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -99,6 +102,7 @@ public class ProductModel {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "deposit_unit_id", nullable = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private DepositUnitsModel depositUnit;
 
     @Column(name = "price_policy")
