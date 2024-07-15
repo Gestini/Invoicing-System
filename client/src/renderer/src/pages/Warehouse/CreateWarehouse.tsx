@@ -10,9 +10,11 @@ import {
   useDisclosure,
 } from '@nextui-org/react'
 import { PlusIcon } from '@renderer/components/Icons/PlusIcon'
+import { useParams } from 'react-router-dom'
 import { reqCreateDeposit } from '@renderer/api/requests'
 
 export const CreateWarehouse = ({ results, setResults }) => {
+  const params = useParams()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [data, setData] = React.useState({})
 
@@ -28,10 +30,14 @@ export const CreateWarehouse = ({ results, setResults }) => {
   const handleCreateWarehouse = async () => {
     try {
       const auxResults = [...results]
-      auxResults.push({ ...data, id: new Date().getTime() })
+      const response = await reqCreateDeposit({
+        ...data,
+        businessUnit: {
+          id: params.id,
+        },
+      })
+      auxResults.push({ ...response.data })
       setResults(auxResults)
-      const response = await reqCreateDeposit(data)
-      console.log(response.data)
       onClose()
     } catch (error) {
       console.log(error)

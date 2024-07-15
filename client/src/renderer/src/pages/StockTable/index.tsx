@@ -4,7 +4,7 @@ import {
   reqEditProduct,
   reqCreateProduct,
   reqDeleteProduct,
-  reqGetProductByUnit,
+  reqGetProductByDeposit,
 } from '@renderer/api/requests'
 import { AppTable } from '@renderer/components/AppTable'
 import { useParams } from 'react-router-dom'
@@ -21,7 +21,7 @@ export const StockTable = () => {
 
   React.useEffect(() => {
     const loadData = async () => {
-      const response = await reqGetProductByUnit(params.id)
+      const response = await reqGetProductByDeposit(params.depositId)
       dispatch(setData(response.data))
     }
     loadData()

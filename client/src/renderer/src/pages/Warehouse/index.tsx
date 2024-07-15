@@ -3,11 +3,11 @@ import { useParams } from 'react-router-dom'
 import { SlOptions } from 'react-icons/sl'
 import { SearchIcon } from '@renderer/components/Icons'
 import { useNavigate } from 'react-router-dom'
-import { WarehouseData } from './data'
 import { EditWarehouse } from './EditWarehouse'
 import { CreateWarehouse } from './CreateWarehouse'
 import { ProductTransfer } from './ProductTransfer'
 import {
+  Card,
   Input,
   Dropdown,
   DropdownItem,
@@ -15,31 +15,43 @@ import {
   useDisclosure,
   DropdownTrigger,
 } from '@nextui-org/react'
+import { reqGetDepositByUnit, reqDeleteDeposit } from '@renderer/api/requests'
 
 export const Warehouse = () => {
   const params = useParams()
   const navigate = useNavigate()
-  const [results, setResults] = React.useState(WarehouseData)
+  const [results, setResults] = React.useState([])
   const [searchTerm, setSearchTerm] = React.useState('')
   const [currentEdit, setCurrentEdit] = React.useState(-1)
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
 
+  const loadData = async () => {
+    try {
+      const response = await reqGetDepositByUnit(params.id)
+      setResults(response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   React.useEffect(() => {
-    const filteredData = WarehouseData.filter((item) =>
-      item.name.toLowerCase().includes(searchTerm.toLowerCase()),
-    )
-    setResults(filteredData)
-  }, [searchTerm])
+    loadData()
+  }, [])
 
   const handleSearch = (e: any) => setSearchTerm(e.target.value)
-  const openWarehouse = () => navigate(`/stock/${params.id}`)
+  const openWarehouse = (depositId: number) => navigate(`/stock/${params.id}/${depositId}`)
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     const auxResults = [...results]
-    const wareHouseIndex = results.findIndex((item) => item.id == id)
+    const wareHouseIndex = results.findIndex((item: any) => item.id == id)
     if (wareHouseIndex == -1) return
     auxResults.splice(wareHouseIndex, 1)
     setResults(auxResults)
+    try {
+      await reqDeleteDeposit(id)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const handleEdit = (id) => {
@@ -54,10 +66,10 @@ export const Warehouse = () => {
           <div className='flex justify-between gap-3 items-end'>
             <Input
               isClearable
-              onClear={() => setResults(WarehouseData)}
+              onClear={loadData}
               className='text-c-gray'
               placeholder='Buscar por nombre...'
-              startContent={<SearchIcon  />}
+              startContent={<SearchIcon />}
               onChange={handleSearch}
             />
             <div className='flex gap-3'>
@@ -68,46 +80,49 @@ export const Warehouse = () => {
         </div>
       </div>
       <div>
-        <div className='flex gap-2 flex-wrap mt-4'>
+        <div className='flex gap-4 flex-wrap mt-4'>
           {results.length > 0 ? (
-            results.map((ele, ind) => (
-              <div
-                key={ind}
-                onDoubleClick={() => openWarehouse()}
-                className='w-[300px] cursor-pointer h-[200px] rounded-lg bg-c-card shadow-md p-3'
-              >
-                <div className='flex justify-between items-center'>
-                  <h4 className='text-[16px] text-c-title font-semibold'>{ele.name}</h4>
-                  <Dropdown placement='bottom-start' className='bg-c-card text-c-title'>
-                    <DropdownTrigger>
-                      <div>
-                        <SlOptions className='text-c-title w-4 h-4 cursor-pointer' />
-                      </div>
-                    </DropdownTrigger>
-                    <DropdownMenu
-                      aria-label='Static Actions'
-                      className='text-c-title bg-c-bg-color'
-                    >
-                      <DropdownItem key='Open' onClick={openWarehouse}>
-                        Abrir
-                      </DropdownItem>
-                      <DropdownItem key='Edit' onPress={() => handleEdit(ele.id)}>
-                        Editar
-                      </DropdownItem>
-                      <DropdownItem
-                        key='delete'
-                        className='text-danger'
-                        showDivider={false}
-                        color='danger'
-                        onPress={() => handleDelete(ele.id)}
-                      >
-                        Eliminar deposito
-                      </DropdownItem>
-                    </DropdownMenu>
-                  </Dropdown>
-                </div>
-              </div>
-            ))
+            results
+              .filter((item: any) => item.name.toLowerCase().includes(searchTerm.toLowerCase()))
+              .map((ele: any, ind: number) => (
+                <Card key={ind}>
+                  <div
+                    onDoubleClick={() => openWarehouse(ele.id)}
+                    className='w-[300px] cursor-pointer h-[200px] p-3 select-none'
+                  >
+                    <div className='flex justify-between items-center'>
+                      <h4 className='text-[16px] text-c-title font-semibold'>{ele.name}</h4>
+                      <Dropdown placement='bottom-start' className='bg-c-card text-c-title'>
+                        <DropdownTrigger>
+                          <div>
+                            <SlOptions className='text-c-title w-4 h-4 cursor-pointer' />
+                          </div>
+                        </DropdownTrigger>
+                        <DropdownMenu
+                          aria-label='Static Actions'
+                          className='text-c-title bg-c-bg-color'
+                        >
+                          <DropdownItem key='Open' onClick={() => openWarehouse(ele.id)}>
+                            Abrir
+                          </DropdownItem>
+                          <DropdownItem key='Edit' onPress={() => handleEdit(ele.id)}>
+                            Editar
+                          </DropdownItem>
+                          <DropdownItem
+                            key='delete'
+                            className='text-danger'
+                            showDivider={false}
+                            color='danger'
+                            onPress={() => handleDelete(ele.id)}
+                          >
+                            Eliminar deposito
+                          </DropdownItem>
+                        </DropdownMenu>
+                      </Dropdown>
+                    </div>
+                  </div>
+                </Card>
+              ))
           ) : (
             <p className='text-[16px] text-c-title font-semibold'>No hay resultados.</p>
           )}

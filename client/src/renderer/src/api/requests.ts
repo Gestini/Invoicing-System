@@ -16,6 +16,7 @@ export const reqDeleteUnitById = async (id: any) => api.delete(`/business-unit/d
 export const reqCreateProduct = async (data: any) => api.post('/products', data)
 export const reqEditProduct = async (id: any, data: any) => api.put(`/products/${id}`, data)
 export const reqDeleteProduct = async (id: any) => api.delete(`/products/${id}`)
+export const reqGetProductByDeposit = async (id: any) => api.get(`/products/depositunit/${id}`)
 export const reqGetProductByUnit = async (id: any) => api.get(`/products/by-business-unit/${id}`)
 export const reqSearchProduct = async (name: string) => api.get(`/products/by-name/${name}`)
 export const reqSearchProductByNameAndUnit = async (name: string, id: any) =>
@@ -37,4 +38,4 @@ export const reqGetAllInvoicesByUnit = async (id: any) => api.get(`/invoicing/ge
 export const reqCreateDeposit = async (data: any) => api.post('/deposit/save', data)
 export const reqEditDeposit = async (id: any, data: any) => api.put(`/deposit/${id}`, data)
 export const reqDeleteDeposit = async (id: any) => api.delete(`/deposit/${id}`)
-export const reqGetDepositByUnit = async () => api.get('/deposit/by-owner/')
+export const reqGetDepositByUnit = async (id: any) => api.get(`/deposit/${id}`)

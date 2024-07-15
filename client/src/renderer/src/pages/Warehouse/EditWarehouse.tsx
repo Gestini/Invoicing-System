@@ -8,12 +8,13 @@ import {
   ModalHeader,
   ModalContent,
 } from '@nextui-org/react'
+import { reqEditDeposit } from '@renderer/api/requests'
 
 export const EditWarehouse = ({ results, isOpen, onOpenChange, onClose, id }) => {
   const [data, setData] = React.useState<any>({})
   const currentWarehouse = results.find((item) => item.id == id)
 
-  const handleChange = (e:any) => {
+  const handleChange = (e: any) => {
     let name = e.target.name
     let value = e.target.value
     setData({
@@ -22,9 +23,10 @@ export const EditWarehouse = ({ results, isOpen, onOpenChange, onClose, id }) =>
     })
   }
 
-  const handleEditWarehouse = () => {
+  const handleEditWarehouse = async () => {
     const auxResults = [...results]
     auxResults[results.indexOf(currentWarehouse)].name = data.name
+    await reqEditDeposit(id, data)
     onClose()
   }
 

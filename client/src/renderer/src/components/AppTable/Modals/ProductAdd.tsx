@@ -1,22 +1,21 @@
 import React from 'react'
-import { PlusIcon } from '@renderer/components/Icons/PlusIcon'
 import {
   Modal,
   Input,
   Button,
   Select,
+  Textarea,
   ModalBody,
   SelectItem,
   ModalFooter,
   ModalHeader,
   ModalContent,
   useDisclosure,
-  Textarea,
 } from '@nextui-org/react'
-
+import { PlusIcon } from '@renderer/components/Icons/PlusIcon'
 import { Checkbox } from '@nextui-org/react'
-import './ProductAdd.scss'
 import { useParams } from 'react-router-dom'
+import './ProductAdd.scss'
 
 export const AddProductModal = ({ modal }) => {
   const params = useParams()
@@ -29,33 +28,35 @@ export const AddProductModal = ({ modal }) => {
     codigo2: null,
     barcode: null,
     suppliers: null,
-    status: true, // default value
+    status: true,
     purchasePrice: null,
     costPrice: null,
-    priceCalculation: 'cero', // default value
-    pricePolicy: 'cero', // default value
+    priceCalculation: 'cero',
+    pricePolicy: 'cero',
     net1: null,
     net2: null,
     net3: null,
     net4: null,
-    taxType: 'IVA 21%', // default value
+    taxType: 'IVA 21%',
     financedPrice: null,
     friendPrice: null,
     cardPrice: null,
     businessUnit: {
       id: params.id,
-      name: 'Main Unit',
+    },
+    depositUnit: {
+      id: params.depositId,
     },
   })
 
   const [errors, setErrors] = React.useState({
     name: '',
     quantity: '',
-    purchasePrice: '',
-    costPrice: '',
-    financedPrice: '',
-    friendPrice: '',
     cardPrice: '',
+    costPrice: '',
+    friendPrice: '',
+    purchasePrice: '',
+    financedPrice: '',
   })
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
 
@@ -159,22 +160,24 @@ export const AddProductModal = ({ modal }) => {
       codigo2: null,
       barcode: null,
       suppliers: null,
-      status: true, // default value
+      status: true,
       purchasePrice: null,
       costPrice: null,
-      priceCalculation: 'cero', // default value
-      pricePolicy: 'cero', // default value
+      priceCalculation: 'cero',
+      pricePolicy: 'cero',
       net1: null,
       net2: null,
       net3: null,
       net4: null,
-      taxType: 'IVA 21%', // default value
+      taxType: 'IVA 21%',
       financedPrice: null,
       friendPrice: null,
       cardPrice: null,
       businessUnit: {
         id: params.id,
-        name: 'Main Unit',
+      },
+      depositUnit: {
+        id: params.depositId,
       },
     })
     onClose()

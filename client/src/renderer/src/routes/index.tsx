@@ -21,7 +21,7 @@ const Router = () => {
         <Route path='/' element={<Companies />} />
         <Route element={<SidebarMiddleware />}>
           <Route path='/general/:id' element={<Home />} />
-          <Route path='/stock/:id' element={<StockTable />} />
+          <Route path='/stock/:id/:depositId' element={<StockTable />} />
           <Route path='/ventas/:id' element={<SalesTable />} />
           <Route path='/facturar/:id' element={<InvoicingTable />} />
           <Route path='/informes/:id' element={<Informes />} />
