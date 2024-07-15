@@ -28,6 +28,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final ValidateFields validateFields;
+    private final PasswordResetService passwordResetService;
 
     public ResponseEntity<String> login(LoginRequest request) {
         String password = request.getPassword();
@@ -142,5 +143,10 @@ public class AuthService {
         }
 
         return null;
+    }
+
+    public void updatePassword(String token, String newPassword) {
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        passwordResetService.resetPassword(token, encodedPassword);
     }
 }
