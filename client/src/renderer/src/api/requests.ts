@@ -39,3 +39,9 @@ export const reqCreateDeposit = async (data: any) => api.post('/deposit/save', d
 export const reqEditDeposit = async (id: any, data: any) => api.put(`/deposit/${id}`, data)
 export const reqDeleteDeposit = async (id: any) => api.delete(`/deposit/${id}`)
 export const reqGetDepositByUnit = async (id: any) => api.get(`/deposit/${id}`)
+
+/* Rutas clientes */
+export const reqCreateClient = async (data: any) => api.post('/clients', data)
+export const reqEditClient = async (id: any, data: any) => api.put(`/clients/${id}`, data)
+export const reqDeleteClient = async (id: any) => api.delete(`/clients/${id}`)
+export const reqGetClientByUnit = async (id: any) => api.get(`/clients/by-business-unit/${id}`)

@@ -1,4 +1,5 @@
 import { GraphView } from '@renderer/components/Chart'
+import Clients from '@renderer/components/Clients'
 import { Card, CardBody } from '@nextui-org/react'
 import {
   BiCart,
@@ -62,6 +63,7 @@ const Home = () => {
         ))}
       </div>
       <GraphView />
+      <Clients />
     </>
   )
 }
