@@ -5,6 +5,9 @@ export const reqAuthLogin = async (data: any) => authApi.post('/auth/login', dat
 export const reqAuthRegister = async (data: any) => authApi.post('/auth/register', data)
 export const reqAuthLoadProfileByToken = async (token: string) =>
   authApi.get('/auth/load-user-by-token/' + token)
+export const reqAuthSendToken = async (data: any) => authApi.post('/auth/request-password-reset', data)
+export const reqAuthChangePassword = async (data: any) => authApi.post('/auth/reset-password', data)
+
 
 /* Rutas unidades */
 export const reqCreateUnit = async (data: any) => api.post('/business-unit/save', data)
@@ -45,3 +48,4 @@ export const reqCreateClient = async (data: any) => api.post('/clients', data)
 export const reqEditClient = async (id: any, data: any) => api.put(`/clients/${id}`, data)
 export const reqDeleteClient = async (id: any) => api.delete(`/clients/${id}`)
 export const reqGetClientByUnit = async (id: any) => api.get(`/clients/by-business-unit/${id}`)
+
