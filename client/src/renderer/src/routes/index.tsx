@@ -1,5 +1,8 @@
 import Home from '@renderer/pages/Home'
 import Login from '@renderer/pages/Auth/Login'
+import RecoverPasswordEmail from '@renderer/pages/Auth/RecoverPasswordEmail'
+import RecoverPasswordCode from '@renderer/pages/Auth/RecoverPasswordCode'
+import RecoverPasswordChange from '@renderer/pages/Auth/RecoverPasswordChange'
 import Informes from '@renderer/pages/Informes'
 import Register from '@renderer/pages/Auth/Register'
 import Companies from '@renderer/pages/Companies/Companies'
@@ -35,6 +38,9 @@ const Router = () => {
       </Route>
       <Route element={<ProtectedRouteAuth />}>
         <Route path='/login' element={<Login />} />
+        <Route path='/recovery-password/email' element={<RecoverPasswordEmail />} />
+        <Route path='/recovery-password/code' element={<RecoverPasswordCode />} />
+        <Route path='/recovery-password/change' element={<RecoverPasswordChange />} />
         <Route path='/register' element={<Register />} />
       </Route>
     </Routes>
