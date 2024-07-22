@@ -15,20 +15,17 @@ import {
 import { PlusIcon } from '@renderer/components/Icons/PlusIcon'
 import { Checkbox } from '@nextui-org/react'
 import { useParams } from 'react-router-dom'
-import './ProductAdd.scss'
-import { setTableData } from '@renderer/features/tableSlice'
 import { reqGetSupplier } from '@renderer/api/requests'
-import { useDispatch, useSelector } from 'react-redux'
+import './ProductAdd.scss'
 
 export const AddProductModal = ({ modal }) => {
   const params = useParams()
-  const dispatch = useDispatch()
-  const suppliers = useSelector((state: any) => state.table.data)
+  const [suppliers, setSuppliers] = React.useState([])
 
   React.useEffect(() => {
     const GetSupplier = async () => {
       const response = await reqGetSupplier(params.id)
-      dispatch(setTableData(response.data))
+      setSuppliers(response.data)
     }
     GetSupplier()
   }, [])
@@ -40,7 +37,9 @@ export const AddProductModal = ({ modal }) => {
     codigo1: null,
     codigo2: null,
     barcode: null,
-    suppliers: null,
+    supplierUnit: {
+      id: null,
+    },
     status: true,
     purchasePrice: null,
     costPrice: null,
@@ -74,12 +73,19 @@ export const AddProductModal = ({ modal }) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
 
   const handleChange = (e: any) => {
-    setInfo({
-      ...info,
-      [e.target.name]: e.target.value,
-    })
-
+    if (e.target.name == 'supplierUnit') {
+      setInfo({
+        ...info,
+        [e.target.name]: { id: e.target.value },
+      })
+    } else {
+      setInfo({
+        ...info,
+        [e.target.name]: e.target.value,
+      })
+    }
     handleValidation(e.target.name, e.target.value)
+    console.log(e.target.name, e.target.value)
   }
 
   const handleValidation = (name, value) => {
@@ -298,16 +304,14 @@ export const AddProductModal = ({ modal }) => {
                   labelPlacement='outside'
                   placeholder='Selecciona un proveedor'
                   variant='bordered'
-                  name='suppliers'
+                  name='supplierUnit'
                   onChange={handleChange}
                   size='sm'
                   className='text-c-title'
                 >
-                  {
-                    suppliers.map((ele, ind) =>
-                      <SelectItem key={ele.name}>{ele.name}</SelectItem>
-                    )
-                  }
+                  {suppliers.map((item: any) => (
+                    <SelectItem key={item.id}>{item.name}</SelectItem>
+                  ))}
                 </Select>
                 <Select
                   label='Estado'
@@ -328,7 +332,6 @@ export const AddProductModal = ({ modal }) => {
                   </SelectItem>
                 </Select>
               </div>
-
               <div className='rowmodaladdproduct  flex items-start justify-start gap-3'>
                 <Input
                   type='number'
@@ -533,7 +536,6 @@ export const AddProductModal = ({ modal }) => {
                   }
                 />
               </div>
-
               <Checkbox
                 defaultSelected
                 name='envasedproduct'

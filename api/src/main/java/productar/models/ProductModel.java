@@ -96,6 +96,10 @@ public class ProductModel {
     private Boolean status = true;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "supplier_init_id", nullable = true)
+    private SupplierModel supplierUnit;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "business_unit_id", nullable = false)
     @NotNull(message = "La unidad de negocio no puede ser nula")
     private BusinessUnitsModel businessUnit;
@@ -383,5 +387,13 @@ public class ProductModel {
     @PreUpdate
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public SupplierModel getSupplierUnit() {
+        return supplierUnit;
+    }
+
+    public void setSupplierUnit(SupplierModel supplierUnit) {
+        this.supplierUnit = supplierUnit;
     }
 }

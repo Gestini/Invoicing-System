@@ -1,8 +1,7 @@
 export const columnsData = {
   columns: [
     { name: 'NOMBRE', uid: 'name' },
-    { name: 'EMAIL', uid: 'email' },
-    { name: 'SITIO WEB', uid: 'website' },
+    { name: 'DESCRIPCION', uid: 'description' },
     { name: 'DIRECCIÓN', uid: 'address' },
     { name: 'TELÉFONO', uid: 'phone' },
     { name: 'CEDULA', uid: 'dni' },
@@ -14,12 +13,11 @@ export const columnsData = {
   ],
   InitialVisibleColumns: [
     'name',
-    'email',
+    'description',
     'website',
     'address',
     'phone',
     'dni',
-    'status',
     'actions',
   ],
 }
@@ -33,23 +31,8 @@ export const modalInputs = {
     },
     {
       type: 'text',
-      name: 'lastName',
-      label: 'Apellido',
-    },
-    {
-      type: 'email',
-      name: 'email',
-      label: 'Email',
-    },
-    {
-      type: 'number',
-      name: 'CI',
-      label: 'Cédula',
-    },
-    {
-      type: 'text',
-      name: 'company',
-      label: 'Razón social',
+      name: 'description',
+      label: 'Descripción',
     },
     {
       type: 'phone',
@@ -57,19 +40,20 @@ export const modalInputs = {
       label: 'Telefono',
     },
     {
-      type: 'text',
-      name: 'website',
-      label: 'Sitio web',
+      type: 'email',
+      name: 'email',
+      label: 'Email',
     },
-  ],
-  selectInputs: [
     {
-      name: 'status',
-      label: 'Estado del proveedor',
-      options: [
-        { label: 'Activo', value: 'ACTIVE' },
-        { label: 'Inactivo', value: 'INACTIVE' },
-      ],
+      type: 'text',
+      name: 'address',
+      label: 'Dirección',
     },
+    {
+      type: 'text',
+      name: 'dni',
+      label: 'DNI',
+    },
+
   ],
 }

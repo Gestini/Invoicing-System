@@ -1,12 +1,12 @@
 package productar.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import productar.dto.ClientDTO;
 import productar.models.BusinessUnitsModel;
@@ -17,15 +17,15 @@ import productar.repositories.ClientRepository;
 public class ClientService {
 
     @Autowired
-    private ClientRepository ClientRepository;
+    private ClientRepository clientRepository;
 
     public ClientModel createClient(ClientModel Client, BusinessUnitsModel businessUnit) {
         Client.setBusinessUnit(businessUnit);
-        return ClientRepository.save(Client);
+        return clientRepository.save(Client);
     }
 
-    public ClientModel updateClient(Long id, ClientModel Client) {
-        Optional<ClientModel> existingClientOptional = ClientRepository.findById(id);
+    public ClientModel updateClient(Long id, ClientModel client) {
+        Optional<ClientModel> existingClientOptional = clientRepository.findById(id);
         if (existingClientOptional.isPresent()) {
             ClientModel existingClient = existingClientOptional.get();
             Field[] fields = ClientModel.class.getDeclaredFields();
@@ -33,7 +33,7 @@ public class ClientService {
             for (Field field : fields) {
                 field.setAccessible(true);
                 try {
-                    Object value = field.get(Client);
+                    Object value = field.get(client);
                     if (value != null) {
                         field.set(existingClient, value);
                     }
@@ -42,30 +42,30 @@ public class ClientService {
                 }
             }
 
-            return ClientRepository.save(existingClient);
+            return clientRepository.save(existingClient);
         } else {
             return null;
         }
     }
 
     public void deleteClient(Long id) {
-        ClientRepository.deleteById(id);
+        clientRepository.deleteById(id);
     }
 
-    public ClientModel getClientById(Long id) {
-        return ClientRepository.findById(id).orElse(null);
+    public Optional<ClientModel> getClientById(Long id) {
+        return clientRepository.findById(id);
     }
 
     public List<ClientModel> getAllClients() {
-        return ClientRepository.findAll();
+        return clientRepository.findAll();
     }
 
     public List<ClientModel> findClientsByName(String name) {
-        return ClientRepository.findByNameContainingIgnoreCase(name);
+        return clientRepository.findByNameContainingIgnoreCase(name);
     }
 
     public List<ClientDTO> getClientsByBusinessUnit(Long businessUnitId) {
-        return ClientRepository.findByBusinessUnitId(businessUnitId)
+        return clientRepository.findByBusinessUnitId(businessUnitId)
                 .stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());

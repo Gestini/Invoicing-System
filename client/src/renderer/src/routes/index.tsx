@@ -6,6 +6,7 @@ import Companies from '@renderer/pages/Companies/Companies'
 import { Warehouse } from '@renderer/pages/Warehouse'
 import { SalesTable } from '@renderer/pages/SalesTable'
 import { StockTable } from '@renderer/pages/StockTable'
+import { ClientTable } from '@renderer/pages/ClientTable'
 import { SupplierTable } from '@renderer/pages/SupplierTable'
 import { Route, Routes } from 'react-router-dom'
 import { InvoicingTable } from '@renderer/pages/InvoicingTable'
@@ -24,6 +25,7 @@ const Router = () => {
           <Route path='/stock/:id/:depositId' element={<StockTable />} />
           <Route path='/ventas/:id' element={<SalesTable />} />
           <Route path='/facturar/:id' element={<InvoicingTable />} />
+          <Route path='/clientes/:id' element={<ClientTable />} />
           <Route path='/informes/:id' element={<Informes />} />
           <Route path='/pedidos/:id' element={<></>} />
           <Route path='/depositos/:id' element={<Warehouse />} />

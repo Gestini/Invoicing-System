@@ -2,21 +2,26 @@ import React from 'react'
 import toast from 'react-hot-toast'
 import { AppTable } from '@renderer/components/AppTable'
 import { useParams } from 'react-router-dom'
-import { AddSupplierModal } from '@renderer/components/AppTable/Modals/SupplierAdd'
-import { EditSupplierModal } from '@renderer/components/AppTable/Modals/SupplierEdit'
+import { AddItemModal } from '@renderer/components/AppTable/Modals/AddItem'
+import { EditItemModal } from '@renderer/components/AppTable/Modals/EditItem'
 import { useDispatch, useSelector } from 'react-redux'
 import { columnsData, modalInputs } from './data'
 import { addItem, editItem, deleteItem, setTableData } from '@renderer/features/tableSlice'
-import { reqCreateSupplier, reqEditSupplier, reqGetSupplier } from '@renderer/api/requests'
+import {
+  reqCreateClient,
+  reqEditClient,
+  reqGetClientByUnit,
+  reqDeleteClient,
+} from '@renderer/api/requests'
 
-export const SupplierTable = () => {
+export const ClientTable = () => {
   const table = useSelector((state: any) => state.table)
   const params = useParams()
   const dispatch = useDispatch()
 
   React.useEffect(() => {
     const loadData = async () => {
-      const response = await reqGetSupplier(params.id)
+      const response = await reqGetClientByUnit(params.id)
       dispatch(setTableData(response.data))
     }
     loadData()
@@ -25,26 +30,32 @@ export const SupplierTable = () => {
   const tableActions = {
     delete: async (id: any) => {
       try {
+        reqDeleteClient(id)
         dispatch(deleteItem(id))
-        toast.success('Proveedor eliminado correctamente')
+        toast.success('Cliente eliminado correctamente')
       } catch (error: any) {
         toast.error(error.response.data.message)
       }
     },
     create: async (data: any) => {
       try {
-        reqCreateSupplier(data)
+        reqCreateClient({
+          ...data,
+          businessUnit: {
+            id: params.id,
+          },
+        })
         dispatch(addItem({ ...data, id: table.data.length }))
-        toast.success('Proveedor guardado correctamente')
+        toast.success('Cliente guardado correctamente')
       } catch (error: any) {
         toast.error(error.response.data.message)
       }
     },
-    edit: async (id: any, data: any) => {
+    edit: async (data: any, item: any) => {
       try {
-        reqEditSupplier(id, data)
-        dispatch(editItem({ data, id: id }))
-        toast.success('Proveedor editado correctamente')
+        reqEditClient(item?.id, data)
+        dispatch(editItem({ data, id: item?.id }))
+        toast.success('Cliente editado correctamente')
       } catch (error) {
         console.log(error)
       }
@@ -52,14 +63,14 @@ export const SupplierTable = () => {
   }
 
   const newUserModal = {
-    title: 'Agrega un nuevo proveedor',
+    title: 'Agrega un nuevo cliente',
     buttonTitle: 'Agregar',
     ...modalInputs,
     action: tableActions.create,
   }
 
   const editUserModal = {
-    title: 'Editar proveedor',
+    title: 'Editar cliente',
     ...modalInputs,
     action: tableActions.edit,
   }
@@ -68,8 +79,8 @@ export const SupplierTable = () => {
     <AppTable
       columnsData={columnsData}
       tableActions={tableActions}
-      addItemModal={<AddSupplierModal modal={newUserModal} />}
-      editItemModal={<EditSupplierModal modal={editUserModal} />}
+      addItemModal={<AddItemModal modal={newUserModal} />}
+      editItemModal={<EditItemModal modal={editUserModal} />}
     />
   )
 }

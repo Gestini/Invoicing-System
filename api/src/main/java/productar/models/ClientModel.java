@@ -12,7 +12,6 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -31,7 +30,6 @@ public class ClientModel {
     @Column
     private String description;
 
-    @Pattern(regexp = "\\(\\d{3}\\)\\d{3}-\\d{4}", message = "Phone number must be in the format (###)###-####")
     @Column
     private String phone;
 
@@ -113,4 +111,5 @@ public class ClientModel {
     public void setEmail(String email) {
         this.email = email;
     }
+
 }

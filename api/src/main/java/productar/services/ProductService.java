@@ -123,6 +123,7 @@ public class ProductService {
         dto.setQuantityPerPackage(product.getQuantityPerPackage());
         dto.setBusinessUnitId(product.getBusinessUnit().getId());
         dto.setDepositUnitId(product.getDepositUnit().getId());
+        dto.setSupplierUnitId(product.getSupplierUnit().getId());
 
         return dto;
     }

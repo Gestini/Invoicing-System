@@ -6,7 +6,7 @@ import { manageTableSlice } from '@renderer/features/tableSlice'
 import { manageCurrentUnit } from '@renderer/features/currentUnitSlice'
 import { manageCurrentTheme } from '@renderer/features/currentTheme'
 
-const store = configureStore({
+const store: any = configureStore({
   reducer: {
     user: manageUserSlice.reducer,
     table: manageTableSlice.reducer,
