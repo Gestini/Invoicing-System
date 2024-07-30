@@ -78,14 +78,14 @@ export const SearchProduct = () => {
       }}
       startContent={<SearchIcon />}
       variant='bordered'
-      className=' text-[#71717a]'
+      className='text-[#71717a]'
     >
       {(item: any) => (
         <AutocompleteItem key={item.id} textValue={item.name}>
           <div className='flex justify-between items-center' onClick={() => handleAddProduct(item)}>
             <div className='flex gap-2 items-center'>
               <div className='flex flex-col'>
-                <span className='text-small'>{item.name}</span>
+                <span className='text-small'>{item.name} - {item.depositUnit.name}</span>
               </div>
             </div>
           </div>

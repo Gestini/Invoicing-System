@@ -8,6 +8,7 @@ import { AuthSubmit } from '../../components/Auth/AuthSubmit'
 import { useNavigate } from 'react-router-dom'
 import { reqAuthRegister } from '@renderer/api/requests'
 import { ContinueWithGoogle } from '../../components/Auth/ContinueWithGoogle'
+import { validatePassword } from '@renderer/utils/validatePassword'
 import './Auth.scss'
 
 const Register = () => {
@@ -139,24 +140,6 @@ const Register = () => {
       return false
     }
     return true
-  }
-
-  const validatePassword = (password) => {
-    // Verificar longitud de la contraseña
-    if (password.length < 8) {
-      return 'La contraseña debe tener al menos 8 caracteres.'
-    }
-    if (password.length > 20) {
-      return 'La contraseña no puede tener más de 20 caracteres.'
-    }
-
-    // Verificar patrón de caracteres
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W\_])[A-Za-z\d\W\_]{8,}$/
-    if (!regex.test(password)) {
-      return 'La contraseña debe incluir una mayúscula, un número y un carácter especial.'
-    }
-
-    return ''
   }
 
   const validateEmail = (email) => {

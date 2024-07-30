@@ -1,4 +1,5 @@
 import { Checkbox } from '@nextui-org/react'
+import { Link } from 'react-router-dom'
 
 export const AuthLoginOptions = () => {
   return (
@@ -7,9 +8,9 @@ export const AuthLoginOptions = () => {
         <Checkbox defaultSelected radius='sm'></Checkbox>
         Keep me logged in
       </div>
-      <a href='/recovery-password' className=' text-[14px] w-[150px] '>
+      <Link to='/recovery-password/email' className=' text-[14px] text-blue-500 w-[150px] '>
         Forgot password?
-      </a>
+      </Link>
     </div>
   )
 }

@@ -1,37 +1,41 @@
 package productar.controllers;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import productar.dto.ClientDTO;
 import productar.models.BusinessUnitsModel;
 import productar.models.ClientModel;
 import productar.services.ClientService;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/clients")
 public class ClientController {
 
-    private final ClientService ClientService;
-
     @Autowired
-    public ClientController(ClientService ClientService) {
-        this.ClientService = ClientService;
-    }
+    private ClientService clientService;
 
     @GetMapping
     public ResponseEntity<List<ClientModel>> getAllClients() {
-        List<ClientModel> Clients = ClientService.getAllClients();
+        List<ClientModel> Clients = clientService.getAllClients();
         return ResponseEntity.ok(Clients);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ClientModel> getClientById(@PathVariable("id") Long id) {
-        ClientModel Client = ClientService.getClientById(id);
+    public ResponseEntity<Optional<ClientModel>> getClientById(@PathVariable("id") Long id) {
+        Optional<ClientModel> Client = clientService.getClientById(id);
         if (Client != null) {
             return ResponseEntity.ok(Client);
         } else {
@@ -41,7 +45,7 @@ public class ClientController {
 
     @GetMapping("/by-business-unit/{businessUnitId}")
     public List<ClientDTO> getClientsByBusinessUnit(@PathVariable Long businessUnitId) {
-        return ClientService.getClientsByBusinessUnit(businessUnitId);
+        return clientService.getClientsByBusinessUnit(businessUnitId);
     }
 
     @PostMapping
@@ -54,20 +58,20 @@ public class ClientController {
         BusinessUnitsModel businessUnit = new BusinessUnitsModel();
         businessUnit.setId(Client.getBusinessUnit().getId());
 
-        ClientModel createdClient = ClientService.createClient(Client, businessUnit);
+        ClientModel createdClient = clientService.createClient(Client, businessUnit);
         return new ResponseEntity<>(createdClient, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ClientModel> updateClient(@PathVariable("id") Long id,
-            @RequestBody ClientModel Client) {
-        ClientModel updatedClient = ClientService.updateClient(id, Client);
-        return ResponseEntity.ok(updatedClient);
+    public ResponseEntity<ClientModel> updateSupplier(@PathVariable("id") Long id,
+            @RequestBody ClientModel supplier) {
+        ClientModel updatedSupplier = clientService.updateClient(id, supplier);
+        return ResponseEntity.ok(updatedSupplier);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteClient(@PathVariable("id") Long id) {
-        ClientService.deleteClient(id);
+        clientService.deleteClient(id);
         return ResponseEntity.noContent().build();
     }
 }
