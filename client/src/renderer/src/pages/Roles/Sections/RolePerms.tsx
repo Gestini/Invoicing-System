@@ -40,6 +40,7 @@ export const RolePerms = () => {
     <div className='flex flex-col gap-4'>
       <Input
         isClearable
+        onClear={() => setSearchTerm('')}
         onChange={handleSearch}
         className='text-c-gray'
         placeholder='Buscar por nombre...'
