@@ -175,6 +175,11 @@ export const newInvoicing = createSlice({
       const tabIndex = state.tabs.findIndex((item) => item.id === state.currentTabId)
       if (tabIndex === -1) return
 
+      if (name == 'client')
+        value.trim() !== ''
+          ? (state.tabs[tabIndex].title = value)
+          : (state.tabs[tabIndex].title = 'Pestaña')
+
       state.tabs[tabIndex].formData = {
         ...state.tabs[tabIndex].formData,
         [name]: value,
