@@ -63,6 +63,9 @@ export const RolePerms = () => {
                 </div>
                 <Switch
                   isSelected={hasPermissions}
+                  classNames={{
+                    wrapper: 'group-data-[selected=true]:bg-[var(--c-primary)]',
+                  }}
                   onChange={() =>
                     changePermissions(hasPermissions, permission?.id, item.permission)
                   }
