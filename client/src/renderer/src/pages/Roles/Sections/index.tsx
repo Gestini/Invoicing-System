@@ -27,7 +27,7 @@ export const RoleSections = () => {
                   tabContent: 'group-data-[selected=true]:text-[var(--c-primary)]',
                 }}
               >
-                <Tab key='info' title='Informacion'>
+                <Tab key='info' title='Información'>
                   <RoleInfo />
                 </Tab>
                 <Tab key='perms' title='Permisos'>

@@ -58,8 +58,8 @@ export const RolePerms = () => {
             return (
               <div key={index} className='flex items-center gap-4 justify-between w-full'>
                 <div className='flex flex-col gap-1'>
-                  <p className='text-medium'>{item.title}</p>
-                  <p className='text-tiny text-default-400'>{item.description}</p>
+                  <p className='text-medium text-default-700'>{item.title}</p>
+                  <p className='text-small text-default-500'>{item.description}</p>
                 </div>
                 <Switch
                   isSelected={hasPermissions}
