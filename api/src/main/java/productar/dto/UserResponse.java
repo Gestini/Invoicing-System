@@ -1,18 +1,18 @@
 package productar.dto;
 
 public class UserResponse {
-    Integer id;
+    Long id;
     String email;
     String username;
     String lastname;
     String firtsname;
     String country;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
