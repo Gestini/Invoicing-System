@@ -8,6 +8,7 @@ import {
   BiBriefcase,
   BiBadgeCheck,
   BiCalculator,
+  BiCheckShield,
 } from 'react-icons/bi'
 import { NavLink } from 'react-router-dom'
 import { Settings } from '@renderer/components/Settings'
@@ -55,6 +56,11 @@ export const Sidebar = () => {
       path: `/facturar/${unit?.id}`,
       icon: <BiCalculator />,
       text: 'Facturar',
+    },
+    {
+      path: `/roles/${unit?.id}`,
+      icon: <BiCheckShield />,
+      text: 'Roles',
     },
     {
       path: `/depositos/${unit?.id}`,

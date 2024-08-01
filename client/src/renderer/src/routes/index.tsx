@@ -6,6 +6,7 @@ import RecoverPasswordChange from '@renderer/pages/Auth/RecoverPasswordChange'
 import Informes from '@renderer/pages/Informes'
 import Register from '@renderer/pages/Auth/Register'
 import Companies from '@renderer/pages/Companies/Companies'
+import { Roles } from '@renderer/pages/Roles'
 import { Warehouse } from '@renderer/pages/Warehouse'
 import { SalesTable } from '@renderer/pages/SalesTable'
 import { StockTable } from '@renderer/pages/StockTable'
@@ -25,6 +26,7 @@ const Router = () => {
         <Route path='/' element={<Companies />} />
         <Route element={<SidebarMiddleware />}>
           <Route path='/general/:id' element={<Home />} />
+          <Route path='/roles/:id' element={<Roles />} />
           <Route path='/stock/:id/:depositId' element={<StockTable />} />
           <Route path='/ventas/:id' element={<SalesTable />} />
           <Route path='/facturar/:id' element={<InvoicingTable />} />
