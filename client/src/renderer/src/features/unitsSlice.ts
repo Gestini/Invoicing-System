@@ -6,7 +6,6 @@ export const manageUnits = createSlice({
     data: <any[]>[],
     currentUnitIdEdit: -1,
   },
-
   reducers: {
     setUnits: (state, action) => {
       state.data = action.payload

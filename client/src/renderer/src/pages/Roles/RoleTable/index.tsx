@@ -69,46 +69,45 @@ export const RoleTable = () => {
   }, [])
 
   return (
-    <div className='flex flex-col w-[50%] mb-2 rounded-md bg-c-bg-color gap-4'>
-      <Table
-        className='h-full'
-        aria-label='Example table with dynamic content'
-        topContentPlacement='outside'
-        isHeaderSticky
-        defaultSelectedKeys={[String(currentRole?.id)]}
-        selectionMode='single'
-        topContent={
-          <div className='flex justify-between gap-3 items-end'>
-            <Input
-              isClearable
-              className='text-c-gray'
-              placeholder='Buscar por nombre...'
-              startContent={<SearchIcon />}
-              onChange={handleSearch}
-            />
-            <div className='flex gap-3'>
-              <CreateRoleModal />
-            </div>
+    <Table
+      className='h-full flex flex-col w-[50%] rounded-md bg-c-bg-color gap-4'
+      aria-label='Example table with dynamic content'
+      topContentPlacement='outside'
+      isHeaderSticky
+      defaultSelectedKeys={[String(currentRole?.id)]}
+      selectionMode='single'
+      topContent={
+        <div className='flex justify-between gap-3 items-end'>
+          <Input
+            isClearable
+            className='text-c-gray'
+            placeholder='Buscar por nombre...'
+            startContent={<SearchIcon />}
+            onChange={handleSearch}
+          />
+          <div className='flex gap-3'>
+            <CreateRoleModal />
           </div>
-        }
+        </div>
+      }
+    >
+      <TableHeader columns={columns}>
+        {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
+      </TableHeader>
+      <TableBody
+        emptyContent={'Tabla de roles vacía'}
+        items={roles.data.filter((item: any) =>
+          item.name.toLowerCase().includes(searchTerm.toLowerCase()),
+        )}
       >
-        <TableHeader columns={columns}>
-          {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
-        </TableHeader>
-        <TableBody
-          items={roles.data.filter((item: any) =>
-            item.name.toLowerCase().includes(searchTerm.toLowerCase()),
-          )}
-        >
-          {(item: any) => (
-            <TableRow key={item.id} onClick={() => setCurrentRole(item.id)}>
-              {(columnKey) => (
-                <TableCell className='cursor-pointer'>{renderCell(item, columnKey)}</TableCell>
-              )}
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </div>
+        {(item: any) => (
+          <TableRow key={item.id} onClick={() => setCurrentRole(item.id)}>
+            {(columnKey) => (
+              <TableCell className='cursor-pointer'>{renderCell(item, columnKey)}</TableCell>
+            )}
+          </TableRow>
+        )}
+      </TableBody>
+    </Table>
   )
 }

@@ -38,6 +38,11 @@ export const RoleUsers = () => {
             </div>
           ))}
       </div>
+      {!currentRole?.users && (
+        <p className='text-foreground-400 align-middle text-center'>
+          No se han encontrado miembros.
+        </p>
+      )}
     </div>
   )
 }

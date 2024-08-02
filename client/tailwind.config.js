@@ -4,7 +4,6 @@ const { nextui } = require('@nextui-org/react')
 module.exports = {
   content: [
     './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
-
     './src/renderer/*.{js,ts,jsx,tsx,mdx}',
     './src/renderer/src/**/*.{js,ts,jsx,tsx,mdx}',
   ],
@@ -51,6 +50,8 @@ module.exports = {
         'c-error': '#B93B3B',
         'c-grey': ' #0000008A',
         'c-borde': '#003399',
+        'c-primary-opacity': 'var(--c-primary-opacity)',
+        'c-selected': 'var(--c-bg-selected)',
       },
     },
     screens: {

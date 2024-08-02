@@ -4,15 +4,16 @@ import { RolePerms } from './RolePerms'
 import { RoleUsers } from './RoleUsers'
 import { useSelector } from 'react-redux'
 import { Card, CardBody, CardHeader, Tab, Tabs } from '@nextui-org/react'
+import React from 'react'
 
 export const RoleSections = () => {
   const roles = useSelector((state: any) => state.roles)
   const currentRole = roles.data.find((item: Role) => item.id === roles.currentRoleIdEdit)
 
   return (
-    <div className='w-[50%] rounded-md'>
-      {currentRole && (
-        <Card>
+    <React.Fragment>
+      {currentRole ? (
+        <Card className='h-full flex flex-col w-[50%]'>
           <CardHeader>
             <h3 className='text-3xl font-semibold text-c-title'>{currentRole.name}</h3>
           </CardHeader>
@@ -40,7 +41,15 @@ export const RoleSections = () => {
             </div>
           </CardBody>
         </Card>
+      ) : (
+        <Card className='h-full flex flex-col w-[50%]'>
+          <CardBody className='items-center flex content-center justify-center'>
+            <p className='text-foreground-400 align-middle text-center'>
+              Selecciona un rol para ver su información.
+            </p>
+          </CardBody>
+        </Card>
       )}
-    </div>
+    </React.Fragment>
   )
 }
