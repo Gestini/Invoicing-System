@@ -9,10 +9,14 @@ import {
   ModalContent,
 } from '@nextui-org/react'
 import { reqEditDeposit } from '@renderer/api/requests'
+import { useDispatch, useSelector } from 'react-redux'
+import { editWarehouse, wareHouseInterface } from '@renderer/features/warehouseSlice'
 
-export const EditWarehouse = ({ results, isOpen, onOpenChange, onClose, id }) => {
+export const EditWarehouse = ({ isOpen, onOpenChange, onClose, id }) => {
+  const dispatch = useDispatch()
   const [data, setData] = React.useState<any>({})
-  const currentWarehouse = results.find((item) => item.id == id)
+  const warehouse: wareHouseInterface = useSelector((state: any) => state.warehouse)
+  const currentWarehouseEdit = warehouse.data.find((item) => item.id == id)
 
   const handleChange = (e: any) => {
     let name = e.target.name
@@ -24,8 +28,7 @@ export const EditWarehouse = ({ results, isOpen, onOpenChange, onClose, id }) =>
   }
 
   const handleEditWarehouse = async () => {
-    const auxResults = [...results]
-    auxResults[results.indexOf(currentWarehouse)].name = data.name
+    dispatch(editWarehouse({ id, data }))
     await reqEditDeposit(id, data)
     onClose()
   }
@@ -39,7 +42,7 @@ export const EditWarehouse = ({ results, isOpen, onOpenChange, onClose, id }) =>
     >
       <ModalContent>
         <ModalHeader>
-          <h4 className='text-c-title font-semibold text-2xl'>Editar deposito</h4>
+          <h4 className='text-c-title font-semibold text-2xl'>Editar depósito</h4>
         </ModalHeader>
         <ModalBody>
           <div className='flex flex-col gap-4'>
@@ -47,8 +50,8 @@ export const EditWarehouse = ({ results, isOpen, onOpenChange, onClose, id }) =>
               type='text'
               label='Nombre'
               name='name'
-              defaultValue={currentWarehouse?.name}
-              placeholder='Ingresa el nombre del deposito'
+              defaultValue={currentWarehouseEdit?.name}
+              placeholder='Ingresa el nombre del depósito'
               labelPlacement='outside'
               onChange={handleChange}
             />

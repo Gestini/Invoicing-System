@@ -7,9 +7,9 @@ import {
   reqGetProductByDeposit,
 } from '@renderer/api/requests'
 import { AppTable } from '@renderer/components/AppTable'
-import { useParams } from 'react-router-dom'
 import { AddProductModal } from '@renderer/components/AppTable/Modals/ProductAdd'
 import { EditProductModal } from '@renderer/components/AppTable/Modals/ProductEdit'
+import { wareHouseInterface } from '@renderer/features/warehouseSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { columnsData, modalInputs } from './data'
 import { addItem, deleteItem, editItem, setTableData } from '@renderer/features/tableSlice'
@@ -17,15 +17,18 @@ import { addItem, deleteItem, editItem, setTableData } from '@renderer/features/
 export const StockTable = () => {
   const dispatch = useDispatch()
   const table = useSelector((state: any) => state.table)
-  const params = useParams()
+
+  const warehouse: wareHouseInterface = useSelector((state: any) => state.warehouse)
+  const currentWarehouseId = warehouse.currentWarehouseId
 
   React.useEffect(() => {
     const loadData = async () => {
-      const response = await reqGetProductByDeposit(params.depositId)
+      const response = await reqGetProductByDeposit(currentWarehouseId)
       dispatch(setTableData(response.data))
     }
+    if (currentWarehouseId == '') return
     loadData()
-  }, [])
+  }, [currentWarehouseId])
 
   const tableActions = {
     delete: async (id: any) => {
@@ -41,7 +44,12 @@ export const StockTable = () => {
       try {
         dispatch(addItem({ ...data, id: table.data.length }))
         toast.success('Producto guardado correctamente')
-        await reqCreateProduct(data)
+        await reqCreateProduct({
+          ...data,
+          depositUnit: {
+            id: warehouse.currentWarehouseId,
+          },
+        })
       } catch (error: any) {
         toast.error(error.response.data.message)
       }
@@ -57,25 +65,27 @@ export const StockTable = () => {
     },
   }
 
-  const newUserModal = {
+  const newProductModal = {
     title: 'Agrega un nuevo producto',
     buttonTitle: 'Agregar',
     ...modalInputs,
     action: tableActions.create,
   }
 
-  const editUserModal = {
+  const editProductModal = {
     title: 'Editar producto',
     ...modalInputs,
     action: tableActions.edit,
   }
 
+  if (currentWarehouseId == '' || warehouse.data.length === 0) return
+
   return (
     <AppTable
       columnsData={columnsData}
       tableActions={tableActions}
-      addItemModal={<AddProductModal modal={newUserModal} />}
-      editItemModal={<EditProductModal modal={editUserModal} />}
+      addItemModal={<AddProductModal modal={newProductModal} />}
+      editItemModal={<EditProductModal modal={editProductModal} />}
     />
   )
 }

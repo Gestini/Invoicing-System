@@ -11,12 +11,16 @@ import {
 } from '@nextui-org/react'
 import { PlusIcon } from '@renderer/components/Icons/PlusIcon'
 import { useParams } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { addWarehouse } from '@renderer/features/warehouseSlice'
 import { reqCreateDeposit } from '@renderer/api/requests'
 
-export const CreateWarehouse = ({ results, setResults }) => {
+export const CreateWarehouse = () => {
+  const dispatch = useDispatch()
   const params = useParams()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [data, setData] = React.useState({})
+  const [buttonDisabled, setButtonDisabled] = React.useState(false)
 
   const handleChange = (e) => {
     let name = e.target.name
@@ -29,30 +33,33 @@ export const CreateWarehouse = ({ results, setResults }) => {
 
   const handleCreateWarehouse = async () => {
     try {
-      const auxResults = [...results]
+      setButtonDisabled(true)
+
       const response = await reqCreateDeposit({
         ...data,
         businessUnit: {
           id: params.id,
         },
       })
-      auxResults.push({ ...response.data })
-      setResults(auxResults)
+
+      dispatch(addWarehouse(response.data))
       onClose()
     } catch (error) {
       console.log(error)
+    } finally {
+      setButtonDisabled(false)
     }
   }
 
   return (
     <>
       <Button onPress={onOpen} className='bg-c-primary' color='secondary' endContent={<PlusIcon />}>
-        Crear deposito
+        Crear depósito
       </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} scrollBehavior={'inside'} backdrop='blur'>
         <ModalContent>
           <ModalHeader>
-            <h4 className='text-c-title font-semibold text-2xl'>Crear un nuevo deposito</h4>
+            <h4 className='text-c-title font-semibold text-2xl'>Crear un nuevo depósito</h4>
           </ModalHeader>
           <ModalBody>
             <div className='flex flex-col gap-4'>
@@ -60,7 +67,7 @@ export const CreateWarehouse = ({ results, setResults }) => {
                 type='text'
                 label='Nombre'
                 name='name'
-                placeholder='Ingresa el nombre del deposito'
+                placeholder='Ingresa el nombre del depósito'
                 labelPlacement='outside'
                 onChange={handleChange}
               />
@@ -70,7 +77,12 @@ export const CreateWarehouse = ({ results, setResults }) => {
             <Button color='danger' variant='light' onPress={onClose}>
               Cerrar
             </Button>
-            <Button color='primary' className='bg-c-primary' onPress={handleCreateWarehouse}>
+            <Button
+              color='primary'
+              className='bg-c-primary'
+              onPress={handleCreateWarehouse}
+              isDisabled={buttonDisabled}
+            >
               Crear
             </Button>
           </ModalFooter>
