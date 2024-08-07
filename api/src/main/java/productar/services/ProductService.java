@@ -71,7 +71,7 @@ public class ProductService {
             productRepository.deleteById(productId);
             return ResponseEntity.status(HttpStatus.OK).body("Producto eliminado correctamente");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("Ocurrio un error al eliminar el producto");
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("Ocurrió un error al eliminar el producto");
         }
     }
 
