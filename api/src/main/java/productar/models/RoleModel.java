@@ -25,8 +25,12 @@ public class RoleModel {
     private BusinessUnitsModel businessUnit;
 
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference
+    @JsonManagedReference("permRef")
     private Set<RolePermissionsModel> permissions;
+    
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonManagedReference("userRef")
+    private Set<RoleUsersModel> users;
 
     public Long getId() {
         return id;
@@ -58,5 +62,13 @@ public class RoleModel {
 
     public void setPermissions(Set<RolePermissionsModel> permissions) {
         this.permissions = permissions;
+    }
+
+    public Set<RoleUsersModel> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<RoleUsersModel> users) {
+        this.users = users;
     }
 }

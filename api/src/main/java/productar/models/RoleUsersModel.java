@@ -3,6 +3,8 @@ package productar.models;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -24,12 +26,15 @@ public class RoleUsersModel {
     @JoinColumn(name = "role_id", nullable = false)
     @NotNull(message = "El rol no puede ser nulo")
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonBackReference("userRef")
     private RoleModel role;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    @NotNull(message = "User id cannot be null")
-    private User user;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "employee_id", nullable = false)
+    @NotNull(message = "Employee id cannot be null")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonBackReference("employeeRef")
+    private EmployeeModel employee;
 
     public Long getId() {
         return id;
@@ -47,12 +52,12 @@ public class RoleUsersModel {
         this.role = role;
     }
 
-    public User getUser() {
-        return user;
+    public EmployeeModel getEmployee() {
+        return employee;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setEmployee(EmployeeModel employee) {
+        this.employee = employee;
     }
 
 }

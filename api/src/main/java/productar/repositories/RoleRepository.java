@@ -12,6 +12,10 @@ import productar.models.RoleModel;
 @Repository
 public interface RoleRepository extends JpaRepository<RoleModel, Long> {
 
-    @Query("SELECT r FROM RoleModel r LEFT JOIN FETCH r.permissions WHERE r.businessUnit.id = :businessUnitId")
+    @Query("SELECT r FROM RoleModel r " +
+            "LEFT JOIN FETCH r.permissions p " +
+            "LEFT JOIN FETCH r.users ru " +
+            "LEFT JOIN FETCH ru.employee e " +
+            "WHERE r.businessUnit.id = :businessUnitId")
     List<RoleModel> findByBusinessUnitIdWithPermissions(@Param("businessUnitId") Long businessUnitId);
 }
