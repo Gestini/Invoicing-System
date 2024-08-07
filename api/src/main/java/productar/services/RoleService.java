@@ -1,6 +1,7 @@
 package productar.services;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import productar.models.EmployeeModel;
 import productar.models.RoleModel;
 import productar.models.RolePermissionsModel;
 import productar.models.RoleUsersModel;
@@ -37,13 +39,26 @@ public class RoleService {
             roleRepository.deleteById(id);
             return ResponseEntity.ok("Rol eliminado correctamente");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrio un error:" + e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error:" + e);
         }
     }
 
     public List<RoleModel> getRolesByUnit(Long id) {
         return roleRepository.findByBusinessUnitIdWithPermissions(id);
     }
+
+    public List<EmployeeModel> getEmployeesByRoleId(Long id) {
+        List<RoleUsersModel> users = roleUsersRepository.findEmployeesByRole(id);
+        List<EmployeeModel> employees = new ArrayList<>();
+    
+        for (RoleUsersModel user : users) {
+            EmployeeModel employee = user.getEmployee();
+            employees.add(employee);
+        }
+    
+        return employees;
+    }
+    
 
     public ResponseEntity<String> updateRole(Long id, RoleModel updatedRole) {
         try {
@@ -105,7 +120,7 @@ public class RoleService {
             }
 
             Optional<RoleUsersModel> hasRole = roleUsersRepository.userHasRole(roleUsers.getRole().getId(),
-                    roleUsers.getUser().getId());
+                    roleUsers.getEmployee().getId());
 
             if (hasRole.isPresent()) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El usuario ya tiene ese rol");

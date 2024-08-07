@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import productar.models.EmployeeModel;
 import productar.models.RoleModel;
 import productar.models.RolePermissionsModel;
 import productar.models.RoleUsersModel;
@@ -33,6 +34,11 @@ public class RoleController {
     @GetMapping("/get-by-unit/{businessUnitId}")
     public List<RoleModel> getRolesByUnit(@PathVariable Long businessUnitId) {
         return roleService.getRolesByUnit(businessUnitId);
+    }
+
+    @GetMapping("/get-employees/{roleId}")
+    public List<EmployeeModel> getEmployeesByRoleId(@PathVariable Long roleId) {
+        return roleService.getEmployeesByRoleId(roleId);
     }
 
     @PutMapping("/{id}")
