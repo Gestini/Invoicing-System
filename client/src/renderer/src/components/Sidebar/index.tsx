@@ -1,4 +1,5 @@
 import {
+  BiUser,
   BiHome,
   BiCart,
   BiLabel,
@@ -56,6 +57,11 @@ export const Sidebar = () => {
       path: `/facturar/${unit?.id}`,
       icon: <BiCalculator />,
       text: 'Facturar',
+    },
+    {
+      path: `/empleados/${unit?.id}`,
+      icon: <BiUser />,
+      text: 'Empleados',
     },
     {
       path: `/roles/${unit?.id}`,

@@ -9,6 +9,7 @@ import { SalesTable } from '@renderer/pages/SalesTable'
 import { ClientTable } from '@renderer/pages/ClientTable'
 import { SupplierTable } from '@renderer/pages/SupplierTable'
 import { Route, Routes } from 'react-router-dom'
+import { EmployeeTable } from '@renderer/pages/EmployeeTable'
 import { InvoicingTable } from '@renderer/pages/InvoicingTable'
 import { SidebarMiddleware } from './middlewares/SidebarMiddleware'
 import { ProtectedRouteAuth } from './middlewares/ProtectedRouteAuth'
@@ -33,6 +34,7 @@ const Router = () => {
           <Route path='/pedidos/:id' element={<></>} />
           <Route path='/depositos/:id' element={<Warehouse />} />
           <Route path='/proveedores/:id' element={<SupplierTable />} />
+          <Route path='/empleados/:id' element={<EmployeeTable />} />
           <Route path='/presupuestos/:id' element={<></>} />
         </Route>
       </Route>

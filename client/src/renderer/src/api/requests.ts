@@ -64,3 +64,11 @@ export const reqRemovePermissionRole = async (roleId: any, permissionId) =>
 export const reqAddRoleUser = async (data: any) => api.post('/role/add-user', data)
 export const reqRemoveRoleUser = async (roleId: any, userId: any) =>
   api.delete(`/role/remove-user/${roleId}/${userId}`)
+
+/* Rutas empleados */
+export const reqCreateEmployee = async (data: any) => api.post('/employee', data)
+export const reqGetEmployeesByUnit = async (id: any) => api.get(`/employee/get-by-unit/${id}`)
+export const reqSearchEmployeeByName = (name: string) => api.get(`/employee/get-by-name/${name}`)
+export const reqLoadEmployeeByRole = (id: any) => api.get(`/role/get-employees/${id}`)
+export const reqDeleteEmployee = (id: any) => api.delete(`/employee/delete/${id}`)
+export const reqEditEmployee = (id: any, data: any) => api.put(`/employee/edit/${id}`, data)

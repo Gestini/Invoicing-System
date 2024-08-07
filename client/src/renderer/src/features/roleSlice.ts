@@ -67,6 +67,14 @@ export const manageRoles = createSlice({
 
       state.data[itemIndex].permissions.splice(permissionIndex, 1)
     },
+    setInitialUsersRole: (state, action) => {
+      const { users } = action.payload
+      const itemIndex = state.data.findIndex((item) => item.id == state.currentRoleIdEdit)
+
+      if (itemIndex !== -1) {
+        state.data[itemIndex].users = users
+      }
+    },
     addRoleUser: (state, action) => {
       const data = action.payload
       const itemIndex = state.data.findIndex((item) => item.id == state.currentRoleIdEdit)
@@ -99,4 +107,5 @@ export const {
   addPermissions,
   removePermission,
   setCurrentRoleId,
+  setInitialUsersRole,
 } = manageRoles.actions

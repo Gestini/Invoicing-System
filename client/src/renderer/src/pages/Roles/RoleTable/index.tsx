@@ -14,9 +14,9 @@ import { Role } from '@renderer/features/roleSlice'
 import { setRoles } from '@renderer/features/roleSlice'
 import { useParams } from 'react-router-dom'
 import { CreateRoleModal } from '../Modals/CreateRoleModal'
-import { setCurrentRoleId } from '@renderer/features/roleSlice'
-import { reqGetRoletByUnit } from '@renderer/api/requests'
 import { useSelector, useDispatch } from 'react-redux'
+import { setCurrentRoleId, setInitialUsersRole } from '@renderer/features/roleSlice'
+import { reqGetRoletByUnit, reqLoadEmployeeByRole } from '@renderer/api/requests'
 
 export const RoleTable = () => {
   const params = useParams()
@@ -29,7 +29,13 @@ export const RoleTable = () => {
     const loadData = async () => {
       try {
         const response = await reqGetRoletByUnit(params.id)
+
         dispatch(setRoles(response.data))
+
+        if (currentRole) {
+          const res = await reqLoadEmployeeByRole(currentRole.id)
+          dispatch(setInitialUsersRole({ users: res.data }))
+        }
       } catch (error) {
         console.log(error)
       }
@@ -48,7 +54,11 @@ export const RoleTable = () => {
     },
   ]
 
-  const setCurrentRole = (id: number) => dispatch(setCurrentRoleId(id))
+  const setCurrentRole = async (id: number) => {
+    dispatch(setCurrentRoleId(id))
+    const res = await reqLoadEmployeeByRole(id)
+    dispatch(setInitialUsersRole({ users: res.data }))
+  }
 
   const handleSearch = (e: any) => setSearchTerm(e.target.value)
 
