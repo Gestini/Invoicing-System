@@ -33,9 +33,10 @@ public class EmployeeController {
         return employeeService.getEmployeesByBusinessUnitId(unitId);
     }
 
-    @GetMapping("/get-by-name/{name}")
-    public List<EmployeeModel> searchEmployeeByName(@PathVariable("name") String name) {
-        return employeeService.searchEmployeeByName(name);
+    @GetMapping("/get-by-name/{unitId}/{name}")
+    public List<EmployeeModel> searchEmployeeByName(@PathVariable("unitId") Long unitId,
+            @PathVariable("name") String name) {
+        return employeeService.searchEmployeeByName(unitId, name);
     }
 
     @DeleteMapping("/delete/{employeeId}")

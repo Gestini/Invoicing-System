@@ -1,5 +1,6 @@
 import React from 'react'
 import { BiX } from 'react-icons/bi'
+import { useParams } from 'react-router-dom'
 import { SearchIcon } from '@renderer/components/Icons/SearchIcon'
 import { useDispatch, useSelector } from 'react-redux'
 import { addRoleUser, removeRoleUser, Role } from '@renderer/features/roleSlice'
@@ -8,6 +9,7 @@ import { reqSearchEmployeeByName, reqAddRoleUser, reqRemoveRoleUser } from '@ren
 
 export const RoleUsers = () => {
   const dispatch = useDispatch()
+  const params = useParams()
   const [result, setResult] = React.useState([])
   const [searchValue, setSearchValue] = React.useState('')
   const handleChange = async (e: any) => setSearchValue(e)
@@ -23,7 +25,7 @@ export const RoleUsers = () => {
       if (searchValue.trim() == '') return
       if (searchValue.length < 3) return
 
-      const response = await reqSearchEmployeeByName(searchValue)
+      const response = await reqSearchEmployeeByName(params.id, searchValue)
       if (response.data.length == 0) return
       setResult(response.data)
     }

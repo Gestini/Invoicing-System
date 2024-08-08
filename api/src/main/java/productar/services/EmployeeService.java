@@ -26,8 +26,8 @@ public class EmployeeService {
         return employeeRepository.findByBusinessUnitId(id);
     }
 
-    public List<EmployeeModel> searchEmployeeByName(String name) {
-        return employeeRepository.searchByName(name);
+    public List<EmployeeModel> searchEmployeeByName(Long unitId, String name) {
+        return employeeRepository.searchEmployeeByName(unitId, name);
     }
 
     public ResponseEntity<String> deleteEmployee(Long id) {
