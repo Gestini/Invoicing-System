@@ -41,6 +41,11 @@ public class RoleController {
         return roleService.getEmployeesByRoleId(roleId);
     }
 
+    @GetMapping("/has-permissions/{userId}/{permissionName}")
+    public Boolean hasPermissions(@PathVariable Long userId, @PathVariable String permissionName) {
+        return roleService.hasPermissions(userId, permissionName);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<String> updateRole(@PathVariable("id") Long id, @RequestBody RoleModel role) {
         return roleService.updateRole(id, role);

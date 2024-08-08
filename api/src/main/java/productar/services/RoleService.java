@@ -50,15 +50,18 @@ public class RoleService {
     public List<EmployeeModel> getEmployeesByRoleId(Long id) {
         List<RoleUsersModel> users = roleUsersRepository.findEmployeesByRole(id);
         List<EmployeeModel> employees = new ArrayList<>();
-    
+
         for (RoleUsersModel user : users) {
             EmployeeModel employee = user.getEmployee();
             employees.add(employee);
         }
-    
+
         return employees;
     }
-    
+
+    public Boolean hasPermissions(Long userId, String permissionName) {
+        return roleUsersRepository.hasPermissions(userId, permissionName);
+    }
 
     public ResponseEntity<String> updateRole(Long id, RoleModel updatedRole) {
         try {
