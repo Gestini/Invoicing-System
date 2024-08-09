@@ -1,6 +1,8 @@
 import { manageUnits } from '@renderer/features/unitsSlice'
+import { manageRoles } from '@renderer/features/roleSlice'
 import { newInvoicing } from '@renderer/features/newInvoicing'
 import { configureStore } from '@reduxjs/toolkit'
+import { manageWarehouse } from '@renderer/features/warehouseSlice'
 import { manageUserSlice } from '@renderer/features/userSlice'
 import { manageTableSlice } from '@renderer/features/tableSlice'
 import { manageCurrentUnit } from '@renderer/features/currentUnitSlice'
@@ -11,6 +13,8 @@ const store: any = configureStore({
     user: manageUserSlice.reducer,
     table: manageTableSlice.reducer,
     units: manageUnits.reducer,
+    roles: manageRoles.reducer,
+    warehouse: manageWarehouse.reducer,
     currentUnit: manageCurrentUnit.reducer,
     newInvoicing: newInvoicing.reducer,
     currentTheme: manageCurrentTheme.reducer,

@@ -9,16 +9,24 @@ import {
   ModalContent,
   useDisclosure,
 } from '@nextui-org/react'
+import { addRole } from '@renderer/features/roleSlice'
 import { PlusIcon } from '@renderer/components/Icons/PlusIcon'
+import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { reqCreateDeposit } from '@renderer/api/requests'
+import { reqCreateRole } from '@renderer/api/requests'
 
-export const CreateWarehouse = ({ results, setResults }) => {
+export const CreateRoleModal = () => {
   const params = useParams()
+  const dispatch = useDispatch()
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
-  const [data, setData] = React.useState({})
+  const [data, setData] = React.useState({
+    id: new Date().toString(),
+    name: '',
+    users: 0,
+    permissions: [],
+  })
 
-  const handleChange = (e) => {
+  const handleChange = (e: any) => {
     let name = e.target.name
     let value = e.target.value
     setData({
@@ -27,17 +35,15 @@ export const CreateWarehouse = ({ results, setResults }) => {
     })
   }
 
-  const handleCreateWarehouse = async () => {
+  const handleCreateRole = async () => {
     try {
-      const auxResults = [...results]
-      const response = await reqCreateDeposit({
-        ...data,
+      const response = await reqCreateRole({
+        name: data.name,
         businessUnit: {
           id: params.id,
         },
       })
-      auxResults.push({ ...response.data })
-      setResults(auxResults)
+      dispatch(addRole({ ...response.data, permissions: [] }))
       onClose()
     } catch (error) {
       console.log(error)
@@ -46,13 +52,13 @@ export const CreateWarehouse = ({ results, setResults }) => {
 
   return (
     <>
-      <Button onPress={onOpen} className='bg-c-primary-variant-1' color='secondary' endContent={<PlusIcon />}>
-        Crear deposito
+      <Button onPress={onOpen} className='bg-c-primary' color='secondary' endContent={<PlusIcon />}>
+        Nuevo
       </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} scrollBehavior={'inside'} backdrop='blur'>
         <ModalContent>
           <ModalHeader>
-            <h4 className='text-c-title font-semibold text-2xl'>Crear un nuevo deposito</h4>
+            <h4 className='text-c-title font-semibold text-2xl'>Crear un nuevo rol</h4>
           </ModalHeader>
           <ModalBody>
             <div className='flex flex-col gap-4'>
@@ -60,7 +66,7 @@ export const CreateWarehouse = ({ results, setResults }) => {
                 type='text'
                 label='Nombre'
                 name='name'
-                placeholder='Ingresa el nombre del deposito'
+                placeholder='Ingresa el nombre del rol'
                 labelPlacement='outside'
                 onChange={handleChange}
               />
@@ -70,7 +76,7 @@ export const CreateWarehouse = ({ results, setResults }) => {
             <Button color='danger' variant='light' onPress={onClose}>
               Cerrar
             </Button>
-            <Button color='primary' className='bg-c-primary-variant-1' onPress={handleCreateWarehouse}>
+            <Button color='primary' className='bg-c-primary' onPress={handleCreateRole}>
               Crear
             </Button>
           </ModalFooter>

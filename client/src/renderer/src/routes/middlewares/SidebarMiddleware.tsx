@@ -1,14 +1,12 @@
-import React, { useState } from 'react'
+import { reqGetUnitById } from '@renderer/api/requests'
+import { capitalize } from '@renderer/components/AppTable/TableComponents/utils'
+import { DepositIcon } from '@renderer/components/Icons/DepositIcon'
 import { Sidebar } from '@renderer/components/Sidebar'
 import { setUnit } from '@renderer/features/currentUnitSlice'
-import { useParams } from 'react-router-dom'
-import { capitalize } from '@renderer/components/AppTable/TableComponents/utils'
-import { reqGetUnitById } from '@renderer/api/requests'
-import { Outlet, useLocation } from 'react-router-dom'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Outlet, useLocation, useParams } from 'react-router-dom'
 import './bodymain.scss'
-import { DepositIcon } from '@renderer/components/Icons/DepositIcon'
-import { Tabs, Tab, Card, CardBody } from "@nextui-org/react";
 
 
 
@@ -39,7 +37,7 @@ export const SidebarMiddleware = () => {
   }, [])
 
   return (
-    <div className='ml-[55px] p-[20px] bodymain'>
+    <div className='ml-[55px] px-[20px]  bodymain'>
       {unit !== null && (
         <>
           <Sidebar />

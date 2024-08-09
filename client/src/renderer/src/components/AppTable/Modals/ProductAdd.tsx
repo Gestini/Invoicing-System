@@ -56,9 +56,6 @@ export const AddProductModal = ({ modal }) => {
     businessUnit: {
       id: params.id,
     },
-    depositUnit: {
-      id: params.depositId,
-    },
   })
 
   const [errors, setErrors] = React.useState({
@@ -85,7 +82,6 @@ export const AddProductModal = ({ modal }) => {
       })
     }
     handleValidation(e.target.name, e.target.value)
-    console.log(e.target.name, e.target.value)
   }
 
   const handleValidation = (name, value) => {
@@ -195,18 +191,15 @@ export const AddProductModal = ({ modal }) => {
       businessUnit: {
         id: params.id,
       },
-      depositUnit: {
-        id: params.depositId,
-      },
     })
     onClose()
   }
 
   const validateName = (name) => {
     if (!name.trim()) {
-      return false // Nombre está vacío
+      return false
     }
-    return true // Nombre no está vacío
+    return true
   }
 
   const validateNumber = (number) => {

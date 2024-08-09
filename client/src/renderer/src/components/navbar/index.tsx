@@ -1,34 +1,41 @@
-import React from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
-import { NavbarUserOptions } from './NavbarUserOption';
-import { BiBell, BiCog } from 'react-icons/bi';
-import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input } from '@nextui-org/react';
+import { Input } from '@nextui-org/react';
+import { useLocation } from 'react-router-dom';
 import { SearchIcon } from '../Icons';
+import { NavbarUserOptions } from './NavbarUserOption';
 
 export const Navbar = () => {
-  const location = useLocation();
-
+  const location = useLocation()
   const pathList: {
-    name: string;
-    path?: string;
-    paths?: string[];
+    name: string
+    path?: string
+    paths?: string[]
   }[] = [
-      {
-        name: 'Workspaces',
-        path: '/'
-      },
-      {
-        name: 'Dashboard',
-        paths: ['/general', '/stock', '/ventas', '/proveedores', '/facturar', '/presupuestos', '/pedidos', '/informes']
-      },
-      {
-        name: 'API Network',
-        path: '/nose'
-      }
-    ];
+    {
+      name: 'Workspaces',
+      path: '/',
+    },
+    {
+      name: 'Dashboard',
+      paths: [
+        '/general',
+        '/stock',
+        '/ventas',
+        '/proveedores',
+        '/facturar',
+        '/presupuestos',
+        '/pedidos',
+        '/informes',
+      ],
+    },
+    {
+      name: 'API Network',
+      path: '/',
+    },
+  ]
 
   // Verificar si pathList[1] y pathList[1].paths están definidos antes de usarlos
-  const isDashboardActive = pathList[1] && pathList[1].paths && pathList[1].paths.includes(location.pathname);
+  const isDashboardActive =
+    pathList[1] && pathList[1].paths && pathList[1].paths.includes(location.pathname)
 
   return (
     <nav className=' w-full bg-c-bg-color flex items-center pt-6'>
@@ -74,5 +81,5 @@ export const Navbar = () => {
         </div>
       </div>
     </nav>
-  );
-};
+  )
+}

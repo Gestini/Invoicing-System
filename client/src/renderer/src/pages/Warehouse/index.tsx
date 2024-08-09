@@ -4,9 +4,12 @@ import { useParams } from 'react-router-dom'
 import { SlOptions } from 'react-icons/sl'
 import { SearchIcon, VerticalDotsIcon } from '@renderer/components/Icons'
 import { useNavigate } from 'react-router-dom'
-import { EditWarehouse } from './EditWarehouse'
-import { CreateWarehouse } from './CreateWarehouse'
-import { ProductTransfer } from './ProductTransfer'
+// import { EditWarehouse } from './EditWarehouse'
+// import { CreateWarehouse } from './CreateWarehouse'
+// import { ProductTransfer } from './ProductTransfer'
+import { StockTable } from './StockTable'
+import { WarehouseCard } from './WarehouseCard'
+
 import {
   Card,
   Input,
@@ -191,8 +194,8 @@ export const Warehouse = () => {
               onChange={handleSearch}
             />
             <div className='flex gap-3'>
-              <ProductTransfer />
-              <CreateWarehouse results={results} setResults={setResults} />
+              {/* <ProductTransfer /> */}
+              {/* <CreateWarehouse results={results} setResults={setResults} /> */}
             </div>
           </div>
         </div>
@@ -249,13 +252,17 @@ export const Warehouse = () => {
           )}
         </div>
       </div>
-      <EditWarehouse
+      <div className='flex flex-col gap-4'>
+        <WarehouseCard />
+        <StockTable />
+      </div>
+      {/* <EditWarehouse
         id={currentEdit}
         isOpen={isOpen}
         results={results}
         onClose={onClose}
         onOpenChange={onOpenChange}
-      />
+      /> */}
     </>
   )
 }

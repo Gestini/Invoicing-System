@@ -31,15 +31,15 @@ export const BottomContent = ({ pages, page, setPage, selectedKeys, filteredItem
         onChange={setPage}
       />
       <div className='hidden sm:flex w-[30%] justify-end gap-2'>
-        <Button
-          isDisabled={page === 1}
-          size='sm'
-          variant='flat'
-          onPress={onPreviousPage}
-        >
+        <Button isDisabled={page === 1} size='sm' variant='flat' onPress={onPreviousPage}>
           Anteior
         </Button>
-        <Button isDisabled={page === pages} size='sm' variant='flat' onPress={onNextPage}>
+        <Button
+          isDisabled={page === pages || pages == 0}
+          size='sm'
+          variant='flat'
+          onPress={onNextPage}
+        >
           Siguiente
         </Button>
       </div>

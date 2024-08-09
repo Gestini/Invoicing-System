@@ -22,6 +22,10 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
+    public List<User> findByUsername(String username) {
+        return userRepository.searchByUsername(username);
+    }
+
     private UserResponse Convert(User user) {
         UserResponse userResponse = new UserResponse();
         userResponse.setId(user.getId());
