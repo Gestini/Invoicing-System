@@ -57,6 +57,7 @@ module.exports = {
         'c-border': 'var(--c-border)',
         'c-primary-opacity': 'var(--c-primary-opacity)',
         'c-selected': 'var(--c-bg-selected)',
+        'c-input-color': 'var(--c-input-color)',
       },
     },
     screens: {

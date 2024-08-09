@@ -53,7 +53,7 @@ export const CreateWarehouse = () => {
 
   return (
     <>
-      <Button onPress={onOpen} className='bg-c-primary-variant-1' color='secondary' endContent={<PlusIcon />}>
+      <Button onPress={onOpen} className=' bg-c-input-color text-c-primary-variant-1' color='secondary' endContent={<PlusIcon />}>
         Crear deposito
       </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} scrollBehavior={'inside'} backdrop='blur'>

@@ -11,6 +11,7 @@ import {
   DropdownMenu,
   useDisclosure,
   DropdownTrigger,
+  Input,
 } from '@nextui-org/react'
 import { reqGetDepositByUnit, reqDeleteDeposit } from '@renderer/api/requests'
 import {
@@ -19,6 +20,9 @@ import {
   wareHouseInterface,
   setCurrentWarehouseId,
 } from '@renderer/features/warehouseSlice'
+import { SearchIcon } from '@renderer/components/Icons'
+import SearchBar from '@renderer/components/SearchBar'
+import FilterButton from "@renderer/components/FilterButon"
 
 export const WarehouseCard = () => {
   const params = useParams()
@@ -27,6 +31,10 @@ export const WarehouseCard = () => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const warehouse: wareHouseInterface = useSelector((state: any) => state.warehouse)
   const currentWarehouseId = warehouse.currentWarehouseId
+  const [searchTerm, setSearchTerm] = React.useState('')
+  const [results, setResults] = React.useState([])
+
+
 
   React.useEffect(() => {
     const loadData = async () => {
@@ -39,6 +47,8 @@ export const WarehouseCard = () => {
     }
     loadData()
   }, [])
+
+  const handleSearch = (e: any) => setSearchTerm(e.target.value)
 
   const openWarehouse = (depositId: number) => dispatch(setCurrentWarehouseId(depositId))
 
@@ -56,16 +66,36 @@ export const WarehouseCard = () => {
     onOpen()
   }
 
+  const loadData = async () => {
+    try {
+      const response = await reqGetDepositByUnit(params.id)
+      setResults(response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  React.useEffect(() => {
+    loadData()
+  }, [])
+
   return (
     <>
-      <div className='flex gap-4 flex-col'>
+      <div className='flex gap- flex-col w-full gap-4'>
         <div
-          className={`flex items-center ${warehouse.data.length === 0 ? 'justify-between' : 'justify-end'}`}
+          className={`flex items-center justify-between gap-4`}
         >
           {warehouse.data.length === 0 && (
             <p className='text-foreground-400 align-middle text-center'>No tienes depósitos creados.</p>
           )}
-          <CreateWarehouse />
+          <div className='w-[384px] h-[100%] flex gap-[14px]'>
+            <SearchBar />
+            <FilterButton />
+          </div>
+          <div className='flex gap-[14px]'>
+            <CreateWarehouse />
+            <CreateWarehouse />
+          </div>
         </div>
         <div className='flex gap-4 flex-wrap'>
           {warehouse.data.length > 0 &&
