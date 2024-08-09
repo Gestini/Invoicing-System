@@ -58,7 +58,7 @@ export const EditWarehouse = ({ results, isOpen, onOpenChange, onClose, id }) =>
           <Button color='danger' variant='light' onPress={onClose}>
             Cerrar
           </Button>
-          <Button color='primary' className='bg-c-primary' onPress={handleEditWarehouse}>
+          <Button color='primary' className='bg-c-primary-variant-1' onPress={handleEditWarehouse}>
             Guardar
           </Button>
         </ModalFooter>

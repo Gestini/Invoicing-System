@@ -17,7 +17,7 @@ export const ProductTransfer = () => {
     <>
       <Button
         onPress={onOpen}
-        className='bg-c-primary'
+        className='bg-c-primary-variant-1'
         color='secondary'
         endContent={<GoArrowSwitch />}
       >
@@ -48,7 +48,7 @@ export const ProductTransfer = () => {
             <Button color='danger' variant='light' onPress={onClose}>
               Cerrar
             </Button>
-            <Button color='primary' className='bg-c-primary'>
+            <Button color='primary' className='bg-c-primary-variant-1'>
               Traspaso
             </Button>
           </ModalFooter>

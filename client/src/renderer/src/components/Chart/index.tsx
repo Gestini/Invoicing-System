@@ -61,7 +61,7 @@ export const GraphView = () => {
 
   React.useEffect(() => {
     const style = getComputedStyle(document.body)
-    const computedMainColor = style.getPropertyValue('--c-primary').trim()
+    const computedMainColor = style.getPropertyValue('--c-primary-variant-1').trim()
     setMainColor(computedMainColor)
     setParsedMainColor(
       `rgba(${parseInt(computedMainColor?.slice(1, 3), 16)}, ${parseInt(computedMainColor?.slice(3, 5), 16)}, ${parseInt(computedMainColor?.slice(5, 7), 16)}, 0.1)`,

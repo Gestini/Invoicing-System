@@ -36,7 +36,7 @@ export const ChangeTheme = () => {
           key={index}
           color='primary'
           classNames={{
-            wrapper: 'after:bg-[var(--c-primary)]',
+            wrapper: 'after:bg-[var(--c-primary-variant-1)]',
           }}
           onChange={() => changeTheme(item)}
           isSelected={item === theme.name}

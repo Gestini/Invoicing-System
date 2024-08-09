@@ -2,7 +2,8 @@ import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { NavbarUserOptions } from './NavbarUserOption';
 import { BiBell, BiCog } from 'react-icons/bi';
-import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/react';
+import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input } from '@nextui-org/react';
+import { SearchIcon } from '../Icons';
 
 export const Navbar = () => {
   const location = useLocation();
@@ -30,35 +31,33 @@ export const Navbar = () => {
   const isDashboardActive = pathList[1] && pathList[1].paths && pathList[1].paths.includes(location.pathname);
 
   return (
-    <nav className='h-[45px] w-full bg-c-bg-color flex items-center'>
-      <div className='w-full h-full px-[18px]'>
+    <nav className=' w-full bg-c-bg-color flex items-center pt-6'>
+      <div className='w-full h-full px-[18px] pl-[73px]'>
         <div className='relative flex items-center justify-between w-full h-full'>
-          <div className='flex items-center justify-center text-c-title cursor-pointer w-16'></div>
-          <div className='flex items-center justify-between'>
+          {/* <div className='flex items-center justify-center text-c-title cursor-pointer w-16'></div> */}
+          {/* <div className='flex items-center justify-between'>
             <div className='hidden sm:block'>
-              <div className='flex space-x-4'>
-                {pathList.map((item, index) => (
-                  <NavLink
-                    key={index}
-                    to={item.paths ? (item.paths[0] as string) : (item.path as string)}
-                    className={({ isActive }) => `text-gray-600 hover:bg-c-primary-route-hover hover:text-white transition-all duration-300 px-3 py-2 rounded-md text-sm font-medium ${(isActive || (item.name === 'Dashboard' && isDashboardActive)) ? 'bg-c-primary-route-active hover:bg-c-primary-route-active text-white' : ''
-                      }`}
-                  >
-                    {item.name}
-                  </NavLink>
-                ))}
-              </div>
+
             </div>
+          </div> */}
+          <div className='w-[384px]'>
+            <Input
+              isClearable
+              className='w-full text-c-gray'
+              placeholder='Buscar por nombre...'
+              startContent={<SearchIcon />}
+            // value={filterValue}
+            // onClear={() => onClear()}
+            // onValueChange={onSearchChange}
+            />
           </div>
           <div className='inset-y-0 right-0 flex items-center'>
-            {/* <div className='settings w-[50px] flex justify-center h-[50px] hover:bg-[#eaddff] cursor-pointer'>
-              <BiCog className='h-full text-[20px] text-gray-600' />
-            </div> */}
 
-            <Dropdown className='text-c-title bg-c-card'>
+
+            {/* <Dropdown className='text-c-title bg-c-card'>
               <DropdownTrigger>
                 <div className='settings w-[50px] flex justify-center h-[50px] rounded-full transition-all duration-300 cursor-pointer'>
-                  <BiBell className='h-full text-[20px] text-gray-600 transition-colors duration-300 hover:text-c-primary' />
+                  <BiBell className='h-full text-[20px] text-gray-600 transition-colors duration-300 hover:text-c-primary-variant-1' />
                 </div>
               </DropdownTrigger>
               <DropdownMenu aria-label='Profile Actions' variant='flat'>
@@ -66,9 +65,9 @@ export const Navbar = () => {
                   <p className='font-semibold'>Mis notificaciones</p>
                 </DropdownItem>
               </DropdownMenu>
-            </Dropdown>
+            </Dropdown> */}
 
-            <div className='h-[50px] w-[50px] flex justify-center items-center'>
+            <div className='h-[50px] flex justify-center items-center'>
               <NavbarUserOptions />
             </div>
           </div>

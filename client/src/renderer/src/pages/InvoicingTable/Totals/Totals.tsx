@@ -21,6 +21,8 @@ export const TotalsInputs = () => {
 
   const handleActive = (name: string) => dispatch(handleTotal(name))
 
+  console.log(currentTab)
+
   return (
     <div className='flex flex-wrap gap-2'>
       {currentTab?.totalApply?.map((item: any, index: number) => (
@@ -35,7 +37,12 @@ export const TotalsInputs = () => {
           placeholder='0.00'
           startContent={
             <div className='pointer-events-none flex items-center'>
-              <span className='text-default-400 text-small'>$</span>
+              <span className='text-default-400 text-small'>
+                {
+                  item.format === 'number' ? '$' :
+                    item.format === 'percentage' ? '%' : ''
+                }
+              </span>
             </div>
           }
           endContent={
@@ -44,7 +51,7 @@ export const TotalsInputs = () => {
               onChange={() => handleActive(item.name)}
               color='primary'
               classNames={{
-                wrapper: 'after:bg-[var(--c-primary)]',
+                wrapper: 'after:bg-[var(--c-primary-variant-1)]',
               }}
             />
           }

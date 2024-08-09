@@ -37,6 +37,10 @@ module.exports = {
       },
       colors: {
         'c-primary': 'var(--c-primary)',
+        'c-primary-variant-1': 'var(--c-primary-variant-1)',
+        'c-primary-variant-2': 'var(--c-primary-variant-2)',
+        'c-primary-variant-3': 'var(--c-primary-variant-3)',
+        'c-primary-variant-4': 'var(--c-primary-variant-4)',
         'c-primary-hover': 'var(--c-primary-hover)',
         'c-primary-hover2': 'var(--c-primary-hover2)',
         'c-company-bg-color': 'var(--c-company-bg-color)',
@@ -49,8 +53,9 @@ module.exports = {
         'c-title': 'var(--c-title)',
         'c-gray': 'var(--c-gray)',
         'c-error': '#B93B3B',
-        'c-grey': ' #0000008A',
         'c-borde': '#003399',
+        'c-gray': 'var(--c-primary-gray)',
+        'c-border': 'var(--c-border)'
       },
     },
     screens: {

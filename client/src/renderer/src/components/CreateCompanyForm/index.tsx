@@ -76,7 +76,7 @@ const MultiStepForm = () => {
     <div className='flex flex-col gap-2'>
       <Button
         onPress={onOpen}
-        className='bg-c-primary'
+        className='bg-c-primary-variant-1'
         color='secondary'
         size='sm'
         endContent={<PlusIcon />}

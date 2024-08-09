@@ -455,7 +455,7 @@ export const EditProductModal = ({ modal }) => {
                 name='envasedproduct'
                 color='primary'
                 classNames={{
-                  wrapper: 'after:bg-[var(--c-primary)]',
+                  wrapper: 'after:bg-[var(--c-primary-variant-1)]',
                 }}
                 onChange={handleChange}
               >

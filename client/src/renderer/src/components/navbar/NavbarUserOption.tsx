@@ -16,19 +16,27 @@ export const NavbarUserOptions = () => {
     return (
       <Dropdown className='text-c-title bg-c-card'>
         <DropdownTrigger>
-          <Avatar
-            as='button'
-            size='sm'
-            classNames={{
-              icon: 'text-[#ffffff]',
-              base: 'bg-[--c-primary]',
-            }}
-          />
+          <div className='flex'>
+            <Avatar
+              as='button'
+              classNames={{
+                icon: 'text-[#ffffff]',
+                base: 'bg-[--c-primary-variant-1]',
+              }}
+              className='h-[50px] w-[50px]'
+            />
+            <div className='ml-[10px]'>
+              <p className='text-white text-[14px] '>
+                {user?.username}
+              </p>
+              <p className='px-[4px] py-[2px] mt-1 bg-[rgb(160,219,142)]/20 rounded-md text-[#A0DB8E] text-[12px]'>CEO</p>
+            </div>
+
+          </div>
         </DropdownTrigger>
         <DropdownMenu aria-label='Profile Actions' variant='flat'>
-          <DropdownItem key='profile' className='h-14 gap-2 text-c-title'>
-            <p className='font-semibold'>Registrado como</p>
-            <p className='font-semibold'>{user?.username}</p>
+          <DropdownItem key='profile' className=' gap-2 text-c-title'>
+            Perfil
           </DropdownItem>
           <DropdownItem
             key='logout'

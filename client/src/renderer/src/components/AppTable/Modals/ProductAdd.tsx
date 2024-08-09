@@ -215,7 +215,7 @@ export const AddProductModal = ({ modal }) => {
 
   return (
     <div className='flex flex-col gap-2'>
-      <Button onPress={onOpen} className='bg-c-primary' color='secondary' endContent={<PlusIcon />}>
+      <Button onPress={onOpen} className='bg-c-primary-variant-1' color='secondary' endContent={<PlusIcon />}>
         {modal?.buttonTitle}
       </Button>
       <Modal
@@ -541,7 +541,7 @@ export const AddProductModal = ({ modal }) => {
                 name='envasedproduct'
                 color='primary'
                 classNames={{
-                  wrapper: 'after:bg-[var(--c-primary)]',
+                  wrapper: 'after:bg-[var(--c-primary-variant-1)]',
                 }}
                 onChange={handleChange}
               >

@@ -24,7 +24,7 @@ export const BottomContent = ({ pages, page, setPage, selectedKeys, filteredItem
         isCompact
         showControls
         classNames={{
-          cursor: 'bg-[--c-primary]',
+          cursor: 'bg-[--c-primary-variant-1]',
         }}
         page={page}
         total={pages || 1}
