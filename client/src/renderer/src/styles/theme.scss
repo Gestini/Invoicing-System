@@ -1,29 +1,12 @@
-/* 
-.dark {
-   --text: #dbdbdb;
-   --bgColor: black;
-   --scrollBg: #4845d2;
-   --mainColor: #4845d2;
-   --scrollBgHover: #6462e2;
-} 
-*/
-/* .light {
---text: #1B254B;
---bgColor: #f4f7fe;
---scrollBg: #4845d2;
---mainColor: #4845d2;
---scrollBgHover: #6462e2;
- } */
-
 .light {
   --c-title: #71717a;
   --c-bg-color: #ffffff;
   --c-bg-color-2: #ececec;
   --c-primary-sidebar: var(--c-primary-variant-1);
   --c-card: #fff;
-  --select: #fff;
   --c-card-2: #fff;
-  --c-gray: #cacaca;
+  --select: #fff;
+  --c-gray: #7c7c7c;
   --c-primary-gray: rgba(250, 250, 250, 0.3);
   --c-border: rgba(255, 255, 255, 0.1);
   --c-bg-selected: #e9e9e9;
@@ -32,7 +15,7 @@
 
 .dark {
   --c-title: #e4e4e4;
-  --c-bg-color: #0a0b0a;
+  --c-bg-color:  #141414;
   --c-bg-color-2: #212124;
   --c-primary-sidebar: #18181b;
   --c-card: #18181b;
@@ -43,71 +26,80 @@
   --input-color: #151615;
 }
 
-
-
 #variantOne {
   --c-primary: #3b82f6;
-  --c-primary-hover: #4377ca;
-  --c-primary-variant-1: #a0db8e;
-  --c-primary-variant-2: #405639;
-  --c-primary-variant-3: rgba(160, 219, 142, 0.2);
-  --c-primary-variant-4: rgba(111, 155, 97, 0.2);
-  --c-primary-route-active: rgb(87, 179, 59);
-  --c-primary-route-hover: rgb(68, 99, 59);
   --c-secondary: #f56565;
+  --c-primary-hover: #4377ca;
   --c-primary-hover2: #f7fcff;
+  --c-primary-variant-1: #3b82f6;
+  --c-primary-variant-2: #394256;
+  --c-primary-variant-3: rgba(145, 142, 219, 0.2);
+  --c-primary-variant-4: rgba(100, 97, 155, 0.2);
+  --c-primary-route-hover: rgb(79, 86, 213);
+  --c-primary-route-active: rgb(59, 65, 179);
 }
-
-// #variantOne {
-//   --c-primary: #3b82f6;
-//   --c-primary-hover: #4377ca;
-//   --c-primary-route-active: #1d5dc4;
-//   --c-primary-route-hover: #3b82f6;
-//   --c-secondary: #f56565;
-//   --c-primary-hover2: #f7fcff;
-// }
 
 #variantTwo {
   --c-primary: #ef4444;
+  --c-secondary: #33bbcf;
   --c-primary-hover: #ce2323;
-  --c-primary-route-active: #ce2323;
-  --c-primary-route-hover: #ef4444;
-  --c-secondary: #6b46c1;
   --c-primary-hover2: #f7fcff;
+  --c-primary-variant-1: #ef4444;
+  --c-primary-variant-2: #563939;
+  --c-primary-variant-3: rgba(219, 142, 142, 0.2);
+  --c-primary-variant-4: rgba(155, 97, 97, 0.2);
+  --c-primary-route-hover: #ef4444;
+  --c-primary-route-active: #ce2323;
 }
 
 #variantThree {
   --c-primary: #721ff7;
-  --c-primary-hover: #721ff7;
-  --c-primary-route-active: #5c1bc4;
-  --c-primary-route-hover: #8132ff;
   --c-secondary: #33bbcf;
+  --c-primary-hover: #721ff7;
   --c-primary-hover2: #f7fcff;
+  --c-primary-variant-1: #721ff7;
+  --c-primary-variant-2: #4b3956;
+  --c-primary-variant-3: rgba(205, 142, 219, 0.2);
+  --c-primary-variant-4: rgba(134, 97, 155, 0.2);
+  --c-primary-route-hover: #8132ff;
+  --c-primary-route-active: #5c1bc4;
 }
 
 #variantFour {
   --c-primary: #ec4899;
+  --c-secondary: #33bbcf;
   --c-primary-hover: #ec4899;
-  --c-primary-route-active: #c62072;
-  --c-primary-route-hover: #ec4899;
-  --c-secondary: #10b981;
   --c-primary-hover2: #f7fcff;
+  --c-primary-variant-1: #ed40cd;
+  --c-primary-variant-2: #563954;
+  --c-primary-variant-3: rgba(219, 142, 219, 0.2);
+  --c-primary-variant-4: rgba(154, 97, 155, 0.2);
+  --c-primary-route-hover: #ec4899;
+  --c-primary-route-active: #c62072;
 }
 
 #variantFive {
   --c-primary: #dd872c;
-  --c-primary-hover: #ffc266;
-  --c-primary-route-active: #c2792a;
-  --c-primary-route-hover: #ff9900;
   --c-secondary: #33bbcf;
+  --c-primary-hover: #ffc266;
   --c-primary-hover2: #f7fcff;
+  --c-primary-variant-1: #ed8540;
+  --c-primary-variant-2: #563f39;
+  --c-primary-variant-3: rgba(219, 179, 142, 0.2);
+  --c-primary-variant-4: rgba(155, 104, 97, 0.2);
+  --c-primary-route-hover: #ff9900;
+  --c-primary-route-active: #c2792a;
 }
 
 #variantSix {
   --c-primary: #62b167;
-  --c-primary-hover: #669c68;
-  --c-primary-route-active: #71bd75;
-  --c-primary-route-hover: #71bd75;
   --c-secondary: #f56565;
-  --c-primary-hover2: #71bd7570;
+  --c-primary-hover: #80d385;
+  --c-primary-hover2: #f7fcff;
+  --c-primary-variant-1: #62b167;
+  --c-primary-variant-2: #405639;
+  --c-primary-variant-3: rgba(160, 219, 142, 0.2);
+  --c-primary-variant-4: rgba(111, 155, 97, 0.2);
+  --c-primary-route-hover: rgb(68, 99, 59);
+  --c-primary-route-active: rgb(87, 179, 59);
 }

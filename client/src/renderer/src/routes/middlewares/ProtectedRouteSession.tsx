@@ -57,9 +57,7 @@ export const ProtectedRouteSession = () => {
     return (
       <>
         <Navbar />
-        <div className='bodymain'>
-          <Outlet />
-        </div>
+        <Outlet />
       </>
     )
 }

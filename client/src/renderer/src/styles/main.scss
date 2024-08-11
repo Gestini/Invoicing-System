@@ -16,7 +16,8 @@
 }
 
 body {
-  height: calc(100vh);
+  overflow-x: hidden;
+  min-height: 100vh;
   background: var(--c-bg-color);
 }
 

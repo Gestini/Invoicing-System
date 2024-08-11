@@ -98,6 +98,8 @@ export const AppTable = ({ columnsData, tableActions, addItemModal, editItemModa
       <Table
         aria-label='Example table with custom cells, pagination and sorting'
         isHeaderSticky
+        removeWrapper
+        isCompact
         bottomContent={
           <BottomContent
             page={page}
@@ -107,9 +109,15 @@ export const AppTable = ({ columnsData, tableActions, addItemModal, editItemModa
             filteredItems={filteredItems}
           />
         }
+        checkboxesProps={{
+          classNames: {
+            wrapper: 'after:bg-c-primary',
+          },
+        }}
         bottomContentPlacement='outside'
         selectedKeys={selectedKeys}
         sortDescriptor={sortDescriptor}
+        selectionMode='multiple'
         topContent={
           <TopContent
             setPage={setPage}

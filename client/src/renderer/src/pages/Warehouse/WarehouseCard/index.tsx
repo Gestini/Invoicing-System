@@ -20,9 +20,11 @@ import {
   wareHouseInterface,
   setCurrentWarehouseId,
 } from '@renderer/features/warehouseSlice'
-import { SearchIcon } from '@renderer/components/Icons'
+import { SearchIcon, VerticalDotsIcon } from '@renderer/components/Icons'
 import SearchBar from '@renderer/components/SearchBar'
-import FilterButton from "@renderer/components/FilterButon"
+import FilterButton from '@renderer/components/FilterButon'
+import { LocalIcon } from '@renderer/components/Icons/LocalIcon'
+import { ShortCellValue } from '@renderer/components/AppTable/TableComponents/ShortCellValue'
 
 export const WarehouseCard = () => {
   const params = useParams()
@@ -33,8 +35,6 @@ export const WarehouseCard = () => {
   const currentWarehouseId = warehouse.currentWarehouseId
   const [searchTerm, setSearchTerm] = React.useState('')
   const [results, setResults] = React.useState([])
-
-
 
   React.useEffect(() => {
     const loadData = async () => {
@@ -81,36 +81,49 @@ export const WarehouseCard = () => {
 
   return (
     <>
-      <div className='flex gap- flex-col w-full gap-4'>
-        <div
-          className={`flex items-center justify-between gap-4`}
-        >
+      <div className='flex gap- flex-col w-full'>
+        <div className={`flex items-center justify-between gap-4`}>
           {warehouse.data.length === 0 && (
-            <p className='text-foreground-400 align-middle text-center'>No tienes depósitos creados.</p>
+            <p className='text-foreground-400 align-middle text-center'>
+              No tienes depósitos creados.
+            </p>
           )}
-          <div className='w-[384px] h-[100%] flex gap-[14px]'>
+          {/*  <div className='w-[384px] h-[100%] flex gap-[14px]'>
             <SearchBar />
             <FilterButton />
-          </div>
-          <div className='flex gap-[14px]'>
-            <CreateWarehouse />
-            <CreateWarehouse />
-          </div>
+          </div> */}
         </div>
         <div className='flex gap-4 flex-wrap'>
           {warehouse.data.length > 0 &&
             warehouse.data.map((ele: any, ind: number) => (
-              <Card key={ind} className={currentWarehouseId == ele.id ? 'bg-c-selected' : ''}>
+              <div
+                key={ind}
+                onClick={() => openWarehouse(ele.id)}
+                className={`${currentWarehouseId == ele.id ? 'bg-c-primary-variant-3' : 'bg-[#1f2121]'}
+                w-[285px] h-[76px] rounded-[10px] px-[19px] py-[21px] flex items-center justify-between cursor-pointer`}
+              >
                 <div
-                  onClick={() => openWarehouse(ele.id)}
-                  className='w-[300px] cursor-pointer h-[100px] p-3 select-none'
+                  className={`${currentWarehouseId == ele.id ? 'bg-c-primary-variant-3' : 'bg-[#323535]'}  p-2 rounded-lg`}
                 >
-                  <div className='flex justify-between items-center'>
-                    <h4 className={`text-[16px] font-semibold `}>{ele.name}</h4>
+                  <LocalIcon
+                    color={`${currentWarehouseId == ele.id ? 'var(--c-primary-variant-1)' : 'white'}`}
+                  />
+                </div>
+                <div className='flex items-center gap-[10px]'>
+                  <div className='flex flex-col '>
+                    <span className='text-[24px] h-8 text-white'>
+                      <ShortCellValue cellValue={ele.name} minLength={10} />
+                    </span>
+                    <span className='text-[12px] text-c-gray'>Buenos aires</span>
+                  </div>
+                  {/* <div className='h-[37px] w-[35px] ml-1 bg-[#323535] text-white flex items-center justify-center rounded-lg'>
+                    01
+                  </div> */}
+                  <div>
                     <Dropdown placement='bottom-start' className='bg-c-card text-c-title'>
                       <DropdownTrigger>
                         <div>
-                          <SlOptions className='text-c-title w-4 h-4 cursor-pointer' />
+                          <VerticalDotsIcon className='cursor-pointer text-c-gray ml-[10px]' />
                         </div>
                       </DropdownTrigger>
                       <DropdownMenu
@@ -136,8 +149,9 @@ export const WarehouseCard = () => {
                     </Dropdown>
                   </div>
                 </div>
-              </Card>
+              </div>
             ))}
+          <CreateWarehouse />
         </div>
       </div>
       <EditWarehouse

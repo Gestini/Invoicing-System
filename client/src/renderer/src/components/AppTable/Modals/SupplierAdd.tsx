@@ -49,7 +49,7 @@ export const AddSupplierModal = ({ modal }) => {
       ...data,
       [e.target.name]: e.target.value,
     })
-   
+
     handleValidation(e.target.name, e.target.value)
   }
 
@@ -113,7 +113,13 @@ export const AddSupplierModal = ({ modal }) => {
   }
   return (
     <div className='flex flex-col gap-2'>
-      <Button onPress={onOpen} className='bg-c-primary' color='secondary' endContent={<PlusIcon />}>
+      <Button
+        onPress={onOpen}
+        className='bg-c-primary'
+        color='secondary'
+        endContent={<PlusIcon />}
+        radius='sm'
+      >
         {modal?.buttonTitle}
       </Button>
       <Modal

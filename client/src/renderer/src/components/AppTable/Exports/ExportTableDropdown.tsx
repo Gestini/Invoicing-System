@@ -10,7 +10,7 @@ export const ExportTableDropdown = () => {
   return (
     <Dropdown className='bg-c-card text-c-title'>
       <DropdownTrigger>
-        <Button endContent={<ChevronDownIcon className='text-small' />} variant='bordered'>
+        <Button endContent={<ChevronDownIcon className='text-small' />} variant='flat' radius='sm'>
           Exportar
         </Button>
       </DropdownTrigger>

@@ -51,7 +51,7 @@ export const Navbar = () => {
             <Input
               isClearable
               className='w-full text-c-gray'
-              placeholder='Buscar por nombre...'
+              placeholder='Buscar'
               startContent={<SearchIcon />}
             // value={filterValue}
             // onClear={() => onClear()}

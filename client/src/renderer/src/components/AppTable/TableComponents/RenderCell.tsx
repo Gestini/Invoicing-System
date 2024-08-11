@@ -1,6 +1,6 @@
 import { ActionDropdown } from '../Dropdown'
 import { ShortCellValue } from './ShortCellValue'
-import { Chip, ChipProps, User } from '@nextui-org/react'
+import { Chip, ChipProps } from '@nextui-org/react'
 
 export const RenderCell = (
   user: any,
@@ -17,7 +17,7 @@ export const RenderCell = (
 
   switch (columnKey) {
     case 'name':
-      return <ShortCellValue cellValue={cellValue} />
+      return <ShortCellValue cellValue={cellValue} minLength={20} />
     case 'status':
       return (
         <Chip className='capitalize' color={statusColorMap[user.status]} size='sm' variant='flat'>
@@ -34,6 +34,6 @@ export const RenderCell = (
         </div>
       )
     default:
-      return <ShortCellValue cellValue={cellValue} />
+      return <ShortCellValue cellValue={cellValue} minLength={20} />
   }
 }
