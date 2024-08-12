@@ -43,6 +43,7 @@ export const RolePerms = () => {
         onClear={() => setSearchTerm('')}
         onChange={handleSearch}
         className='text-c-gray'
+        radius='sm'
         placeholder='Buscar por nombre...'
         startContent={<SearchIcon />}
       />

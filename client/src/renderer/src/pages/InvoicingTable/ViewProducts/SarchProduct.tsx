@@ -41,17 +41,18 @@ export const SearchProduct = () => {
         listbox: 'bg-[red]',
       }}
       items={filteredData}
-      errorMessage="Sin resultados."
+      errorMessage='Sin resultados.'
       isClearable={true}
       inputProps={{
         classNames: {
           input: 'w-full',
         },
         variant: 'flat',
+        radius: 'sm',
       }}
       onInputChange={handleChange}
       listboxProps={{
-        emptyContent: "Sin resultados",
+        emptyContent: 'Sin resultados',
         hideSelectedIcon: true,
         itemClasses: {
           base: [
@@ -71,6 +72,7 @@ export const SearchProduct = () => {
       placeholder='Buscar por nombre...'
       popoverProps={{
         offset: 10,
+        radius: 'sm',
         classNames: {
           base: 'rounded-large ',
           content: 'p-1 border-small border-default-100 bg-[--c-card] ',
@@ -85,7 +87,9 @@ export const SearchProduct = () => {
           <div className='flex justify-between items-center' onClick={() => handleAddProduct(item)}>
             <div className='flex gap-2 items-center'>
               <div className='flex flex-col'>
-                <span className='text-small'>{item.name} - {item.depositUnit.name}</span>
+                <span className='text-small'>
+                  {item.name} - {item.depositUnit.name}
+                </span>
               </div>
             </div>
           </div>

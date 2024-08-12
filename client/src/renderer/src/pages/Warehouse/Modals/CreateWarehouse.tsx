@@ -77,12 +77,13 @@ export const CreateWarehouse = () => {
             </div>
           </ModalBody>
           <ModalFooter>
-            <Button color='danger' variant='light' onPress={onClose}>
+            <Button color='danger' variant='light' onPress={onClose} radius='sm'>
               Cerrar
             </Button>
             <Button
               color='primary'
-              className='bg-c-primary-variant-1'
+              radius='sm'
+              className='bg-c-primary'
               onPress={handleCreateWarehouse}
               isDisabled={buttonDisabled}
             >

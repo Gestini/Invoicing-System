@@ -1,17 +1,14 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
-import { SlOptions } from 'react-icons/sl'
 import { EditWarehouse } from '../Modals/EditWarehouse'
 import { CreateWarehouse } from '../Modals/CreateWarehouse'
 import { useDispatch, useSelector } from 'react-redux'
 import {
-  Card,
   Dropdown,
   DropdownItem,
   DropdownMenu,
   useDisclosure,
   DropdownTrigger,
-  Input,
 } from '@nextui-org/react'
 import { reqGetDepositByUnit, reqDeleteDeposit } from '@renderer/api/requests'
 import {
@@ -20,9 +17,7 @@ import {
   wareHouseInterface,
   setCurrentWarehouseId,
 } from '@renderer/features/warehouseSlice'
-import { SearchIcon, VerticalDotsIcon } from '@renderer/components/Icons'
-import SearchBar from '@renderer/components/SearchBar'
-import FilterButton from '@renderer/components/FilterButon'
+import { VerticalDotsIcon } from '@renderer/components/Icons'
 import { LocalIcon } from '@renderer/components/Icons/LocalIcon'
 import { ShortCellValue } from '@renderer/components/AppTable/TableComponents/ShortCellValue'
 
@@ -33,8 +28,6 @@ export const WarehouseCard = () => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const warehouse: wareHouseInterface = useSelector((state: any) => state.warehouse)
   const currentWarehouseId = warehouse.currentWarehouseId
-  const [searchTerm, setSearchTerm] = React.useState('')
-  const [results, setResults] = React.useState([])
 
   React.useEffect(() => {
     const loadData = async () => {
@@ -47,8 +40,6 @@ export const WarehouseCard = () => {
     }
     loadData()
   }, [])
-
-  const handleSearch = (e: any) => setSearchTerm(e.target.value)
 
   const openWarehouse = (depositId: number) => dispatch(setCurrentWarehouseId(depositId))
 
@@ -66,32 +57,15 @@ export const WarehouseCard = () => {
     onOpen()
   }
 
-  const loadData = async () => {
-    try {
-      const response = await reqGetDepositByUnit(params.id)
-      setResults(response.data)
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  React.useEffect(() => {
-    loadData()
-  }, [])
-
   return (
     <>
-      <div className='flex gap- flex-col w-full'>
+      <div className='flex flex-col w-full gap-2'>
         <div className={`flex items-center justify-between gap-4`}>
           {warehouse.data.length === 0 && (
             <p className='text-foreground-400 align-middle text-center'>
               No tienes depósitos creados.
             </p>
           )}
-          {/*  <div className='w-[384px] h-[100%] flex gap-[14px]'>
-            <SearchBar />
-            <FilterButton />
-          </div> */}
         </div>
         <div className='flex gap-4 flex-wrap'>
           {warehouse.data.length > 0 &&
@@ -116,9 +90,6 @@ export const WarehouseCard = () => {
                     </span>
                     <span className='text-[12px] text-c-gray'>Buenos aires</span>
                   </div>
-                  {/* <div className='h-[37px] w-[35px] ml-1 bg-[#323535] text-white flex items-center justify-center rounded-lg'>
-                    01
-                  </div> */}
                   <div>
                     <Dropdown placement='bottom-start' className='bg-c-card text-c-title'>
                       <DropdownTrigger>

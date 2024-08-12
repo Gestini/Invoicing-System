@@ -90,8 +90,9 @@ export const RoleTable = () => {
         <div className='flex justify-between gap-3 items-end'>
           <Input
             isClearable
+            radius='sm'
             className='text-c-gray'
-            placeholder='Buscar por nombre...'
+            placeholder='Buscar'
             startContent={<SearchIcon />}
             onChange={handleSearch}
           />

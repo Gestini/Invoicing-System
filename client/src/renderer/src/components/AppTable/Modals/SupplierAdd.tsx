@@ -13,15 +13,11 @@ import {
   useDisclosure,
   Textarea,
 } from '@nextui-org/react'
-import { BiDollar } from 'react-icons/bi'
-import { Checkbox } from '@nextui-org/react'
 import './ProductAdd.scss'
-import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
 export const AddSupplierModal = ({ modal }) => {
   const params = useParams()
-  const unit = useSelector((state: any) => state.currentUnit)
   const [data, setData] = React.useState<any>({
     name: '',
     description: null,
@@ -30,7 +26,7 @@ export const AddSupplierModal = ({ modal }) => {
     website: null,
     supplierType: null,
     reasonSocial: null,
-    address: null, // default value
+    address: null,
     dni: null,
     saleCondition: null,
     businessUnit: {
@@ -95,7 +91,7 @@ export const AddSupplierModal = ({ modal }) => {
       website: null,
       supplierType: null,
       reasonSocial: null,
-      address: null, // default value
+      address: null,
       dni: null,
       saleCondition: null,
       businessUnit: {
@@ -105,12 +101,14 @@ export const AddSupplierModal = ({ modal }) => {
     })
     onClose()
   }
+
   const validateName = (name) => {
     if (!name.trim()) {
       return false // Nombre está vacío
     }
     return true // Nombre no está vacío
   }
+
   return (
     <div className='flex flex-col gap-2'>
       <Button
@@ -147,7 +145,7 @@ export const AddSupplierModal = ({ modal }) => {
                   variant='bordered'
                   onChange={handleChange}
                   isInvalid={!!errors.name}
-                ></Input>
+                />
                 <Select
                   label='Tipo de proveedor'
                   labelPlacement='outside'
@@ -183,9 +181,8 @@ export const AddSupplierModal = ({ modal }) => {
                   onChange={handleChange}
                   labelPlacement='outside'
                   placeholder='Enter your description'
-                ></Textarea>
+                />
               </div>
-
               <div className='rowmodaladdproduct  justify-start items-start flex gap-3'>
                 <Input
                   label='Numero de celular'
@@ -195,7 +192,7 @@ export const AddSupplierModal = ({ modal }) => {
                   placeholder='Numero del proveedor'
                   variant='bordered'
                   onChange={handleChange}
-                ></Input>
+                />
                 <Input
                   label='Email'
                   size='sm'
@@ -204,7 +201,7 @@ export const AddSupplierModal = ({ modal }) => {
                   placeholder='Email del proveedor'
                   variant='bordered'
                   onChange={handleChange}
-                ></Input>
+                />
                 <Input
                   label='Website'
                   size='sm'
@@ -213,7 +210,7 @@ export const AddSupplierModal = ({ modal }) => {
                   placeholder='www.url.com'
                   variant='bordered'
                   onChange={handleChange}
-                ></Input>
+                />
               </div>
               <div className='rowmodaladdproduct select flex items-start justify-start gap-3'>
                 <Input
@@ -224,7 +221,7 @@ export const AddSupplierModal = ({ modal }) => {
                   placeholder='Ingresa el dni'
                   variant='bordered'
                   onChange={handleChange}
-                ></Input>
+                />
                 <Input
                   label='Direccion del proveedor'
                   size='sm'
@@ -233,16 +230,16 @@ export const AddSupplierModal = ({ modal }) => {
                   placeholder='Ingresa la direccion'
                   variant='bordered'
                   onChange={handleChange}
-                ></Input>
+                />
               </div>
               <div className='rowmodaladdproduct select flex items-start justify-start gap-3'></div>
             </div>
           </ModalBody>
           <ModalFooter>
-            <Button color='danger' variant='light' onPress={onClose}>
+            <Button color='danger' variant='light' onPress={onClose} radius='sm'>
               Cerrar
             </Button>
-            <Button color='primary' onPress={handleSubmit}>
+            <Button color='primary' className='bg-c-primary' onPress={handleSubmit} radius='sm'>
               Agregar
             </Button>
           </ModalFooter>

@@ -33,7 +33,7 @@ export const AddItemModal = ({ modal }) => {
     <div className='flex flex-col gap-2'>
       <Button
         onPress={onOpen}
-        className='bg-c-primary-variant-1'
+        className='bg-c-primary'
         color='secondary'
         endContent={<PlusIcon />}
         radius='sm'
@@ -84,7 +84,7 @@ export const AddItemModal = ({ modal }) => {
             )}
           </ModalBody>
           <ModalFooter>
-            <Button color='danger' variant='light' onPress={onClose}>
+            <Button color='danger' variant='light' onPress={onClose} radius='sm'>
               Cerrar
             </Button>
             <Button
