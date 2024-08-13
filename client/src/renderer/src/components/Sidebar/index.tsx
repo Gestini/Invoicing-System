@@ -3,6 +3,9 @@ import { MdDashboard } from 'react-icons/md'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Accordion, AccordionItem, Tooltip } from '@nextui-org/react'
+import { FiArrowDownLeft } from 'react-icons/fi'
+import { FiArrowUpRight } from 'react-icons/fi'
+
 import {
   BiUser,
   BiCart,
@@ -13,6 +16,14 @@ import {
   BiBadgeCheck,
   BiCheckShield,
 } from 'react-icons/bi'
+import { PiGarageBold } from 'react-icons/pi'
+import { RiContactsBookLine } from 'react-icons/ri'
+
+import Package from '../../assets/Icons/package_2_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.svg'
+import Adfscaner from '../../assets/Icons/adf_scanner.svg'
+import rrhh from '../../assets/Icons/diversity_3.svg'
+import { RiContactsBook2Line } from 'react-icons/ri'
+
 import React from 'react'
 import GoogleLogo from '@renderer/assets/image/google.svg'
 import { setUnit } from '@renderer/features/currentUnitSlice'
@@ -48,21 +59,131 @@ export const Sidebar = () => {
     {
       path: `/general/${unit?.id}`,
       icon: <MdDashboard />,
-      text: 'General',
+      text: 'Dashboard',
+    },
+    {
+      path: `/depositos/${unit?.id}`,
+      icon: <img src={Package} className=' text-white ' />,
+      text: 'Deposito',
       data: [
         {
-          path: '/general',
-          name: 'General',
+          path: '/deposito',
+          name: 'Gestion de deposito',
         },
         {
-          path: '/general',
-          name: 'General',
+          path: '/deposito',
+          name: 'Gestion de productos',
         },
         {
-          path: '/general',
-          name: 'General',
+          path: '/deposito',
+          name: 'Gestion de precios',
+        },
+        {
+          path: '/deposito',
+          name: 'Gestion de Stock',
+        },
+        {
+          path: '/deposito',
+          name: 'Movimientos del inventario',
+        },
+        {
+          path: '/deposito',
+          name: 'Lista de inventario',
+        },
+        {
+          path: '/deposito',
+          name: 'Gestion de despachos y recepciones',
+        },
+        {
+          path: '/deposito',
+          name: 'Categorias',
+        },
+        {
+          path: '/deposito',
+          name: 'Consumo',
         },
       ],
+    },
+    {
+      path: `/ingresos/${unit?.id}`,
+      icon: <FiArrowDownLeft />,
+      text: 'Ingresos',
+      data: [
+        {
+          path: '/deposito',
+          name: 'Pedidos',
+        },
+        {
+          path: '/deposito',
+          name: 'Historial de ventas',
+        },
+        {
+          path: '/deposito',
+          name: 'Historial de devoluciones',
+        },
+        {
+          path: '/deposito',
+          name: 'Cotizaciones',
+        },
+        {
+          path: '/deposito',
+          name: 'Libro de cuentas',
+        },
+        {
+          path: '/deposito',
+          name: 'Remisiones o orden de servicio',
+        },
+        {
+          path: '/deposito',
+          name: 'Otros ingresos',
+        },
+      ],
+    },
+    {
+      path: `/ingresos/${unit?.id}`,
+      icon: <FiArrowUpRight className=' ' />,
+      text: 'Gastos',
+      data: [
+        {
+          path: '/deposito',
+          name: 'Ordenes de compra',
+        },
+        {
+          path: '/deposito',
+          name: 'Documentos de compra',
+        },
+        {
+          path: '/deposito',
+          name: 'Gastos',
+        },
+        {
+          path: '/deposito',
+          name: 'Pagos',
+        },
+        {
+          path: '/deposito',
+          name: 'Cuentas por pagar',
+        },
+        {
+          path: '/deposito',
+          name: 'Cuenta corriente',
+        },
+      ],
+    },
+    {
+      path: `/pos/${unit?.id}`,
+      icon: <img src={Adfscaner} className=' text-white ' />,
+      text: 'Puntos de venta (POS)',
+    },
+    {
+      path: `/Contactos/${unit?.id}`,
+      icon: <RiContactsBookLine />,
+      text: 'Contactos',
+    },
+    {
+      path: `/RRHHH/${unit?.id}`,
+      icon: <img src={rrhh} className=' text-white ' />,
+      text: 'Recursos humanos (RRHH)',
     },
     {
       path: `/facturar/${unit?.id}`,
@@ -235,6 +356,7 @@ export const Sidebar = () => {
                     key={ind}
                   >
                     <div className='h-[6px] w-[6px] rounded-full bg-c-primary-variant-1 shadow-point'></div>
+
                     <span>{ele.name}</span>
                   </div>
                 ))}
