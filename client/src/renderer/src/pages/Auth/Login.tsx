@@ -8,6 +8,7 @@ import { AuthSubmit } from '../../components/Auth/AuthSubmit'
 import { reqAuthLogin } from '@renderer/api/requests'
 import { AuthLoginOptions } from '@renderer/components/Auth/AuthLoginOptions'
 import { ContinueWithGoogle } from '../../components/Auth/ContinueWithGoogle'
+
 import './Auth.scss'
 
 const Login = () => {
@@ -88,6 +89,8 @@ const Login = () => {
 
       if (!token) {
         localStorage.setItem('token', response.data)
+
+
         window.location.reload()
       }
     } catch (error) {
@@ -115,7 +118,7 @@ const Login = () => {
   ]
 
   return (
-    <AuthBody onClick={(e) => handleLogin(e)} >
+    <AuthBody onClick={(e) => handleLogin(e)}>
       <AuthHeader title='Sign In' description='Enter your email and password to sign in!' />
       <ContinueWithGoogle />
       <Or />
