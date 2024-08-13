@@ -1,26 +1,24 @@
+import React from 'react'
 import {
   Input,
   Modal,
   Button,
   Select,
+  Textarea,
   ModalBody,
   SelectItem,
   ModalFooter,
   ModalHeader,
   ModalContent,
   useDisclosure,
-  Checkbox,
-  Textarea,
 } from '@nextui-org/react'
-import React from 'react'
+import { useParams } from 'react-router-dom'
 import { setCurrentItemId } from '@renderer/features/tableSlice'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
 
 export const EditSupplierModal = ({ modal }) => {
   const dispatch = useDispatch()
   const params = useParams()
-  const unit = useSelector((state: any) => state.currentUnit)
 
   const [data, setData] = React.useState({
     businessUnit: {
@@ -50,7 +48,7 @@ export const EditSupplierModal = ({ modal }) => {
       ...data,
       [name]: intValues.includes(name) ? parseInt(value) : value,
     })
-   
+
     handleValidation(e.target.name, e.target.value)
   }
 
@@ -120,7 +118,7 @@ export const EditSupplierModal = ({ modal }) => {
                   defaultValue={currentUserEdit ? currentUserEdit.name : ''}
                   onChange={handleChange}
                   isInvalid={!!errors.name}
-                ></Input>
+                />
                 <Select
                   label='Tipo de proveedor'
                   labelPlacement='outside'
@@ -163,10 +161,9 @@ export const EditSupplierModal = ({ modal }) => {
                   labelPlacement='outside'
                   defaultValue={currentUserEdit ? currentUserEdit.description : ''}
                   placeholder='Enter your description'
-                ></Textarea>
+                />
               </div>
-
-              <div className='rowmodaladdproduct  justify-start items-start flex gap-3'>
+              <div className='rowmodaladdproduct justify-start items-start flex gap-3'>
                 <Input
                   label='Numero de celular'
                   size='sm'
@@ -176,7 +173,7 @@ export const EditSupplierModal = ({ modal }) => {
                   variant='bordered'
                   defaultValue={currentUserEdit ? currentUserEdit.phone : ''}
                   onChange={handleChange}
-                ></Input>
+                />
                 <Input
                   label='Email'
                   size='sm'
@@ -186,7 +183,7 @@ export const EditSupplierModal = ({ modal }) => {
                   defaultValue={currentUserEdit ? currentUserEdit.email : ''}
                   variant='bordered'
                   onChange={handleChange}
-                ></Input>
+                />
                 <Input
                   label='Website'
                   size='sm'
@@ -196,7 +193,7 @@ export const EditSupplierModal = ({ modal }) => {
                   defaultValue={currentUserEdit ? currentUserEdit.website : ''}
                   variant='bordered'
                   onChange={handleChange}
-                ></Input>
+                />
               </div>
               <div className='rowmodaladdproduct select flex items-start justify-start gap-3'>
                 <Input
@@ -208,7 +205,7 @@ export const EditSupplierModal = ({ modal }) => {
                   placeholder='Ingresa el dni'
                   variant='bordered'
                   onChange={handleChange}
-                ></Input>
+                />
                 <Input
                   label='Direccion del proveedor'
                   size='sm'
@@ -218,7 +215,7 @@ export const EditSupplierModal = ({ modal }) => {
                   placeholder='Ingresa la direccion'
                   variant='bordered'
                   onChange={handleChange}
-                ></Input>
+                />
               </div>
               <div className='rowmodaladdproduct select flex items-start justify-start gap-3'></div>
             </div>
@@ -234,7 +231,12 @@ export const EditSupplierModal = ({ modal }) => {
             >
               Cerrar
             </Button>
-            <Button color='primary' onPress={() => handleAddNewUser()}>
+            <Button
+              color='primary'
+              className='bg-c-primary'
+              onPress={() => handleAddNewUser()}
+              radius='sm'
+            >
               Guardar
             </Button>
           </ModalFooter>

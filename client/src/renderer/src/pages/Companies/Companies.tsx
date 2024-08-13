@@ -6,20 +6,18 @@ import {
   Dropdown,
   DropdownItem,
   DropdownMenu,
-  useDisclosure,
   DropdownTrigger,
 } from '@nextui-org/react'
 import { setUnits } from '@renderer/features/unitsSlice'
-import MultiStepForm from '@renderer/components/CreateCompanyForm'
+import { CreateUnitModal } from '@renderer/components/CreateCompanyForm'
 import { reqGetUnitByOwner } from '@renderer/api/requests'
 import { productStatusOptions } from '@renderer/components/Tables/ProductTable/data'
 import { useDispatch, useSelector } from 'react-redux'
-import { ChevronDownIcon, PlusIcon, SearchIcon } from '@renderer/components/Icons'
-import './unidadeseccion.scss'
+import { ChevronDownIcon, SearchIcon } from '@renderer/components/Icons'
 
 const Companies = () => {
   const companies = useSelector((state: any) => state.units.data)
-  const { isOpen, onOpen, onClose } = useDisclosure()
+
   const dispatch = useDispatch()
 
   React.useEffect(() => {
@@ -35,7 +33,7 @@ const Companies = () => {
   }, [])
 
   return (
-    <div className=' flex flex-col  generalunidades'>
+    <div className='flex flex-col'>
       <div className='flex flex-col w-full mb-2 rounded-md bg-c-bg-color p-5 gap-4'>
         <div className='flex justify-between gap-3 items-end'>
           <Input
@@ -74,19 +72,11 @@ const Companies = () => {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button
-              className='bg-c-primary text-c-title'
-              onClick={onOpen}
-              endContent={<PlusIcon />}
-              size='sm'
-            >
-              Add New
-            </Button>
-            <MultiStepForm isOpen={isOpen} onClose={onClose} />
+            <CreateUnitModal />
           </div>
         </div>
       </div>
-      <div className='rounded-md bg-c-bg-color h-full overflow-scroll'>
+      <div className='rounded-md bg-c-bg-color'>
         <div className='grid grid-cols-auto-fill-cards gap-5 p-5 w-[100%] h-full'>
           {companies.map((unit) => (
             <Card key={unit.id} unit={unit} />

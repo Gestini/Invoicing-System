@@ -4,7 +4,6 @@ const { nextui } = require('@nextui-org/react')
 module.exports = {
   content: [
     './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
-
     './src/renderer/*.{js,ts,jsx,tsx,mdx}',
     './src/renderer/src/**/*.{js,ts,jsx,tsx,mdx}',
   ],
@@ -13,10 +12,10 @@ module.exports = {
       height: {
         'calc-sidebar': 'calc(100vh - 50px)',
         'seccio-general': 'calc(100vh - 45px)',
-        'seccion-tabla': 'calc(100vh - 125px)'
+        'seccion-tabla': 'calc(100vh - 125px)',
       },
       width: {
-        navbar: 'calc(100% - 50px)'
+        navbar: 'calc(100% - 50px)',
       },
       gridTemplateColumns: {
         // Define a custom grid template for auto-fill with minmax
@@ -24,6 +23,7 @@ module.exports = {
       },
       boxShadow: {
         cards: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
+        point: 'var(--c-primary-variant-1) 0px 0px 15px',
       },
       spacing: {
         '25px': '25px',
@@ -37,6 +37,10 @@ module.exports = {
       },
       colors: {
         'c-primary': 'var(--c-primary)',
+        'c-primary-variant-1': 'var(--c-primary-variant-1)',
+        'c-primary-variant-2': 'var(--c-primary-variant-2)',
+        'c-primary-variant-3': 'var(--c-primary-variant-3)',
+        'c-primary-variant-4': 'var(--c-primary-variant-4)',
         'c-primary-hover': 'var(--c-primary-hover)',
         'c-primary-hover2': 'var(--c-primary-hover2)',
         'c-company-bg-color': 'var(--c-company-bg-color)',
@@ -49,8 +53,15 @@ module.exports = {
         'c-title': 'var(--c-title)',
         'c-gray': 'var(--c-gray)',
         'c-error': '#B93B3B',
-        'c-grey': ' #0000008A',
         'c-borde': '#003399',
+        'c-gray': 'var(--c-primary-gray)',
+        'c-border': 'var(--c-border)',
+        'c-primary-opacity': 'var(--c-primary-opacity)',
+        'c-selected': 'var(--c-bg-selected)',
+        'c-input-color': 'var(--c-input-color)',
+        'c-sidebar-text': 'var(--c-sidebar-text)',
+        'c-sidebar-bg': 'var(--c-sidebar-bg)',
+        'c-sidebar-bg-2': 'var(--c-sidebar-bg-2)',
       },
     },
     screens: {

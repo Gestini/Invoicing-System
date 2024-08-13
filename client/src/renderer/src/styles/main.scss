@@ -16,7 +16,8 @@
 }
 
 body {
-  height: calc(100vh);
+  overflow-x: hidden;
+  min-height: 100vh;
   background: var(--c-bg-color);
 }
 
@@ -35,6 +36,22 @@ input[type='color'] {
   height: 100%;
   padding: 0;
   border-radius: 50%;
+}
+
+.sidebarthumb {
+  &::-webkit-scrollbar {
+    width: 3px;
+    background: transparent
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: var(--c-card-2);
+    border-radius: 10px;
+  }
+  
+  &::-webkit-scrollbar-thumb:hover {
+    background: var(--c-card-3);
+  }
 }
 
 input[type='color']::-webkit-color-swatch-wrapper {

@@ -6,9 +6,6 @@ export const columnsData = {
     { name: 'DIRECCIÓN', uid: 'address' },
     { name: 'TELÉFONO', uid: 'phone' },
     { name: 'CEDULA', uid: 'dni' },
-    // { name: 'RAZON SOCIAL', uid: 'company' },
-   
-    { name: 'ESTADO', uid: 'status', sortable: true },
     { name: 'ACCIÓN', uid: 'actions' },
   ],
   statusOptions: [
@@ -24,7 +21,6 @@ export const columnsData = {
     'dni',
     'status',
     'actions',
-
   ],
 }
 

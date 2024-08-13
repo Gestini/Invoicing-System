@@ -3,60 +3,69 @@ import {
   Modal,
   Button,
   Select,
+  Textarea,
+  Checkbox,
   ModalBody,
   SelectItem,
   ModalFooter,
   ModalHeader,
   ModalContent,
   useDisclosure,
-  Checkbox,
-  Textarea,
 } from '@nextui-org/react'
 import React from 'react'
+import { useParams } from 'react-router-dom'
+import { reqGetSupplier } from '@renderer/api/requests'
 import { setCurrentItemId } from '@renderer/features/tableSlice'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
 
 export const EditProductModal = ({ modal }) => {
-  const unit = useSelector((state: any) => state.currentUnit)
   const params = useParams()
-
   const dispatch = useDispatch()
+  const users = useSelector((state: any) => state.table.data)
+  const currentItemIdEdit = useSelector((state: any) => state.table.currentItemIdEdit)
+  const currentUserEdit = users.find((item: { id: any }) => item.id == currentItemIdEdit)
+  const [suppliers, setSuppliers] = React.useState([])
   const [data, setData] = React.useState({
     businessUnit: {
       id: params.id,
     },
   })
-
   const [errors, setErrors] = React.useState({
     name: '',
-    purchasePrice: '',
-    costPrice: '',
-    financedPrice: '',
-    friendPrice: '',
-    cardPrice: '',
     quantity: '',
+    costPrice: '',
+    cardPrice: '',
+    friendPrice: '',
+    financedPrice: '',
+    purchasePrice: '',
   })
-  const users = useSelector((state: any) => state.table.data)
 
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
-  const currentItemIdEdit = useSelector((state: any) => state.table.currentItemIdEdit)
-  const currentUserEdit = users.find((item: { id: any }) => item.id == currentItemIdEdit)
 
   React.useEffect(() => {
     if (currentItemIdEdit !== -1) onOpen()
   }, [currentItemIdEdit])
 
-  const handleChange = (e: any) => {
-    let name = e.target.name
-    let value = e.target.value
-    let intValues = ['age']
+  React.useEffect(() => {
+    const GetSupplier = async () => {
+      const response = await reqGetSupplier(params.id)
+      setSuppliers(response.data)
+    }
+    GetSupplier()
+  }, [])
 
-    setData({
-      ...data,
-      [name]: intValues.includes(name) ? parseInt(value) : value,
-    })
-   
+  const handleChange = (e: any) => {
+    if (e.target.name == 'supplierUnit') {
+      setData({
+        ...data,
+        [e.target.name]: { id: e.target.value },
+      })
+    } else {
+      setData({
+        ...data,
+        [e.target.name]: e.target.value,
+      })
+    }
     handleValidation(e.target.name, e.target.value)
   }
 
@@ -86,13 +95,12 @@ export const EditProductModal = ({ modal }) => {
   }
 
   const validateNumber = (value) => {
-    return !isNaN(value) && parseFloat(value) >= 0 // Validación básica de número positivo
+    return !isNaN(value) && parseFloat(value) >= 0
   }
 
   const handleResetCurrentIdEdit = () => dispatch(setCurrentItemId(-1))
 
   const handleAddNewUser = async () => {
-    // Aquí puedes verificar si no hay errores antes de guardar
     const isValid = Object.values(errors).every((error) => error === '')
     if (isValid) {
       modal.action(currentUserEdit.id, data)
@@ -135,7 +143,7 @@ export const EditProductModal = ({ modal }) => {
                   variant='bordered'
                   onChange={handleChange}
                   isInvalid={!!errors.name}
-                  defaultValue={currentUserEdit ? currentUserEdit.name : ''}
+                  defaultValue={currentUserEdit?.name}
                 ></Input>
                 <Select
                   label='Categoria'
@@ -146,7 +154,7 @@ export const EditProductModal = ({ modal }) => {
                   onChange={handleChange}
                   size='sm'
                   className='text-c-title'
-                  defaultSelectedKeys={[currentUserEdit && currentUserEdit.category]}
+                  defaultSelectedKeys={[currentUserEdit?.category]}
                 >
                   <SelectItem key={'electricidad'}>Proveedor</SelectItem>
                   <SelectItem key={'materiales'}>materiales</SelectItem>
@@ -161,7 +169,7 @@ export const EditProductModal = ({ modal }) => {
                   isInvalid={!!errors.quantity}
                   variant='bordered'
                   onChange={handleChange}
-                  defaultValue={currentUserEdit ? currentUserEdit.quantity : ''}
+                  defaultValue={currentUserEdit?.quantity}
                 ></Input>
               </div>
               <div className='rowmodaladdproduct flex gap-3'>
@@ -171,7 +179,7 @@ export const EditProductModal = ({ modal }) => {
                   name='codigo1'
                   labelPlacement='outside'
                   placeholder='Codigo #1'
-                  defaultValue={currentUserEdit ? currentUserEdit.codigo1 : ''}
+                  defaultValue={currentUserEdit?.codigo1}
                   variant='bordered'
                   onChange={handleChange}
                 ></Input>
@@ -179,7 +187,7 @@ export const EditProductModal = ({ modal }) => {
                   label='Codigo'
                   size='sm'
                   name='codigo2'
-                  defaultValue={currentUserEdit ? currentUserEdit.codigo2 : ''}
+                  defaultValue={currentUserEdit?.codigo2}
                   labelPlacement='outside'
                   placeholder='Codigo #2'
                   variant='bordered'
@@ -189,7 +197,7 @@ export const EditProductModal = ({ modal }) => {
                   label='Codigo de barras'
                   size='sm'
                   name='barcode'
-                  defaultValue={currentUserEdit ? currentUserEdit.barcode : ''}
+                  defaultValue={currentUserEdit?.barcode}
                   labelPlacement='outside'
                   placeholder='Codigo de barras'
                   variant='bordered'
@@ -202,14 +210,15 @@ export const EditProductModal = ({ modal }) => {
                   labelPlacement='outside'
                   placeholder='Selecciona un proveedor'
                   variant='bordered'
-                  name='suppliers'
+                  name='supplierUnit'
                   onChange={handleChange}
                   size='sm'
                   className='text-c-title'
-                  defaultSelectedKeys={[currentUserEdit ? String(currentUserEdit.suppliers) : '']}
+                  defaultSelectedKeys={[String(currentUserEdit?.supplierUnitId)]}
                 >
-                  <SelectItem key={'enjambreSRL'}>enjambreSRL</SelectItem>
-                  <SelectItem key={'PistonesSRL'}>PistonesSRL</SelectItem>
+                  {suppliers.map((item: any) => (
+                    <SelectItem key={item.id}>{item.name}</SelectItem>
+                  ))}
                 </Select>
                 <Select
                   label='Estado'
@@ -230,7 +239,6 @@ export const EditProductModal = ({ modal }) => {
                   </SelectItem>
                 </Select>
               </div>
-
               <div className='rowmodaladdproduct  flex items-start justify-start gap-3'>
                 <Input
                   type='number'
@@ -255,7 +263,7 @@ export const EditProductModal = ({ modal }) => {
                   labelPlacement='outside'
                   placeholder='0.00'
                   variant='bordered'
-                  defaultValue={currentUserEdit ? currentUserEdit.costPrice : ''}
+                  defaultValue={currentUserEdit?.costPrice}
                   size='sm'
                   name='costPrice'
                   isInvalid={!!errors.costPrice}
@@ -266,7 +274,6 @@ export const EditProductModal = ({ modal }) => {
                     </div>
                   }
                 />
-
                 <Select
                   label='Calculo de precio'
                   placeholder='Select an animal'
@@ -274,7 +281,7 @@ export const EditProductModal = ({ modal }) => {
                   variant='bordered'
                   name='priceCalculation'
                   onChange={handleChange}
-                  defaultSelectedKeys={[currentUserEdit ? currentUserEdit.priceCalculation : '']}
+                  defaultSelectedKeys={[currentUserEdit?.priceCalculation]}
                   size='sm'
                   className='text-c-title'
                 >
@@ -294,9 +301,9 @@ export const EditProductModal = ({ modal }) => {
                   variant='bordered'
                   name='pricePolicy'
                   onChange={handleChange}
-                  defaultSelectedKeys={[currentUserEdit ? currentUserEdit.pricePolicy : '']}
+                  defaultSelectedKeys={[currentUserEdit?.pricePolicy]}
                   size='sm'
-                  className='text-c-title  '
+                  className='text-c-title'
                 >
                   <SelectItem value={'politicone'} key={'politictone'}>
                     one
@@ -306,7 +313,6 @@ export const EditProductModal = ({ modal }) => {
                   </SelectItem>
                 </Select>
               </div>
-
               <div className='rowmodaladdproduct  flex items-start justify-start gap-3'>
                 <Input
                   type='number'
@@ -317,7 +323,7 @@ export const EditProductModal = ({ modal }) => {
                   variant='bordered'
                   name='net1'
                   onChange={handleChange}
-                  defaultValue={currentUserEdit ? currentUserEdit.net1 : ''}
+                  defaultValue={currentUserEdit?.net1}
                   size='sm'
                   endContent={
                     <div className='pointer-events-none flex items-center'>
@@ -332,7 +338,7 @@ export const EditProductModal = ({ modal }) => {
                   isDisabled
                   placeholder='0.00'
                   variant='bordered'
-                  defaultValue={currentUserEdit ? currentUserEdit.net2 : ''}
+                  defaultValue={currentUserEdit?.net2}
                   name='net2'
                   onChange={handleChange}
                   size='sm'
@@ -349,7 +355,7 @@ export const EditProductModal = ({ modal }) => {
                   placeholder='0.00'
                   isDisabled
                   variant='bordered'
-                  defaultValue={currentUserEdit ? currentUserEdit.net3 : ''}
+                  defaultValue={currentUserEdit?.net3}
                   name='net3'
                   onChange={handleChange}
                   size='sm'
@@ -365,7 +371,7 @@ export const EditProductModal = ({ modal }) => {
                   label='Neto 4'
                   placeholder='0.00'
                   isDisabled
-                  defaultValue={currentUserEdit ? currentUserEdit.net4 : ''}
+                  defaultValue={currentUserEdit?.net4}
                   variant='bordered'
                   name='net4'
                   onChange={handleChange}
@@ -384,7 +390,7 @@ export const EditProductModal = ({ modal }) => {
                   placeholder='Selecciona un tipo'
                   variant='bordered'
                   name='taxType'
-                  defaultSelectedKeys={[currentUserEdit ? currentUserEdit.taxType : '']}
+                  defaultSelectedKeys={[currentUserEdit?.taxType]}
                   onChange={handleChange}
                   size='sm'
                   className='text-c-title'
@@ -399,7 +405,7 @@ export const EditProductModal = ({ modal }) => {
                   placeholder='0.00'
                   variant='bordered'
                   name='financedPrice'
-                  defaultValue={currentUserEdit ? currentUserEdit.financedPrice : ''}
+                  defaultValue={currentUserEdit?.financedPrice}
                   isInvalid={!!errors.financedPrice}
                   onChange={handleChange}
                   size='sm'
@@ -416,7 +422,7 @@ export const EditProductModal = ({ modal }) => {
                   placeholder='0.00'
                   variant='bordered'
                   name='friendPrice'
-                  defaultValue={currentUserEdit ? currentUserEdit.friendPrice : ''}
+                  defaultValue={currentUserEdit?.friendPrice}
                   onChange={handleChange}
                   isInvalid={!!errors.friendPrice}
                   size='sm'
@@ -435,7 +441,7 @@ export const EditProductModal = ({ modal }) => {
                   onChange={handleChange}
                   isInvalid={!!errors.cardPrice}
                   variant='bordered'
-                  defaultValue={currentUserEdit ? currentUserEdit.cardPrice : ''}
+                  defaultValue={currentUserEdit?.cardPrice}
                   size='sm'
                   endContent={
                     <div className='pointer-events-none flex items-center'>
@@ -444,8 +450,15 @@ export const EditProductModal = ({ modal }) => {
                   }
                 />
               </div>
-
-              <Checkbox defaultSelected name='envasedproduct' onChange={handleChange}>
+              <Checkbox
+                defaultSelected
+                name='envasedproduct'
+                color='primary'
+                classNames={{
+                  wrapper: 'after:bg-[var(--c-primary-variant-1)]',
+                }}
+                onChange={handleChange}
+              >
                 Producto envasado
               </Checkbox>
               <Input
@@ -456,7 +469,7 @@ export const EditProductModal = ({ modal }) => {
                 name='quantityPerPackage'
                 onChange={handleChange}
                 variant='bordered'
-                defaultValue={currentUserEdit ? currentUserEdit.quantityPerPackage : ''}
+                defaultValue={currentUserEdit?.quantityPerPackage}
                 isDisabled
                 size='sm'
                 endContent={
@@ -470,7 +483,7 @@ export const EditProductModal = ({ modal }) => {
                 variant='bordered'
                 name='description'
                 onChange={handleChange}
-                defaultValue={currentUserEdit ? currentUserEdit.description : ''}
+                defaultValue={currentUserEdit?.description}
                 labelPlacement='outside'
                 placeholder='Enter your description'
               ></Textarea>
@@ -480,6 +493,7 @@ export const EditProductModal = ({ modal }) => {
             <Button
               color='danger'
               variant='light'
+              radius='sm'
               onPress={() => {
                 handleResetCurrentIdEdit()
                 onClose()
@@ -487,7 +501,12 @@ export const EditProductModal = ({ modal }) => {
             >
               Cerrar
             </Button>
-            <Button color='primary' onPress={() => handleAddNewUser()}>
+            <Button
+              color='primary'
+              onPress={() => handleAddNewUser()}
+              radius='sm'
+              className='bg-c-primary'
+            >
               Guardar
             </Button>
           </ModalFooter>

@@ -8,7 +8,7 @@ import { AuthSubmit } from '../../components/Auth/AuthSubmit'
 import { reqAuthLogin } from '@renderer/api/requests'
 import { AuthLoginOptions } from '@renderer/components/Auth/AuthLoginOptions'
 import { ContinueWithGoogle } from '../../components/Auth/ContinueWithGoogle'
-import Settings from '@renderer/components/Settings'
+
 import './Auth.scss'
 
 const Login = () => {
@@ -61,7 +61,8 @@ const Login = () => {
     setErrors(newErrors)
   }
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault()
     const newErrors = {
       username: '',
       password: '',
@@ -88,6 +89,8 @@ const Login = () => {
 
       if (!token) {
         localStorage.setItem('token', response.data)
+
+
         window.location.reload()
       }
     } catch (error) {
@@ -115,13 +118,13 @@ const Login = () => {
   ]
 
   return (
-    <AuthBody>
+    <AuthBody onClick={(e) => handleLogin(e)}>
       <AuthHeader title='Sign In' description='Enter your email and password to sign in!' />
       <ContinueWithGoogle />
       <Or />
       <AuthForm inputs={inputs} handleChange={handleChange} errors={errors} />
       <AuthLoginOptions />
-      <AuthSubmit label='Sign In' onClick={() => handleLogin()} />
+      <AuthSubmit label='Sign In' />
       <AuthFooter href='/#/register' label='Not registered yet?' hrefLabel='Create an Account' />
     </AuthBody>
   )

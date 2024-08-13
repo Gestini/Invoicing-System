@@ -7,7 +7,7 @@ export const manageTableSlice = createSlice({
     currentItemIdEdit: -1,
   },
   reducers: {
-    setData: (state, action) => {
+    setTableData: (state, action) => {
       state.data = action.payload
     },
     addItem: (state, action) => {
@@ -37,4 +37,4 @@ export const manageTableSlice = createSlice({
   },
 })
 
-export const { setData, addItem, editItem, deleteItem, setCurrentItemId } = manageTableSlice.actions
+export const { setTableData, addItem, editItem, deleteItem, setCurrentItemId } = manageTableSlice.actions

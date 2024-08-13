@@ -51,6 +51,7 @@ export const SearchIcon = (props: IconSvgProps) => (
     role='presentation'
     viewBox='0 0 24 24'
     width='1em'
+    color='#71717a'
     {...props}
   >
     <path
@@ -69,6 +70,7 @@ export const SearchIcon = (props: IconSvgProps) => (
     />
   </svg>
 )
+
 
 export const ChevronDownIcon = ({ strokeWidth = 1.5, ...otherProps }: IconSvgProps) => (
   <svg

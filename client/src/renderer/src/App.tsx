@@ -1,7 +1,11 @@
 import Router from './routes'
 
 const App = () => {
-  return <Router />
+  return (
+    <div className='select-none'>
+      <Router />
+    </div>
+  )
 }
 
 export default App

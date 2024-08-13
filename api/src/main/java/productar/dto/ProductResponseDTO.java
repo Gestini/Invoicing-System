@@ -32,6 +32,16 @@ public class ProductResponseDTO {
     private Boolean packageProduct;
     private Integer quantityPerPackage;
     private Long businessUnitId;
+    private Long depositUnitId;
+    private Long supplierUnitId;
+
+    public Long getDepositUnitId() {
+        return depositUnitId;
+    }
+
+    public void setDepositUnitId(Long depositUnitId) {
+        this.depositUnitId = depositUnitId;
+    }
 
     public Long getBusinessUnitId() {
         return businessUnitId;
@@ -263,6 +273,14 @@ public class ProductResponseDTO {
 
     public void setQuantityPerPackage(Integer quantityPerPackage) {
         this.quantityPerPackage = quantityPerPackage;
+    }
+
+    public Long getSupplierUnitId() {
+        return supplierUnitId;
+    }
+
+    public void setSupplierUnitId(Long supplierUnitId) {
+        this.supplierUnitId = supplierUnitId;
     }
 
     // getters and setters

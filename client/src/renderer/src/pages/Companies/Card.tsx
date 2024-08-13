@@ -1,5 +1,6 @@
 import React from 'react'
 import Logo from '@renderer/assets/image/google.svg'
+import { setUnit } from '@renderer/features/currentUnitSlice'
 import { SlOptions } from 'react-icons/sl'
 import { deleteUnit } from '@renderer/features/unitsSlice'
 import { useNavigate } from 'react-router-dom'
@@ -7,7 +8,6 @@ import { FaExternalLinkAlt } from 'react-icons/fa'
 import { reqDeleteUnitById } from '@renderer/api/requests'
 import { useDispatch, useSelector } from 'react-redux'
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/react'
-import { setUnit } from '@renderer/features/currentUnitSlice'
 
 interface Owner {
   id: number
@@ -61,8 +61,8 @@ const Card: React.FC<CardProps> = ({ unit }) => {
               </div>
             </DropdownTrigger>
             <DropdownMenu aria-label='Static Actions' className='text-c-title bg-c-bg-color'>
-              <DropdownItem key='Edit' onClick={handleNavigate}>
-                <b>Abrir</b>
+              <DropdownItem key='Open' onClick={handleNavigate}>
+                Abrir
               </DropdownItem>
               <DropdownItem key='Edit'>Editar unidad</DropdownItem>
               <DropdownItem

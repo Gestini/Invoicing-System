@@ -22,13 +22,13 @@ const AuthFormItem = ({ item, handleChange, error }) => {
         errorMessage={error}
         endContent={
           item.type == 'password' && (
-            <button className='focus:outline-none' type='button' onClick={toggleVisibility}>
+            <span className='focus:outline-none cursor-pointer' onClick={toggleVisibility}>
               {isVisible ? (
                 <BsEye className='text-2xl text-default-400 pointer-events-none' />
               ) : (
                 <BsEyeSlash className='text-2xl text-default-400 pointer-events-none' />
               )}
-            </button>
+            </span>
           )
         }
       />

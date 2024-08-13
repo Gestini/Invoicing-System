@@ -2,6 +2,9 @@ package productar.models;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -93,9 +96,18 @@ public class ProductModel {
     private Boolean status = true;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "supplier_init_id", nullable = true)
+    private SupplierModel supplierUnit;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "business_unit_id", nullable = false)
     @NotNull(message = "La unidad de negocio no puede ser nula")
     private BusinessUnitsModel businessUnit;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "deposit_unit_id", nullable = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private DepositUnitsModel depositUnit;
 
     @Column(name = "price_policy")
     private String pricePolicy;
@@ -123,6 +135,14 @@ public class ProductModel {
 
     @Column(name = "quantity_per_package")
     private Integer quantityPerPackage;
+
+    public DepositUnitsModel getDepositUnit() {
+        return depositUnit;
+    }
+
+    public void setDepositUnit(DepositUnitsModel depositUnit) {
+        this.depositUnit = depositUnit;
+    }
 
     public String getCodigo1() {
         return codigo1;
@@ -367,5 +387,13 @@ public class ProductModel {
     @PreUpdate
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public SupplierModel getSupplierUnit() {
+        return supplierUnit;
+    }
+
+    public void setSupplierUnit(SupplierModel supplierUnit) {
+        this.supplierUnit = supplierUnit;
     }
 }

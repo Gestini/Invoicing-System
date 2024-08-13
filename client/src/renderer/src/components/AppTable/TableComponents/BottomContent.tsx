@@ -23,18 +23,24 @@ export const BottomContent = ({ pages, page, setPage, selectedKeys, filteredItem
       <Pagination
         isCompact
         showControls
-        showShadow
-        color='default'
+        classNames={{
+          cursor: 'bg-[--c-primary-variant-1]',
+        }}
         page={page}
-        total={pages}
+        total={pages || 1}
         onChange={setPage}
       />
       <div className='hidden sm:flex w-[30%] justify-end gap-2'>
-        <Button isDisabled={pages === 1} size='sm' variant='flat' onPress={onPreviousPage}>
-          Previous
+        <Button isDisabled={page === 1} size='sm' variant='flat' onPress={onPreviousPage}>
+          Anteior
         </Button>
-        <Button isDisabled={pages === 1} size='sm' variant='flat' onPress={onNextPage}>
-          Next
+        <Button
+          isDisabled={page === pages || pages == 0}
+          size='sm'
+          variant='flat'
+          onPress={onNextPage}
+        >
+          Siguiente
         </Button>
       </div>
     </div>

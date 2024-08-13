@@ -4,6 +4,8 @@ import { Navbar } from '@renderer/components/Navbar'
 import { Navigate } from 'react-router-dom'
 import { setMyUser } from '@renderer/features/userSlice'
 import { useLocation } from 'react-router-dom'
+import { themeColors } from '@renderer/components/Theme/Themes'
+import { setCurrentTheme } from '@renderer/features/currentTheme'
 import { useDispatch, useSelector } from 'react-redux'
 import { reqAuthLoadProfileByToken } from '@renderer/api/requests'
 
@@ -32,11 +34,14 @@ export const ProtectedRouteSession = () => {
 
   React.useEffect(() => {
     const savedColorKey = localStorage.getItem('mainColor')
-    if (savedColorKey) {
-      document.body.id = savedColorKey
-    } else {
-      document.body.id = 'variantOne'
-    }
+    if (!savedColorKey) return
+
+    const savedColorIndex = themeColors.findIndex((c) => c.variant === savedColorKey)
+    if (savedColorIndex == -1) document.body.id = 'variantOne'
+
+    const savedColor = themeColors[savedColorIndex]
+    dispatch(setCurrentTheme(savedColor))
+    document.body.id = savedColorKey
   }, [])
 
   React.useEffect(() => {
@@ -52,9 +57,7 @@ export const ProtectedRouteSession = () => {
     return (
       <>
         <Navbar />
-        <div className='bodymain'>
-          <Outlet />
-        </div>
+        <Outlet />
       </>
     )
 }

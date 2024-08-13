@@ -1,6 +1,6 @@
 import { ActionDropdown } from '../Dropdown'
 import { ShortCellValue } from './ShortCellValue'
-import { Chip, ChipProps, User } from '@nextui-org/react'
+import { Chip, ChipProps } from '@nextui-org/react'
 
 export const RenderCell = (
   user: any,
@@ -17,13 +17,7 @@ export const RenderCell = (
 
   switch (columnKey) {
     case 'name':
-      return (
-        <User
-          avatarProps={{ src: user.avatar }}
-          description={<ShortCellValue cellValue={user.email} />}
-          name={<ShortCellValue cellValue={cellValue} />}
-        />
-      )
+      return <ShortCellValue cellValue={cellValue} maxLength={20} />
     case 'status':
       return (
         <Chip className='capitalize' color={statusColorMap[user.status]} size='sm' variant='flat'>
@@ -32,7 +26,7 @@ export const RenderCell = (
       )
     case 'actions':
       return (
-        <div className='bg-c-card relative flex justify-end items-center gap-2'>
+        <div className='relative flex justify-end items-center gap-2'>
           <ActionDropdown
             editAction={() => handleSetCurrentIdEdit(user.id)}
             deleteAction={() => handleDeleteItem(user.id)}
@@ -40,6 +34,6 @@ export const RenderCell = (
         </div>
       )
     default:
-      return <ShortCellValue cellValue={cellValue} />
+      return <ShortCellValue cellValue={cellValue} maxLength={20} />
   }
 }

@@ -1,80 +1,91 @@
 import React from 'react'
 import toast from 'react-hot-toast'
-import { setData } from '@renderer/features/tableSlice'
+import {
+  reqEditProduct,
+  reqCreateProduct,
+  reqDeleteProduct,
+  reqGetProductByDeposit,
+} from '@renderer/api/requests'
 import { AppTable } from '@renderer/components/AppTable'
-import { useParams } from 'react-router-dom'
 import { AddProductModal } from '@renderer/components/AppTable/Modals/ProductAdd'
 import { EditProductModal } from '@renderer/components/AppTable/Modals/ProductEdit'
+import { wareHouseInterface } from '@renderer/features/warehouseSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { columnsData, modalInputs } from './data'
-import { addItem, editItem, deleteItem } from '@renderer/features/tableSlice'
-import { reqCreateProduct, reqEditProduct, reqGetProductByUnit } from '@renderer/api/requests'
+import { addItem, deleteItem, editItem, setTableData } from '@renderer/features/tableSlice'
 
 export const StockTable = () => {
   const dispatch = useDispatch()
   const table = useSelector((state: any) => state.table)
-  const params = useParams()
+
+  const warehouse: wareHouseInterface = useSelector((state: any) => state.warehouse)
+  const currentWarehouseId = warehouse.currentWarehouseId
 
   React.useEffect(() => {
-    const GetProduct = async () => {
-      const response = await reqGetProductByUnit(params.id)
-      dispatch(setData(response.data))
+    const loadData = async () => {
+      const response = await reqGetProductByDeposit(currentWarehouseId)
+      dispatch(setTableData(response.data))
     }
-    GetProduct()
-  }, [])
+    if (currentWarehouseId == '') return
+    loadData()
+  }, [currentWarehouseId])
 
   const tableActions = {
     delete: async (id: any) => {
       try {
-        console.log(id)
         dispatch(deleteItem(id))
         toast.success('Producto eliminado correctamente')
+        await reqDeleteProduct(id)
       } catch (error: any) {
         toast.error(error.response.data.message)
       }
     },
     create: async (data: any) => {
       try {
-        reqCreateProduct(data)
         dispatch(addItem({ ...data, id: table.data.length }))
         toast.success('Producto guardado correctamente')
+        await reqCreateProduct({
+          ...data,
+          depositUnit: {
+            id: warehouse.currentWarehouseId,
+          },
+        })
       } catch (error: any) {
         toast.error(error.response.data.message)
       }
     },
     edit: async (id: any, data: any) => {
       try {
-        reqEditProduct(id, data)
         dispatch(editItem({ data, id: id }))
         toast.success('Producto editado correctamente')
-      } catch (error) {
-        console.log(error)
+        await reqEditProduct(id, data)
+      } catch (error: any) {
+        toast.error(error.response.data.message)
       }
     },
   }
 
-  const newUserModal = {
+  const newProductModal = {
     title: 'Agrega un nuevo producto',
     buttonTitle: 'Agregar',
     ...modalInputs,
     action: tableActions.create,
   }
 
-  const editUserModal = {
+  const editProductModal = {
     title: 'Editar producto',
     ...modalInputs,
     action: tableActions.edit,
   }
 
+  if (currentWarehouseId == '' || warehouse.data.length === 0) return
 
   return (
     <AppTable
       columnsData={columnsData}
       tableActions={tableActions}
-      addItemModal={<AddProductModal modal={newUserModal} />}
-      editItemModal={<EditProductModal modal={editUserModal} />}
-      
-      
+      addItemModal={<AddProductModal modal={newProductModal} />}
+      editItemModal={<EditProductModal modal={editProductModal} />}
     />
   )
 }

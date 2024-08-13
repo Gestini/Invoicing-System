@@ -1,70 +1,86 @@
 import React from 'react'
-import { PlusIcon } from '@renderer/components/Icons/PlusIcon'
 import {
   Modal,
   Input,
   Button,
   Select,
+  Textarea,
   ModalBody,
   SelectItem,
   ModalFooter,
   ModalHeader,
   ModalContent,
   useDisclosure,
-  Textarea,
 } from '@nextui-org/react'
-
+import { PlusIcon } from '@renderer/components/Icons/PlusIcon'
 import { Checkbox } from '@nextui-org/react'
-import './ProductAdd.scss'
 import { useParams } from 'react-router-dom'
+import { reqGetSupplier } from '@renderer/api/requests'
+import './ProductAdd.scss'
 
 export const AddProductModal = ({ modal }) => {
   const params = useParams()
+  const [suppliers, setSuppliers] = React.useState([])
 
-  const [data, setData] = React.useState<any>({
+  React.useEffect(() => {
+    const GetSupplier = async () => {
+      const response = await reqGetSupplier(params.id)
+      setSuppliers(response.data)
+    }
+    GetSupplier()
+  }, [])
+
+  const [info, setInfo] = React.useState<any>({
     name: '',
     category: null,
     quantity: null,
     codigo1: null,
     codigo2: null,
     barcode: null,
-    suppliers: null,
-    status: true, // default value
+    supplierUnit: {
+      id: null,
+    },
+    status: true,
     purchasePrice: null,
     costPrice: null,
-    priceCalculation: 'cero', // default value
-    pricePolicy: 'cero', // default value
+    priceCalculation: 'cero',
+    pricePolicy: 'cero',
     net1: null,
     net2: null,
     net3: null,
     net4: null,
-    taxType: 'IVA 21%', // default value
+    taxType: 'IVA 21%',
     financedPrice: null,
     friendPrice: null,
     cardPrice: null,
     businessUnit: {
       id: params.id,
-      name: 'Main Unit',
     },
   })
 
   const [errors, setErrors] = React.useState({
     name: '',
     quantity: '',
-    purchasePrice: '',
-    costPrice: '',
-    financedPrice: '',
-    friendPrice: '',
     cardPrice: '',
+    costPrice: '',
+    friendPrice: '',
+    purchasePrice: '',
+    financedPrice: '',
   })
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
 
   const handleChange = (e: any) => {
-    setData({
-      ...data,
-      [e.target.name]: e.target.value,
-    })
-   
+    if (e.target.name == 'supplierUnit') {
+      setInfo({
+        ...info,
+        [e.target.name]: { id: e.target.value },
+      })
+    } else {
+      setInfo({
+        ...info,
+        [e.target.name]: e.target.value,
+      })
+    }
     handleValidation(e.target.name, e.target.value)
   }
 
@@ -110,37 +126,37 @@ export const AddProductModal = ({ modal }) => {
       cardPrice: '',
     }
 
-    if (!validateName(data.name)) {
+    if (!validateName(info.name)) {
       newErrors.name = 'Por favor, ingresa un nombre válido.'
       valid = false
     }
 
-    if (data.quantity && !validateNumber(data.quantity)) {
+    if (info.quantity && !validateNumber(info.quantity)) {
       newErrors.quantity = 'Por favor, ingresa una cantidad válida.'
       valid = false
     }
 
-    if (data.purchasePrice && !validateNumber(data.purchasePrice)) {
+    if (info.purchasePrice && !validateNumber(info.purchasePrice)) {
       newErrors.purchasePrice = 'Por favor, ingresa un número válido para el precio de compra.'
       valid = false
     }
 
-    if (data.costPrice && !validateNumber(data.costPrice)) {
+    if (info.costPrice && !validateNumber(info.costPrice)) {
       newErrors.costPrice = 'Por favor, ingresa un número válido para el precio de costo.'
       valid = false
     }
 
-    if (data.financedPrice && !validateNumber(data.financedPrice)) {
+    if (info.financedPrice && !validateNumber(info.financedPrice)) {
       newErrors.financedPrice = 'Por favor, ingresa un número válido para el precio financiado.'
       valid = false
     }
 
-    if (data.friendPrice && !validateNumber(data.friendPrice)) {
+    if (info.friendPrice && !validateNumber(info.friendPrice)) {
       newErrors.friendPrice = 'Por favor, ingresa un número válido para el precio amigo.'
       valid = false
     }
 
-    if (data.cardPrice && !validateNumber(data.cardPrice)) {
+    if (info.cardPrice && !validateNumber(info.cardPrice)) {
       newErrors.cardPrice = 'Por favor, ingresa un número válido para el precio de tarjeta.'
       valid = false
     }
@@ -150,8 +166,8 @@ export const AddProductModal = ({ modal }) => {
       return
     }
 
-    modal.action(data)
-    setData({
+    modal.action(info)
+    setInfo({
       name: '',
       category: null,
       quantity: null,
@@ -159,22 +175,21 @@ export const AddProductModal = ({ modal }) => {
       codigo2: null,
       barcode: null,
       suppliers: null,
-      status: true, // default value
+      status: true,
       purchasePrice: null,
       costPrice: null,
-      priceCalculation: 'cero', // default value
-      pricePolicy: 'cero', // default value
+      priceCalculation: 'cero',
+      pricePolicy: 'cero',
       net1: null,
       net2: null,
       net3: null,
       net4: null,
-      taxType: 'IVA 21%', // default value
+      taxType: 'IVA 21%',
       financedPrice: null,
       friendPrice: null,
       cardPrice: null,
       businessUnit: {
         id: params.id,
-        name: 'Main Unit',
       },
     })
     onClose()
@@ -182,9 +197,9 @@ export const AddProductModal = ({ modal }) => {
 
   const validateName = (name) => {
     if (!name.trim()) {
-      return false // Nombre está vacío
+      return false
     }
-    return true // Nombre no está vacío
+    return true
   }
 
   const validateNumber = (number) => {
@@ -193,7 +208,13 @@ export const AddProductModal = ({ modal }) => {
 
   return (
     <div className='flex flex-col gap-2'>
-      <Button onPress={onOpen} className='bg-c-primary' color='secondary' endContent={<PlusIcon />}>
+      <Button
+        onPress={onOpen}
+        className='bg-c-primary'
+        color='secondary'
+        endContent={<PlusIcon />}
+        radius='sm'
+      >
         {modal?.buttonTitle}
       </Button>
       <Modal
@@ -282,13 +303,14 @@ export const AddProductModal = ({ modal }) => {
                   labelPlacement='outside'
                   placeholder='Selecciona un proveedor'
                   variant='bordered'
-                  name='suppliers'
+                  name='supplierUnit'
                   onChange={handleChange}
                   size='sm'
                   className='text-c-title'
                 >
-                  <SelectItem key={'enjambreSRL'}>enjambreSRL</SelectItem>
-                  <SelectItem key={'PistonesSRL'}>PistonesSRL</SelectItem>
+                  {suppliers.map((item: any) => (
+                    <SelectItem key={item.id}>{item.name}</SelectItem>
+                  ))}
                 </Select>
                 <Select
                   label='Estado'
@@ -309,7 +331,6 @@ export const AddProductModal = ({ modal }) => {
                   </SelectItem>
                 </Select>
               </div>
-
               <div className='rowmodaladdproduct  flex items-start justify-start gap-3'>
                 <Input
                   type='number'
@@ -514,8 +535,15 @@ export const AddProductModal = ({ modal }) => {
                   }
                 />
               </div>
-
-              <Checkbox defaultSelected name='envasedproduct' onChange={handleChange}>
+              <Checkbox
+                defaultSelected
+                name='envasedproduct'
+                color='primary'
+                classNames={{
+                  wrapper: 'after:bg-[var(--c-primary-variant-1)]',
+                }}
+                onChange={handleChange}
+              >
                 Producto envasado
               </Checkbox>
               <Input
@@ -545,10 +573,10 @@ export const AddProductModal = ({ modal }) => {
             </div>
           </ModalBody>
           <ModalFooter>
-            <Button color='danger' variant='light' onPress={onClose}>
+            <Button color='danger' variant='light' radius='sm' onPress={onClose}>
               Cerrar
             </Button>
-            <Button color='primary' onPress={handleSubmit}>
+            <Button color='primary' onPress={handleSubmit} radius='sm' className='bg-c-primary'>
               Agregar
             </Button>
           </ModalFooter>

@@ -10,6 +10,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -64,8 +66,13 @@ public class ProductService {
         }
     }
 
-    public void deleteProduct(Long productId) {
-        productRepository.deleteById(productId);
+    public ResponseEntity<String> deleteProduct(Long productId) {
+        try {
+            productRepository.deleteById(productId);
+            return ResponseEntity.status(HttpStatus.OK).body("Producto eliminado correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("Ocurrió un error al eliminar el producto");
+        }
     }
 
     public ProductModel getProductById(Long productId) {
@@ -115,6 +122,8 @@ public class ProductService {
         dto.setPackageProduct(product.getPackageProduct());
         dto.setQuantityPerPackage(product.getQuantityPerPackage());
         dto.setBusinessUnitId(product.getBusinessUnit().getId());
+        dto.setDepositUnitId(product.getDepositUnit().getId());
+        dto.setSupplierUnitId(product.getSupplierUnit().getId());
 
         return dto;
     }
@@ -129,6 +138,11 @@ public class ProductService {
         return productRepository.findByName(name);
     }
 
+    // Método para obtener productos por nombre
+    public List<ProductModel> findByNameAndBusinessUnitId(String name, Long id) {
+        return productRepository.findByNameAndBusinessUnitId(name, id);
+    }
+
     // Método para obtener productos por código de referencia
     public List<ProductModel> getProductsByReferenceCode(String referenceCode) {
         return productRepository.findByReferenceCode(referenceCode);
@@ -137,5 +151,12 @@ public class ProductService {
     public void deleteProductsByBusinessUnit(Long businessUnitId) {
         List<ProductModel> products = productRepository.findByBusinessUnitId(businessUnitId);
         products.forEach(product -> productRepository.deleteById(product.getId()));
+    }
+
+    public List<ProductResponseDTO> getProductsByDepositUnit(Long depositUnitId) {
+        List<ProductModel> products = productRepository.findByDepositUnitId(depositUnitId);
+        return products.stream()
+                .map(this::convertToResponseDTO)
+                .collect(Collectors.toList());
     }
 }

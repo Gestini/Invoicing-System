@@ -50,7 +50,7 @@ const Home = () => {
         {cards.map((item, index) => (
           <Card className='w-full bg-c-card' key={index}>
             <CardBody>
-              <span className='dashboardIcon text-c-primary w-fit p-2.5 bg-c-bg-color-2 rounded text-xl'>
+              <span className='dashboardIcon text-c-primary-variant-1 w-fit p-2.5 bg-c-bg-color-2 rounded text-xl'>
                 {item.icon}
               </span>
               <div className='flex flex-col'>
