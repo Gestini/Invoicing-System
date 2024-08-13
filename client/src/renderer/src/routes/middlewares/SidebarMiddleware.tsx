@@ -34,7 +34,7 @@ export const SidebarMiddleware = () => {
   }, [])
 
   return (
-    <div className='ml-[55px] px-[20px] mt-5 mb-5'>
+    <div className='ml-[225px] px-[20px] mt-5 mb-5'>
       {unit !== null && (
         <>
           <Sidebar />

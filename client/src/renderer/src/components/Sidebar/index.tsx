@@ -1,45 +1,27 @@
-import {
-  BiUser,
-  BiHome,
-  BiCart,
-  BiLabel,
-  BiCrown,
-  BiStats,
-  BiDetail,
-  BiBriefcase,
-  BiBadgeCheck,
-  BiCalculator,
-  BiCheckShield,
-} from 'react-icons/bi'
-import { NavLink } from 'react-router-dom'
+import { Accordion, AccordionItem } from "@nextui-org/react"
+import { GestinyLogo } from '@renderer/assets/GestinyLogo'
 import { Settings } from '@renderer/components/Settings'
-import { useSelector } from 'react-redux'
-import { IoGridOutline } from 'react-icons/io5'
 import { ReactNode, useState } from 'react'
+import {
+  BiBadgeCheck,
+  BiBriefcase,
+  BiCalculator,
+  BiCart,
+  BiCheckShield,
+  BiCrown,
+  BiDetail,
+  BiLabel,
+  BiStats,
+  BiUser
+} from 'react-icons/bi'
+import { MdDashboard, MdKeyboardArrowDown } from "react-icons/md"
+import { useSelector } from 'react-redux'
+
 
 interface SidebarItemProps {
   icon: ReactNode
   text: string
   path: string
-}
-
-const SidebarItem = ({ path, icon, text }: SidebarItemProps) => {
-  return (
-    <NavLink
-      to={path}
-      className={({ isActive }) =>
-        `text-white rounded-md relative flex items-center py-3 px-3 font-medium cursor-pointer flex-col transition-colors group ${isActive
-          ? 'text-c-primary-variant-1 bg-c-primary-route-active'
-          : 'hover:bg-c-primary-route-hover text-gray-600'
-        } `
-      }
-    >
-      {icon}
-      <span className='text-[10px] bg-c-primary-variant-1 rounded-sm absolute p-1 top-2 left-0 opacity-0 group-hover:left-12 group-hover:opacity-100 transition-all duration-300'>
-        {text}
-      </span>
-    </NavLink>
-  )
 }
 
 export const Sidebar = () => {
@@ -49,28 +31,98 @@ export const Sidebar = () => {
   const sidebarItems = [
     {
       path: `/general/${unit?.id}`,
-      icon: <BiHome />,
+      icon: <MdDashboard />,
       text: 'General',
+      data: [
+        {
+          path: '/general',
+          name: 'General'
+        },
+        {
+          path: '/general',
+          name: 'General'
+        },
+        {
+          path: '/general',
+          name: 'General'
+        },
+      ]
     },
     {
       path: `/facturar/${unit?.id}`,
       icon: <BiCalculator />,
       text: 'Facturar',
+      data: [
+        {
+          path: '/general',
+          name: 'General'
+        },
+        {
+          path: '/general',
+          name: 'General'
+        },
+        {
+          path: '/general',
+          name: 'General'
+        },
+      ]
     },
     {
       path: `/empleados/${unit?.id}`,
       icon: <BiUser />,
       text: 'Empleados',
+      data: [
+        {
+          path: '/general',
+          name: 'General'
+        },
+        {
+          path: '/general',
+          name: 'General'
+        },
+        {
+          path: '/general',
+          name: 'General'
+        },
+      ]
     },
     {
       path: `/roles/${unit?.id}`,
       icon: <BiCheckShield />,
       text: 'Roles',
+      data: [
+        {
+          path: '/general',
+          name: 'General'
+        },
+        {
+          path: '/general',
+          name: 'General'
+        },
+        {
+          path: '/general',
+          name: 'General'
+        },
+      ]
     },
     {
       path: `/depositos/${unit?.id}`,
       icon: <BiCart />,
       text: 'Stock',
+      data: [
+        {
+          path: '/general',
+          name: 'General'
+        },
+        {
+          path: '/general',
+          name: 'General'
+        },
+        {
+          path: '/general',
+          name: 'General'
+        },
+      ]
     },
     {
       path: `/pedidos/${unit?.id}`,
@@ -108,21 +160,68 @@ export const Sidebar = () => {
     setIsExpanded(!isExpanded)
   }
 
+  const itemClasses = {
+    trigger: "px-2 py-0 bg-c-primary-variant-2 rounded-lg h-[36px] flex items-center",
+  };
+
   return (
     <nav
-      className={`flex fixed z-10 left-0 top-0 h-screen items-center py-4 flex-col justify-between bg-c-primary-sidebar transition-all duration-300 ${isExpanded ? 'w-[250px]' : 'w-[55px]'
-        }`}
+      className={`flex fixed z-10 left-0 top-0 h-screen items-center justify-between transition-all duration-300 p-10'}`}
     >
-      <IoGridOutline
-        className={`text-white w-5 h-5 cursor-pointer transition-transform duration-300 ${isExpanded ? 'rotate-180' : 'rotate-0'}`}
-        onClick={toggleSidebar}
-      />
-      <div className='flex flex-col gap-[1px]'>
-        {sidebarItems.map((item, index) => (
-          <SidebarItem key={index} path={item.path} icon={item.icon} text={item.text} />
-        ))}
+      <div className='w-[48px] bg-[#111311] h-full flex flex-col items-center py-5 gap-[11px]'>
+        <div className='h-[49px] w-[36px] bg-c-primary-variant-2 flex justify-center items-center rounded-md mb-[17px]'>
+          <GestinyLogo />
+        </div>
+        <div className='h-[36px] w-[36px] bg-c-gray rounded-lg'></div>
+        <div className='h-[36px] w-[36px] bg-c-gray rounded-lg'></div>
+        <div className='h-[36px] w-[36px] bg-c-gray rounded-lg'></div>
+
       </div>
-      <Settings />
-    </nav>
+      <div className='bg-[#1c201d] w-[180px] h-full border-r-md rounded-r-2xl flex flex-col gap-[16px] p-5 px-[14px] pr-[10px]'>
+        <span className='font-semibold text-[11px] text-c-gray'>
+          Menu
+        </span>
+        <Accordion
+          itemClasses={itemClasses}
+          showDivider={false}
+          className='flex flex-col gap-[14px] overflow-auto overflow-x-hidden sidebarthumb'>
+          {sidebarItems.map((item, index) => (
+            <AccordionItem
+              className='rounded-md font-medium cursor-pointer transition-colors text-white'
+              key={index}
+              aria-label={item.text}
+              title={
+                <div className='flex gap-1 justify-center items-center'>
+                  <span className='text-c-primary-variant-1 text-[24px] mr-[7px]'>
+                    {item.icon}
+                  </span>
+                  <span className='text-[14px] text-white rounded-sm top-2 flex items-center'>
+                    {item.text}
+                  </span>
+                </div>
+              }
+            >
+              <div className="flex pl-2 flex-col gap-[14px] ml-2">
+                {
+                  item?.data?.map((ele, ind) => (
+
+                    <div className="text-[10px] text-c-sidebar-text flex gap-[14px] items-center" key={ind}>
+                      <div className="h-[6px] w-[6px] rounded-full bg-c-primary-variant-1 shadow-point">
+                      </div>
+
+                      <span >
+                        {ele.name}
+                      </span>
+                    </div>
+
+                  ))
+                }
+              </div>
+            </AccordionItem>
+          ))}
+        </Accordion>
+        <Settings />
+      </div>
+    </nav >
   )
 }
