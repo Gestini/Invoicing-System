@@ -1,7 +1,7 @@
 import { GestinyLogo } from '@renderer/assets/GestinyLogo'
 import { MdDashboard } from 'react-icons/md'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { Accordion, AccordionItem, Tooltip } from '@nextui-org/react'
 import { FiArrowDownLeft } from 'react-icons/fi'
 import { FiArrowUpRight } from 'react-icons/fi'
@@ -60,6 +60,16 @@ export const Sidebar = () => {
       path: `/general/${unit?.id}`,
       icon: <MdDashboard />,
       text: 'Dashboard',
+      data: [
+        {
+          path: `/general/${unit?.id}`,
+          name: 'General',
+        },
+        {
+          path: `generalejemplo`,
+          name: 'Ejemplo',
+        },
+      ]
     },
     {
       path: `/depositos/${unit?.id}`,
@@ -67,7 +77,7 @@ export const Sidebar = () => {
       text: 'Deposito',
       data: [
         {
-          path: '/deposito',
+          path: `/depositos/${unit?.id}`,
           name: 'Gestion de deposito',
         },
         {
@@ -243,21 +253,13 @@ export const Sidebar = () => {
       ],
     },
     {
-      path: `/depositos/${unit?.id}`,
       icon: <BiCart />,
       text: 'Stock',
+      path: `/stock/${unit?.id}`,
       data: [
         {
-          path: '/general',
-          name: 'General',
-        },
-        {
-          path: '/general',
-          name: 'General',
-        },
-        {
-          path: '/general',
-          name: 'General',
+          path: `/stock/${unit?.id}`,
+          name: 'Depositos',
         },
       ],
     },
@@ -265,6 +267,12 @@ export const Sidebar = () => {
       path: `/pedidos/${unit?.id}`,
       icon: <BiBadgeCheck />,
       text: 'Pedidos',
+      data: [
+        {
+          path: `/pedidos/${unit?.id}`,
+          name: 'Pedidos'
+        }
+      ]
     },
     {
       path: `/proveedores/${unit?.id}`,
@@ -284,8 +292,6 @@ export const Sidebar = () => {
   ]
 
   const companies: any = useSelector((state: any) => state.units.data)
-
-  const handleOpen = (path: string) => navigate(path)
 
   return (
     <nav
@@ -325,7 +331,7 @@ export const Sidebar = () => {
         <span className='font-semibold text-[11px] text-c-gray'>Menu</span>
         <Accordion
           showDivider={false}
-          className='px-0 flex flex-col gap-[14px] overflow-auto overflow-x-hidden sidebarthumb'
+          className='px-0 flex flex-col gap-[14px] overflow-auto overflow-x-hidden sidebarthumb pr-[5px]'
         >
           {sidebarItems.map((item, index) => (
             <AccordionItem
@@ -337,9 +343,9 @@ export const Sidebar = () => {
               }}
               aria-label={item.text}
               title={
-                <div className='flex gap-1 items-center' onClick={() => handleOpen(item.path)}>
+                <div className='flex gap-1 items-center'>
                   <span
-                    className={`${location.pathname == item.path ? 'text-c-primary-variant-1' : 'text-white'} text-[24px] px-1 mr-[7px]`}
+                    className={`${location.pathname == item.path ? 'text-c-primary-variant-1' : 'text-white'} text-[24px] px-1`}
                   >
                     {item.icon}
                   </span>
@@ -351,16 +357,33 @@ export const Sidebar = () => {
             >
               <div className='flex pl-2 flex-col gap-[14px] ml-2'>
                 {item?.data?.map((ele, ind) => (
-                  <div
-                    className='text-[10px] text-c-sidebar-text flex gap-[14px] items-center'
+                  <NavLink
+                    to={ele.path}
+                    className="group text-[10px] text-c-sidebar-text flex gap-[14px] items-center"
                     key={ind}
                   >
-                    <div className='h-[6px] w-[6px] rounded-full bg-c-primary-variant-1 shadow-point'></div>
-
-                    <span>{ele.name}</span>
-                  </div>
+                    {({ isActive }) => (
+                      <>
+                        <div
+                          className={`h-[6px] w-[6px] rounded-full transition-all duration-200 ${isActive
+                              ? 'bg-c-primary-variant-1 shadow-point'
+                              : 'bg-c-gray group-hover:bg-white'
+                            }`}
+                        ></div>
+                        <span
+                          className={`transition-all duration-200 ${isActive
+                              ? 'text-c-primary-variant-1'
+                              : 'group-hover:text-white'
+                            }`}
+                        >
+                          {ele.name}
+                        </span>
+                      </>
+                    )}
+                  </NavLink>
                 ))}
               </div>
+
             </AccordionItem>
           ))}
         </Accordion>
