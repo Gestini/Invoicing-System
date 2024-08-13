@@ -9,7 +9,7 @@ import {
   DropdownTrigger,
 } from '@nextui-org/react'
 import { setUnits } from '@renderer/features/unitsSlice'
-import MultiStepForm from '@renderer/components/CreateCompanyForm'
+import { CreateUnitModal } from '@renderer/components/CreateCompanyForm'
 import { reqGetUnitByOwner } from '@renderer/api/requests'
 import { productStatusOptions } from '@renderer/components/Tables/ProductTable/data'
 import { useDispatch, useSelector } from 'react-redux'
@@ -72,7 +72,7 @@ const Companies = () => {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <MultiStepForm />
+            <CreateUnitModal />
           </div>
         </div>
       </div>

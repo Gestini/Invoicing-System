@@ -2,19 +2,19 @@ import { Tooltip } from '@nextui-org/react'
 
 interface ShortCellValueProps {
   cellValue: string
-  minLength: number
+  maxLength: number
 }
 
-export const ShortCellValue = ({ cellValue, minLength = 20 }: ShortCellValueProps) => {
+export const ShortCellValue = ({ cellValue, maxLength = 20 }: ShortCellValueProps) => {
   if (!cellValue) return ''
 
-  if (cellValue.length > minLength) {
+  if (cellValue.length > maxLength) {
     return (
       <Tooltip className='default-text-color' content={cellValue}>
-        <h3>{cellValue.slice(0, minLength) + '...'}</h3>
+        {cellValue.slice(0, maxLength) + '...'}
       </Tooltip>
     )
   }
 
-  return <h3>{cellValue}</h3>
+  return cellValue
 }

@@ -17,7 +17,7 @@ export const RenderCell = (
 
   switch (columnKey) {
     case 'name':
-      return <ShortCellValue cellValue={cellValue} minLength={20} />
+      return <ShortCellValue cellValue={cellValue} maxLength={20} />
     case 'status':
       return (
         <Chip className='capitalize' color={statusColorMap[user.status]} size='sm' variant='flat'>
@@ -34,6 +34,6 @@ export const RenderCell = (
         </div>
       )
     default:
-      return <ShortCellValue cellValue={cellValue} minLength={20} />
+      return <ShortCellValue cellValue={cellValue} maxLength={20} />
   }
 }

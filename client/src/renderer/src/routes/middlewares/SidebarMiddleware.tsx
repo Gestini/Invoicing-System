@@ -40,12 +40,14 @@ export const SidebarMiddleware = () => {
           <Sidebar />
           <div className='w-full h-full flex flex-col gap-4'>
             <div>
-              <h6 className='font-semibold flex items-center text-c-gray'>
+              <h6 className='font-semibold flex items-center text-[#4f4d4d]'>
                 <DepositIcon />
                 <span className='ml-1'>{capitalize(name)} /</span>
                 <span className='ml-1 text-c-title'>Gestión de {capitalize(name)}</span>
               </h6>
-              <h5 className='text-[24px] font-semibold text-c-title'>Gestión de {capitalize(name)}</h5>
+              <h5 className='text-[24px] font-semibold text-c-title'>
+                Gestión de {capitalize(name)}
+              </h5>
             </div>
             <Outlet />
           </div>

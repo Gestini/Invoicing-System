@@ -86,7 +86,7 @@ export const WarehouseCard = () => {
                 <div className='flex items-center gap-[10px]'>
                   <div className='flex flex-col '>
                     <span className='text-[24px] h-8 text-white'>
-                      <ShortCellValue cellValue={ele.name} minLength={10} />
+                      <ShortCellValue cellValue={ele.name} maxLength={10} />
                     </span>
                     <span className='text-[12px] text-c-gray'>Buenos aires</span>
                   </div>
