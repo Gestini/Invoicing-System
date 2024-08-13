@@ -31,7 +31,13 @@ export const AddItemModal = ({ modal }) => {
 
   return (
     <div className='flex flex-col gap-2'>
-      <Button onPress={onOpen} className='bg-c-primary-variant-1' color='secondary' endContent={<PlusIcon />}>
+      <Button
+        onPress={onOpen}
+        className='bg-c-primary'
+        color='secondary'
+        endContent={<PlusIcon />}
+        radius='sm'
+      >
         {modal?.buttonTitle}
       </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} scrollBehavior={'inside'} backdrop='blur'>
@@ -78,10 +84,15 @@ export const AddItemModal = ({ modal }) => {
             )}
           </ModalBody>
           <ModalFooter>
-            <Button color='danger' variant='light' onPress={onClose}>
+            <Button color='danger' variant='light' onPress={onClose} radius='sm'>
               Cerrar
             </Button>
-            <Button color='primary' onPress={() => handleAddNewUser()}>
+            <Button
+              className='bg-c-primary'
+              color='secondary'
+              radius='sm'
+              onPress={() => handleAddNewUser()}
+            >
               Agregar
             </Button>
           </ModalFooter>

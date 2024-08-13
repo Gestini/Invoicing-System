@@ -52,7 +52,13 @@ export const CreateRoleModal = () => {
 
   return (
     <>
-      <Button onPress={onOpen} className='bg-c-primary' color='secondary' endContent={<PlusIcon />}>
+      <Button
+        onPress={onOpen}
+        className='bg-c-primary-variant-1'
+        color='secondary'
+        endContent={<PlusIcon />}
+        radius='sm'
+      >
         Nuevo
       </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} scrollBehavior={'inside'} backdrop='blur'>
@@ -73,10 +79,10 @@ export const CreateRoleModal = () => {
             </div>
           </ModalBody>
           <ModalFooter>
-            <Button color='danger' variant='light' onPress={onClose}>
+            <Button color='danger' variant='light' onPress={onClose} radius='sm'>
               Cerrar
             </Button>
-            <Button color='primary' className='bg-c-primary' onPress={handleCreateRole}>
+            <Button color='primary' className='bg-c-primary' onPress={handleCreateRole} radius='sm'>
               Crear
             </Button>
           </ModalFooter>

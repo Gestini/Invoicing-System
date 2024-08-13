@@ -1,6 +1,6 @@
 import React from 'react'
-import { Button, Input } from '@nextui-org/react'
-import { BiSave, BiTrash } from 'react-icons/bi'
+import { Button, cn, Input } from '@nextui-org/react'
+import { DeleteDocumentIcon } from '@renderer/components/Icons/DeleteDocumentIcon'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteRole, editRole, Role } from '@renderer/features/roleSlice'
 import { reqDeleteRole, reqEditRole } from '@renderer/api/requests'
@@ -66,8 +66,17 @@ export const RoleInfo = () => {
       <div className='flex gap-4'>
         <Button
           onPress={() => null}
-          variant='bordered'
-          endContent={<BiTrash />}
+          variant='light'
+          endContent={
+            <DeleteDocumentIcon
+              className={cn(
+                'text-xl text-default-500 pointer-events-none flex-shrink-0',
+                'text-danger',
+              )}
+            />
+          }
+          radius='sm'
+          color='danger'
           onClick={handleDeleteRole}
         >
           Borrar
@@ -76,8 +85,8 @@ export const RoleInfo = () => {
           onPress={() => null}
           className='bg-c-primary'
           color='secondary'
+          radius='sm'
           onClick={handleEditRole}
-          endContent={<BiSave />}
         >
           Guardar
         </Button>

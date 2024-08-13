@@ -11,12 +11,12 @@ export const Themes = {
 }
 
 export const themeColors = [
-  { name: 'blue', color: '#3b82f6', variant: 'variantOne' },
-  { name: 'red', color: '#ef4444', variant: 'variantTwo' },
-  { name: 'violet', color: '#8b5cf6', variant: 'variantThree' },
-  { name: 'pink', color: '#ec4899', variant: 'variantFour' },
-  { name: 'orange', color: '#ff9900', variant: 'variantFive' },
-  { name: 'Green', color: '#86dd8b', variant: 'variantSix' },
+  { name: 'Azul', color: '#3b82f6', variant: 'variantOne' },
+  { name: 'Rojo', color: '#ef4444', variant: 'variantTwo' },
+  { name: 'Violeta', color: '#8b5cf6', variant: 'variantThree' },
+  { name: 'Rosa', color: '#ec4899', variant: 'variantFour' },
+  { name: 'Naranja', color: '#ff9900', variant: 'variantFive' },
+  { name: 'Verde', color: '#86dd8b', variant: 'variantSix' },
 ]
 
 export const useColorManagement = () => {

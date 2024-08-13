@@ -53,9 +53,12 @@ export const CreateWarehouse = () => {
 
   return (
     <>
-      <Button onPress={onOpen} className='bg-c-primary-variant-1' color='secondary' endContent={<PlusIcon />}>
-        Crear deposito
-      </Button>
+      <div
+        onClick={onOpen}
+        className='h-[76px] rounded-[10px] px-[10px] py-[20px] bg-[#1f2121] text-c-gray flex items-center justify-between cursor-pointer'
+      >
+        <PlusIcon />
+      </div>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} scrollBehavior={'inside'} backdrop='blur'>
         <ModalContent>
           <ModalHeader>
@@ -74,10 +77,16 @@ export const CreateWarehouse = () => {
             </div>
           </ModalBody>
           <ModalFooter>
-            <Button color='danger' variant='light' onPress={onClose}>
+            <Button color='danger' variant='light' onPress={onClose} radius='sm'>
               Cerrar
             </Button>
-            <Button color='primary' className='bg-c-primary-variant-1' onPress={handleCreateWarehouse}>
+            <Button
+              color='primary'
+              radius='sm'
+              className='bg-c-primary'
+              onPress={handleCreateWarehouse}
+              isDisabled={buttonDisabled}
+            >
               Crear
             </Button>
           </ModalFooter>

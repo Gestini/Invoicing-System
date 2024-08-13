@@ -23,6 +23,7 @@ module.exports = {
       },
       boxShadow: {
         cards: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
+        point: 'var(--c-primary-variant-1) 0px 0px 15px',
       },
       spacing: {
         '25px': '25px',
@@ -57,6 +58,10 @@ module.exports = {
         'c-border': 'var(--c-border)',
         'c-primary-opacity': 'var(--c-primary-opacity)',
         'c-selected': 'var(--c-bg-selected)',
+        'c-input-color': 'var(--c-input-color)',
+        'c-sidebar-text': 'var(--c-sidebar-text)',
+        'c-sidebar-bg': 'var(--c-sidebar-bg)',
+        'c-sidebar-bg-2': 'var(--c-sidebar-bg-2)',
       },
     },
     screens: {

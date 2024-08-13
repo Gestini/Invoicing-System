@@ -30,7 +30,7 @@ export const ChangeTheme = () => {
 
   return (
     <div className='mt-3 flex flex-col gap-4'>
-      <span className='font-medium text-c-title'>Theme Option</span>
+      <span className='font-medium text-c-title'>Tema</span>
       {themes.map((item, index) => (
         <Checkbox
           key={index}

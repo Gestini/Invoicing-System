@@ -11,6 +11,7 @@ import { capitalize } from './utils'
 import { useSelector } from 'react-redux'
 import { ChevronDownIcon } from '../../Icons/ChevronDownIcon'
 import { ExportTableDropdown } from '../Exports/ExportTableDropdown'
+import { FilterIcon } from '@renderer/components/Icons/FilterIcon'
 
 export const TopContent = ({
   setPage,
@@ -49,50 +50,55 @@ export const TopContent = ({
     <>
       <div className='flex flex-col gap-4'>
         <div className='flex justify-between gap-3 items-end'>
-          <Input
-            isClearable
-            className='w-full text-c-gray'
-            placeholder='Buscar por nombre...'
-            startContent={<SearchIcon />}
-            value={filterValue}
-            onClear={() => onClear()}
-            onValueChange={onSearchChange}
-          />
+          <div className='flex gap-3'>
+            <Input
+              isClearable
+              radius="sm"
+              className='text-c-gray'
+              placeholder='Buscar'
+              startContent={<SearchIcon />}
+              value={filterValue}
+              onClear={() => onClear()}
+              onValueChange={onSearchChange}
+            />
+            <div>
+              {columnsData?.statusOptions && (
+                <Dropdown className='bg-c-card text-c-title'>
+                  <DropdownTrigger className='sm:flex'>
+                    <Button
+                      endContent={
+                        <FilterIcon className='text-red text-2xl mr-2 w-[20px] h-[20px]' />
+                      }
+                      variant='flat'
+                      radius='sm'
+                    >
+                      Filtrar
+                    </Button>
+                  </DropdownTrigger>
+                  <DropdownMenu
+                    disallowEmptySelection
+                    aria-label='Table Columns'
+                    closeOnSelect={false}
+                    selectedKeys={statusFilter}
+                    selectionMode='multiple'
+                    onSelectionChange={setStatusFilter}
+                  >
+                    {columnsData.statusOptions.map((status: any) => (
+                      <DropdownItem key={status.uid} className='capitalize dropdownCheckboxIcon'>
+                        <h3 className='default-text-color'>{capitalize(status.name)}</h3>
+                      </DropdownItem>
+                    ))}
+                  </DropdownMenu>
+                </Dropdown>
+              )}
+            </div>
+          </div>
           <div className='flex gap-3'>
             <ExportTableDropdown />
-            {columnsData?.statusOptions && (
-              <Dropdown className='bg-c-card text-c-title'>
-                <DropdownTrigger className='sm:flex'>
-                  <Button
-                    endContent={<ChevronDownIcon className='text-small' />}
-                    variant='bordered'
-                  >
-                    Estado
-                  </Button>
-                </DropdownTrigger>
-                <DropdownMenu
-                  disallowEmptySelection
-                  aria-label='Table Columns'
-                  closeOnSelect={false}
-                  selectedKeys={statusFilter}
-                  selectionMode='multiple'
-                  onSelectionChange={setStatusFilter}
-                >
-                  {columnsData.statusOptions.map((status: any) => (
-                    <DropdownItem key={status.uid} className='capitalize dropdownCheckboxIcon'>
-                      <h3 className='default-text-color'>{capitalize(status.name)}</h3>
-                    </DropdownItem>
-                  ))}
-                </DropdownMenu>
-              </Dropdown>
-            )}
             {columnsData?.columns && (
               <Dropdown>
                 <DropdownTrigger className='sm:flex'>
-                  <Button
-                    endContent={<ChevronDownIcon className='text-small' />}
-                    variant='bordered'
-                  >
+                  <Button endContent={<ChevronDownIcon className='text-small' />} variant='flat' radius="sm">
                     Columnas
                   </Button>
                 </DropdownTrigger>

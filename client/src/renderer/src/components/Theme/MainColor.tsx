@@ -19,7 +19,7 @@ const MainColor: React.FC = () => {
 
   return (
     <>
-      <span className='font-medium text-c-title'>Theme Colors</span>
+      <span className='font-medium text-c-title'>Colores</span>
       <div className='flex flex-wrap gap-2 mt-2'>
         {colors.map((item, index) => (
           <Tooltip key={index} content={item.name} className='text-c-title'>

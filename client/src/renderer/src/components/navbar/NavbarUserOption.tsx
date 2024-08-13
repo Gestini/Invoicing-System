@@ -1,17 +1,23 @@
+import MainColor from '../Theme/MainColor'
 import { useSelector } from 'react-redux'
+import { ChangeTheme } from '../Theme'
+import { ShortCellValue } from '../AppTable/TableComponents/ShortCellValue'
+import { BiCog, BiUser, BiDoorOpen } from 'react-icons/bi'
 import { Avatar, Dropdown, DropdownMenu, DropdownItem, DropdownTrigger } from '@nextui-org/react'
 import { IoIosAddCircle } from 'react-icons/io'
 
 export const NavbarUserOptions = () => {
   const user = useSelector((state: any) => state.user)
   const token = localStorage.getItem('token')
-
+  // const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const logOut = () => {
     if (token) {
       localStorage.removeItem('token')
       window.location.reload()
     }
   }
+
+  const iconClasses = 'text-[20px]'
 
   if (user) {
     return (

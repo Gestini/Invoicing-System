@@ -1,11 +1,9 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
-import { SlOptions } from 'react-icons/sl'
 import { EditWarehouse } from '../Modals/EditWarehouse'
 import { CreateWarehouse } from '../Modals/CreateWarehouse'
 import { useDispatch, useSelector } from 'react-redux'
 import {
-  Card,
   Dropdown,
   DropdownItem,
   DropdownMenu,
@@ -19,6 +17,9 @@ import {
   wareHouseInterface,
   setCurrentWarehouseId,
 } from '@renderer/features/warehouseSlice'
+import { VerticalDotsIcon } from '@renderer/components/Icons'
+import { LocalIcon } from '@renderer/components/Icons/LocalIcon'
+import { ShortCellValue } from '@renderer/components/AppTable/TableComponents/ShortCellValue'
 
 export const WarehouseCard = () => {
   const params = useParams()
@@ -58,29 +59,42 @@ export const WarehouseCard = () => {
 
   return (
     <>
-      <div className='flex gap-4 flex-col'>
-        <div
-          className={`flex items-center ${warehouse.data.length === 0 ? 'justify-between' : 'justify-end'}`}
-        >
+      <div className='flex flex-col w-full gap-2'>
+        <div className={`flex items-center justify-between gap-4`}>
           {warehouse.data.length === 0 && (
-            <p className='text-foreground-400 align-middle text-center'>No tienes depósitos creados.</p>
+            <p className='text-foreground-400 align-middle text-center'>
+              No tienes depósitos creados.
+            </p>
           )}
-          <CreateWarehouse />
         </div>
         <div className='flex gap-4 flex-wrap'>
           {warehouse.data.length > 0 &&
             warehouse.data.map((ele: any, ind: number) => (
-              <Card key={ind} className={currentWarehouseId == ele.id ? 'bg-c-selected' : ''}>
+              <div
+                key={ind}
+                onClick={() => openWarehouse(ele.id)}
+                className={`${currentWarehouseId == ele.id ? 'bg-c-primary-variant-3' : 'bg-[#1f2121]'}
+                w-[285px] h-[76px] rounded-[10px] px-[19px] py-[21px] flex items-center justify-between cursor-pointer`}
+              >
                 <div
-                  onClick={() => openWarehouse(ele.id)}
-                  className='w-[300px] cursor-pointer h-[100px] p-3 select-none'
+                  className={`${currentWarehouseId == ele.id ? 'bg-c-primary-variant-3' : 'bg-[#323535]'}  p-2 rounded-lg`}
                 >
-                  <div className='flex justify-between items-center'>
-                    <h4 className={`text-[16px] font-semibold `}>{ele.name}</h4>
+                  <LocalIcon
+                    color={`${currentWarehouseId == ele.id ? 'var(--c-primary-variant-1)' : 'white'}`}
+                  />
+                </div>
+                <div className='flex items-center gap-[10px]'>
+                  <div className='flex flex-col '>
+                    <span className='text-[24px] h-8 text-white'>
+                      <ShortCellValue cellValue={ele.name} maxLength={10} />
+                    </span>
+                    <span className='text-[12px] text-c-gray'>Buenos aires</span>
+                  </div>
+                  <div>
                     <Dropdown placement='bottom-start' className='bg-c-card text-c-title'>
                       <DropdownTrigger>
                         <div>
-                          <SlOptions className='text-c-title w-4 h-4 cursor-pointer' />
+                          <VerticalDotsIcon className='cursor-pointer text-c-gray ml-[10px]' />
                         </div>
                       </DropdownTrigger>
                       <DropdownMenu
@@ -106,8 +120,9 @@ export const WarehouseCard = () => {
                     </Dropdown>
                   </div>
                 </div>
-              </Card>
+              </div>
             ))}
+          <CreateWarehouse />
         </div>
       </div>
       <EditWarehouse

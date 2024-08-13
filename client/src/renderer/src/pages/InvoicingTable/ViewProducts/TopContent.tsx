@@ -26,7 +26,12 @@ export const TopContent = () => {
   return (
     <div className='flex gap-2'>
       <SearchProduct />
-      <Button className='bg-c-primary-variant-1' color='secondary' onPress={() => onSubmmit()}>
+      <Button
+        className='bg-c-primary-variant-1'
+        color='secondary'
+        onPress={() => onSubmmit()}
+        radius='sm'
+      >
         Crear factura
       </Button>
     </div>

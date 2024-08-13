@@ -74,6 +74,7 @@ export const RoleUsers = () => {
             input: 'w-full',
           },
           variant: 'flat',
+          radius: 'sm',
         }}
         onInputChange={handleChange}
         listboxProps={{
@@ -97,6 +98,7 @@ export const RoleUsers = () => {
         placeholder='Buscar por nombre...'
         popoverProps={{
           offset: 10,
+          radius: 'sm',
           classNames: {
             base: 'rounded-large ',
             content: 'p-1 border-small border-default-100 bg-[--c-card] ',

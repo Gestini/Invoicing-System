@@ -4,6 +4,7 @@ import {
   Input,
   Modal,
   Button,
+  Tooltip,
   Textarea,
   ModalBody,
   ModalFooter,
@@ -19,7 +20,7 @@ import { fieldConfig } from './data'
 import { reqCreateUnit } from '@renderer/api/requests'
 import './createCompany.scss'
 
-const MultiStepForm = () => {
+export const CreateUnitModal = () => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const dispatch = useDispatch()
   const [loading, setLoading] = React.useState(false)
@@ -74,15 +75,21 @@ const MultiStepForm = () => {
 
   return (
     <div className='flex flex-col gap-2'>
-      <Button
-        onPress={onOpen}
-        className='bg-c-primary-variant-1'
+      <Tooltip
+        placement='right'
+        content={'Añadir unidad'}
         color='secondary'
-        size='sm'
-        endContent={<PlusIcon />}
+        classNames={{
+          content: 'bg-c-sidebar-bg-2',
+        }}
       >
-        Crear unidad
-      </Button>
+        <div
+          onClick={onOpen}
+          className={`bg-c-sidebar-bg text-c-primary-variant-1 rounded-[100%] flex items-center content-center transition-all duration-600 p-1 cursor-pointer`}
+        >
+          <PlusIcon />
+        </div>
+      </Tooltip>
       <Modal
         size='2xl'
         isOpen={isOpen}
@@ -145,11 +152,12 @@ const MultiStepForm = () => {
             </div>
           </ModalBody>
           <ModalFooter>
-            <Button color='danger' variant='light' onPress={onClose}>
+            <Button color='danger' variant='light' onPress={onClose} radius='sm'>
               Cerrar
             </Button>
             <Button
               color='secondary'
+              radius='sm'
               className='bg-c-primary'
               isLoading={loading}
               onClick={handleSubmit}
@@ -162,5 +170,3 @@ const MultiStepForm = () => {
     </div>
   )
 }
-
-export default MultiStepForm

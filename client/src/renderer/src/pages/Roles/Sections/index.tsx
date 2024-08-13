@@ -1,10 +1,10 @@
+import React from 'react'
 import { Role } from '@renderer/features/roleSlice'
 import { RoleInfo } from './RoleInfo'
 import { RolePerms } from './RolePerms'
 import { RoleUsers } from './RoleUsers'
 import { useSelector } from 'react-redux'
 import { Card, CardBody, CardHeader, Tab, Tabs } from '@nextui-org/react'
-import React from 'react'
 
 export const RoleSections = () => {
   const roles = useSelector((state: any) => state.roles)
@@ -42,7 +42,7 @@ export const RoleSections = () => {
           </CardBody>
         </Card>
       ) : (
-        <Card className='h-full flex flex-col w-[50%]'>
+        <Card className='flex flex-col w-[50%]'>
           <CardBody className='items-center flex content-center justify-center'>
             <p className='text-foreground-400 align-middle text-center'>
               Selecciona un rol para ver su información.

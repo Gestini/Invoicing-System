@@ -39,7 +39,7 @@ export const Navbar = () => {
 
   return (
     <nav className=' w-full bg-c-bg-color flex items-center pt-6'>
-      <div className='w-full h-full px-[18px] pl-[73px]'>
+      <div className='w-full h-full px-[18px] pl-[245px]'>
         <div className='relative flex items-center justify-between w-full h-full'>
           {/* <div className='flex items-center justify-center text-c-title cursor-pointer w-16'></div> */}
           {/* <div className='flex items-center justify-between'>
@@ -51,7 +51,7 @@ export const Navbar = () => {
             <Input
               isClearable
               className='w-full text-c-gray'
-              placeholder='Buscar por nombre...'
+              placeholder='Buscar'
               startContent={<SearchIcon />}
             // value={filterValue}
             // onClear={() => onClear()}
