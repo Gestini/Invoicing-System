@@ -25,42 +25,49 @@ const Router = () => {
       <Route element={<ProtectedRouteSession />}>
         <Route path='/' element={<Companies />} />
         <Route element={<SidebarMiddleware />}>
-          <Route path='/general/:id' element={<Home />} />
+          {/* DASHBOARD */}
+          <Route path='/dashboard/:id' element={<Home />} />
 
-          {/* DEPOSIT */}
-          <Route path='/deposit/:id' element={<Warehouse />} />
-          <Route path='/deposit/:id/product-management' element={<Warehouse />} />
-          <Route path='/deposit/:id/price-management' element={<Warehouse />} />
-          <Route path='/deposit/:id/stock-management' element={<Warehouse />} />
-          <Route path='/deposit/:id/stock-movements' element={<Warehouse />} />
-          <Route path='/deposit/:id/inventory-list' element={<Warehouse />} />
-          <Route path='/deposit/:id/reception-management' element={<Warehouse />} />
-          <Route path='/deposit/:id/categories' element={<Warehouse />} />
-          <Route path='/deposit/:id/brands' element={<Warehouse />} />
-          <Route path='/deposit/:id/consumptions' element={<Warehouse />} />
+          {/* WAREHOUSE */}
+          <Route path='/warehouse/product-management/:id' element={<Warehouse />} />
+          <Route path='/warehouse/price-management/:id' element={<Warehouse />} />
+          <Route path='/warehouse/stock-management/:id' element={<Warehouse />} />
+          <Route path='/warehouse/stock-movements/:id' element={<Warehouse />} />
+          <Route path='/warehouse/inventory-list/:id' element={<Warehouse />} />
+          <Route path='/warehouse/reception-management/:id' element={<Warehouse />} />
+          <Route path='/warehouse/categories/:id' element={<Warehouse />} />
+          <Route path='/warehouse/brands/:id' element={<Warehouse />} />
+          <Route path='/warehouse/consumptions/:id' element={<Warehouse />} />
+          <Route path='/warehouse/:id' element={<Warehouse />} />
 
-          {/* RRHH */}
+          {/* HR */}
           <Route path='/hr/:id/user-management' element={<Roles />} />
           <Route path='/hr/:id/roles' element={<Roles />} />
-          <Route path='/roles/:id' element={<Roles />} />
+          <Route path='/hr/roles/:id' element={<Roles />} />
 
           {/* POS */}
-          <Route path='/pos/:id/close-cash' element={<Roles />} />
-          <Route path='/pos/:id/close-cash-history' element={<Roles />} />
-          <Route path='/pos/:id/invoice-credit' element={<Roles />} />
-          <Route path='/pos/:id/debit-note' element={<Roles />} />
-          <Route path='/pos/:id/barcode-scanner' element={<Roles />} />
-          <Route path='/pos/:id/email-sending' element={<Roles />} />
+          <Route path='/pos/close-cash/:id' element={<Roles />} />
+          <Route path='/pos/close-cash-history/:id' element={<Roles />} />
+          <Route path='/pos/invoice-credit/:id' element={<Roles />} />
+          <Route path='/pos/debit-note/:id' element={<Roles />} />
+          <Route path='/pos/barcode-scanner/:id' element={<Roles />} />
+          <Route path='/pos/email-sending/:id' element={<Roles />} />
 
-          <Route path='/ventas/:id' element={<SalesTable />} />
-          <Route path='/facturar/:id' element={<InvoicingTable />} />
-          <Route path='/clientes/:id' element={<ClientTable />} />
-          <Route path='/informes/:id' element={<Informes />} />
-          <Route path='/pedidos/:id' element={<></>} />
 
-          <Route path='/proveedores/:id' element={<SupplierTable />} />
-          <Route path='/empleados/:id' element={<EmployeeTable />} />
-          <Route path='/presupuestos/:id' element={<></>} />
+          {/* OPERACIONES */}
+          <Route path='/operations/sales/:id' element={<SalesTable />} />
+          <Route path='/operations/invoicing/:id' element={<InvoicingTable />} />
+          <Route path='/operations/clients/:id' element={<ClientTable />} />
+          <Route path='/operations/reports/:id' element={<Informes />} />
+          <Route path='/operations/orders/:id' element={<></>} />
+
+          {/* ADMIN */}
+          <Route path='/admin/suppliers/:id' element={<SupplierTable />} />
+          <Route path='/admin/employees/:id' element={<EmployeeTable />} />
+          <Route path='/admin/budgets/:id' element={<></>} />
+
+          {/* CONTACT */}
+          <Route path='/contact/' element={<></>} />
         </Route>
       </Route>
       <Route element={<ProtectedRouteAuth />}>

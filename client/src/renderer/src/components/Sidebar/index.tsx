@@ -46,247 +46,176 @@ export const Sidebar = () => {
 
   const handleNavigate = (item) => {
     dispatch(setUnit(item))
-    navigate(`/general/${item?.id}`)
+    navigate(`/dashboard/${item?.id}`)
   }
 
   const getBasePath = (path) => path.split('/')[1]
 
   const sidebarItems = [
     {
-      path: `/general/${unit?.id}`,
+      path: `/dashboard/${unit?.id}`,
       icon: <MdDashboard />,
       text: 'Dashboard',
       direct: true,
     },
     {
-      path: `/depositos/${unit?.id}`,
+      path: `/warehouse/${unit?.id}`,
       icon: <BiBox />,
-      text: 'Deposito',
+      text: 'Depósitos',
       data: [
         {
-          path: `/depositos/${unit?.id}`,
-          name: 'Gestion de deposito',
+          path: `/warehouse/${unit?.id}`,
+          name: 'Gestión de Depósitos',
         },
         {
-          path: '/deposito',
-          name: 'Gestion de productos',
+          path: `/warehouse/product-management/${unit?.id}`,
+          name: 'Gestión de Productos',
         },
         {
-          path: '/deposito',
-          name: 'Gestion de precios',
+          path: `/warehouse/price-management/${unit?.id}`,
+          name: 'Gestión de Precios',
         },
         {
-          path: '/deposito',
-          name: 'Gestion de Stock',
+          path: `/warehouse/stock-management/${unit?.id}`,
+          name: 'Gestión de Stock',
         },
         {
-          path: '/deposito',
-          name: 'Movimientos del inventario',
+          path: `/warehouse/stock-movements/${unit?.id}`,
+          name: 'Movimientos del Inventario',
         },
         {
-          path: '/deposito',
-          name: 'Lista de inventario',
+          path: `/warehouse/inventory-list/${unit?.id}`,
+          name: 'Lista de Inventario',
         },
         {
-          path: '/deposito',
-          name: 'Gestion de despachos y recepciones',
+          path: `/warehouse/reception-management/${unit?.id}`,
+          name: 'Gestión de Recepciones',
         },
         {
-          path: '/deposito',
-          name: 'Categorias',
+          path: `/warehouse/categories/${unit?.id}`,
+          name: 'Categorías',
         },
         {
-          path: '/deposito',
+          path: `/warehouse/brands/${unit?.id}`,
+          name: 'Marcas',
+        },
+        {
+          path: `/warehouse/consumptions/${unit?.id}`,
           name: 'Consumo',
         },
       ],
     },
     {
-      path: `/ingresos/${unit?.id}`,
-      icon: <BiMoney />,
-      text: 'Ingresos',
-      direct: true,
-      data: [
-        {
-          path: '/deposito',
-          name: 'Pedidos',
-        },
-        {
-          path: '/deposito',
-          name: 'Historial de ventas',
-        },
-        {
-          path: '/deposito',
-          name: 'Historial de devoluciones',
-        },
-        {
-          path: '/deposito',
-          name: 'Cotizaciones',
-        },
-        {
-          path: '/deposito',
-          name: 'Libro de cuentas',
-        },
-        {
-          path: '/deposito',
-          name: 'Remisiones o orden de servicio',
-        },
-        {
-          path: '/deposito',
-          name: 'Otros ingresos',
-        },
-      ],
-    },
-    {
-      path: `/ingresos/${unit?.id}`,
-      icon: <FiArrowUpRight className=' ' />,
-      text: 'Gastos',
-      data: [
-        {
-          path: '/deposito',
-          name: 'Ordenes de compra',
-        },
-        {
-          path: '/deposito',
-          name: 'Documentos de compra',
-        },
-        {
-          path: '/deposito',
-          name: 'Gastos',
-        },
-        {
-          path: '/deposito',
-          name: 'Pagos',
-        },
-        {
-          path: '/deposito',
-          name: 'Cuentas por pagar',
-        },
-        {
-          path: '/deposito',
-          name: 'Cuenta corriente',
-        },
-      ],
-    },
-    {
-      path: `/pos/${unit?.id}`,
+      path: `/pos/`,
       icon: <BiLeaf />,
       text: 'Puntos de venta (POS)',
+      data: [
+        {
+          path: `/pos/close-cash/:id`,
+          name: 'Cerrar Caja',
+        },
+        {
+          path: `/pos/close-cash-history/:id`,
+          name: 'Historial de Cierre de Caja',
+        },
+        {
+          path: `/pos/invoice-credit/:id`,
+          name: 'Factura de Crédito',
+        },
+        {
+          path: `/pos/debit-note/:id`,
+          name: 'Nota de Débito',
+        },
+        {
+          path: `/pos/barcode-scanner/:id`,
+          name: 'Escáner de Códigos',
+        },
+        {
+          path: `/pos/email-sending/:id`,
+          name: 'Envío de Correos',
+        },
+      ],
     },
     {
-      path: `/Contactos/${unit?.id}`,
+      path: `/contact/`,
       icon: <RiContactsBookLine />,
       text: 'Contactos',
+      direct: true
     },
     {
-      path: `/RRHHH/${unit?.id}`,
+      path: `/hr/`,
       icon: <BiGroup />,
-      text: 'Recursos humanos (RRHH)',
+      text: 'Recursos Humanos (RRHH)',
+      data: [
+        {
+          path: `/hr/${unit?.id}/user-management/`,
+          name: 'Usuarios',
+        },
+        {
+          path: `/hr/${unit?.id}/roles`,
+          name: 'Roles',
+        },
+        {
+          path: `/hr/roles/${unit?.id}`,
+          name: 'Roles 2',
+        },
+
+      ]
     },
     {
-      path: `/facturar/${unit?.id}`,
+      path: `/admin/`,
       icon: <BiCalculator />,
-      text: 'Facturar',
-
+      text: 'Admin',
       data: [
         {
-          path: '/general',
-          name: 'General',
+          path: `/admin/suppliers/${unit?.id}`,
+          name: 'Proveedores',
         },
         {
-          path: '/general',
-          name: 'General',
+          path: `/admin/employees/${unit?.id}`,
+          name: 'Empleados',
         },
         {
-          path: '/general',
-          name: 'General',
+          path: `/admin/budgets/${unit?.id}`,
+          name: 'Informes',
         },
       ],
     },
     {
-      path: `/empleados/${unit?.id}`,
+      path: `/operations/`,
       icon: <BiUser />,
-      text: 'Empleados',
-
+      text: 'Operaciones',
       data: [
         {
-          path: '/general',
-          name: 'General',
+          path: `/operations/sales/${unit?.id}`,
+          name: 'Ventas',
         },
         {
-          path: '/general',
-          name: 'General',
+          path: `/operations/invoicing/${unit?.id}`,
+          name: 'Facturación',
         },
         {
-          path: '/general',
-          name: 'General',
-        },
-      ],
-    },
-    {
-      path: `/roles/${unit?.id}`,
-      icon: <BiCheckShield />,
-      text: 'Roles',
-
-      data: [
-        {
-          path: '/general',
-          name: 'General',
+          path: `/operations/clients/${unit?.id}`,
+          name: 'Clientes',
         },
         {
-          path: '/general',
-          name: 'General',
+          path: `/operations/reports/${unit?.id}`,
+          name: 'Informes',
         },
         {
-          path: '/general',
-          name: 'General',
-        },
-      ],
-    },
-    {
-      icon: <BiCart />,
-      text: 'Stock',
-      path: `/stock/${unit?.id}`,
-      data: [
-        {
-          path: `/stock/${unit?.id}`,
-          name: 'Depositos',
-        },
-      ],
-    },
-    {
-      path: `/pedidos/${unit?.id}`,
-      icon: <BiBadgeCheck />,
-      text: 'Pedidos',
-      data: [
-        {
-          path: `/pedidos/${unit?.id}`,
+          path: `/operations/orders/${unit?.id}`,
           name: 'Pedidos',
         },
       ],
-    },
-    {
-      path: `/proveedores/${unit?.id}`,
-      icon: <BiCrown />,
-      text: 'Proveedores',
-    },
-    {
-      path: `/clientes/${unit?.id}`,
-      icon: <BiBriefcase />,
-      text: 'Clientes',
-    },
-    {
-      path: `/ventas/${unit?.id}`,
-      icon: <BiLabel />,
-      text: 'Ventas',
-    },
-  ]
+    }
+
+  ];
 
   const companies: any = useSelector((state: any) => state.units.data)
 
   return (
     <nav
-      className={`flex fixed z-10 left-0 top-0 h-screen items-center justify-between transition-all duration-300 p-10'}`}
+      className={`flex fixed z-10 left-0 top-0 h-screen items-center justify-between  p-10'}`}
     >
       <div className='w-[48px] bg-c-sidebar-bg-2 h-full flex flex-col items-center py-5 gap-[11px]'>
         <div className='h-[49px] w-[36px]  flex justify-center items-center rounded-md mb-[17px]'>
@@ -323,9 +252,10 @@ export const Sidebar = () => {
         ))}
         <CreateUnitModal />
       </div>
-      <div className=' bg-c-sidebar-bg w-[180px] h-full border-r-md rounded-r-2xl flex flex-col gap-[16px] p-5 pl-[10px] pr-[0px]'>
+      <div className=' bg-c-sidebar-bg w-[180px] h-full border-r-md rounded-r-2xl flex flex-col gap-[16px] p-5 pl-[10px] pr-[0px] relative'>
+        <div className='absolute bottom-[290px] left-0 right-0 h-[210px] bg-gradient-to-t from-c-sidebar-bg to-transparent z-10 pointer-events-none'></div>
         <span className='font-semibold text-[11px] text-gray-300'>Menu</span>
-        <div className='px-0 flex flex-col gap-[14px] overflow-auto sidebarthumb pr-[7px]'>
+        <div className='px-0 flex h-[300px] flex-col gap-[14px] overflow-auto sidebarthumb pr-[7px]'>
           {sidebarItems.map((item, index) => {
             const baseLocationPath = getBasePath(location.pathname)
             const baseItemPath = getBasePath(item.path)
