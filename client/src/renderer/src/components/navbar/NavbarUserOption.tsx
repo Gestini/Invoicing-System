@@ -110,7 +110,8 @@ export const NavbarUserOptions = () => {
     toggleModal('isLoginModalOpen')
   }
 
-  const changeAccount = (id) => {
+  const changeAccount = (id: number) => {
+    if (id == user.id) return
     if (!currentSessions) return
 
     const partseSessions = JSON.parse(currentSessions)
