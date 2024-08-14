@@ -244,11 +244,6 @@ export const Sidebar = () => {
               <div className={`${unit.id == item.id ? 'rounded-full' : 'rounded-full'} transition-all duration-500 ease-in-out w-[24px] h-[24px] uppercase flex items-center justify-center font-semibold text-white`}>
                 {item.name.slice(0, 2)}
               </div>
-              {/* <img
-                src={GoogleLogo}
-                className=
-                alt=''
-              /> */}
             </div>
 
           </Tooltip>
