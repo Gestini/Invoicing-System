@@ -60,6 +60,7 @@ export const Sidebar = () => {
       path: `/general/${unit?.id}`,
       icon: <MdDashboard />,
       text: 'Dashboard',
+      direct: true,
       data: [
         {
           path: `/general/${unit?.id}`,
@@ -118,6 +119,7 @@ export const Sidebar = () => {
       path: `/ingresos/${unit?.id}`,
       icon: <FiArrowDownLeft />,
       text: 'Ingresos',
+      direct: true,
       data: [
         {
           path: '/deposito',
@@ -153,6 +155,7 @@ export const Sidebar = () => {
       path: `/ingresos/${unit?.id}`,
       icon: <FiArrowUpRight className=' ' />,
       text: 'Gastos',
+
       data: [
         {
           path: '/deposito',
@@ -199,6 +202,7 @@ export const Sidebar = () => {
       path: `/facturar/${unit?.id}`,
       icon: <BiCalculator />,
       text: 'Facturar',
+
       data: [
         {
           path: '/general',
@@ -218,6 +222,7 @@ export const Sidebar = () => {
       path: `/empleados/${unit?.id}`,
       icon: <BiUser />,
       text: 'Empleados',
+
       data: [
         {
           path: '/general',
@@ -237,6 +242,7 @@ export const Sidebar = () => {
       path: `/roles/${unit?.id}`,
       icon: <BiCheckShield />,
       text: 'Roles',
+
       data: [
         {
           path: '/general',
@@ -256,6 +262,7 @@ export const Sidebar = () => {
       icon: <BiCart />,
       text: 'Stock',
       path: `/stock/${unit?.id}`,
+
       data: [
         {
           path: `/stock/${unit?.id}`,
@@ -267,6 +274,7 @@ export const Sidebar = () => {
       path: `/pedidos/${unit?.id}`,
       icon: <BiBadgeCheck />,
       text: 'Pedidos',
+
       data: [
         {
           path: `/pedidos/${unit?.id}`,
@@ -329,64 +337,91 @@ export const Sidebar = () => {
       </div>
       <div className='bg-c-sidebar-bg w-[180px] h-full border-r-md rounded-r-2xl flex flex-col gap-[16px] p-5 px-[14px] pr-[10px]'>
         <span className='font-semibold text-[11px] text-c-gray'>Menu</span>
-        <Accordion
-          showDivider={false}
-          className='px-0 flex flex-col gap-[14px] overflow-auto overflow-x-hidden sidebarthumb pr-[5px]'
-        >
-          {sidebarItems.map((item, index) => (
-            <AccordionItem
-              className='rounded-md font-medium cursor-pointer transition-colors text-white'
-              key={index}
-              classNames={{
-                indicator: 'text-medium text-[#ffffff] px-[5px]',
-                trigger: `px-0 rounded-lg h-[36px] flex items-center ${location.pathname == item.path ? 'bg-c-primary-variant-2' : ''}`,
-              }}
-              aria-label={item.text}
-              title={
-                <div className='flex gap-1 items-center'>
-                  <span
-                    className={`${location.pathname == item.path ? 'text-c-primary-variant-1' : 'text-white'} text-[24px] px-1`}
-                  >
-                    {item.icon}
-                  </span>
-                  <span className='text-[14px] text-white rounded-sm top-2 flex items-center'>
-                    <ShortCellValue cellValue={item.text} maxLength={9} />
-                  </span>
-                </div>
-              }
-            >
-              <div className='flex pl-2 flex-col gap-[14px] ml-2'>
-                {item?.data?.map((ele, ind) => (
-                  <NavLink
-                    to={ele.path}
-                    className="group text-[10px] text-c-sidebar-text flex gap-[14px] items-center"
-                    key={ind}
-                  >
-                    {({ isActive }) => (
-                      <>
-                        <div
-                          className={`h-[6px] w-[6px] rounded-full transition-all duration-200 ${isActive
-                              ? 'bg-c-primary-variant-1 shadow-point'
-                              : 'bg-c-gray group-hover:bg-white'
-                            }`}
-                        ></div>
-                        <span
-                          className={`transition-all duration-200 ${isActive
-                              ? 'text-c-primary-variant-1'
-                              : 'group-hover:text-white'
-                            }`}
-                        >
-                          {ele.name}
-                        </span>
-                      </>
-                    )}
-                  </NavLink>
-                ))}
-              </div>
+        {/* div grande */}
+        {/* div accordion falso con mismo estilo */}
+        <div className='px-0 flex flex-col gap-[14px] overflow-auto overflow-x-hidden sidebarthumb pr-[5px]'>
+          {sidebarItems.map((item, index) => {
+            if (item.direct) {
+              return (
+                <NavLink
+                  to={item.path}
+                  key={index}
+                  className={`rounded-md font-medium cursor-pointer transition-colors  flex items-center text-white ${location.pathname === item.path ? 'bg-c-primary-variant-2' : ''}`}
+                >
+                  <div className='flex gap-1 items-center h-[36px]'>
+                    <span
+                      className={`${location.pathname === item.path ? 'text-c-primary-variant-1' : 'text-white'} text-[24px] px-1`}
+                    >
+                      {item.icon}
+                    </span>
+                    <span className='text-[14px] text-white rounded-sm top-2 flex items-center'>
+                      <ShortCellValue cellValue={item.text} maxLength={9} />
+                    </span>
+                  </div>
+                </NavLink>
+              );
+            }
 
-            </AccordionItem>
-          ))}
-        </Accordion>
+            return (
+              <Accordion
+                key={index}
+                showDivider={false}
+                className='px-0 flex flex-col gap-[14px]'
+              >
+                <AccordionItem
+                  className='rounded-md font-medium cursor-pointer transition-colors text-white'
+                  classNames={{
+                    indicator: 'text-medium text-[#ffffff] px-[5px]',
+                    trigger: `px-0 rounded-lg h-[36px] flex items-center ${location.pathname === item.path ? 'bg-c-primary-variant-2' : ''}`,
+                  }}
+                  aria-label={item.text}
+                  title={
+                    <div className='flex gap-1 items-center'>
+                      <span
+                        className={`${location.pathname === item.path ? 'text-c-primary-variant-1' : 'text-white'} text-[24px] px-1`}
+                      >
+                        {item.icon}
+                      </span>
+                      <span className='text-[14px] text-white rounded-sm top-2 flex items-center'>
+                        <ShortCellValue cellValue={item.text} maxLength={9} />
+                      </span>
+                    </div>
+                  }
+                >
+                  <div className='flex pl-2 flex-col gap-[14px] ml-2'>
+                    {item?.data?.map((ele, ind) => (
+                      <NavLink
+                        to={ele.path}
+                        className="group text-[10px] text-c-sidebar-text flex gap-[14px] items-center"
+                        key={ind}
+                      >
+                        {({ isActive }) => (
+                          <>
+                            <div
+                              className={`h-[6px] w-[6px] rounded-full transition-all duration-200 ${isActive
+                                ? 'bg-c-primary-variant-1 shadow-point'
+                                : 'bg-c-gray group-hover:bg-white'
+                                }`}
+                            ></div>
+                            <span
+                              className={`transition-all duration-200 ${isActive
+                                ? 'text-c-primary-variant-1'
+                                : 'group-hover:text-white'
+                                }`}
+                            >
+                              {ele.name}
+                            </span>
+                          </>
+                        )}
+                      </NavLink>
+                    ))}
+                  </div>
+                </AccordionItem>
+              </Accordion>
+            );
+          })}
+        </div>
+
       </div>
     </nav>
   )
