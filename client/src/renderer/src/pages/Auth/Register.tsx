@@ -38,11 +38,6 @@ const Register = () => {
     handleValidation(name, value)
   }
 
-  const handleBlur = (e) => {
-    const { name, value } = e.target
-    handleValidation(name, value)
-  }
-
   const handleValidation = (name, value) => {
     let newErrors = { ...errors }
 
@@ -154,32 +149,24 @@ const Register = () => {
       name: 'username',
       type: 'text',
       placeholder: 'Enter your username',
-      onBlur: handleBlur,
-      onChange: handleChange,
     },
     {
       label: 'Email',
       name: 'email',
       type: 'email',
       placeholder: 'Enter your email',
-      onBlur: handleBlur,
-      onChange: handleChange,
     },
     {
       label: 'Password',
       name: 'password',
       type: 'password',
       placeholder: 'Enter your password',
-      onBlur: handleBlur,
-      onChange: handleChange,
     },
     {
       label: 'Repeat password',
       name: 'repeatPassword',
       type: 'password',
       placeholder: 'Repeat your password',
-      onBlur: handleBlur,
-      onChange: handleChange,
     },
   ]
 

@@ -26,13 +26,38 @@ const Router = () => {
         <Route path='/' element={<Companies />} />
         <Route element={<SidebarMiddleware />}>
           <Route path='/general/:id' element={<Home />} />
+
+          {/* DEPOSIT */}
+          <Route path='/deposit/:id' element={<Warehouse />} />
+          <Route path='/deposit/:id/product-management' element={<Warehouse />} />
+          <Route path='/deposit/:id/price-management' element={<Warehouse />} />
+          <Route path='/deposit/:id/stock-management' element={<Warehouse />} />
+          <Route path='/deposit/:id/stock-movements' element={<Warehouse />} />
+          <Route path='/deposit/:id/inventory-list' element={<Warehouse />} />
+          <Route path='/deposit/:id/reception-management' element={<Warehouse />} />
+          <Route path='/deposit/:id/categories' element={<Warehouse />} />
+          <Route path='/deposit/:id/brands' element={<Warehouse />} />
+          <Route path='/deposit/:id/consumptions' element={<Warehouse />} />
+
+          {/* RRHH */}
+          <Route path='/hr/:id/user-management' element={<Roles />} />
+          <Route path='/hr/:id/roles' element={<Roles />} />
           <Route path='/roles/:id' element={<Roles />} />
+
+          {/* POS */}
+          <Route path='/pos/:id/close-cash' element={<Roles />} />
+          <Route path='/pos/:id/close-cash-history' element={<Roles />} />
+          <Route path='/pos/:id/invoice-credit' element={<Roles />} />
+          <Route path='/pos/:id/debit-note' element={<Roles />} />
+          <Route path='/pos/:id/barcode-scanner' element={<Roles />} />
+          <Route path='/pos/:id/email-sending' element={<Roles />} />
+
           <Route path='/ventas/:id' element={<SalesTable />} />
           <Route path='/facturar/:id' element={<InvoicingTable />} />
           <Route path='/clientes/:id' element={<ClientTable />} />
           <Route path='/informes/:id' element={<Informes />} />
           <Route path='/pedidos/:id' element={<></>} />
-          <Route path='/depositos/:id' element={<Warehouse />} />
+
           <Route path='/proveedores/:id' element={<SupplierTable />} />
           <Route path='/empleados/:id' element={<EmployeeTable />} />
           <Route path='/presupuestos/:id' element={<></>} />

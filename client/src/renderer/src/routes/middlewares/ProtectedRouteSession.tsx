@@ -22,9 +22,25 @@ export const ProtectedRouteSession = () => {
       try {
         if (token) {
           const response = await reqAuthLoadProfileByToken(token)
+          if (!response.data) return
+
           dispatch(setMyUser(response.data))
+
+          const currentSessions = localStorage.getItem('sessions')
+          if (!currentSessions) {
+            return localStorage.setItem(
+              'sessions',
+              JSON.stringify([
+                {
+                  userId: response.data?.id,
+                  token,
+                },
+              ]),
+            )
+          }
         }
       } catch (error) {
+        console.log(error)
         localStorage.removeItem('token')
         window.location.reload()
       }
@@ -53,11 +69,12 @@ export const ProtectedRouteSession = () => {
     }
   }, [])
 
-  if (user !== null)
-    return (
-      <>
-        <Navbar />
-        <Outlet />
-      </>
-    )
+  if (user === null) return <></>
+
+  return (
+    <>
+      <Navbar />
+      <Outlet />
+    </>
+  )
 }

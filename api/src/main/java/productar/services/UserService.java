@@ -26,6 +26,13 @@ public class UserService {
         return userRepository.searchByUsername(username);
     }
 
+    public List<UserResponse> findByIds(List<Integer> userIds) {
+        List<User> users = userRepository.findAllById(userIds);
+        return users.stream()
+                .map(this::Convert)
+                .collect(Collectors.toList());
+    }
+
     private UserResponse Convert(User user) {
         UserResponse userResponse = new UserResponse();
         userResponse.setId(user.getId());

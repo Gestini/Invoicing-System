@@ -8,7 +8,6 @@ import { AuthSubmit } from '../../components/Auth/AuthSubmit'
 import { reqAuthLogin } from '@renderer/api/requests'
 import { AuthLoginOptions } from '@renderer/components/Auth/AuthLoginOptions'
 import { ContinueWithGoogle } from '../../components/Auth/ContinueWithGoogle'
-
 import './Auth.scss'
 
 const Login = () => {
@@ -29,11 +28,6 @@ const Login = () => {
       [name]: value,
     })
 
-    handleValidation(name, value)
-  }
-
-  const handleBlur = (e) => {
-    const { name, value } = e.target
     handleValidation(name, value)
   }
 
@@ -63,11 +57,12 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault()
+    let valid = true
+
     const newErrors = {
       username: '',
       password: '',
     }
-    let valid = true
 
     if (data.username.trim() === '') {
       newErrors.username = 'Por favor, ingresa tu nombre de usuario.'
@@ -89,8 +84,6 @@ const Login = () => {
 
       if (!token) {
         localStorage.setItem('token', response.data)
-
-
         window.location.reload()
       }
     } catch (error) {
@@ -104,16 +97,12 @@ const Login = () => {
       name: 'username',
       type: 'text',
       placeholder: 'Enter your username',
-      onBlur: handleBlur,
-      onChange: handleChange,
     },
     {
       label: 'Password',
       name: 'password',
       type: 'password',
       placeholder: 'Enter your password',
-      onBlur: handleBlur,
-      onChange: handleChange,
     },
   ]
 

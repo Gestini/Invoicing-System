@@ -7,7 +7,7 @@ const AuthFormItem = ({ item, handleChange, error }) => {
   const toggleVisibility = () => setIsVisible(!isVisible)
 
   return (
-    <div className=' h-[90px] '>
+    <div className='h-[90px]'>
       <label className='flex text-left text-sm font-medium leading-normal transition-opacity duration-300 opacity-100 mr-3 mb-2 ml-1 text-navy-700'>
         {item.label}
       </label>
