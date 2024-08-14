@@ -67,7 +67,7 @@ export const Sidebar = () => {
     },
     {
       path: `/depositos/`,
-      icon: <img src={Package} className=' text-white ' />,
+      icon: <img src={Package} className=' text-c-primary-variant-1 ' />,
       text: 'Deposito',
       data: [
         {
@@ -337,7 +337,7 @@ export const Sidebar = () => {
                 <NavLink
                   to={item.path}
                   key={index}
-                  className={`rounded-md font-medium cursor-pointer transition-colors flex items-center text-white ${baseLocationPath === baseItemPath ? 'bg-c-primary-variant-2' : ''}`}
+                  className={`rounded-md font-medium cursor-pointer flex items-center text-white ${baseLocationPath === baseItemPath ? 'bg-c-primary-variant-2' : ''}`}
                 >
                   <div className='flex gap-1 items-center h-[36px]'>
                     <span
@@ -360,7 +360,7 @@ export const Sidebar = () => {
                 className='px-0 flex flex-col gap-[14px]'
               >
                 <AccordionItem
-                  className='rounded-md font-medium cursor-pointer transition-colors'
+                  className='rounded-md font-medium cursor-pointer'
                   classNames={{
                     indicator: 'text-medium px-[5px]',
                     trigger: `px-0 rounded-lg h-[36px] flex items-center ${baseLocationPath === baseItemPath ? 'bg-c-primary-variant-2' : ''}`,
