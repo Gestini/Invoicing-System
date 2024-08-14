@@ -55,25 +55,18 @@ export const Sidebar = () => {
     navigate(`/general/${item?.id}`)
   }
 
+  const getBasePath = (path) => path.split('/')[1];
+
+
   const sidebarItems = [
     {
       path: `/general/${unit?.id}`,
       icon: <MdDashboard />,
       text: 'Dashboard',
       direct: true,
-      data: [
-        {
-          path: `/general/${unit?.id}`,
-          name: 'General',
-        },
-        {
-          path: `generalejemplo`,
-          name: 'Ejemplo',
-        },
-      ]
     },
     {
-      path: `/depositos/${unit?.id}`,
+      path: `/depositos/`,
       icon: <img src={Package} className=' text-white ' />,
       text: 'Deposito',
       data: [
@@ -155,7 +148,6 @@ export const Sidebar = () => {
       path: `/ingresos/${unit?.id}`,
       icon: <FiArrowUpRight className=' ' />,
       text: 'Gastos',
-
       data: [
         {
           path: '/deposito',
@@ -262,7 +254,6 @@ export const Sidebar = () => {
       icon: <BiCart />,
       text: 'Stock',
       path: `/stock/${unit?.id}`,
-
       data: [
         {
           path: `/stock/${unit?.id}`,
@@ -274,7 +265,6 @@ export const Sidebar = () => {
       path: `/pedidos/${unit?.id}`,
       icon: <BiBadgeCheck />,
       text: 'Pedidos',
-
       data: [
         {
           path: `/pedidos/${unit?.id}`,
@@ -337,20 +327,21 @@ export const Sidebar = () => {
       </div>
       <div className='bg-c-sidebar-bg w-[180px] h-full border-r-md rounded-r-2xl flex flex-col gap-[16px] p-5 px-[14px] pr-[10px]'>
         <span className='font-semibold text-[11px] text-c-gray'>Menu</span>
-        {/* div grande */}
-        {/* div accordion falso con mismo estilo */}
         <div className='px-0 flex flex-col gap-[14px] overflow-auto overflow-x-hidden sidebarthumb pr-[5px]'>
           {sidebarItems.map((item, index) => {
+            const baseLocationPath = getBasePath(location.pathname)
+            const baseItemPath = getBasePath(item.path)
+
             if (item.direct) {
               return (
                 <NavLink
                   to={item.path}
                   key={index}
-                  className={`rounded-md font-medium cursor-pointer transition-colors  flex items-center text-white ${location.pathname === item.path ? 'bg-c-primary-variant-2' : ''}`}
+                  className={`rounded-md font-medium cursor-pointer transition-colors flex items-center text-white ${baseLocationPath === baseItemPath ? 'bg-c-primary-variant-2' : ''}`}
                 >
                   <div className='flex gap-1 items-center h-[36px]'>
                     <span
-                      className={`${location.pathname === item.path ? 'text-c-primary-variant-1' : 'text-white'} text-[24px] px-1`}
+                      className={`${baseLocationPath === baseItemPath ? 'text-c-primary-variant-1' : 'text-white'} text-[24px] px-1`}
                     >
                       {item.icon}
                     </span>
@@ -359,7 +350,7 @@ export const Sidebar = () => {
                     </span>
                   </div>
                 </NavLink>
-              );
+              )
             }
 
             return (
@@ -369,20 +360,20 @@ export const Sidebar = () => {
                 className='px-0 flex flex-col gap-[14px]'
               >
                 <AccordionItem
-                  className='rounded-md font-medium cursor-pointer transition-colors text-white'
+                  className='rounded-md font-medium cursor-pointer transition-colors'
                   classNames={{
-                    indicator: 'text-medium text-[#ffffff] px-[5px]',
-                    trigger: `px-0 rounded-lg h-[36px] flex items-center ${location.pathname === item.path ? 'bg-c-primary-variant-2' : ''}`,
+                    indicator: 'text-medium px-[5px]',
+                    trigger: `px-0 rounded-lg h-[36px] flex items-center ${baseLocationPath === baseItemPath ? 'bg-c-primary-variant-2' : ''}`,
                   }}
                   aria-label={item.text}
                   title={
                     <div className='flex gap-1 items-center'>
-                      <span
-                        className={`${location.pathname === item.path ? 'text-c-primary-variant-1' : 'text-white'} text-[24px] px-1`}
+                      <div
+                        className={`${baseLocationPath == baseItemPath ? 'text-blue-500' : 'text-red-500'} text-[24px] px-1`}
                       >
                         {item.icon}
-                      </span>
-                      <span className='text-[14px] text-white rounded-sm top-2 flex items-center'>
+                      </div>
+                      <span className='text-[14px] rounded-sm top-2 flex items-center'>
                         <ShortCellValue cellValue={item.text} maxLength={9} />
                       </span>
                     </div>
@@ -418,7 +409,7 @@ export const Sidebar = () => {
                   </div>
                 </AccordionItem>
               </Accordion>
-            );
+            )
           })}
         </div>
 
