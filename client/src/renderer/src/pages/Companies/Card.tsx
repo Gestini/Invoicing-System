@@ -32,7 +32,7 @@ const Card: React.FC<CardProps> = ({ unit }) => {
 
   const handleNavigate = () => {
     dispatch(setUnit(unit))
-    navigate(`/general/${unit?.id}`)
+    navigate(`/dashboard/${unit?.id}`)
   }
 
   const handleDeleteUnit = () => {
