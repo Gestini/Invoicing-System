@@ -38,9 +38,19 @@ export const ProtectedRouteSession = () => {
               ]),
             )
           }
+
+          const partseSessions = JSON.parse(currentSessions)
+          const userFound = partseSessions.find((item: any) => item.userId == response.data.id)
+          if (!userFound) return
+
+          const AuxSessions = [...partseSessions]
+
+          if (token !== userFound.token) {
+            AuxSessions[AuxSessions.indexOf(userFound)].token = token
+            localStorage.setItem('sessions', JSON.stringify(AuxSessions))
+          }
         }
       } catch (error) {
-        console.log(error)
         localStorage.removeItem('token')
         window.location.reload()
       }
