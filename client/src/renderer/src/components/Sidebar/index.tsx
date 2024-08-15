@@ -241,11 +241,9 @@ export const Sidebar = () => {
               key={index}
               onClick={() => handleNavigate(item)}
             >
-              <img
-                src={GoogleLogo}
-                className={`${unit.id == item.id ? 'rounded-full' : 'rounded-full'} transition-all duration-500 ease-in-out w-[24px] h-[24px] bg-white`}
-                alt=''
-              />
+              <div className={`${unit.id == item.id ? 'rounded-full' : 'rounded-full'} transition-all duration-500 ease-in-out w-[24px] h-[24px] uppercase flex items-center justify-center font-semibold text-white`}>
+                {item.name.slice(0, 2)}
+              </div>
             </div>
 
           </Tooltip>
@@ -253,7 +251,7 @@ export const Sidebar = () => {
         <CreateUnitModal />
       </div>
       <div className=' bg-c-sidebar-bg w-[180px] h-full border-r-md rounded-r-2xl flex flex-col gap-[16px] p-5 pl-[10px] pr-[0px] relative'>
-        <div className='absolute top-[200px] left-0 right-0 h-[210px] bg-gradient-to-t from-c-sidebar-bg to-transparent z-10 pointer-events-none'></div>
+        <div className='absolute top-[260px] left-0 right-0 h-[100px] bg-gradient-to-t from-c-sidebar-bg to-transparent z-10 pointer-events-none'></div>
         <span className='font-semibold text-[11px] text-gray-300'>Menu</span>
         <div className='px-0 flex h-[300px] flex-col gap-[14px] overflow-auto sidebarthumb pr-[7px]'>
           {sidebarItems.map((item, index) => {
