@@ -42,7 +42,7 @@ export const LogInAsModal = ({ errors }) => {
     })
     if (!response) return
     localStorage.setItem('token', response.data)
-    window.location.reload()
+    window.location.href = '/'
     handleToggleModal()
   }
 
