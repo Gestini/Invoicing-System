@@ -16,7 +16,7 @@ export const SupplierTable = () => {
 
   React.useEffect(() => {
     const loadData = async () => {
-      const response = await reqGetSupplier(params.id)
+      const response = await reqGetSupplier(params.unitId)
       dispatch(setTableData(response.data))
     }
     loadData()

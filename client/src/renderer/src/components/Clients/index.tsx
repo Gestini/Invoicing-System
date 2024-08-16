@@ -14,14 +14,14 @@ const Index = () => {
     useEffect(() => {
         const loadData = async () => {
             try {
-                const response = await reqGetClientByUnit(params.id);
+                const response = await reqGetClientByUnit(params.unitId);
                 setResults(response.data);
             } catch (error) {
                 console.log(error);
             }
         };
         loadData();
-    }, [params.id]);
+    }, [params.unitId]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -37,7 +37,7 @@ const Index = () => {
             if (isEdit) {
                 const response = await reqEditClient(editId, {
                     ...data,
-                    businessUnit: { id: params.id },
+                    businessUnit: { id: params.unitId },
                 });
                 setResults((prevResults) =>
                     prevResults.map((client) => (client.id === editId ? response.data : client))
@@ -45,7 +45,7 @@ const Index = () => {
             } else {
                 const response = await reqCreateClient({
                     ...data,
-                    businessUnit: { id: params.id },
+                    businessUnit: { id: params.unitId },
                 });
                 setResults((prevResults) => [...prevResults, response.data]);
             }

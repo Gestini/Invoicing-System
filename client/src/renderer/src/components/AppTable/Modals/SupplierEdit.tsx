@@ -22,7 +22,7 @@ export const EditSupplierModal = ({ modal }) => {
 
   const [data, setData] = React.useState({
     businessUnit: {
-      id: params.id,
+      id: params.unitId,
     },
   })
 
@@ -84,7 +84,7 @@ export const EditSupplierModal = ({ modal }) => {
     handleResetCurrentIdEdit()
     setData({
       businessUnit: {
-        id: params.id,
+        id: params.unitId,
       },
     })
     onClose()

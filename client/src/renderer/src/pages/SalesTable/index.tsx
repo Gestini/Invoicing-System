@@ -16,7 +16,7 @@ export const SalesTable = () => {
 
   React.useEffect(() => {
     const loadData = async () => {
-      const response = await reqGetAllInvoicesByUnit(params.id)
+      const response = await reqGetAllInvoicesByUnit(params.unitId)
       dispatch(setTableData(response.data))
     }
     loadData()

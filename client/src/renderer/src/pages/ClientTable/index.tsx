@@ -21,7 +21,7 @@ export const ClientTable = () => {
 
   React.useEffect(() => {
     const loadData = async () => {
-      const response = await reqGetClientByUnit(params.id)
+      const response = await reqGetClientByUnit(params.unitId)
       dispatch(setTableData(response.data))
     }
     loadData()
@@ -42,7 +42,7 @@ export const ClientTable = () => {
         reqCreateClient({
           ...data,
           businessUnit: {
-            id: params.id,
+            id: params.unitId,
           },
         })
         dispatch(addItem({ ...data, id: table.data.length }))

@@ -27,7 +27,7 @@ export const EditProductModal = ({ modal }) => {
   const [suppliers, setSuppliers] = React.useState([])
   const [data, setData] = React.useState({
     businessUnit: {
-      id: params.id,
+      id: params.unitId,
     },
   })
   const [errors, setErrors] = React.useState({
@@ -48,7 +48,7 @@ export const EditProductModal = ({ modal }) => {
 
   React.useEffect(() => {
     const GetSupplier = async () => {
-      const response = await reqGetSupplier(params.id)
+      const response = await reqGetSupplier(params.unitId)
       setSuppliers(response.data)
     }
     GetSupplier()
@@ -107,7 +107,7 @@ export const EditProductModal = ({ modal }) => {
       handleResetCurrentIdEdit()
       setData({
         businessUnit: {
-          id: params.id,
+          id: params.unitId,
         },
       })
       onClose()

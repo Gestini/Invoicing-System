@@ -25,7 +25,7 @@ export const RoleUsers = () => {
       if (searchValue.trim() == '') return
       if (searchValue.length < 3) return
 
-      const response = await reqSearchEmployeeByName(params.id, searchValue)
+      const response = await reqSearchEmployeeByName(params.unitId, searchValue)
       if (response.data.length == 0) return
       setResult(response.data)
     }

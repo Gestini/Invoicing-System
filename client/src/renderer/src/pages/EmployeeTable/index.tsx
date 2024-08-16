@@ -19,7 +19,7 @@ export const EmployeeTable = () => {
 
   React.useEffect(() => {
     const loadData = async () => {
-      const response = await reqGetEmployeesByUnit(params.id)
+      const response = await reqGetEmployeesByUnit(params.unitId)
       dispatch(setTableData(response.data))
     }
     loadData()
@@ -39,7 +39,7 @@ export const EmployeeTable = () => {
         const response = await reqCreateEmployee({
           ...data,
           businessUnit: {
-            id: params.id,
+            id: params.unitId,
           },
         })
         dispatch(addItem(response.data))

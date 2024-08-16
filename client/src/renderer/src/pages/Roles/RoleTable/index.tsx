@@ -28,7 +28,7 @@ export const RoleTable = () => {
   React.useEffect(() => {
     const loadData = async () => {
       try {
-        const response = await reqGetRoletByUnit(params.id)
+        const response = await reqGetRoletByUnit(params.unitId)
 
         dispatch(setRoles(response.data))
 

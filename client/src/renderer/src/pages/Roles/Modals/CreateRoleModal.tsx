@@ -40,7 +40,7 @@ export const CreateRoleModal = () => {
       const response = await reqCreateRole({
         name: data.name,
         businessUnit: {
-          id: params.id,
+          id: params.unitId,
         },
       })
       dispatch(addRole({ ...response.data, permissions: [] }))

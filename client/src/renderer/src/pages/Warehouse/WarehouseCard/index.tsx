@@ -4,6 +4,8 @@ import { EditWarehouse } from '../Modals/EditWarehouse'
 import { CreateWarehouse } from '../Modals/CreateWarehouse'
 import { useDispatch, useSelector } from 'react-redux'
 import {
+  cn,
+  Button,
   Dropdown,
   DropdownItem,
   DropdownMenu,
@@ -20,6 +22,8 @@ import {
 import { VerticalDotsIcon } from '@renderer/components/Icons'
 import { LocalIcon } from '@renderer/components/Icons/LocalIcon'
 import { ShortCellValue } from '@renderer/components/AppTable/TableComponents/ShortCellValue'
+import { EditDocumentIcon } from '@renderer/components/Icons/EditDocumentIcon'
+import { DeleteDocumentIcon } from '@renderer/components/Icons/DeleteDocumentIcon'
 
 export const WarehouseCard = () => {
   const params = useParams()
@@ -32,7 +36,7 @@ export const WarehouseCard = () => {
   React.useEffect(() => {
     const loadData = async () => {
       try {
-        const response = await reqGetDepositByUnit(params.id)
+        const response = await reqGetDepositByUnit(params.unitId)
         dispatch(setWarehouses(response.data))
       } catch (error) {
         console.log(error)
@@ -56,7 +60,7 @@ export const WarehouseCard = () => {
     setCurrentEdit(id)
     onOpen()
   }
-
+  const iconClasses = 'text-xl text-default-500 pointer-events-none flex-shrink-0'
   return (
     <>
       <div className='flex flex-col w-full gap-2'>
@@ -91,30 +95,31 @@ export const WarehouseCard = () => {
                     <span className='text-[12px] text-c-gray'>Buenos aires</span>
                   </div>
                   <div>
-                    <Dropdown placement='bottom-start' className='bg-c-card text-c-title'>
+                    <Dropdown className='text-c-title bg-c-card'>
                       <DropdownTrigger>
-                        <div>
-                          <VerticalDotsIcon className='cursor-pointer text-c-gray ml-[10px]' />
-                        </div>
+                        <Button isIconOnly size='sm' variant='light'>
+                          <VerticalDotsIcon className='text-default-300' />
+                        </Button>
                       </DropdownTrigger>
-                      <DropdownMenu
-                        aria-label='Static Actions'
-                        className='text-c-title bg-c-bg-color'
-                      >
-                        <DropdownItem key='Open' onClick={() => openWarehouse(ele.id)}>
-                          Abrir
-                        </DropdownItem>
-                        <DropdownItem key='Edit' onPress={() => handleEdit(ele.id)}>
+                      <DropdownMenu variant='faded' aria-label='Dropdown menu with icons'>
+                        <DropdownItem
+                          key='edit'
+                          className='default-text-color'
+                          onPress={() => handleEdit(ele.id)}
+                          startContent={<EditDocumentIcon className={iconClasses} />}
+                        >
                           Editar
                         </DropdownItem>
                         <DropdownItem
                           key='delete'
                           className='text-danger'
-                          showDivider={false}
                           color='danger'
                           onPress={() => handleDelete(ele.id)}
+                          startContent={
+                            <DeleteDocumentIcon className={cn(iconClasses, 'text-danger')} />
+                          }
                         >
-                          Eliminar depósito
+                          Borrar
                         </DropdownItem>
                       </DropdownMenu>
                     </Dropdown>

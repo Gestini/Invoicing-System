@@ -30,7 +30,7 @@ export const AddSupplierModal = ({ modal }) => {
     dni: null,
     saleCondition: null,
     businessUnit: {
-      id: params.id,
+      id: params.unitId,
       name: 'Main Unit',
     },
   })
@@ -95,7 +95,7 @@ export const AddSupplierModal = ({ modal }) => {
       dni: null,
       saleCondition: null,
       businessUnit: {
-        id: params.id,
+        id: params.unitId,
         name: 'Main Unit',
       },
     })
