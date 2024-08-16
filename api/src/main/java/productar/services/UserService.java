@@ -20,7 +20,7 @@ public class UserService {
     UserRepository userRepository;
 
     @Autowired
-    JwtService jwtService;
+    UserSessionsService userSessions;
 
     @Autowired
     UserDetailsService userDetailsService;
@@ -39,12 +39,12 @@ public class UserService {
     public List<UserTokenResponse> getUserSessions(List<String> tokens) {
         return tokens.stream()
                 .map(token -> {
-                    String username = jwtService.getUsernameFromToken(token);
+                    String username = userSessions.getUsernameFromToken(token);
                     if (username == null)
                         return null;
 
                     UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                    boolean isTokenValid = jwtService.isTokenValid(token, userDetails);
+                    boolean isTokenValid = userSessions.isTokenValid(token, userDetails);
 
                     UserResponse user = Convert(userRepository.findByUsername(username).orElse(null));
 
