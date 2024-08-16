@@ -1,36 +1,29 @@
 import React from 'react'
-import GoogleLogo from '@renderer/assets/image/google.svg'
 import { setUnit } from '@renderer/features/currentUnitSlice'
 import { setUnits } from '@renderer/features/unitsSlice'
+import { capitalize } from '../AppTable/TableComponents/utils'
 import { GestinyLogo } from '@renderer/assets/GestinyLogo'
-import { MdDashboard } from 'react-icons/md'
-import { FiArrowUpRight } from 'react-icons/fi'
-import { BiBox, BiMoney } from 'react-icons/bi'
+import { sidebarRoutes } from '@renderer/routes/routesData'
 import { ShortCellValue } from '../AppTable/TableComponents/ShortCellValue'
 import { CreateUnitModal } from '../CreateCompanyForm'
 import { reqGetUnitByOwner } from '@renderer/api/requests'
-import { RiContactsBookLine } from 'react-icons/ri'
 import { useDispatch, useSelector } from 'react-redux'
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { Accordion, AccordionItem, Tooltip } from '@nextui-org/react'
-import {
-  BiCart,
-  BiUser,
-  BiLeaf,
-  BiLabel,
-  BiCrown,
-  BiGroup,
-  BiBriefcase,
-  BiBadgeCheck,
-  BiCalculator,
-  BiCheckShield,
-} from 'react-icons/bi'
 
 export const Sidebar = () => {
   const unit = useSelector((state: any) => state.currentUnit)
   const location = useLocation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const companies: any = useSelector((state: any) => state.units.data)
+
+  const updatedRoutesConfig = sidebarRoutes.map((section) => {
+    return {
+      ...section,
+      path: section.path.replace(':unitId', unit.id),
+    }
+  })
 
   React.useEffect(() => {
     const loadUserCompanies = async () => {
@@ -44,179 +37,15 @@ export const Sidebar = () => {
     loadUserCompanies()
   }, [])
 
-  const handleNavigate = (item) => {
+  const handleNavigate = (item: any) => {
     dispatch(setUnit(item))
     navigate(`/dashboard/${item?.id}`)
   }
 
   const getBasePath = (path) => path.split('/')[1]
 
-  const sidebarItems = [
-    {
-      path: `/dashboard/${unit?.id}`,
-      icon: <MdDashboard />,
-      text: 'Dashboard',
-      direct: true,
-    },
-    {
-      path: `/warehouse/${unit?.id}`,
-      icon: <BiBox />,
-      text: 'Depósitos',
-      data: [
-        {
-          path: `/warehouse/${unit?.id}`,
-          name: 'Gestión de Depósitos',
-        },
-        {
-          path: `/warehouse/product-management/${unit?.id}`,
-          name: 'Gestión de Productos',
-        },
-        {
-          path: `/warehouse/price-management/${unit?.id}`,
-          name: 'Gestión de Precios',
-        },
-        {
-          path: `/warehouse/stock-management/${unit?.id}`,
-          name: 'Gestión de Stock',
-        },
-        {
-          path: `/warehouse/stock-movements/${unit?.id}`,
-          name: 'Movimientos del Inventario',
-        },
-        {
-          path: `/warehouse/inventory-list/${unit?.id}`,
-          name: 'Lista de Inventario',
-        },
-        {
-          path: `/warehouse/reception-management/${unit?.id}`,
-          name: 'Gestión de Recepciones',
-        },
-        {
-          path: `/warehouse/categories/${unit?.id}`,
-          name: 'Categorías',
-        },
-        {
-          path: `/warehouse/brands/${unit?.id}`,
-          name: 'Marcas',
-        },
-        {
-          path: `/warehouse/consumptions/${unit?.id}`,
-          name: 'Consumo',
-        },
-      ],
-    },
-    {
-      path: `/pos/`,
-      icon: <BiLeaf />,
-      text: 'Puntos de venta (POS)',
-      data: [
-        {
-          path: `/pos/close-cash/:id`,
-          name: 'Cerrar Caja',
-        },
-        {
-          path: `/pos/close-cash-history/:id`,
-          name: 'Historial de Cierre de Caja',
-        },
-        {
-          path: `/pos/invoice-credit/:id`,
-          name: 'Factura de Crédito',
-        },
-        {
-          path: `/pos/debit-note/:id`,
-          name: 'Nota de Débito',
-        },
-        {
-          path: `/pos/barcode-scanner/:id`,
-          name: 'Escáner de Códigos',
-        },
-        {
-          path: `/pos/email-sending/:id`,
-          name: 'Envío de Correos',
-        },
-      ],
-    },
-    {
-      path: `/contact/`,
-      icon: <RiContactsBookLine />,
-      text: 'Contactos',
-      direct: true
-    },
-    {
-      path: `/hr/`,
-      icon: <BiGroup />,
-      text: 'Recursos Humanos (RRHH)',
-      data: [
-        {
-          path: `/hr/${unit?.id}/user-management/`,
-          name: 'Usuarios',
-        },
-        {
-          path: `/hr/${unit?.id}/roles`,
-          name: 'Roles',
-        },
-        {
-          path: `/hr/roles/${unit?.id}`,
-          name: 'Roles 2',
-        },
-
-      ]
-    },
-    {
-      path: `/admin/`,
-      icon: <BiCalculator />,
-      text: 'Admin',
-      data: [
-        {
-          path: `/admin/suppliers/${unit?.id}`,
-          name: 'Proveedores',
-        },
-        {
-          path: `/admin/employees/${unit?.id}`,
-          name: 'Empleados',
-        },
-        {
-          path: `/admin/budgets/${unit?.id}`,
-          name: 'Informes',
-        },
-      ],
-    },
-    {
-      path: `/operations/`,
-      icon: <BiUser />,
-      text: 'Operaciones',
-      data: [
-        {
-          path: `/operations/sales/${unit?.id}`,
-          name: 'Ventas',
-        },
-        {
-          path: `/operations/invoicing/${unit?.id}`,
-          name: 'Facturación',
-        },
-        {
-          path: `/operations/clients/${unit?.id}`,
-          name: 'Clientes',
-        },
-        {
-          path: `/operations/reports/${unit?.id}`,
-          name: 'Informes',
-        },
-        {
-          path: `/operations/orders/${unit?.id}`,
-          name: 'Pedidos',
-        },
-      ],
-    }
-
-  ];
-
-  const companies: any = useSelector((state: any) => state.units.data)
-
   return (
-    <nav
-      className={`flex fixed z-10 left-0 top-0 h-screen items-center justify-between  p-10'}`}
-    >
+    <nav className={`flex fixed z-10 left-0 top-0 h-screen items-center justify-between  p-10'}`}>
       <div className='w-[48px] bg-c-sidebar-bg-2 h-full flex flex-col items-center py-5 gap-[11px]'>
         <div className='h-[49px] w-[36px]  flex justify-center items-center rounded-md mb-[17px]'>
           <GestinyLogo />
@@ -241,11 +70,12 @@ export const Sidebar = () => {
               key={index}
               onClick={() => handleNavigate(item)}
             >
-              <div className={`${unit.id == item.id ? 'rounded-full' : 'rounded-full'} transition-all duration-500 ease-in-out w-[24px] h-[24px] uppercase flex items-center justify-center font-semibold text-white`}>
+              <div
+                className={`${unit.id == item.id ? 'rounded-full' : 'rounded-full'} transition-all duration-500 ease-in-out w-[24px] h-[24px] uppercase flex items-center justify-center font-semibold text-white`}
+              >
                 {item.name.slice(0, 2)}
               </div>
             </div>
-
           </Tooltip>
         ))}
         <CreateUnitModal />
@@ -254,14 +84,14 @@ export const Sidebar = () => {
         <div className='absolute top-[260px] left-0 right-0 h-[100px] bg-gradient-to-t from-c-sidebar-bg to-transparent z-10 pointer-events-none'></div>
         <span className='font-semibold text-[11px] text-gray-300'>Menu</span>
         <div className='px-0 flex h-[300px] flex-col gap-[14px] overflow-auto sidebarthumb pr-[7px]'>
-          {sidebarItems.map((item, index) => {
+          {updatedRoutesConfig.map((item: any, index: number) => {
             const baseLocationPath = getBasePath(location.pathname)
             const baseItemPath = getBasePath(item.path)
 
-            if (item.direct) {
+            if (item.routes.length == 1) {
               return (
                 <NavLink
-                  to={item.path}
+                  to={item.path + item.routes[0].path}
                   key={index}
                   className={`rounded-md font-medium cursor-pointer flex items-center text-white ${baseLocationPath === baseItemPath ? 'bg-c-primary-variant-2' : ''}`}
                 >
@@ -272,9 +102,9 @@ export const Sidebar = () => {
                       {item.icon}
                     </span>
                     <span
-                      className={`text-[14px] rounded-sm top-2 flex items-center ${baseLocationPath !== baseItemPath ? 'text-gray-300' : ''}`}
+                      className={`text-[14px] rounded-sm top-2 flex items-center ${baseLocationPath !== baseItemPath ? 'text-white' : ''}`}
                     >
-                      <ShortCellValue cellValue={item.text} maxLength={9} />
+                      <ShortCellValue cellValue={item.section} maxLength={9} />
                     </span>
                   </div>
                 </NavLink>
@@ -282,14 +112,18 @@ export const Sidebar = () => {
             }
 
             return (
-              <Accordion key={index} showDivider={false} className='px-0 flex flex-col gap-[14px]'>
+              <Accordion
+                key={item.section}
+                showDivider={false}
+                className='px-0 flex flex-col gap-[14px]'
+              >
                 <AccordionItem
+                  aria-label={'Accordion ' + index}
                   className='rounded-md font-medium cursor-pointer'
                   classNames={{
                     indicator: 'text-medium px-[5px]',
                     trigger: `px-0 rounded-lg h-[36px] flex items-center ${baseLocationPath === baseItemPath ? 'bg-c-primary-variant-2' : ''}`,
                   }}
-                  aria-label={item.text}
                   title={
                     <div className='flex gap-1 items-center'>
                       <span
@@ -298,31 +132,33 @@ export const Sidebar = () => {
                         {item.icon}
                       </span>
                       <span className='text-[14px] rounded-sm top-2 flex items-center text-white'>
-                        <ShortCellValue cellValue={item.text} maxLength={9} />
+                        <ShortCellValue cellValue={item.section} maxLength={9} />
                       </span>
                     </div>
                   }
                 >
                   <div className='flex pl-2 flex-col gap-[14px] ml-2'>
-                    {item?.data?.map((ele, ind) => (
+                    {item?.routes?.map((ele, ind) => (
                       <NavLink
-                        to={ele.path}
+                        to={item.path + ele.path}
                         className='group text-[10px] text-c-sidebar-text flex gap-[14px] items-center'
                         key={ind}
                       >
                         {({ isActive }) => (
                           <>
                             <div
-                              className={`h-[6px] w-[6px] rounded-full transition-all duration-200 ${isActive
-                                ? 'bg-c-primary-variant-1 shadow-point'
-                                : 'bg-c-gray group-hover:bg-white'
-                                }`}
+                              className={`h-[6px] w-[6px] rounded-full transition-all duration-200 ${
+                                isActive
+                                  ? 'bg-c-primary-variant-1 shadow-point'
+                                  : 'bg-c-gray group-hover:bg-white'
+                              }`}
                             ></div>
                             <span
-                              className={`transition-all duration-200 ${isActive ? 'text-c-primary-variant-1' : 'group-hover:text-white'
-                                }`}
+                              className={`transition-all duration-200 ${
+                                isActive ? 'text-c-primary-variant-1' : 'group-hover:text-white'
+                              }`}
                             >
-                              {ele.name}
+                              {capitalize(ele.title)}
                             </span>
                           </>
                         )}
