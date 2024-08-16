@@ -6,7 +6,9 @@ import { manageWarehouse } from '@renderer/features/warehouseSlice'
 import { manageUserSlice } from '@renderer/features/userSlice'
 import { manageTableSlice } from '@renderer/features/tableSlice'
 import { manageCurrentUnit } from '@renderer/features/currentUnitSlice'
+import { manageModalsSlice } from '@renderer/features/currentModal'
 import { manageCurrentTheme } from '@renderer/features/currentTheme'
+import { manageUserSessionsSlice } from '@renderer/features/userSessions'
 
 const store: any = configureStore({
   reducer: {
@@ -14,8 +16,10 @@ const store: any = configureStore({
     table: manageTableSlice.reducer,
     units: manageUnits.reducer,
     roles: manageRoles.reducer,
+    modals: manageModalsSlice.reducer,
     warehouse: manageWarehouse.reducer,
     currentUnit: manageCurrentUnit.reducer,
+    userSession: manageUserSessionsSlice.reducer,
     newInvoicing: newInvoicing.reducer,
     currentTheme: manageCurrentTheme.reducer,
   },
