@@ -3,6 +3,7 @@ import {
   Input,
   Modal,
   Button,
+  Tooltip,
   ModalBody,
   ModalFooter,
   ModalHeader,
@@ -38,7 +39,7 @@ export const CreateWarehouse = () => {
       const response = await reqCreateDeposit({
         ...data,
         businessUnit: {
-          id: params.id,
+          id: params.unitId,
         },
       })
 
@@ -53,12 +54,14 @@ export const CreateWarehouse = () => {
 
   return (
     <>
-      <div
-        onClick={onOpen}
-        className='h-[76px] rounded-[10px] px-[10px] py-[20px] bg-[#1f2121] text-c-gray flex items-center justify-between cursor-pointer'
-      >
-        <PlusIcon />
-      </div>
+      <Tooltip content='Crear depósito'>
+        <div
+          onClick={onOpen}
+          className='h-[76px] rounded-[10px] px-[10px] py-[20px] bg-[#1f2121] text-c-gray flex items-center justify-between cursor-pointer'
+        >
+          <PlusIcon />
+        </div>
+      </Tooltip>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} scrollBehavior={'inside'} backdrop='blur'>
         <ModalContent>
           <ModalHeader>
