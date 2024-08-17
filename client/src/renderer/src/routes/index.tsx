@@ -7,12 +7,14 @@ import { ProtectedRouteSession } from './middlewares/ProtectedRouteSession'
 import { CurrentSecctionMiddleware } from './middlewares/CurrentSecctionMiddleware'
 import { NavbarAndSidebarMiddleware } from './middlewares/NavbarAndSidebarMiddleware'
 import { LoadCurrentUnitMiddleware } from './middlewares/LoadCurrentUnitMiddleware'
+import Invite from '@renderer/pages/Invite/Invite'
 
 const Router = () => {
   return (
     <Routes>
       <Route element={<ThemeMiddleware />}>
         <Route path={'*'} element={<></>} />
+        <Route path={'/invite'} element={<Invite />} />
         <Route element={<ProtectedRouteSession />}>
           <Route path={'/'} element={<Companies />} />
           <Route element={<LoadCurrentUnitMiddleware />}>
