@@ -1,22 +1,20 @@
-import { Product } from '@renderer/types/Products'
-import React, { useState, useRef } from 'react'
+import React from 'react'
 import * as XLSX from 'xlsx'
-import {
-  Button,
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  useDisclosure,
-} from '@nextui-org/react'
+import { Product } from '@renderer/types/Products'
 import ImportedProductsModal from './ImportedProductsModal'
+import { Button, useDisclosure } from '@nextui-org/react'
 
-const ImportExcel = ({ products, setProducts }: { products: Product[], setProducts: React.Dispatch<React.SetStateAction<Product[]>> }) => {
-  const [errorMessage, setErrorMessage] = useState('')
-  const [importedProducts, setImportedProducts] = useState<Product[]>([])
+const ImportExcel = ({
+  products,
+  setProducts,
+}: {
+  products: Product[]
+  setProducts: React.Dispatch<React.SetStateAction<Product[]>>
+}) => {
+  const [errorMessage, setErrorMessage] = React.useState('')
+  const [importedProducts, setImportedProducts] = React.useState<Product[]>([])
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const inputFileRef = useRef<HTMLInputElement | null>(null) // Explicitly typing the ref
+  const inputFileRef = React.useRef<HTMLInputElement | null>(null) // Explicitly typing the ref
 
   const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
