@@ -33,7 +33,6 @@ public class RoleUsersModel {
     @JoinColumn(name = "employee_id", nullable = false)
     @NotNull(message = "Employee id cannot be null")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonBackReference("employeeRef")
     private EmployeeModel employee;
 
     public Long getId() {
