@@ -3,7 +3,8 @@ export const columnsData = {
     { name: 'ID', uid: 'id' },
     { name: 'PIN', uid: 'pin' },
     { name: 'NOMBRE', uid: 'name' },
-    { name: 'APELLIDO', uid: 'lastname' },
+    { name: 'APELLDIO', uid: 'lastname' },
+    { name: 'EMAIL', uid: 'email' },
     { name: 'ACCIÓN', uid: 'actions' },
   ],
   statusOptions: [
@@ -14,6 +15,7 @@ export const columnsData = {
   InitialVisibleColumns: [
     'name',
     'lastname',
+    'email',
     'id',
     'actions',
   ],
@@ -22,6 +24,11 @@ export const columnsData = {
 export const modalInputs = {
   inputs: [
     {
+      type: 'email',
+      name: 'email',
+      label: 'Correo del empleado',
+    },
+    {
       type: 'text',
       name: 'name',
       label: 'Nombre del empleado',
@@ -29,12 +36,7 @@ export const modalInputs = {
     {
       type: 'text',
       name: 'lastname',
-      label: 'Apellido',
-    },
-    {
-      type: 'text',
-      name: 'pin',
-      label: 'Pin de ingreso',
+      label: 'Apellido del empleado',
     },
   ],
 }

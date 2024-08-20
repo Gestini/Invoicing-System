@@ -7,6 +7,7 @@ import { ProtectedRouteSession } from './middlewares/ProtectedRouteSession'
 import { CurrentSecctionMiddleware } from './middlewares/CurrentSecctionMiddleware'
 import { NavbarAndSidebarMiddleware } from './middlewares/NavbarAndSidebarMiddleware'
 import { LoadCurrentUnitMiddleware } from './middlewares/LoadCurrentUnitMiddleware'
+import CheckoutForm from '@renderer/pages/suscription/mercadopago'
 
 const Router = () => {
   return (
@@ -15,6 +16,7 @@ const Router = () => {
         <Route path={'*'} element={<></>} />
         <Route element={<ProtectedRouteSession />}>
           <Route path={'/'} element={<Companies />} />
+          <Route path={'/mp'} element={<CheckoutForm />} />
           <Route element={<LoadCurrentUnitMiddleware />}>
             <Route element={<NavbarAndSidebarMiddleware />}>
               {routes.map((route: any, index: number) => (
