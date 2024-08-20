@@ -5,6 +5,7 @@ import { AuthForm } from '../../components/Auth/AuthInputForm'
 import { AuthFooter } from '../../components/Auth/AuthFooter'
 import { AuthHeader } from '../../components/Auth/AuthHeader'
 import { AuthSubmit } from '../../components/Auth/AuthSubmit'
+import { loginInputs } from './AuthInputs'
 import { reqAuthLogin } from '@renderer/api/requests'
 import { AuthLoginOptions } from '@renderer/components/Auth/AuthLoginOptions'
 import { ContinueWithGoogle } from '../../components/Auth/ContinueWithGoogle'
@@ -91,27 +92,12 @@ const Login = () => {
     }
   }
 
-  const inputs = [
-    {
-      label: 'Username',
-      name: 'username',
-      type: 'text',
-      placeholder: 'Enter your username',
-    },
-    {
-      label: 'Password',
-      name: 'password',
-      type: 'password',
-      placeholder: 'Enter your password',
-    },
-  ]
-
   return (
     <AuthBody onClick={(e) => handleLogin(e)}>
       <AuthHeader title='Sign In' description='Enter your email and password to sign in!' />
       <ContinueWithGoogle />
       <Or />
-      <AuthForm inputs={inputs} handleChange={handleChange} errors={errors} />
+      <AuthForm inputs={loginInputs} handleChange={handleChange} errors={errors} />
       <AuthLoginOptions />
       <AuthSubmit label='Sign In' />
       <AuthFooter href='/#/register' label='Not registered yet?' hrefLabel='Create an Account' />

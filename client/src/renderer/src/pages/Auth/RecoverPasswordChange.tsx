@@ -5,126 +5,103 @@ import { AuthForm } from '../../components/Auth/AuthInputForm'
 import { AuthFooter } from '../../components/Auth/AuthFooter'
 import { AuthHeader } from '../../components/Auth/AuthHeader'
 import { AuthSubmit } from '../../components/Auth/AuthSubmit'
+import { loginInputs } from './AuthInputs'
 import { reqAuthLogin } from '@renderer/api/requests'
 import { AuthLoginOptions } from '@renderer/components/Auth/AuthLoginOptions'
 import { ContinueWithGoogle } from '../../components/Auth/ContinueWithGoogle'
 import './Auth.scss'
 
-const Login = () => {
-    const [data, setData] = React.useState({
-        username: '',
-        password: '',
+const RecoverPasswordChange = () => {
+  const [data, setData] = React.useState({
+    username: '',
+    password: '',
+  })
+
+  const [errors, setErrors] = React.useState({
+    username: '',
+    password: '',
+  })
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setData({
+      ...data,
+      [name]: value,
     })
 
-    const [errors, setErrors] = React.useState({
-        username: '',
-        password: '',
-    })
+    handleValidation(name, value)
+  }
 
-    const handleChange = (e) => {
-        const { name, value } = e.target
-        setData({
-            ...data,
-            [name]: value,
-        })
+  const handleValidation = (name, value) => {
+    let newErrors = { ...errors }
 
-        handleValidation(name, value)
+    switch (name) {
+      case 'username':
+        if (value.trim() === '') {
+          newErrors.username = 'Por favor, ingresa tu nombre de usuario.'
+        } else {
+          newErrors.username = ''
+        }
+        break
+      case 'password':
+        if (value.trim() === '') {
+          newErrors.password = 'Por favor, ingresa tu contraseña.'
+        } else {
+          newErrors.password = ''
+        }
+        break
+      default:
+        break
+    }
+    setErrors(newErrors)
+  }
+
+  const handleLogin = async (e) => {
+    e.preventDefault()
+    const newErrors = {
+      username: '',
+      password: '',
+    }
+    let valid = true
+
+    if (data.username.trim() === '') {
+      newErrors.username = 'Por favor, ingresa tu nombre de usuario.'
+      valid = false
     }
 
-    const handleBlur = (e) => {
-        const { name, value } = e.target
-        handleValidation(name, value)
+    if (data.password.trim() === '') {
+      newErrors.password = 'Por favor, ingresa tu contraseña.'
+      valid = false
     }
 
-    const handleValidation = (name, value) => {
-        let newErrors = { ...errors }
+    setErrors(newErrors)
 
-        switch (name) {
-            case 'username':
-                if (value.trim() === '') {
-                    newErrors.username = 'Por favor, ingresa tu nombre de usuario.'
-                } else {
-                    newErrors.username = ''
-                }
-                break
-            case 'password':
-                if (value.trim() === '') {
-                    newErrors.password = 'Por favor, ingresa tu contraseña.'
-                } else {
-                    newErrors.password = ''
-                }
-                break
-            default:
-                break
-        }
-        setErrors(newErrors)
+    if (!valid) return
+
+    try {
+      const token = localStorage.getItem('token')
+      const response = await reqAuthLogin(data)
+
+      if (!token) {
+        localStorage.setItem('token', response.data)
+        window.location.reload()
+      }
+    } catch (error) {
+      console.log(error)
     }
+  }
 
-    const handleLogin = async (e) => {
-        e.preventDefault()
-        const newErrors = {
-            username: '',
-            password: '',
-        }
-        let valid = true
-
-        if (data.username.trim() === '') {
-            newErrors.username = 'Por favor, ingresa tu nombre de usuario.'
-            valid = false
-        }
-
-        if (data.password.trim() === '') {
-            newErrors.password = 'Por favor, ingresa tu contraseña.'
-            valid = false
-        }
-
-        setErrors(newErrors)
-
-        if (!valid) return
-
-        try {
-            const token = localStorage.getItem('token')
-            const response = await reqAuthLogin(data)
-
-            if (!token) {
-                localStorage.setItem('token', response.data)
-                window.location.reload()
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    const inputs = [
-        {
-            label: 'Username',
-            name: 'username',
-            type: 'text',
-            placeholder: 'Enter your username',
-            onBlur: handleBlur,
-            onChange: handleChange,
-        },
-        {
-            label: 'Password',
-            name: 'password',
-            type: 'password',
-            placeholder: 'Enter your password',
-            onBlur: handleBlur,
-            onChange: handleChange,
-        },
-    ]
-
-    return (
-        <AuthBody onClick={(e) => handleLogin(e)} >
-            <AuthHeader title='Change password' description='Change your password' />
-            <ContinueWithGoogle />
-            <Or />
-            <AuthForm inputs={inputs} handleChange={handleChange} errors={errors} />
-            <AuthLoginOptions />
-            <AuthSubmit label='Sign In' />
-            <AuthFooter href='/#/register' label='Not registered yet?' hrefLabel='Create an Account' />
-        </AuthBody>
-    )
+  return (
+    <AuthBody onClick={(e: any) => handleLogin(e)}>
+      <AuthHeader title='Change password' description='Change your password' />
+      <ContinueWithGoogle />
+      <Or />
+      <AuthForm inputs={loginInputs} handleChange={handleChange} errors={errors} />
+      <AuthLoginOptions />
+      <AuthSubmit label='Sign In' />
+      <AuthFooter href='/#/register' label='Not registered yet?' hrefLabel='Create an Account' />
+    </AuthBody>
+  )
 }
 
-export default Login
+export default RecoverPasswordChange

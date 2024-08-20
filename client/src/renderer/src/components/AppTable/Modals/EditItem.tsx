@@ -103,6 +103,7 @@ export const EditItemModal = ({ modal }) => {
             <Button
               color='danger'
               variant='light'
+              radius='sm'
               onPress={() => {
                 handleResetCurrentIdEdit()
                 onClose()
@@ -110,7 +111,12 @@ export const EditItemModal = ({ modal }) => {
             >
               Cerrar
             </Button>
-            <Button color='primary' onPress={() => handleAddNewUser()}>
+            <Button
+              color='primary'
+              onPress={() => handleAddNewUser()}
+              className='bg-c-primary'
+              radius='sm'
+            >
               Guardar
             </Button>
           </ModalFooter>

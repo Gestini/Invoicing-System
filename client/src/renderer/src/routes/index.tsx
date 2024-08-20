@@ -7,16 +7,18 @@ import { ProtectedRouteSession } from './middlewares/ProtectedRouteSession'
 import { CurrentSecctionMiddleware } from './middlewares/CurrentSecctionMiddleware'
 import { NavbarAndSidebarMiddleware } from './middlewares/NavbarAndSidebarMiddleware'
 import { LoadCurrentUnitMiddleware } from './middlewares/LoadCurrentUnitMiddleware'
-import CheckoutForm from '@renderer/pages/suscription/mercadopago'
+import Invite from '@renderer/pages/Invite/Invite'
+import MercadoPago from '@renderer/pages/suscription/mercadopago'
 
 const Router = () => {
   return (
     <Routes>
       <Route element={<ThemeMiddleware />}>
         <Route path={'*'} element={<></>} />
+        <Route path={'/invite'} element={<Invite />} />
         <Route element={<ProtectedRouteSession />}>
           <Route path={'/'} element={<Companies />} />
-          <Route path={'/mp'} element={<CheckoutForm />} />
+          <Route path={'/mp'} element={<MercadoPago />} />
           <Route element={<LoadCurrentUnitMiddleware />}>
             <Route element={<NavbarAndSidebarMiddleware />}>
               {routes.map((route: any, index: number) => (

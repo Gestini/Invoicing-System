@@ -1,5 +1,5 @@
 import { totalApply } from '@renderer/pages/InvoicingTable/ViewProducts/data'
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
 interface TotalApplyItem {
   label: string
@@ -57,7 +57,7 @@ export const newInvoicing = createSlice({
   name: 'newInvoicing',
   initialState,
   reducers: {
-    setInvoiceData: (state, action: PayloadAction<Partial<NewInvoicingState>>) => {
+    setInvoiceData: (state, action) => {
       return { ...state, ...action.payload }
     },
     clearInvoiceData: () => initialState,
@@ -73,7 +73,7 @@ export const newInvoicing = createSlice({
       state.tabs.push(obj)
       state.currentTabId = obj.id
     },
-    closeTab: (state, action: PayloadAction<string>) => {
+    closeTab: (state, action) => {
       const id = action.payload
 
       const index = state.tabs.findIndex((item) => item.id === id)
@@ -91,7 +91,7 @@ export const newInvoicing = createSlice({
 
       state.tabs.splice(index, 1)
     },
-    setCurrentTabId: (state, action: PayloadAction<string>) => {
+    setCurrentTabId: (state, action) => {
       state.currentTabId = action.payload
     },
     setTotal: (state) => {
@@ -114,7 +114,7 @@ export const newInvoicing = createSlice({
 
       tab.total = subtotal - applyAmount
     },
-    editTotal: (state, action: PayloadAction<{ name: string, value: number }>) => {
+    editTotal: (state, action) => {
       const { name, value } = action.payload
 
       const tabIndex = state.tabs.findIndex((item) => item.id === state.currentTabId)
@@ -125,7 +125,7 @@ export const newInvoicing = createSlice({
 
       state.tabs[tabIndex].totalApply[index].value = value
     },
-    handleTotal: (state, action: PayloadAction<string>) => {
+    handleTotal: (state, action) => {
       const name = action.payload
 
       const tabIndex = state.tabs.findIndex((item) => item.id === state.currentTabId)
@@ -136,7 +136,7 @@ export const newInvoicing = createSlice({
 
       state.tabs[tabIndex].totalApply[index].apply = !state.tabs[tabIndex].totalApply[index].apply
     },
-    addProduct: (state, action: PayloadAction<{ product: { id: number, productName: string, category: string, cardPrice: number } }>) => {
+    addProduct: (state, action) => {
       const { product } = action.payload
 
       const tabIndex = state.tabs.findIndex((item) => item.id === state.currentTabId)
@@ -144,7 +144,7 @@ export const newInvoicing = createSlice({
 
       state.tabs[tabIndex].products.push({ ...product, quantity: 1, price: product.cardPrice })
     },
-    deleteProduct: (state, action: PayloadAction<{ id: number }>) => {
+    deleteProduct: (state, action) => {
       const { id } = action.payload
 
       const tabIndex = state.tabs.findIndex((item) => item.id === state.currentTabId)
@@ -155,7 +155,7 @@ export const newInvoicing = createSlice({
 
       state.tabs[tabIndex].products.splice(productIndex, 1)
     },
-    editAmount: (state, action: PayloadAction<{ id: number, handleType: 'sum' | 'subtract' }>) => {
+    editAmount: (state, action) => {
       const { id, handleType } = action.payload
 
       const tabIndex = state.tabs.findIndex((item) => item.id === state.currentTabId)
@@ -171,7 +171,7 @@ export const newInvoicing = createSlice({
         state.tabs[tabIndex].products[productIndex].quantity -= 1
       }
     },
-    setFormData: (state, action: PayloadAction<{ name: string, value: any }>) => {
+    setFormData: (state, action) => {
       const { name, value } = action.payload
 
       const tabIndex = state.tabs.findIndex((item) => item.id === state.currentTabId)

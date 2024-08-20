@@ -1,7 +1,7 @@
 import React from 'react'
 import { AuthForm } from '../../../Auth/AuthInputForm'
-import { modalInputs } from './data/inputs'
 import { toggleModal } from '@renderer/features/currentModal'
+import { loginInputs } from '@renderer/pages/Auth/AuthInputs'
 import { useDispatch, useSelector } from 'react-redux'
 import { reqAuthLogin, reqSearchUserByUsername } from '@renderer/api/requests'
 import {
@@ -72,7 +72,7 @@ export const AddNewAccountModal = ({ errors }) => {
         <>
           <ModalHeader className='flex flex-col gap-1'>Agregar cuenta</ModalHeader>
           <ModalBody>
-            <AuthForm inputs={modalInputs} handleChange={handleChange} errors={errors} />
+            <AuthForm inputs={loginInputs} handleChange={handleChange} errors={errors} />
             <div className='flex py-2 px-1 justify-end'>
               <Link color='primary' href='#' size='sm'>
                 ¿Olvidaste tu contraseña?
