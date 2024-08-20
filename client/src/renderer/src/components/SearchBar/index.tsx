@@ -1,6 +1,5 @@
-import React from 'react'
-import { AiOutlineSearch } from 'react-icons/ai'
 import { FilterIcon } from '../Icons/FilterIcon'
+import { AiOutlineSearch } from 'react-icons/ai'
 
 const SearchBar = ({
   containerInputHeight,
@@ -35,7 +34,6 @@ const SearchBar = ({
         className='w-[calc(100%-15px)] h-full text-sm font-light px-9 rounded-md bg-transparent focus:outline-none placeholder:font-light placeholder:text-sm user-select-none'
         style={{ color: color, backgroundColor: backgroundColor }}
       />
-
       <FilterIcon className='absolute right-0 text-red text-2xl mr-2 w-[20px] h-[20px]' />
     </div>
   )
