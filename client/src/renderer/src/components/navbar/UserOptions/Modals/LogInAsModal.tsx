@@ -9,7 +9,7 @@ import {
   ModalContent,
 } from '@nextui-org/react'
 import { AuthForm } from '../../../Auth/AuthInputForm'
-import { modalInputs } from './data/inputs'
+import { loginInputs } from '@renderer/pages/Auth/AuthInputs'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { toggleModal } from '@renderer/features/currentModal'
@@ -25,7 +25,7 @@ export const LogInAsModal = ({ errors }) => {
     password: '',
   })
 
-  const handleChange = (e) => {
+  const handleChange = (e: any) => {
     const { name, value } = e.target
     setData({
       ...data,
@@ -59,7 +59,7 @@ export const LogInAsModal = ({ errors }) => {
           Continuar como {userSession.selectedUserToChange.user.username}
         </ModalHeader>
         <ModalBody>
-          <AuthForm inputs={[modalInputs[1]]} handleChange={handleChange} errors={errors} />
+          <AuthForm inputs={[loginInputs[1]]} handleChange={handleChange} errors={errors} />
           <div className='flex py-2 px-1 justify-end'>
             <Link color='primary' href='#' size='sm'>
               ¿Olvidaste tu contraseña?
