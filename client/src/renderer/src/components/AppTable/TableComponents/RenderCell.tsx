@@ -9,8 +9,9 @@ export const RenderCell = (
   handleSetCurrentIdEdit: any,
 ) => {
   const statusColorMap: Record<string, ChipProps['color']> = {
-    ALIVE: 'success',
-    DEAD: 'danger',
+    ACTIVE: 'success',
+    INACTIVE: 'danger',
+    PENDING: 'warning',
   }
 
   const cellValue = user[columnKey]
