@@ -81,9 +81,9 @@ export const Sidebar = () => {
         <CreateUnitModal />
       </div>
       <div className=' bg-c-sidebar-bg w-[180px] h-full border-r-md rounded-r-2xl flex flex-col gap-[16px] p-5 pl-[10px] pr-[0px] relative'>
-        <div className='absolute top-[260px] left-0 right-0 h-[100px] bg-gradient-to-t from-c-sidebar-bg to-transparent z-10 pointer-events-none'></div>
+        {/* <div className='absolute top-[260px] left-0 right-0 h-[100px] bg-gradient-to-t from-c-sidebar-bg to-transparent z-10 pointer-events-none'></div> */}
         <span className='font-semibold text-[11px] text-gray-300'>Menu</span>
-        <div className='px-0 flex h-[300px] flex-col gap-[14px] overflow-auto sidebarthumb pr-[7px]'>
+        <div className='px-0 flex flex-col gap-[14px] overflow-auto sidebarthumb pr-[7px]'>
           {updatedRoutesConfig.map((item: any, index: number) => {
             const baseLocationPath = getBasePath(location.pathname)
             const baseItemPath = getBasePath(item.path)
