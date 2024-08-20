@@ -38,6 +38,7 @@ export const EmployeeTable = () => {
       try {
         const response = await reqCreateEmployee({
           ...data,
+          status: 'PENDING',
           businessUnit: {
             id: params.unitId,
           },
