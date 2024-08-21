@@ -66,8 +66,8 @@ export const reqRemovePermissionRole = async (roleId: any, permissionId) =>
 export const reqAddRoleUser = async (data: any) => api.post('/role/add-user', data)
 export const reqRemoveRoleUser = async (roleId: any, userId: any) =>
   api.delete(`/role/remove-user/${roleId}/${userId}`)
-export const reqUserHasPermissions = (userId: any, permissionName: any) =>
-  api.get(`/role/has-permissions/${userId}/${permissionName}`)
+export const reqUserHasPermissions = ({ unitId, permissionName }) =>
+  api.get(`/role/has-permissions/${unitId}/${permissionName}`)
 
 /* Rutas empleados */
 export const reqCreateEmployee = async (data: any) => api.post('/employee', data)
