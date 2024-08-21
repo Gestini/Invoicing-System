@@ -26,7 +26,7 @@ export const TopContent = ({
   setStatusFilter,
   setVisibleColumns,
 }) => {
-  const users = useSelector((state: any) => state.table.data)
+  const users = useSelector((state: any) => state.unit.table.data)
   const onRowsPerPageChange = (e: any) => {
     setRowsPerPage(parseInt(e.target.value))
     setPage(1)

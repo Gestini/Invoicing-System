@@ -5,7 +5,7 @@ import { wareHouseInterface } from '@renderer/features/warehouseSlice'
 export const WarehouseTabs = () => {
   const [activeTab, setActiveTab] = React.useState(0)
 
-  const warehouse: wareHouseInterface = useSelector((state: any) => state.warehouse)
+  const warehouse: wareHouseInterface = useSelector((state: any) => state.unit.warehouse)
   const currentWarehouseId = warehouse.currentWarehouseId
 
   const tabs = [

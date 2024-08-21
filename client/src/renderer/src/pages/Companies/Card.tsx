@@ -28,7 +28,7 @@ interface CardProps {
 const Card: React.FC<CardProps> = ({ unit }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const user = useSelector((state: any) => state.user)
+  const user = useSelector((state: any) => state.user.user)
 
   const handleNavigate = () => {
     dispatch(setUnit(unit))

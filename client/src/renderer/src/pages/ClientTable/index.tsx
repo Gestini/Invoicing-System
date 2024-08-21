@@ -15,7 +15,7 @@ import {
 } from '@renderer/api/requests'
 
 export const ClientTable = () => {
-  const table = useSelector((state: any) => state.table)
+  const table = useSelector((state: any) => state.unit.table)
   const params = useParams()
   const dispatch = useDispatch()
 

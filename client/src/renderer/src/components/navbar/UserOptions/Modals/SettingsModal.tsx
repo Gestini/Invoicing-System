@@ -6,7 +6,7 @@ import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@nextu
 
 export const SettingsModal = () => {
   const dispatch = useDispatch()
-  const modalStates = useSelector((state: any) => state.modals)
+  const modalStates = useSelector((state: any) => state.unit.modals)
   const handleToggleModal = () => dispatch(toggleModal('SettingsModal'))
 
   return (

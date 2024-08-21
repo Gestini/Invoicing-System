@@ -13,7 +13,7 @@ export const RoleUsers = () => {
   const [result, setResult] = React.useState([])
   const [searchValue, setSearchValue] = React.useState('')
   const handleChange = async (e: any) => setSearchValue(e)
-  const roles = useSelector((state: any) => state.roles)
+  const roles = useSelector((state: any) => state.unit.roles)
   const currentRole: Role = roles.data.find((item: Role) => item.id === roles.currentRoleIdEdit)
 
   const filteredData = result.filter(

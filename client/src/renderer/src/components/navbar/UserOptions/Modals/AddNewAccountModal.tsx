@@ -17,7 +17,7 @@ import {
 export const AddNewAccountModal = ({ errors }) => {
   const currentSessions = localStorage.getItem('sessions')
   const dispatch = useDispatch()
-  const modalStates = useSelector((state: any) => state.modals)
+  const modalStates = useSelector((state: any) => state.unit.modals)
   const handleToggleModal = () => dispatch(toggleModal('AddNewAccountModal'))
 
   const [data, setData] = React.useState({

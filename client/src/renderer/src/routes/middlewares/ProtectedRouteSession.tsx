@@ -12,7 +12,7 @@ export const ProtectedRouteSession = () => {
   const dispatch = useDispatch()
 
   if (!token) return <Navigate to='/login' />
-  const user = useSelector((state: any) => state.user)
+  const user = useSelector((state: any) => state.user.user)
 
   React.useEffect(() => {
     const loadProfile = async () => {

@@ -18,7 +18,7 @@ import {
 export const AppTable = ({ columnsData, tableActions, addItemModal, editItemModal }) => {
   const dispatch = useDispatch()
   type User = (typeof users)[0]
-  const users = useSelector((state: any) => state.table.data)
+  const users = useSelector((state: any) => state.unit.table.data)
 
   const [page, setPage] = React.useState(1)
   const [filterValue, setFilterValue] = React.useState('')

@@ -29,10 +29,10 @@ export const EditSupplierModal = ({ modal }) => {
   const [errors, setErrors] = React.useState({
     name: '',
   })
-  const users = useSelector((state: any) => state.table.data)
+  const users = useSelector((state: any) => state.unit.table.data)
 
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
-  const currentItemIdEdit = useSelector((state: any) => state.table.currentItemIdEdit)
+  const currentItemIdEdit = useSelector((state: any) => state.unit.table.currentItemIdEdit)
   const currentUserEdit = users.find((item: { id: any }) => item.id == currentItemIdEdit)
 
   React.useEffect(() => {

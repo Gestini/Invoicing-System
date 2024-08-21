@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux'
 import { Card, CardBody, CardHeader, Tab, Tabs } from '@nextui-org/react'
 
 export const RoleSections = () => {
-  const roles = useSelector((state: any) => state.roles)
+  const roles = useSelector((state: any) => state.unit.roles)
   const currentRole = roles.data.find((item: Role) => item.id === roles.currentRoleIdEdit)
 
   return (

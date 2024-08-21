@@ -18,7 +18,7 @@ export const StockTable = () => {
   const dispatch = useDispatch()
   const table = useSelector((state: any) => state.table)
 
-  const warehouse: wareHouseInterface = useSelector((state: any) => state.warehouse)
+  const warehouse: wareHouseInterface = useSelector((state: any) => state.unit.warehouse)
   const currentWarehouseId = warehouse.currentWarehouseId
 
   React.useEffect(() => {

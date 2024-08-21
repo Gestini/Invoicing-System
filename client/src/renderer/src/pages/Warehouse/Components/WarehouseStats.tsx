@@ -3,7 +3,7 @@ import { wareHouseInterface } from '@renderer/features/warehouseSlice'
 import { useSelector } from 'react-redux'
 
 export const WarehouseStats = () => {
-  const warehouse: wareHouseInterface = useSelector((state: any) => state.warehouse)
+  const warehouse: wareHouseInterface = useSelector((state: any) => state.unit.warehouse)
   const currentWarehouseId = warehouse.currentWarehouseId
 
   const datita = [

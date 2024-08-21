@@ -10,7 +10,7 @@ import { addItem, editItem, deleteItem, setTableData } from '@renderer/features/
 import { reqCreateSupplier, reqEditSupplier, reqGetSupplier } from '@renderer/api/requests'
 
 export const SupplierTable = () => {
-  const table = useSelector((state: any) => state.table)
+  const table = useSelector((state: any) => state.unit.table)
   const params = useParams()
   const dispatch = useDispatch()
 

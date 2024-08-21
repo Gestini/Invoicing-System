@@ -12,14 +12,16 @@ import {
   DropdownSection,
   DropdownTrigger,
 } from '@nextui-org/react'
+import { useNavigate } from 'react-router-dom'
 import { toggleModal } from '@renderer/features/currentModal'
 import { useDispatch } from 'react-redux'
 import { setSelectedUserToChange } from '@renderer/features/userSessions'
 
 export const UserAvatarDropdown = () => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const token = localStorage.getItem('token')
-  const user = useSelector((state: any) => state.user)
+  const user = useSelector((state: any) => state.user.user)
   const [sessions, setSessions] = React.useState<any>([])
   const currentSessions = localStorage.getItem('sessions')
 
@@ -31,11 +33,10 @@ export const UserAvatarDropdown = () => {
       if (!parseSessions) return
 
       const response = await reqLoadUserSessions(parseSessions.map((item: any) => item.token))
-
       setSessions(response.data)
     }
     loadUsersSession()
-  }, [currentSessions])
+  }, [])
 
   const handleToggleModal = (modalName: string) => dispatch(toggleModal(modalName))
 
@@ -58,7 +59,8 @@ export const UserAvatarDropdown = () => {
 
     localStorage.setItem('sessions', JSON.stringify(AuxSessions))
     localStorage.removeItem('token')
-    window.location.href = '/login'
+    dispatch({ type: 'RESET_STATE' })
+    navigate('/login')
   }
 
   const changeAccount = (id: number) => {
@@ -76,8 +78,11 @@ export const UserAvatarDropdown = () => {
       return handleToggleModal('LogInAsModal')
     }
 
-    localStorage.setItem('token', userFound.token)
-    return (window.location.href = '/login')
+    navigate('/')
+
+    // Despacha la acción para resetear el estado
+    dispatch({ type: 'RESET_STATE' })
+    return localStorage.setItem('token', userFound.token)
   }
 
   return (

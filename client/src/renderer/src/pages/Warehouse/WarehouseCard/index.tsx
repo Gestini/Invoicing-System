@@ -30,7 +30,7 @@ export const WarehouseCard = () => {
   const dispatch = useDispatch()
   const [currentEdit, setCurrentEdit] = React.useState(-1)
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
-  const warehouse: wareHouseInterface = useSelector((state: any) => state.warehouse)
+  const warehouse: wareHouseInterface = useSelector((state: any) => state.unit.warehouse)
   const currentWarehouseId = warehouse.currentWarehouseId
 
   React.useEffect(() => {

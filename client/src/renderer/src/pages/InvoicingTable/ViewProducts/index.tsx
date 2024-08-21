@@ -8,10 +8,10 @@ import { DeleteProduct } from './DeleteProduct'
 import { Table, TableRow, TableBody, TableCell, TableColumn, TableHeader } from '@nextui-org/react'
 
 export default function ViewProducts() {
-  const newInvoicing = useSelector((state: any) => state.newInvoicing)
+  const newInvoicing = useSelector((state: any) => state.unit.newInvoicing)
   const currentTab = newInvoicing?.tabs?.find((tab: Tab) => tab.id == newInvoicing.currentTabId)
 
-  const products = useSelector((state: any) => state.invoicing)
+  const products = useSelector((state: any) => state.unit.invoicing)
   type Product = (typeof products.data)[0]
 
   const renderCell = React.useCallback((product: Product, columnKey: any) => {

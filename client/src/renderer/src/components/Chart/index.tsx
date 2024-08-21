@@ -57,7 +57,7 @@ const generateColorVariants = (mainColor: string, count: number): string[] => {
 export const GraphView = () => {
   const [mainColor, setMainColor] = React.useState('transparent')
   const [parsedMainColor, setParsedMainColor] = React.useState('transparent')
-  const currentTheme = useSelector((state: any) => state.currentTheme)
+  const currentTheme = useSelector((state: any) => state.user.currentTheme)
 
   React.useEffect(() => {
     const style = getComputedStyle(document.body)

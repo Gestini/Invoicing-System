@@ -8,7 +8,7 @@ import { Autocomplete, AutocompleteItem } from '@nextui-org/react'
 export const SearchProduct = () => {
   const dispatch = useDispatch()
   const unit = useSelector((state: any) => state.currentUnit)
-  const newInvoicing = useSelector((state: any) => state.newInvoicing)
+  const newInvoicing = useSelector((state: any) => state.unit.newInvoicing)
   const [result, setResult] = React.useState([])
   const [searchValue, setSearchValue] = React.useState('')
   const currentTab = newInvoicing?.tabs?.find((item: any) => item.id == newInvoicing.currentTabId)

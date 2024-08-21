@@ -5,7 +5,7 @@ import { PdfIcon, DocIcon, ExcelIcon } from '@renderer/components/Icons/ExportTa
 import { Button, Dropdown, DropdownMenu, DropdownItem, DropdownTrigger } from '@nextui-org/react'
 
 export const ExportTableDropdown = () => {
-  const data = useSelector((state: any) => state.table.data)
+  const data = useSelector((state: any) => state.unit.table.data)
 
   return (
     <Dropdown className='bg-c-card text-c-title'>

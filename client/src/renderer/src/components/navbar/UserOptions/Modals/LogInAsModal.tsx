@@ -13,12 +13,14 @@ import { loginInputs } from '@renderer/pages/Auth/AuthInputs'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { toggleModal } from '@renderer/features/currentModal'
+import { useNavigate } from 'react-router-dom'
 import { reqAuthLogin } from '@renderer/api/requests'
 
 export const LogInAsModal = ({ errors }) => {
   const dispatch = useDispatch()
-  const modalStates = useSelector((state: any) => state.modals)
-  const userSession = useSelector((state: any) => state.userSession)
+  const navigate = useNavigate()
+  const modalStates = useSelector((state: any) => state.unit.modals)
+  const userSession = useSelector((state: any) => state.user.userSession)
 
   const [data, setData] = React.useState({
     username: '',
@@ -42,7 +44,7 @@ export const LogInAsModal = ({ errors }) => {
     })
     if (!response) return
     localStorage.setItem('token', response.data)
-    window.location.href = '/'
+    navigate('/')
     handleToggleModal()
   }
 

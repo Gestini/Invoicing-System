@@ -21,8 +21,8 @@ import { useDispatch, useSelector } from 'react-redux'
 export const EditProductModal = ({ modal }) => {
   const params = useParams()
   const dispatch = useDispatch()
-  const users = useSelector((state: any) => state.table.data)
-  const currentItemIdEdit = useSelector((state: any) => state.table.currentItemIdEdit)
+  const users = useSelector((state: any) => state.unit.table.data)
+  const currentItemIdEdit = useSelector((state: any) => state.unit.table.currentItemIdEdit)
   const currentUserEdit = users.find((item: { id: any }) => item.id == currentItemIdEdit)
   const [suppliers, setSuppliers] = React.useState([])
   const [data, setData] = React.useState({
