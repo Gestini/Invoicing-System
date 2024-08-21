@@ -77,3 +77,4 @@ export const reqSearchEmployeeByName = (unitId: any, name: string) =>
 export const reqLoadEmployeeByRole = (id: any) => api.get(`/role/get-employees/${id}`)
 export const reqDeleteEmployee = (id: any) => api.delete(`/employee/delete/${id}`)
 export const reqEditEmployee = (id: any, data: any) => api.put(`/employee/edit/${id}`, data)
+export const reqLeaveUnit = (id: any) => api.delete(`/employee/leave-unit/${id}`)
