@@ -5,6 +5,7 @@ import { Roles } from '@renderer/pages/Roles'
 import { Warehouse } from '@renderer/pages/Warehouse'
 import { SalesTable } from '@renderer/pages/SalesTable'
 import { ClientTable } from '@renderer/pages/ClientTable'
+import { permissions } from '@renderer/pages/Roles/Permissions'
 import { ReactElement } from 'react'
 import { SupplierTable } from '@renderer/pages/SupplierTable'
 import { EmployeeTable } from '@renderer/pages/EmployeeTable'
@@ -25,6 +26,7 @@ interface RouteSection {
   path: string
   section: string
   routes: Route[]
+  permission?: string | undefined
 }
 
 const generalRoutes: RouteSection = {
@@ -38,6 +40,7 @@ const warehouseRoutes: RouteSection = {
   icon: <BiBox />,
   path: '/warehouse/:unitId',
   section: 'Depósitos',
+  permission: permissions.warehouse.permission,
   routes: [
     { path: '/product-management', element: <Warehouse />, title: 'productos' },
     { path: '/price-management', element: <></>, title: 'precios' },
@@ -59,6 +62,7 @@ const posRoutes: RouteSection = {
   icon: <BiLeaf />,
   path: '/pos/:unitId',
   section: 'Punto de Venta',
+  permission: permissions.pos.permission,
   routes: [
     { path: '/close-cash', element: <></>, title: 'cerrar caja' },
     {
@@ -77,6 +81,7 @@ const hrRoutes: RouteSection = {
   icon: <BiGroup />,
   path: '/hr/:unitId',
   section: 'Recursos Humanos',
+  permission: permissions.hr.permission,
   routes: [
     { path: '/employees', element: <EmployeeTable />, title: 'empleados' },
     { path: '/roles', element: <Roles />, title: 'roles' },
@@ -88,6 +93,7 @@ const adminRoutes: RouteSection = {
   icon: <BiCalculator />,
   path: '/admin/:unitId',
   section: 'Admin',
+  permission: permissions.admin.permission,
   routes: [
     { path: '/suppliers', element: <SupplierTable />, title: 'proveedores' },
     { path: '/budgets', element: <></>, title: 'presupuestos' },
@@ -98,6 +104,7 @@ const operationsRoutes: RouteSection = {
   icon: <BiUser />,
   path: '/operations/:unitId',
   section: 'Operaciones',
+  permission: permissions.operations.permission,
   routes: [
     { path: '/sales', element: <SalesTable />, title: 'ventas' },
     { path: '/invoicing', element: <InvoicingTable />, title: 'facturación' },
@@ -148,6 +155,7 @@ export const routes = [
         icon: item.icon,
         path: item.path + route.path,
         routesLength: item.routes.length,
+        permission: item.permission,
       })),
     ),
   [],
@@ -155,9 +163,9 @@ export const routes = [
 
 export const sidebarRoutes: RouteSection[] = [
   generalRoutes,
-  adminRoutes,
   warehouseRoutes,
   hrRoutes,
   operationsRoutes,
   posRoutes,
+  adminRoutes,
 ]
