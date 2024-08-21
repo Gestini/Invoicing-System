@@ -5,7 +5,6 @@ import { useDispatch } from 'react-redux'
 import { AddItemModal } from '@renderer/components/AppTable/Modals/AddItem'
 import { EditItemModal } from '@renderer/components/AppTable/Modals/EditItem'
 import { columnsData, modalInputs } from './data'
-import { Tabs } from '../../components/tab/Tabs'
 import { addItem, editItem, deleteItem, setTableData } from '@renderer/features/tableSlice'
 import {
   reqEditEmployee,
@@ -59,7 +58,7 @@ export const EmployeeTable = () => {
     },
   }
 
-  const tabs = [{ name: 'Empleados' }, { name: 'Roles' }, { name: 'Invitaciones' }]
+  /* const tabs = [{ name: 'Empleados' }, { name: 'Roles' }, { name: 'Invitaciones' }] */
 
   const newEmployeeModal = {
     title: 'Invitar a un empleado',
@@ -76,6 +75,7 @@ export const EmployeeTable = () => {
 
   return (
     <>
+      {/*
       <Tabs tabs={tabs} />
       <div className='flex gap-4 w-full overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 pb-[15px] '>
         <div
@@ -143,7 +143,7 @@ export const EmployeeTable = () => {
             </p>
           </div>
         </div>
-      </div>
+      </div> */}
       <AppTable
         columnsData={columnsData}
         tableActions={tableActions}

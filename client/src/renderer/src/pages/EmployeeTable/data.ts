@@ -25,11 +25,6 @@ export const columnsData = {
 export const modalInputs = {
   inputs: [
     {
-      type: 'email',
-      name: 'email',
-      label: 'Correo del empleado',
-    },
-    {
       type: 'text',
       name: 'name',
       label: 'Nombre',
