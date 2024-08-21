@@ -71,14 +71,14 @@ export const WarehouseCard = () => {
             </p>
           )}
         </div>
-        <div className='flex gap-4 flex-wrap'>
+        <div className='flex gap-4 w-full overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 pb-[15px] '>
           {warehouse.data.length > 0 &&
             warehouse.data.map((ele: any, ind: number) => (
               <div
                 key={ind}
                 onClick={() => openWarehouse(ele.id)}
                 className={`${currentWarehouseId == ele.id ? 'bg-c-primary-variant-3' : 'bg-[#1f2121]'}
-                w-[285px] h-[76px] rounded-[10px] px-[19px] py-[21px] flex items-center justify-between cursor-pointer`}
+                w-[285px] h-[76px] rounded-[10px] flex-shrink-0  px-[19px] py-[21px] flex items-center justify-between cursor-pointer`}
               >
                 <div
                   className={`${currentWarehouseId == ele.id ? 'bg-c-primary-variant-3' : 'bg-[#323535]'}  p-2 rounded-lg`}

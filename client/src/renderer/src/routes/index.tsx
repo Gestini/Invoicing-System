@@ -1,5 +1,6 @@
 import Invite from '@renderer/pages/Invite/Invite'
 import Companies from '@renderer/pages/Companies/Companies'
+import MercadoPago from '@renderer/pages/suscription/mercadopago'
 import { Route, Routes } from 'react-router-dom'
 import { ThemeMiddleware } from './middlewares/ThemeMiddleware'
 import { ProtectedRouteAuth } from './middlewares/ProtectedRouteAuth'
@@ -18,6 +19,7 @@ const Router = () => {
         <Route path={'/invite'} element={<Invite />} />
         <Route element={<ProtectedRouteSession />}>
           <Route path={'/'} element={<Companies />} />
+          <Route path={'/mp'} element={<MercadoPago />} />
           <Route element={<LoadCurrentUnitMiddleware />}>
             <Route element={<NavbarAndSidebarMiddleware />}>
               {routes.map((route: any, index: number) => (
