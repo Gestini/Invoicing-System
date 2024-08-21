@@ -13,6 +13,8 @@ import productar.models.EmployeeModel;
 public interface EmployeeRepository extends JpaRepository<EmployeeModel, Long> {
     List<EmployeeModel> findByBusinessUnitId(Long businessUnitId);
 
+    List<EmployeeModel> findByUserUsername(String username);
+
     @Query("SELECT employee FROM EmployeeModel employee WHERE employee.businessUnit.id = :unitId AND LOWER(employee.name) LIKE LOWER(CONCAT('%', :name, '%'))")
     List<EmployeeModel> searchEmployeeByName(@Param("unitId") Long unitId, @Param("name") String name);
 }
