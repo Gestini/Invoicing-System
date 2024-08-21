@@ -1,3 +1,4 @@
+import Invite from '@renderer/pages/Invite/Invite'
 import Companies from '@renderer/pages/Companies/Companies'
 import { Route, Routes } from 'react-router-dom'
 import { ThemeMiddleware } from './middlewares/ThemeMiddleware'
@@ -5,9 +6,9 @@ import { ProtectedRouteAuth } from './middlewares/ProtectedRouteAuth'
 import { routes, authRoutes } from './routesData'
 import { ProtectedRouteSession } from './middlewares/ProtectedRouteSession'
 import { CurrentSecctionMiddleware } from './middlewares/CurrentSecctionMiddleware'
-import { NavbarAndSidebarMiddleware } from './middlewares/NavbarAndSidebarMiddleware'
 import { LoadCurrentUnitMiddleware } from './middlewares/LoadCurrentUnitMiddleware'
-import Invite from '@renderer/pages/Invite/Invite'
+import { NavbarAndSidebarMiddleware } from './middlewares/NavbarAndSidebarMiddleware'
+import { SectionPermissionMiddleware } from './middlewares/SectionPermissionMiddleware'
 
 const Router = () => {
   return (
@@ -24,14 +25,16 @@ const Router = () => {
                   key={index}
                   path={route.path}
                   element={
-                    <CurrentSecctionMiddleware
-                      icon={route.icon}
-                      title={route.title}
-                      section={route.section}
-                      routesLength={route.routesLength}
-                    >
-                      {route.element}
-                    </CurrentSecctionMiddleware>
+                    <SectionPermissionMiddleware permission={route.permission}>
+                      <CurrentSecctionMiddleware
+                        icon={route.icon}
+                        title={route.title}
+                        section={route.section}
+                        routesLength={route.routesLength}
+                      >
+                        {route.element}
+                      </CurrentSecctionMiddleware>
+                    </SectionPermissionMiddleware>
                   }
                 />
               ))}
