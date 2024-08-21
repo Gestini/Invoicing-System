@@ -18,8 +18,13 @@ public interface RoleUsersRepository extends JpaRepository<RoleUsersModel, Long>
     @Query("SELECT ru FROM RoleUsersModel ru WHERE ru.role.id = :roleId AND ru.employee.id = :userId")
     Optional<RoleUsersModel> userHasRole(@Param("roleId") Long roleId, @Param("userId") Long userId);
 
-    @Query("SELECT COUNT(*) > 0 FROM RoleUsersModel ru JOIN RoleModel r ON ru.role.id = r.id JOIN RolePermissionsModel rp ON r.id = rp.role.id WHERE ru.employee.id = :userId AND rp.name = :permissionName")
-    boolean hasPermissions(@Param("userId") Long userId, @Param("permissionName") String permissionName);
+    @Query("SELECT COUNT(*) > 0 FROM RoleUsersModel ru JOIN RoleModel r ON ru.role.id = r.id JOIN RolePermissionsModel rp ON r.id = rp.role.id WHERE r.businessUnit.id = :unitId AND (rp.name = :permissionName OR rp.name = '*' OR rp.role.businessUnit.owner.id = :userId )")
+    boolean hasPermissions(@Param("userId") Long userId,
+            @Param("unitId") Long unitId,
+            @Param("permissionName") String permissionName);
+
+    @Query("SELECT COUNT(b) > 0 FROM BusinessUnitsModel b WHERE b.id = :unitId AND b.owner.id = :userId")
+    boolean isOwner(@Param("userId") Long userId, @Param("unitId") Long unitId);
 
     @Modifying
     @Transactional

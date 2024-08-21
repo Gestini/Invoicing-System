@@ -41,9 +41,9 @@ public class RoleController {
         return roleService.getEmployeesByRoleId(roleId);
     }
 
-    @GetMapping("/has-permissions/{userId}/{permissionName}")
-    public Boolean hasPermissions(@PathVariable Long userId, @PathVariable String permissionName) {
-        return roleService.hasPermissions(userId, permissionName);
+    @GetMapping("/has-permissions/{unitId}/{permissionName}")
+    public Boolean hasPermissions(@PathVariable Long unitId, @PathVariable String permissionName) {
+        return roleService.hasPermissions(unitId, permissionName);
     }
 
     @PutMapping("/{id}")
