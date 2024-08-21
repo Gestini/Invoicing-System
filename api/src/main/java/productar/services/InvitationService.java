@@ -1,14 +1,15 @@
 package productar.services;
 
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import productar.models.BusinessUnitsModel;
+import productar.models.EmployeeModel;
 import productar.models.InvitationModel;
 import productar.models.User;
-import productar.repositories.BusinessUnitsRepository;
+import productar.models.EmployeeModel.EmployeeStatus;
+import productar.repositories.EmployeeRepository;
 import productar.repositories.InvitationRepository;
 import productar.repositories.UserRepository;
 
@@ -19,49 +20,73 @@ public class InvitationService {
     private InvitationRepository invitationRepository;
 
     @Autowired
-    private BusinessUnitsRepository businessUnitsRepository;
-
-    @Autowired
     private UserRepository userRepository;
 
     @Autowired
-    private EmailSenderService emailSenderService;
+    private EmployeeRepository employeeRepository;
 
-    public void sendInvitation(String inviteeEmail, Long businessUnitId, User inviter) {
-        BusinessUnitsModel businessUnit = businessUnitsRepository.findById(businessUnitId)
-                .orElseThrow(() -> new RuntimeException("Unidad de negocio no encontrada"));
+    @Autowired
+    private UserService userService;
 
-        String token = UUID.randomUUID().toString();
+    public ResponseEntity<String> acceptInvite(String token) {
+        try {
+            // Obtener la invitación
+            InvitationModel invitation = invitationRepository.findByToken(token)
+                    .orElseThrow(() -> new RuntimeException("Invitación no válida"));
 
-        InvitationModel invitation = new InvitationModel();
-        invitation.setBusinessUnit(businessUnit);
-        invitation.setInviteeEmail(inviteeEmail);
-        invitation.setInviter(inviter);
-        invitation.setToken(token);
-        invitation.setAccepted(false);
-
-        invitationRepository.save(invitation);
-
-        String invitationLink = "http://localhost:5173/invite?token=" + token;
-        emailSenderService.sendSimpleEmail(inviteeEmail, "Invitación a Unidad de Negocio",
-                "Has sido invitado a unirte a la unidad de negocio: " + businessUnit.getName() +
-                        ". Usa el siguiente enlace para aceptar la invitación: " + invitationLink);
-    }
-
-    public void handleInvitation(String token, boolean accepted) {
-        InvitationModel invitation = invitationRepository.findByToken(token)
-                .orElseThrow(() -> new RuntimeException("Invitación no válida"));
-
-        if (accepted) {
-            User invitee = userRepository.findByEmail(invitation.getInviteeEmail())
+            // Obtener al usuario empleado
+            User user = userRepository.findByEmail(invitation.getEmployee().getEmail())
                     .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-            // Lógica para añadir el usuario a la unidad de negocio
-            invitation.setAccepted(true);
-            invitationRepository.save(invitation);
-        } else {
-            // Eliminar la invitación si se rechaza
+            // Obtener al empleado
+            EmployeeModel employeeInvited = employeeRepository.findById(invitation.getEmployee().getId())
+                    .orElseThrow(() -> new RuntimeException("Invitación no válida"));
+
+            String invitationEmail = invitation.getEmployee().getEmail();
+            String currentUserEmail = userService.getCurrentUser().getEmail();
+
+            // Verificar si el email del usuario actual coincide con el de la invitación
+            if (!invitationEmail.equals(currentUserEmail)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Esta invitación es para otro usuario.");
+            }
+
+            // Establecer la relacion del usuario con el empleado
+            employeeInvited.setUser(user);
+
+            // Cambiar el estado del empleado
+            employeeInvited.setStatus(EmployeeStatus.ACTIVE);
+
+            // Guardar cambios del empleado invitado
+            employeeRepository.save(employeeInvited);
+
+            // Eliminar la invitación
+            invitationRepository.deleteById(invitation.getId());
+            return ResponseEntity.ok("Invitación aceptada correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ocurrió un error: " + e.getMessage());
+        }
+    }
+
+    public ResponseEntity<String> rejectInvite(String token) {
+        try {
+            InvitationModel invitation = invitationRepository.findByToken(token)
+                    .orElseThrow(() -> new RuntimeException("Invitación no válida"));
+
+            userRepository.findByEmail(invitation.getEmployee().getEmail())
+                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+            String invitationEmail = invitation.getEmployee().getEmail();
+            String currentUserEmail = userService.getCurrentUser().getEmail();
+
+            // Verificar si el email del usuario actual coincide con el de la invitación
+            if (!invitationEmail.equals(currentUserEmail)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Esta invitación es para otro usuario.");
+            }
+
             invitationRepository.delete(invitation);
+            return ResponseEntity.ok("Invitación rechazada");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ocurrió un error: " + e.getMessage());
         }
     }
 }

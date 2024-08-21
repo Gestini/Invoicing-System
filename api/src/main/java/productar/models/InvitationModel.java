@@ -1,10 +1,16 @@
 package productar.models;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class InvitationModel {
@@ -18,7 +24,12 @@ public class InvitationModel {
     @ManyToOne
     private User inviter;
 
-    private String inviteeEmail;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "employee_id", nullable = false)
+    @NotNull(message = "El empleado no puede ser nulo")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private EmployeeModel employee;
+
     private String token;
     private boolean accepted;
 
@@ -46,14 +57,6 @@ public class InvitationModel {
         this.inviter = inviter;
     }
 
-    public String getInviteeEmail() {
-        return inviteeEmail;
-    }
-
-    public void setInviteeEmail(String inviteeEmail) {
-        this.inviteeEmail = inviteeEmail;
-    }
-
     public String getToken() {
         return token;
     }
@@ -70,5 +73,12 @@ public class InvitationModel {
         this.accepted = accepted;
     }
 
-    // Getters y Setters
+    public EmployeeModel getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(EmployeeModel employee) {
+        this.employee = employee;
+    }
+
 }
