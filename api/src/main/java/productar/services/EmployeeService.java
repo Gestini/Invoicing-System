@@ -10,8 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import productar.models.BusinessUnitsModel;
 import productar.models.EmployeeModel;
 import productar.models.InvitationModel;
+import productar.repositories.BusinessUnitsRepository;
 import productar.repositories.EmployeeRepository;
 import productar.repositories.InvitationRepository;
 
@@ -28,13 +30,19 @@ public class EmployeeService {
     private EmailSenderService emailSenderService;
 
     @Autowired
+    private BusinessUnitsRepository businessUnitsRepository;
+
+    @Autowired
     private UserService userService;
 
     public EmployeeModel createEmployee(EmployeeModel employee) {
+        // Guarda al nuevo empleado
         EmployeeModel newEmployee = employeeRepository.save(employee);
 
+        // Genera un token único para la invitación
         String token = UUID.randomUUID().toString();
 
+        // Crea e inicializa el objeto de invitación
         InvitationModel invitation = new InvitationModel();
         invitation.setBusinessUnit(employee.getBusinessUnit());
         invitation.setInviter(userService.getCurrentUser());
@@ -42,15 +50,37 @@ public class EmployeeService {
         invitation.setAccepted(false);
         invitation.setEmployee(employee);
 
+        BusinessUnitsModel businessUnit = businessUnitsRepository
+                .findById(employee.getBusinessUnit().getId())
+                .orElseThrow(() -> new RuntimeException("Unidad no encontrada"));
+
+        // Guarda la invitación
         invitationRepository.save(invitation);
 
+        // Construye el enlace de invitación
         String invitationLink = "http://localhost:5173/invite?token=" + token;
-        String subject = "Invitación a Unidad de Negocio";
-        String message = "Has sido invitado a unirte a la unidad de negocio: " + employee.getBusinessUnit().getName() +
-                ". Usa el siguiente enlace para aceptar la invitación: " + invitationLink;
 
+        // Establece el asunto y el mensaje del correo electrónico
+        String subject = "Invitación para unirte a la Unidad de Negocio";
+        String businessUnitName = businessUnit.getName();
+
+        String message = String.format(
+                "Hola %s,\n\n"
+                        + "¡Te damos la bienvenida! Has recibido una invitación para unirte a nuestra unidad de negocio: %s.\n\n"
+                        + "Por favor, usa el siguiente enlace para aceptar la invitación y completar el proceso de incorporación:\n\n"
+                        + "%s\n\n"
+                        + "Si tienes alguna pregunta, no dudes en ponerte en contacto con nosotros.\n\n"
+                        + "Saludos cordiales,\n"
+                        + "El equipo de %s",
+                employee.getName(),
+                businessUnitName,
+                invitationLink,
+                businessUnitName);
+
+        // Envía el correo electrónico
         emailSenderService.sendSimpleEmail(employee.getEmail(), subject, message);
 
+        // Retorna el nuevo empleado creado
         return newEmployee;
     }
 
