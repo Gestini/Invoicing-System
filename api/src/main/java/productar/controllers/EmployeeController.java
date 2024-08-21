@@ -49,4 +49,9 @@ public class EmployeeController {
             @RequestBody EmployeeModel employee) {
         return employeeService.updateEmployee(employeeId, employee);
     }
+
+    @DeleteMapping("/leave-unit/{unitId}")
+    public ResponseEntity<String> leaveUnit(@PathVariable("unitId") Long unitId) {
+        return employeeService.leaveUnit(unitId);
+    }
 }

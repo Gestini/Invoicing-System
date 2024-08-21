@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import productar.models.BusinessUnitsModel;
 import productar.models.EmployeeModel;
 import productar.models.InvitationModel;
+import productar.models.User;
 import productar.repositories.BusinessUnitsRepository;
 import productar.repositories.EmployeeRepository;
 import productar.repositories.InvitationRepository;
@@ -96,6 +97,16 @@ public class EmployeeService {
         try {
             employeeRepository.deleteById(id);
             return ResponseEntity.ok("Empleado eliminado correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error: " + e.getMessage());
+        }
+    }
+
+    public ResponseEntity<String> leaveUnit(Long unitId) {
+        try {
+            User currentUser = userService.getCurrentUser();
+            employeeRepository.leaveUnit(currentUser.getId(), unitId);
+            return ResponseEntity.ok("Abandonaste la unidad correctamente");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error: " + e.getMessage());
         }
