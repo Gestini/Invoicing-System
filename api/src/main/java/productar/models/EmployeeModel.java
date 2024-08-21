@@ -30,6 +30,10 @@ public class EmployeeModel {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private BusinessUnitsModel businessUnit;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", nullable = true)
+    private User user;
+
     @Column
     private String name;
 
@@ -105,6 +109,14 @@ public class EmployeeModel {
 
     public void setStatus(EmployeeStatus status) {
         this.status = status;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
 }
