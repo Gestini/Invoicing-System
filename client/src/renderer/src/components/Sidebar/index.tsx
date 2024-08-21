@@ -1,61 +1,31 @@
 import React from 'react'
-import { setUnit } from '@renderer/features/currentUnitSlice'
 import { setUnits } from '@renderer/features/unitsSlice'
 import { capitalize } from '../AppTable/TableComponents/utils'
-import { permissions } from '@renderer/pages/Roles/Permissions'
 import { GestinyLogo } from '@renderer/assets/GestinyLogo'
+import { permissions } from '@renderer/pages/Roles/Permissions'
+import { UnitDropdown } from './UnitDropdown'
 import { sidebarRoutes } from '@renderer/routes/routesData'
 import { ShortCellValue } from '../AppTable/TableComponents/ShortCellValue'
 import { CreateUnitModal } from '../CreateCompanyForm'
-import { reqGetUnitByOwner } from '@renderer/api/requests'
-import { reqUserHasPermissions } from '@renderer/api/requests'
 import { useDispatch, useSelector } from 'react-redux'
-import { Accordion, AccordionItem, Tooltip } from '@nextui-org/react'
-import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
+import { Accordion, AccordionItem } from '@nextui-org/react'
+import { Link, NavLink, useLocation } from 'react-router-dom'
+import { reqGetUnitByOwner, reqUserHasPermissions } from '@renderer/api/requests'
 
 export const Sidebar = () => {
   const unit = useSelector((state: any) => state.currentUnit)
   const user = useSelector((state: any) => state.user.user)
   const location = useLocation()
-  const navigate = useNavigate()
   const dispatch = useDispatch()
+
   const companies: any = useSelector((state: any) => state.units.data)
   const [view, setView] = React.useState<Record<string, any>>({})
   const [selectedKeys, setSelectedKeys] = React.useState<any>([])
+  const [openDropdownId, setOpenDropdownId] = React.useState<string | null>(null) // Nuevo estado para el dropdown abierto
 
   React.useEffect(() => {
     setSelectedKeys([])
   }, [unit])
-
-  React.useEffect(() => {
-    const loadPermissions = async () => {
-      const permissionsList = Object.values(permissions).map((item) => item.permission)
-
-      // Utiliza un objeto para almacenar los resultados
-      const results: Record<string, any> = {}
-
-      // Itera sobre los permisos y realiza las solicitudes
-      await Promise.all(
-        permissionsList.map(async (permission) => {
-          try {
-            const response = await reqUserHasPermissions({
-              unitId: unit.id,
-              permissionName: permission,
-            })
-            // Guarda el resultado en el objeto results
-            results[permission] = response.data
-          } catch (error) {
-            results[permission] = null // O maneja el error de otra manera
-          }
-        }),
-      )
-
-      // Actualiza el estado con los resultados obtenidos
-      setView(results)
-    }
-
-    loadPermissions()
-  }, [user.id, unit.id]) // Asegúrate de que los efectos dependan de user.id y unit.id
 
   const updatedRoutesConfig = sidebarRoutes.map((section) => {
     return {
@@ -63,6 +33,31 @@ export const Sidebar = () => {
       path: section.path.replace(':unitId', unit.id),
     }
   })
+
+  React.useEffect(() => {
+    const loadPermissions = async () => {
+      const permissionsList = Object.values(permissions).map((item) => item.permission)
+      const results: Record<string, any> = {}
+
+      await Promise.all(
+        permissionsList.map(async (permission) => {
+          try {
+            const response = await reqUserHasPermissions({
+              unitId: unit.id,
+              permissionName: permission,
+            })
+            results[permission] = response.data
+          } catch (error) {
+            results[permission] = null
+          }
+        }),
+      )
+
+      setView(results)
+    }
+
+    loadPermissions()
+  }, [user.id, unit.id])
 
   React.useEffect(() => {
     const loadUserCompanies = async () => {
@@ -76,49 +71,23 @@ export const Sidebar = () => {
     loadUserCompanies()
   }, [])
 
-  const handleNavigate = (item: any) => {
-    dispatch(setUnit(item))
-    navigate(`/dashboard/${item?.id}`)
-    dispatch({ type: 'RESET_UNIT_STATE' })
-  }
-
   const getBasePath = (path) => path.split('/')[1]
 
   return (
-    <nav className={`flex fixed z-10 left-0 top-0 h-screen items-center justify-between  p-10'}`}>
+    <nav className='flex fixed z-10 left-0 top-0 h-screen items-center justify-between'>
       <div className='w-[48px] bg-c-sidebar-bg-2 h-full flex flex-col items-center py-5 gap-[11px]'>
         <Link to={'/'}>
           <div className='h-[49px] w-[36px]  flex justify-center items-center rounded-md mb-[17px]'>
             <GestinyLogo />
           </div>
         </Link>
-        {companies.map((item: any, index: any) => (
-          <Tooltip
+        {companies.map((unitItem: any, index: any) => (
+          <UnitDropdown
             key={index}
-            placement='right'
-            content={
-              <div className='px-1 py-2'>
-                <div className='text-small font-bold'>{item?.name}</div>
-                <div className='text-tiny'>{item?.description}</div>
-              </div>
-            }
-            color='secondary'
-            classNames={{
-              content: 'bg-c-sidebar-bg-2',
-            }}
-          >
-            <div
-              className={`${unit.id == item.id ? 'rounded-md bg-c-primary-variant-4' : ''} transition-all duration-500 ease-in-out flex items-center justify-center h-[32px] w-[32px] cursor-pointer`}
-              key={index}
-              onClick={() => handleNavigate(item)}
-            >
-              <div
-                className={`${unit.id == item.id ? 'rounded-full' : 'rounded-full'} transition-all duration-500 ease-in-out w-[24px] h-[24px] uppercase flex items-center justify-center font-semibold text-white`}
-              >
-                {item.name.slice(0, 2)}
-              </div>
-            </div>
-          </Tooltip>
+            unitItem={unitItem}
+            openDropdownId={openDropdownId}
+            setOpenDropdownId={setOpenDropdownId}
+          />
         ))}
         <CreateUnitModal />
       </div>
@@ -128,7 +97,7 @@ export const Sidebar = () => {
           {updatedRoutesConfig.map((item: any, index: number) => {
             const baseLocationPath = getBasePath(location.pathname)
             const baseItemPath = getBasePath(item.path)
-            const hasPermissions = !view[item.permission] // Verifica si el permiso está en el estado view
+            const hasPermissions = !view[item.permission]
 
             if (item.routes.length == 1) {
               return (
