@@ -30,7 +30,7 @@ const StatsCardGrid = () => {
   ]
 
   return (
-    <div className='cardsmain w-full grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-4 gap-4 mb-[15px]'>
+    <div className='cardsmain w-full grid gap-4 mb-[15px]'>
       {statsData.map((data, index) => (
         <div
           key={index}
