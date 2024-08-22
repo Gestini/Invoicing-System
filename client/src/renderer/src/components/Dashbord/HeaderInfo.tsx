@@ -28,7 +28,7 @@ export const DashboardHeaderInfo = () => {
               </div>
             </div>
             <div className='midcardselect flex flex-col min-w-32'>
-              <span className='text-c-title-opacity'>Estas en</span>
+              <span className='text-c-title-opacity'>Estás en</span>
               <span className='text-c-title text-[23px] font-semibold'>{unit.name}</span>
             </div>
             <IoIosArrowDown className='text-c-title text-[30px] cursor-pointer ' />
