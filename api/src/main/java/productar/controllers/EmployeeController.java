@@ -28,8 +28,8 @@ public class EmployeeController {
         return employeeService.createEmployee(employee);
     }
 
-    @GetMapping("/get-by-unit/{id}")
-    public List<EmployeeModel> getEmployeesByBusinessUnitId(@PathVariable("id") Long unitId) {
+    @GetMapping("/get-by-unit/{unitId}")
+    public ResponseEntity<?> getEmployeesByBusinessUnitId(@PathVariable("unitId") Long unitId) {
         return employeeService.getEmployeesByBusinessUnitId(unitId);
     }
 

@@ -65,8 +65,7 @@ public class RoleService {
 
     public Boolean hasPermissions(Long unitId, String permissionName) {
         User currentUser = userService.getCurrentUser();
-        return roleUsersRepository.hasPermissions(currentUser.getId(), unitId, permissionName)
-                || roleUsersRepository.isOwner(currentUser.getId(), unitId);
+        return roleUsersRepository.hasPermissions(currentUser.getId(), unitId, permissionName);
     }
 
     public ResponseEntity<String> updateRole(Long id, RoleModel updatedRole) {

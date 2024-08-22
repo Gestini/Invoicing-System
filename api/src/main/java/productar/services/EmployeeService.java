@@ -17,6 +17,8 @@ import productar.models.User;
 import productar.repositories.BusinessUnitsRepository;
 import productar.repositories.EmployeeRepository;
 import productar.repositories.InvitationRepository;
+import productar.repositories.RoleUsersRepository;
+import productar.utils.Permissions;
 
 @Service
 public class EmployeeService {
@@ -35,6 +37,9 @@ public class EmployeeService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RoleUsersRepository roleUsersRepository;
 
     public EmployeeModel createEmployee(EmployeeModel employee) {
         // Guarda al nuevo empleado
@@ -85,8 +90,19 @@ public class EmployeeService {
         return newEmployee;
     }
 
-    public List<EmployeeModel> getEmployeesByBusinessUnitId(Long id) {
-        return employeeRepository.findByBusinessUnitId(id);
+    public ResponseEntity<?> getEmployeesByBusinessUnitId(Long unitId) {
+        try {
+            // verificar si el usuario tiene permisos
+            if (!roleUsersRepository.hasPermissions(userService.getCurrentUser().getId(), unitId,
+                    Permissions.HR.getPermission())) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No tienes permisos suficientes.");
+            }
+
+            List<EmployeeModel> employees = employeeRepository.findByBusinessUnitId(unitId);
+            return ResponseEntity.ok(employees);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error: " + e.getMessage());
+        }
     }
 
     public List<EmployeeModel> searchEmployeeByName(Long unitId, String name) {
