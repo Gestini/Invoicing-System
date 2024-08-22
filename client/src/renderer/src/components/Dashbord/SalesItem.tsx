@@ -46,7 +46,7 @@ const SalesDashboard = () => {
   }, [])
 
   return (
-    <div className='membersteamdashboard flex w-full gap-4 flex-col'>
+    <div className='membersteamdashboard flex w-full gap-3 flex-col'>
       {salesData.slice(0, visibleItems).map((item, index) => (
         <SalesItem key={index} rank={item.rank} name={item.name} sales={item.sales} />
       ))}

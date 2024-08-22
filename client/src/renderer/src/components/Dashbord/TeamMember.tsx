@@ -51,7 +51,7 @@ const TeamDashboard = () => {
   }, [])
 
   return (
-    <div className='membersteamdashboard flex w-full gap-4 flex-col'>
+    <div className='membersteamdashboard flex w-full gap-3 flex-col'>
       {teamMembers.slice(0, visibleItems).map((member, index) => (
         <TeamMember
           key={index}
