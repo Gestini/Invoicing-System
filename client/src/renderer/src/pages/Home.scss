@@ -1,5 +1,9 @@
 .homewelcomedashbord {
-  background: linear-gradient(to right, #214353, rgba(160, 219, 142, 0.6));
+  background: var(--gradient-dashboard);
+}
+
+#tv-attr-logo {
+  display: none;
 }
 
 .cardsmain {
@@ -15,14 +19,8 @@
     font-size: 40px !important;
   }
 
-  .midcardselect {
-    span {
-      font-size: 15px;
-    }
-  }
-
-  .cardsmain {
-    grid-template-columns: repeat(4, 1fr);
+  .midcardselect span {
+    font-size: 15px;
   }
 
   .cardsmain {
@@ -56,17 +54,17 @@
   .columnderdashboard {
     width: 100% !important;
   }
+
   .dashbordsection {
     flex-direction: column;
   }
+
   .rigthwelcome {
     gap: 10px !important;
   }
 
-  .midcardselect {
-    span {
-      font-size: 11px;
-    }
+  .midcardselect span {
+    font-size: 11px;
   }
 
   .imageselectwelcome {
@@ -81,19 +79,6 @@
   }
 }
 
-@media (max-height: 900px) and (min-width: 1300px) {
-  .cardsmain {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-@media (max-height: 900px) and (max-width: 1300px) {
-  // xl
-  .cardsmain {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
 @media (max-height: 900px) {
   .cardstats {
     height: 80px;
@@ -103,10 +88,7 @@
     width: 50px !important;
   }
 
-  .valuedatacardstat {
-    font-size: 15px !important;
-  }
-
+  .valuedatacardstat,
   .iconarrow {
     font-size: 15px !important;
   }
@@ -116,30 +98,31 @@
     margin-top: 0 !important;
   }
 
-  .valuelabelcardstat {
-    font-size: 12px;
+  .valuelabelcardstat,
+  .teamdivnavdashbord,
+  .personsinteam span,
+  .vertodoteamdashboard {
+    font-size: 12px !important;
   }
 
   .columnderdashboard {
     width: 280px !important;
   }
+}
 
-  .teamdivnavdashbord {
-    font-size: 12px !important;
+@media (max-height: 900px) and (min-width: 1300px) {
+  .cardsmain {
+    grid-template-columns: repeat(4, 1fr);
   }
-  .personsinteam {
-    span {
-      font-size: 12px !important;
-    }
-  }
+}
 
-  .vertodoteamdashboard {
-    font-size: 12px !important;
+@media (max-height: 900px) and (max-width: 1300px) {
+  .cardsmain {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-height: 900px) and (max-width: 1100px) {
-  // xl
   .cardsmain {
     grid-template-columns: repeat(1, 1fr);
   }

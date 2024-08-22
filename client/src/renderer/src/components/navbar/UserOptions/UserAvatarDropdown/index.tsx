@@ -93,15 +93,15 @@ export const UserAvatarDropdown = () => {
             as='button'
             classNames={{
               icon: 'text-[#ffffff]',
-              base: 'bg-[--c-primary-variant-1]',
+              base: 'bg-[--c-primary]',
             }}
             className='h-[50px] w-[50px]'
           />
-          <div className='ml-[10px]'>
+          <div className='ml-[10px] text-center'>
             <p className='text-c-title text-[14px] font-semibold'>
               <ShortCellValue cellValue={user?.username} maxLength={12} />
             </p>
-            <p className='px-[4px] py-[2px] mt-1 bg-[rgb(160,219,142)]/20 rounded-md text-[#A0DB8E] text-[12px]'>
+            <p className='w-fit px-[10px] py-[2px] mt-1 bg-[rgb(160,219,142)]/20 rounded-md text-[#A0DB8E] text-[12px]'>
               CEO
             </p>
           </div>
@@ -116,7 +116,7 @@ export const UserAvatarDropdown = () => {
                 as='button'
                 classNames={{
                   icon: 'text-[#ffffff]',
-                  base: 'bg-[--c-primary-variant-1]',
+                  base: 'bg-[--c-primary]',
                 }}
                 className='h-[100px] w-[100px]'
               />
@@ -142,7 +142,7 @@ export const UserAvatarDropdown = () => {
                   as='button'
                   classNames={{
                     icon: 'text-[#ffffff]',
-                    base: 'bg-[--c-primary-variant-1]',
+                    base: 'bg-[--c-primary]',
                   }}
                   className='h-[30px] w-[30px]'
                 />

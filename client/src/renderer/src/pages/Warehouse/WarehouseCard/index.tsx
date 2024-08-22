@@ -84,7 +84,7 @@ export const WarehouseCard = () => {
                   className={`${currentWarehouseId == ele.id ? 'bg-c-primary-variant-3' : 'bg-[#323535]'}  p-2 rounded-lg`}
                 >
                   <LocalIcon
-                    color={`${currentWarehouseId == ele.id ? 'var(--c-primary-variant-1)' : 'white'}`}
+                    color={`${currentWarehouseId == ele.id ? 'var(--c-primary)' : 'white'}`}
                   />
                 </div>
                 <div className='flex items-center gap-[10px]'>

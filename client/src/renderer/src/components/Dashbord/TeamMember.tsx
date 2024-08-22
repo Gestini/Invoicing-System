@@ -1,12 +1,21 @@
-import React, { useState, useEffect } from 'react'
-import { BiSolidMessageDetail } from 'react-icons/bi'
+import { IoPersonSharp } from 'react-icons/io5'
+import { BiChevronRight } from 'react-icons/bi'
+import { IoIosArrowDown } from 'react-icons/io'
+import { Avatar, Badge, Card, CardBody, CardFooter, CardHeader, Chip } from '@nextui-org/react'
 
 const TeamMember = ({ name, role, roleColor }) => {
   return (
-    <div className='itemmemberteamdashboard items-center flex justify-between'>
-      <div className='imageandinfomemberteam flex gap-2 items-center'>
-        <div className='profilememberteam w-[35px] h-[35px] bg-blue-500 rounded-full'></div>
-        <div className='nameandrolteamdashboard flex justify-center gap-1 flex-col'>
+    <div className='items-center flex justify-between'>
+      <div className='flex gap-2 items-center'>
+        <Avatar
+          as='button'
+          size='sm'
+          classNames={{
+            icon: 'text-[#ffffff]',
+            base: 'bg-[--c-primary]',
+          }}
+        />
+        <div className='flex justify-center gap-1 flex-col'>
           <span className='text-c-title font-[500] text-[13px]'>{name}</span>
           <div
             className={`text-[10px] px-[0px] flex justify-center items-center rounded-md`}
@@ -16,52 +25,70 @@ const TeamMember = ({ name, role, roleColor }) => {
           </div>
         </div>
       </div>
-      <BiSolidMessageDetail className='text-[30px] cursor-pointer text-c-gray' />
+      <Badge
+        color='danger'
+        content=''
+        showOutline={false}
+        shape='circle'
+        size='sm'
+        classNames={{ badge: 'bg-[#e97067] w-2 h-2 min-w-2 min-h-2' }}
+      >
+        <svg
+          xmlns='http://www.w3.org/2000/svg'
+          width='24'
+          height='24'
+          viewBox='0 0 24 24'
+          fill='#616262'
+        >
+          <path d='M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4.7-8 5.334L4 8.7V6.297l8 5.333 8-5.333V8.7z'></path>
+        </svg>
+      </Badge>
     </div>
   )
 }
 
-const TeamDashboard = () => {
-  const [visibleItems, setVisibleItems] = useState(5)
+export const TeamDashboard = () => {
   const teamMembers = [
     { name: 'Mario Carmen', role: 'Vendedor', roleColor: { text: '#32ADE6', bg: '#32ade621' } },
     { name: 'Mario Carmen', role: 'Vendedor', roleColor: { text: '#32ADE6', bg: '#32ade621' } },
-    { name: 'Mario Carmen', role: 'Vendedor', roleColor: { text: '#32ADE6', bg: '#32ade621' } },
-    {
-      name: 'Mario Carmen',
-      role: 'Asst. Administrativo',
-      roleColor: { text: '#831f97', bg: '#ad32e621' },
-    },
-    { name: 'Mario Carmen', role: 'Vendedor', roleColor: { text: '#32ADE6', bg: '#32ade621' } },
+    { name: 'Mario Carmen', role: 'Admin', roleColor: { text: '#cd54e5', bg: '#ad32e621' } },
   ]
 
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerHeight < 900) {
-        setVisibleItems(3)
-      } else {
-        setVisibleItems(5)
-      }
-    }
-
-    handleResize() // Call once initially to set the value
-    window.addEventListener('resize', handleResize)
-
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
-
   return (
-    <div className='membersteamdashboard flex w-full gap-3 flex-col'>
-      {teamMembers.slice(0, visibleItems).map((member, index) => (
-        <TeamMember
-          key={index}
-          name={member.name}
-          role={member.role}
-          roleColor={member.roleColor}
-        />
-      ))}
-    </div>
+    <Card classNames={{ base: 'rounded-lg' }}>
+      <CardHeader>
+        <div className='flex w-full justify-between'>
+          <div className='flex gap-2 items-center justify-center text-[15px] font-[500] cursor-pointer text-c-title '>
+            Equipo <IoIosArrowDown />
+          </div>
+          <Chip size='sm' radius='sm'>
+            <div className='flex gap-1 items-center'>
+              <IoPersonSharp />
+              <span className='font-[500] text-c-title-opacity'>20</span>
+            </div>
+          </Chip>
+        </div>
+      </CardHeader>
+      <CardBody>
+        <div className='rounded-lg flex flex-col gap-4 '>
+          <div className='flex w-full h-full gap-3 flex-col'>
+            {teamMembers.slice(0, 3).map((member, index) => (
+              <TeamMember
+                key={index}
+                name={member.name}
+                role={member.role}
+                roleColor={member.roleColor}
+              />
+            ))}
+          </div>
+        </div>
+      </CardBody>
+      <CardFooter className='flex items-center text-center content-center'>
+        <div className=' flex gap-2 text-c-title-opacity text-[12px] justify-center items-center content-center cursor-pointer '>
+          <span>Ver todo el equipo</span>
+          <BiChevronRight size={20} />
+        </div>
+      </CardFooter>
+    </Card>
   )
 }
-
-export default TeamDashboard

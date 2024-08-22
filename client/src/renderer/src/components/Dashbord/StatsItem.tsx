@@ -1,56 +1,57 @@
-import React from 'react'
+import { Card } from '@nextui-org/react'
 import { FaStore, FaLongArrowAltUp } from 'react-icons/fa'
 
-const StatsCardGrid = () => {
+export const StatsCardGrid = () => {
   const statsData = [
     {
-      icon: <FaStore className='text-[30px] text-white' />,
+      icon: <FaStore className='text-[30px]' />,
       value: '120',
       revenue: '$30.000',
       label: 'Ventas',
     },
     {
-      icon: <FaStore className='text-[30px] text-white' />,
+      icon: <FaStore className='text-[30px]' />,
       value: '120',
       revenue: '$30.000',
-      label: 'Ventas',
+      label: 'Pedidos',
     },
     {
-      icon: <FaStore className='text-[30px] text-white' />,
+      icon: <FaStore className='text-[30px]' />,
       value: '120',
       revenue: '$30.000',
-      label: 'Ventas',
+      label: 'Stock',
     },
     {
-      icon: <FaStore className='text-[30px] text-white' />,
+      icon: <FaStore className='text-[30px]' />,
       value: '120',
       revenue: '$30.000',
-      label: 'Ventas',
+      label: 'Gastos',
     },
   ]
 
   return (
-    <div className='cardsmain w-full grid gap-4 mb-[15px]'>
+    <div className='cardsmain w-full grid gap-4'>
       {statsData.map((data, index) => (
-        <div
-          key={index}
-          className='cardstats px-[20px] py-[14px] justify-between bg-c-card-4 rounded-lg gap-4 flex'
-        >
-          <div className='iconstat w-[70px] flex justify-center items-center bg-c-gray rounded-lg h-full'>
-            {data.icon}
-          </div>
-          <div className='statstext flex flex-col justify-end items-end'>
-            <div className='topstat flex justify-center items-center'>
-              <span className='text-[40px] font-[500] text-[#34F59F] valuedatacardstat'>{data.value}</span>
-              <FaLongArrowAltUp className='text-[25px] text-[#34F59F] iconarrow' />
+        <Card classNames={{ base: 'rounded-lg' }} key={index}>
+          <div className='cardstats px-[20px] py-[14px] justify-between bg-c-card rounded-sm gap-4 flex'>
+            <div className='iconstat w-[70px] text-c-title flex justify-center items-center bg-c-bg-color-2 rounded-lg h-full'>
+              {data.icon}
             </div>
-            <span className='text-c-gray font-[500] mt-[-5px] valuerevenuecardstat'>{data.revenue}</span>
-            <span className='text-white font-[500] valuelabelcardstat'>{data.label}</span>
+            <div className='statstext flex flex-col justify-end items-end'>
+              <div className='topstat flex justify-center items-center'>
+                <span className='text-[40px] font-[500] text-[var(--c-arrow-stats)] valuedatacardstat'>
+                  {data.value}
+                </span>
+                <FaLongArrowAltUp className='text-[25px] text-[var(--c-arrow-stats)] iconarrow' />
+              </div>
+              <span className='text-[#7c7c7c] font-[500] mt-[-5px] valuerevenuecardstat'>
+                {data.revenue}
+              </span>
+              <span className='text-title font-[500] valuelabelcardstat'>{data.label}</span>
+            </div>
           </div>
-        </div>
+        </Card>
       ))}
     </div>
   )
 }
-
-export default StatsCardGrid

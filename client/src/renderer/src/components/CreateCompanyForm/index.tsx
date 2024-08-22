@@ -80,7 +80,7 @@ export const CreateUnitModal = () => {
         content={'Añadir unidad'}
         color='secondary'
         classNames={{
-          content: 'bg-c-sidebar-bg-2',
+          content: 'bg-c-sidebar-bg-2 text-c-title',
         }}
       >
         <div

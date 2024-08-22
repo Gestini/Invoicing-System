@@ -104,16 +104,16 @@ export const Sidebar = () => {
                 <NavLink
                   to={item.path + item.routes[0].path}
                   key={index}
-                  className={`rounded-md font-medium cursor-pointer flex items-center text-white ${baseLocationPath === baseItemPath ? 'bg-c-primary-variant-2' : ''}`}
+                  className={`rounded-md font-medium cursor-pointer flex items-center text-c-title ${baseLocationPath === baseItemPath ? 'bg-c-primary-variant-4' : ''}`}
                 >
                   <div className='flex gap-1 items-center h-[36px]'>
                     <span
-                      className={`${baseLocationPath === baseItemPath ? 'text-c-primary' : 'text-gray-300'} text-[20px] px-1`}
+                      className={`${baseLocationPath === baseItemPath ? 'text-c-primary' : 'text-c-title'} text-[20px] px-1`}
                     >
                       {item.icon}
                     </span>
                     <span
-                      className={`text-[14px] rounded-sm top-2 flex items-center ${baseLocationPath !== baseItemPath ? 'text-white' : ''}`}
+                      className={`text-[14px] rounded-sm top-2 flex items-center ${baseLocationPath !== baseItemPath ? 'text-c-title' : ''}`}
                     >
                       <ShortCellValue cellValue={item.section} maxLength={9} />
                     </span>
@@ -138,16 +138,16 @@ export const Sidebar = () => {
                   className='rounded-md font-medium cursor-pointer'
                   classNames={{
                     indicator: 'text-medium px-[5px]',
-                    trigger: `${hasPermissions ? 'cursor-no-drop' : ''}  px-0 rounded-lg h-[36px] flex items-center ${baseLocationPath === baseItemPath ? 'bg-c-primary-variant-2' : ''}`,
+                    trigger: `${hasPermissions ? 'cursor-no-drop' : ''}  px-0 rounded-lg h-[36px] flex items-center ${baseLocationPath === baseItemPath ? 'bg-c-primary-variant-4' : ''}`,
                   }}
                   title={
                     <div className='flex gap-1 items-center'>
                       <span
-                        className={`${baseLocationPath === baseItemPath ? 'text-c-primary' : 'text-white'} text-[20px] px-1`}
+                        className={`${baseLocationPath === baseItemPath ? 'text-c-primary' : 'text-c-title'} text-[20px] px-1`}
                       >
                         {item.icon}
                       </span>
-                      <span className='text-[14px] rounded-sm top-2 flex items-center text-white'>
+                      <span className='text-[14px] rounded-sm top-2 flex items-center text-c-title'>
                         <ShortCellValue cellValue={item.section} maxLength={9} />
                       </span>
                     </div>
@@ -165,13 +165,13 @@ export const Sidebar = () => {
                             <div
                               className={`h-[6px] w-[6px] rounded-full transition-all duration-200 ${
                                 isActive
-                                  ? 'bg-c-primary-variant-1 shadow-point'
-                                  : 'bg-c-gray group-hover:bg-white'
+                                  ? 'bg-c-primary shadow-point'
+                                  : 'bg-gray-400 group-hover:bg-gray-300'
                               }`}
                             ></div>
                             <span
                               className={`transition-all duration-200 ${
-                                isActive ? 'text-c-primary-variant-1' : 'group-hover:text-white'
+                                isActive ? 'text-c-primary' :  'text-gray-400 group-hover:text-gray-300'
                               }`}
                             >
                               {capitalize(ele.title)}

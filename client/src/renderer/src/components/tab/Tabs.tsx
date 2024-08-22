@@ -43,7 +43,7 @@ export const Tabs: React.FC<WarehouseTabsProps> = ({ tabs }) => {
           <li key={index} className='cursor-pointer'>
             <span
               className={`inline-block w-full px-5 py-[6px]  
-                ${activeTab === index ? 'text-c-primary-variant-1 bg-c-primary-variant-3' : 'hover:text-c-primary-variant-4 bg-transparent hover:bg-c-primary-variant-4'}
+                ${activeTab === index ? 'text-c-primary bg-c-primary-variant-3' : 'hover:text-c-primary-variant-4 bg-transparent hover:bg-c-primary-variant-4'}
                 ${index === 0 ? 'rounded-l-lg' : ''}
                 ${index === tabs.length - 1 ? 'rounded-r-lg' : ''}`}
               onClick={() => setActiveTab(index)}

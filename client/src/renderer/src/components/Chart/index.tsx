@@ -61,7 +61,7 @@ export const GraphView = () => {
 
   React.useEffect(() => {
     const style = getComputedStyle(document.body)
-    const computedMainColor = style.getPropertyValue('--c-primary-variant-1').trim()
+    const computedMainColor = style.getPropertyValue('--c-primary').trim()
     setMainColor(computedMainColor)
     setParsedMainColor(
       `rgba(${parseInt(computedMainColor?.slice(1, 3), 16)}, ${parseInt(computedMainColor?.slice(3, 5), 16)}, ${parseInt(computedMainColor?.slice(5, 7), 16)}, 0.1)`,
@@ -91,28 +91,6 @@ export const GraphView = () => {
         { time: '2018-12-31', value: 7 },
       ],
     },
-    {
-      title: 'Pedidos',
-      colors: {
-        backgroundColor: 'transparent',
-        lineColor: mainColor,
-        textColor: '#71717a',
-        areaTopColor: mainColor,
-        areaBottomColor: parsedMainColor,
-      },
-      initialData: [
-        { time: '2018-12-22', value: 1 },
-        { time: '2018-12-23', value: 2 },
-        { time: '2018-12-24', value: 3 },
-        { time: '2018-12-25', value: 5 },
-        { time: '2018-12-26', value: 5 },
-        { time: '2018-12-27', value: 3 },
-        { time: '2018-12-28', value: 7 },
-        { time: '2018-12-29', value: 7 },
-        { time: '2018-12-30', value: 9 },
-        { time: '2018-12-31', value: 8 },
-      ],
-    },
   ]
 
   const pieChartData = generateColorVariants(mainColor, 7).map((color, index) => ({
@@ -122,8 +100,8 @@ export const GraphView = () => {
   }))
 
   return (
-    <div className='flex gap-4'>
-      <Card className='w-full bg-c-card z-0'>
+    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4'>
+      <Card className='w-full z-0' classNames={{ base: 'rounded-lg' }}>
         <CardHeader>
           <h3 className='font-medium'>Stock</h3>
         </CardHeader>
@@ -132,7 +110,7 @@ export const GraphView = () => {
         </CardBody>
       </Card>
       {graphList.map((item, index) => (
-        <Card className='w-full bg-c-card z-0' key={index}>
+        <Card className='w-full z-0' key={index} classNames={{ base: 'rounded-lg' }}>
           <CardHeader>
             <h3 className='font-medium'>{item.title}</h3>
           </CardHeader>

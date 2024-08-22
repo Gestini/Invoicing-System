@@ -57,8 +57,8 @@ export const UnitDropdown = ({ unitItem, openDropdownId, setOpenDropdownId }) =>
             placement='right'
             content={
               <div className='px-1 py-2'>
-                <div className='text-small font-bold'>{unitItem?.name}</div>
-                <div className='text-tiny'>{unitItem?.description}</div>
+                <div className='text-small font-bold text-c-title'>{unitItem?.name}</div>
+                <div className='text-tiny text-c-title'>{unitItem?.description}</div>
               </div>
             }
             color='secondary'
@@ -69,7 +69,7 @@ export const UnitDropdown = ({ unitItem, openDropdownId, setOpenDropdownId }) =>
             <div
               className={`${
                 unitItem.id == unit.id ? 'rounded-full' : 'rounded-full'
-              } transition-all duration-500 ease-in-out w-[24px] h-[24px] uppercase flex items-center justify-center font-semibold text-white`}
+              } transition-all duration-500 ease-in-out w-[24px] h-[24px] uppercase flex items-center justify-center font-semibold text-c-title`}
             >
               {unitItem.name.slice(0, 2)}
             </div>
