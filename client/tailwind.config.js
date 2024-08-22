@@ -52,6 +52,7 @@ module.exports = {
         'c-card': 'var(--c-card)',
         'c-card-4': 'var(--c-card-4)',
         'c-title': 'var(--c-title)',
+        'c-title-opacity': 'var(--c-title-opacity)',
         'c-gray': 'var(--c-gray)',
         'c-error': '#B93B3B',
         'c-borde': '#003399',
