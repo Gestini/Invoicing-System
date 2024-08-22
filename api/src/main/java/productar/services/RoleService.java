@@ -14,6 +14,7 @@ import productar.models.EmployeeModel;
 import productar.models.RoleModel;
 import productar.models.RolePermissionsModel;
 import productar.models.RoleUsersModel;
+import productar.models.User;
 import productar.repositories.RolePermissionsRepository;
 import productar.repositories.RoleRepository;
 import productar.repositories.RoleUsersRepository;
@@ -29,6 +30,9 @@ public class RoleService {
 
     @Autowired
     private RoleUsersRepository roleUsersRepository;
+
+    @Autowired
+    private UserService userService;
 
     public RoleModel createRole(RoleModel role) {
         return roleRepository.save(role);
@@ -59,8 +63,10 @@ public class RoleService {
         return employees;
     }
 
-    public Boolean hasPermissions(Long userId, String permissionName) {
-        return roleUsersRepository.hasPermissions(userId, permissionName);
+    public Boolean hasPermissions(Long unitId, String permissionName) {
+        User currentUser = userService.getCurrentUser();
+        return roleUsersRepository.hasPermissions(currentUser.getId(), unitId, permissionName)
+                || roleUsersRepository.isOwner(currentUser.getId(), unitId);
     }
 
     public ResponseEntity<String> updateRole(Long id, RoleModel updatedRole) {

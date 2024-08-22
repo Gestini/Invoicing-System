@@ -8,7 +8,7 @@ export const InvoiceForm = () => {
   const dispatch = useDispatch()
   const unit = useSelector((state: any) => state.currentUnit)
   const [isInitialized, setIsInitialized] = React.useState(false)
-  const newInvoicing = useSelector((state: any) => state.newInvoicing)
+  const newInvoicing = useSelector((state: any) => state.unit.newInvoicing)
   const currentTab = newInvoicing?.tabs?.find((item: any) => item.id === newInvoicing.currentTabId)
 
   React.useEffect(() => {

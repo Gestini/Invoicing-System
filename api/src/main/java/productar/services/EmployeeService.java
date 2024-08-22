@@ -3,14 +3,20 @@ package productar.services;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import productar.models.BusinessUnitsModel;
 import productar.models.EmployeeModel;
+import productar.models.InvitationModel;
+import productar.models.User;
+import productar.repositories.BusinessUnitsRepository;
 import productar.repositories.EmployeeRepository;
+import productar.repositories.InvitationRepository;
 
 @Service
 public class EmployeeService {
@@ -18,8 +24,65 @@ public class EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
+    @Autowired
+    private InvitationRepository invitationRepository;
+
+    @Autowired
+    private EmailSenderService emailSenderService;
+
+    @Autowired
+    private BusinessUnitsRepository businessUnitsRepository;
+
+    @Autowired
+    private UserService userService;
+
     public EmployeeModel createEmployee(EmployeeModel employee) {
-        return employeeRepository.save(employee);
+        // Guarda al nuevo empleado
+        EmployeeModel newEmployee = employeeRepository.save(employee);
+
+        // Genera un token único para la invitación
+        String token = UUID.randomUUID().toString();
+
+        // Crea e inicializa el objeto de invitación
+        InvitationModel invitation = new InvitationModel();
+        invitation.setBusinessUnit(employee.getBusinessUnit());
+        invitation.setInviter(userService.getCurrentUser());
+        invitation.setToken(token);
+        invitation.setAccepted(false);
+        invitation.setEmployee(employee);
+
+        BusinessUnitsModel businessUnit = businessUnitsRepository
+                .findById(employee.getBusinessUnit().getId())
+                .orElseThrow(() -> new RuntimeException("Unidad no encontrada"));
+
+        // Guarda la invitación
+        invitationRepository.save(invitation);
+
+        // Construye el enlace de invitación
+        String invitationLink = "http://localhost:5173/invite?token=" + token;
+
+        // Establece el asunto y el mensaje del correo electrónico
+        String subject = "Invitación para unirte a la Unidad de Negocio";
+        String businessUnitName = businessUnit.getName();
+
+        String message = String.format(
+                "Hola %s,\n\n"
+                        + "¡Te damos la bienvenida! Has recibido una invitación para unirte a nuestra unidad de negocio: %s.\n\n"
+                        + "Por favor, usa el siguiente enlace para aceptar la invitación y completar el proceso de incorporación:\n\n"
+                        + "%s\n\n"
+                        + "Si tienes alguna pregunta, no dudes en ponerte en contacto con nosotros.\n\n"
+                        + "Saludos cordiales,\n"
+                        + "El equipo de %s",
+                employee.getName(),
+                businessUnitName,
+                invitationLink,
+                businessUnitName);
+
+        // Envía el correo electrónico
+        emailSenderService.sendSimpleEmail(employee.getEmail(), subject, message);
+
+        // Retorna el nuevo empleado creado
+        return newEmployee;
     }
 
     public List<EmployeeModel> getEmployeesByBusinessUnitId(Long id) {
@@ -39,15 +102,25 @@ public class EmployeeService {
         }
     }
 
+    public ResponseEntity<String> leaveUnit(Long unitId) {
+        try {
+            User currentUser = userService.getCurrentUser();
+            employeeRepository.leaveUnit(currentUser.getId(), unitId);
+            return ResponseEntity.ok("Abandonaste la unidad correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error: " + e.getMessage());
+        }
+    }
+
     public ResponseEntity<String> updateEmployee(Long id, EmployeeModel updatedEmployee) {
         try {
-            Optional<EmployeeModel> existingRoleOptional = employeeRepository.findById(id);
+            Optional<EmployeeModel> existingEmployeeOptional = employeeRepository.findById(id);
 
-            if (!existingRoleOptional.isPresent()) {
+            if (!existingEmployeeOptional.isPresent()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontró el empleado con ID: " + id);
             }
 
-            EmployeeModel existingRole = existingRoleOptional.get();
+            EmployeeModel existingRole = existingEmployeeOptional.get();
 
             if (updatedEmployee == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Los datos a actualizar son nulos");

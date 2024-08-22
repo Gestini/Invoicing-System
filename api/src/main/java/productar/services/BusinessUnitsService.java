@@ -3,6 +3,7 @@ package productar.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,14 +15,19 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import productar.models.BusinessUnitsModel;
+import productar.models.EmployeeModel;
 import productar.models.User;
 import productar.repositories.BusinessUnitsRepository;
+import productar.repositories.EmployeeRepository;
 import productar.repositories.UserRepository;
 
 @Service
 public class BusinessUnitsService {
     @Autowired
-    BusinessUnitsRepository businessUnitsRepository;
+    private BusinessUnitsRepository businessUnitsRepository;
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -43,6 +49,25 @@ public class BusinessUnitsService {
         List<BusinessUnitsModel> businessUnits = businessUnitsRepository.findByOwnerUsername(username);
 
         return businessUnits;
+    }
+
+    public List<BusinessUnitsModel> getUserBusinessUnits() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = ((UserDetails) authentication.getPrincipal()).getUsername();
+
+        // Obtener unidades donde el usuario es dueño
+        List<BusinessUnitsModel> ownedUnits = businessUnitsRepository.findByOwnerUsername(username);
+
+        // Obtener unidades donde el usuario es empleado
+        List<BusinessUnitsModel> employeeUnits = employeeRepository.findByUserUsername(username)
+                .stream()
+                .map(EmployeeModel::getBusinessUnit)
+                .collect(Collectors.toList());
+
+        // Combinar y eliminar duplicados
+        ownedUnits.addAll(employeeUnits);
+
+        return ownedUnits.stream().distinct().collect(Collectors.toList());
     }
 
     public ResponseEntity<BusinessUnitsModel> saveBusinessUnit(BusinessUnitsModel businessUnit, String username) {
@@ -68,7 +93,7 @@ public class BusinessUnitsService {
         User owner = businessUnit.getOwner();
 
         if (!owner.getId().equals(user.getId())) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No tienes permisos suficientes");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Solo el dueño puede eliminar la unidad");
         }
 
         try {

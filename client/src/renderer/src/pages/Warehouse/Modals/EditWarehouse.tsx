@@ -15,8 +15,8 @@ import { editWarehouse, wareHouseInterface } from '@renderer/features/warehouseS
 export const EditWarehouse = ({ isOpen, onOpenChange, onClose, id }) => {
   const dispatch = useDispatch()
   const [data, setData] = React.useState<any>({})
-  const warehouse: wareHouseInterface = useSelector((state: any) => state.warehouse)
-  const currentWarehouseEdit = warehouse.data.find((item) => item.id == id)
+  const warehouse: wareHouseInterface = useSelector((state: any) => state.unit.warehouse)
+  const currentWarehouseEdit = warehouse.data.find((item: any) => item.id == id)
 
   const handleChange = (e: any) => {
     let name = e.target.name

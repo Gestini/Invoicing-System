@@ -6,7 +6,7 @@ import { editTotal, handleTotal, setTotal } from '@renderer/features/newInvoicin
 
 export const TotalsInputs = () => {
   const dispatch = useDispatch()
-  const newInvoicing = useSelector((state: any) => state.newInvoicing)
+  const newInvoicing = useSelector((state: any) => state.unit.newInvoicing)
   const currentTab = newInvoicing?.tabs?.find((item: any) => item.id == newInvoicing.currentTabId)
 
   React.useEffect(() => {

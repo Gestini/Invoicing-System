@@ -7,7 +7,7 @@ import { reqDeleteRole, reqEditRole } from '@renderer/api/requests'
 
 export const RoleInfo = () => {
   const dispatch = useDispatch()
-  const roles = useSelector((state: any) => state.roles)
+  const roles = useSelector((state: any) => state.unit.roles)
   const currentRole = roles.data.find((item: Role) => item.id === roles.currentRoleIdEdit)
   const [inputs, setInputs] = React.useState({
     name: '',

@@ -1,33 +1,33 @@
 export interface permsMap {
-    title: string
-    permission: string
-    description: string
+  title: string
+  permission: string
+  description: string
 }
 
-export const permissions = [
-  {
-    title: 'Gestionar stock',
+export const permissions = Object.freeze({
+  warehouse: {
+    title: 'Gestionar depósitos',
     permission: 'MANAGE_STOCK',
-    description: 'Permite a los usuarios gestionar el stock.',
+    description: 'Permite gestionar la sección de depósitos.',
   },
-  {
-    title: 'Gestionar proveedores',
-    permission: 'MANAGE_SUPPLIER',
-    description: 'Permite a los usuarios gestionar el proveedores.',
+  hr: {
+    title: 'Gestionar recursos humanos',
+    permission: 'MANAGE_HR',
+    description: 'Permite gestionar la sección de recursos humanos.',
   },
-  {
-    title: 'Gestionar ventas',
-    permission: 'MANAGE_SALES',
-    description: 'Permite a los usuarios gestionar el ventas.',
+  operations: {
+    title: 'Gestionar operaciones',
+    permission: 'MANAGE_OPERATIONS',
+    description: 'Permite gestionar la sección de operaciones.',
   },
-  {
-    title: 'Gestionar pedidos',
-    permission: 'MANAGE_ORDERS',
-    description: 'Permite a los usuarios gestionar los pedidos.',
+  pos: {
+    title: 'Gestionar punto de venta',
+    permission: 'MANAGE_POS',
+    description: 'Permite gestionar la sección de puntos de venta.',
   },
-  {
-    title: 'Gestionar clientes',
-    permission: 'MANAGE_CLIENT',
-    description: 'Permite a los usuarios gestionar el clientes.',
+  admin: {
+    title: 'Admin',
+    permission: '*',
+    description: 'Ignora las restricciones',
   },
-]
+})

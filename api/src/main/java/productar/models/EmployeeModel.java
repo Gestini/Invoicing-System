@@ -3,10 +3,10 @@ package productar.models;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -31,9 +31,8 @@ public class EmployeeModel {
     private BusinessUnitsModel businessUnit;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "role_id", nullable = true)
-    @JsonBackReference("employeeRef")
-    private RoleModel role;
+    @JoinColumn(name = "user_id", nullable = true)
+    private User user;
 
     @Column
     private String name;
@@ -42,7 +41,19 @@ public class EmployeeModel {
     private String lastname;
 
     @Column
+    private String email;
+
+    @Enumerated(EnumType.STRING)
+    @Column
+    private EmployeeStatus status;
+
+    @Column
     private String pin;
+
+    public enum EmployeeStatus {
+        PENDING,
+        ACTIVE
+    }
 
     public Long getId() {
         return id;
@@ -58,14 +69,6 @@ public class EmployeeModel {
 
     public void setBusinessUnit(BusinessUnitsModel businessUnit) {
         this.businessUnit = businessUnit;
-    }
-
-    public RoleModel getRole() {
-        return role;
-    }
-
-    public void setRole(RoleModel role) {
-        this.role = role;
     }
 
     public String getName() {
@@ -90,6 +93,30 @@ public class EmployeeModel {
 
     public void setPin(String pin) {
         this.pin = pin;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public EmployeeStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(EmployeeStatus status) {
+        this.status = status;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
 }

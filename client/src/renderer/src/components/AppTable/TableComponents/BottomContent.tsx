@@ -17,7 +17,7 @@ export const BottomContent = ({ pages, page, setPage, selectedKeys, filteredItem
     <div className='py-2 px-2 flex justify-between items-center'>
       <span className='w-[30%] text-small text-default-400'>
         {selectedKeys === 'all'
-          ? 'Todos estan seleccionados'
+          ? 'Todos están seleccionados'
           : `${selectedKeys.size} de ${filteredItems.length}  seleccionados`}
       </span>
       <Pagination

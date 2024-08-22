@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 const MainColor: React.FC = () => {
   const dispatch = useDispatch()
   const { colors } = useColorManagement()
-  const currentTheme = useSelector((state: any) => state.currentTheme)
+  const currentTheme = useSelector((state: any) => state.user.currentTheme)
 
   const handleChangeColor = (index: number) => {
     const selectedColor = colors[index]

@@ -24,7 +24,7 @@ export const AddProductModal = ({ modal }) => {
 
   React.useEffect(() => {
     const GetSupplier = async () => {
-      const response = await reqGetSupplier(params.id)
+      const response = await reqGetSupplier(params.unitId)
       setSuppliers(response.data)
     }
     GetSupplier()
@@ -54,7 +54,7 @@ export const AddProductModal = ({ modal }) => {
     friendPrice: null,
     cardPrice: null,
     businessUnit: {
-      id: params.id,
+      id: params.unitId,
     },
   })
 
@@ -189,7 +189,7 @@ export const AddProductModal = ({ modal }) => {
       friendPrice: null,
       cardPrice: null,
       businessUnit: {
-        id: params.id,
+        id: params.unitId,
       },
     })
     onClose()

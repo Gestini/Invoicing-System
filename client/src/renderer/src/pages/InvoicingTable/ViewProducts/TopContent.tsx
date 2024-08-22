@@ -5,7 +5,7 @@ import { reqCreateInvoice } from '@renderer/api/requests'
 
 export const TopContent = () => {
   const unit = useSelector((state: any) => state.currentUnit)
-  const newInvoicing = useSelector((state: any) => state.newInvoicing)
+  const newInvoicing = useSelector((state: any) => state.unit.newInvoicing)
   const currentTab = newInvoicing?.tabs?.find((item: any) => item.id === newInvoicing.currentTabId)
 
   const onSubmmit = async () => {

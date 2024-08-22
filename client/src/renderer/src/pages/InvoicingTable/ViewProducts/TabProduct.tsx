@@ -8,7 +8,7 @@ export const TabProduct = () => {
   const handleAddTab = () => dispatch(addTab())
   const handleCloseTab = (id: number) => dispatch(closeTab(id))
   const handleSetCurrentTab = (id: string) => dispatch(setCurrentTabId(id))
-  const newInvoicing = useSelector((state: any) => state.newInvoicing)
+  const newInvoicing = useSelector((state: any) => state.unit.newInvoicing)
 
   return (
     <div className='flex flex-wrap gap-4 items-center select-none'>

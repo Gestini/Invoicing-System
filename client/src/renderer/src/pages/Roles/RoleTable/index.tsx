@@ -22,13 +22,13 @@ export const RoleTable = () => {
   const params = useParams()
   const dispatch = useDispatch()
   const [searchTerm, setSearchTerm] = React.useState('')
-  const roles = useSelector((state: any) => state.roles)
+  const roles = useSelector((state: any) => state.unit.roles)
   const currentRole = roles.data.find((item: Role) => item.id === roles.currentRoleIdEdit)
 
   React.useEffect(() => {
     const loadData = async () => {
       try {
-        const response = await reqGetRoletByUnit(params.id)
+        const response = await reqGetRoletByUnit(params.unitId)
 
         dispatch(setRoles(response.data))
 

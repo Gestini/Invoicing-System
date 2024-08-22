@@ -8,9 +8,11 @@ export const factura = [
             { name: 'compNumber', title: 'Número de comprobante', value: '', type: 'input', invisible: true },
             { name: 'issueDate', title: 'Fecha de emisión', value: '', type: 'input' },
             { name: 'dueDate', title: 'Fecha de vencimiento', value: '', type: 'input' },
-            { name: 'saleCondition', title: 'Condición de venta', value: '', type: 'select', options: [
-                'Contado', 'Tarjeta de débito', 'Tarjeta de crédito', 'Depósito', 'Transferencia'
-            ]}
+            {
+                name: 'saleCondition', title: 'Condición de venta', value: '', type: 'select', options: [
+                    'Contado', 'Tarjeta de débito', 'Tarjeta de crédito', 'Depósito', 'Transferencia'
+                ]
+            }
         ]
     },
     {
@@ -18,12 +20,14 @@ export const factura = [
         info: [
             { name: 'companyName', title: 'Nombre de la empresa', value: '', type: 'input' },
             { name: 'companyAddress', title: 'Dirección de la empresa', value: '', type: 'input' },
-            { name: 'companyIvaCondition', title: 'Condición IVA de la empresa', value: '', type: 'select', options: [
-                "Monotributista", "IVA responsable inscripto", "IVA responsable no inscripto", 
-                "IVA sujeto exento", "Consumidor final", "Proveedor del exterior", 
-                "Cliente del exterior", "IVA Liberado - Ley 19.640", "Monotributista social", 
-                "IVA no alcanzado"
-            ]},
+            {
+                name: 'companyIvaCondition', title: 'Condición IVA de la empresa', value: '', type: 'select', options: [
+                    "Monotributista", "IVA responsable inscripto", "IVA responsable no inscripto",
+                    "IVA sujeto exento", "Consumidor final", "Proveedor del exterior",
+                    "Cliente del exterior", "IVA Liberado - Ley 19.640", "Monotributista social",
+                    "IVA no alcanzado"
+                ]
+            },
             { name: 'companyCuit', title: 'CUIT de la empresa', value: '', type: 'input' }
         ]
     },
@@ -31,9 +35,11 @@ export const factura = [
         section: 'Concepto',
         info: [
             { name: 'salePoint', title: 'Punto de venta', value: '', type: 'input' },
-            { name: 'concepto', title: 'Concepto', value: '', type: 'select', options: [
-                'Productos', 'Servicios', 'Productos y servicios'
-            ]}
+            {
+                name: 'concepto', title: 'Concepto', value: '', type: 'select', options: [
+                    'Productos', 'Servicios', 'Productos y servicios'
+                ]
+            }
         ]
     },
     {
@@ -41,40 +47,41 @@ export const factura = [
         info: [
             { name: 'clientName', title: 'Nombre del cliente', value: '', type: 'input' },
             { name: 'clientCuil', title: 'CUIL del cliente', value: '', type: 'input' },
-            { name: 'clientCondition', title: 'Condición IVA del cliente', value: '', type: 'select', options: [
-                "Monotributista", "IVA responsable inscripto", "IVA responsable no inscripto", 
-                "IVA sujeto exento", "Consumidor final", "Proveedor del exterior", 
-                "Cliente del exterior", "IVA Liberado - Ley 19.640", "Monotributista social", 
-                "IVA no alcanzado"
-            ]},
+            {
+                name: 'clientCondition', title: 'Condición IVA del cliente', value: '', type: 'select', options: [
+                    "Monotributista", "IVA responsable inscripto", "IVA responsable no inscripto",
+                    "IVA sujeto exento", "Consumidor final", "Proveedor del exterior",
+                    "Cliente del exterior", "IVA Liberado - Ley 19.640", "Monotributista social",
+                    "IVA no alcanzado"
+                ]
+            },
             { name: 'clientPhone', title: 'Teléfono del cliente', value: '', type: 'input' },
             { name: 'clientEmail', title: 'Email del cliente', value: '', type: 'input' },
             { name: 'clientAddress', title: 'Dirección del cliente', value: '', type: 'input' }
         ]
     },
-    
-    // {
-    //     section: 'items',
-    //     info: [
-    //         { name: 'code', title: 'Código', value: '', type: 'input' },
-    //         { name: 'product', title: 'Producto', value: '', type: 'input' },
-    //         { name: 'quantity', title: 'Cantidad', value: '', type: 'input' },
-    //         { name: 'unit', title: 'Unidad', value: '', type: 'input' },
-    //         { name: 'unitPrice', title: 'Precio unitario', value: '', type: 'input' },
-    //         { name: 'discountPercent', title: 'Descuento (%)', value: '', type: 'input' },
-    //         { name: 'discountAmount', title: 'Descuento (monto)', value: '', type: 'input' },
-    //         { name: 'subtotal', title: 'Subtotal', value: '', type: 'input' }
-    //     ]
-    // },
-    // {
-    //     section: 'totals',
-    //     info: [
-    //         { name: 'importeGravado', title: 'Importe Gravado', value: '', type: 'input' },
-    //         { name: 'importeExento', title: 'Importe Exento', value: '', type: 'input' },
-    //         { name: 'iva', title: 'IVA', value: '', type: 'input' },
-    //         { name: 'total', title: 'Total', value: '', type: 'input' }
-    //     ]
-    // }
+    {
+        section: 'items',
+        info: [
+            { name: 'code', title: 'Código', value: '615', type: 'input' },
+            { name: 'product', title: 'Producto', value: 'Producto 1', type: 'input' },
+            { name: 'quantity', title: 'Cantidad', value: '10', type: 'input' },
+            { name: 'unit', title: 'Unidad', value: 'Coca-cola', type: 'input' },
+            { name: 'unitPrice', title: 'Precio unitario', value: '100', type: 'input' },
+            { name: 'discountPercent', title: 'Descuento (%)', value: '1', type: 'input' },
+            { name: 'discountAmount', title: 'Descuento (monto)', value: '1', type: 'input' },
+            { name: 'subtotal', title: 'Subtotal', value: '100', type: 'input' }
+        ]
+    },
+    {
+        section: 'totals',
+        info: [
+            { name: 'importeGravado', title: 'Importe Gravado', value: '100', type: 'input' },
+            { name: 'importeExento', title: 'Importe Exento', value: '150', type: 'input' },
+            { name: 'iva', title: 'IVA', value: '600', type: 'input' },
+            { name: 'total', title: 'Total', value: '100', type: 'input' }
+        ]
+    }
 ];
 
 

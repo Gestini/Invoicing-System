@@ -56,6 +56,6 @@ public class BusinessUnitsController {
 
     @GetMapping("/get-by-owner")
     public List<BusinessUnitsModel> getBusinessUnitsByOwner() {
-        return businessUnitsService.getBusinessUnitsByToken();
+        return businessUnitsService.getUserBusinessUnits();
     }
 }

@@ -69,7 +69,8 @@ const InvoiceForm = () => {
         } catch (error) {
             setErrorMessage(`Error: ${error.message}`);
         } finally {
-            setLoading(false); // Oculta el loading al terminar
+            setLoading(false);
+            resetForm()
         }
     };
 

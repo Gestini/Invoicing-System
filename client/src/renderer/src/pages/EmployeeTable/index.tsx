@@ -19,7 +19,7 @@ export const EmployeeTable = () => {
 
   React.useEffect(() => {
     const loadData = async () => {
-      const response = await reqGetEmployeesByUnit(params.id)
+      const response = await reqGetEmployeesByUnit(params.unitId)
       dispatch(setTableData(response.data))
     }
     loadData()
@@ -38,8 +38,9 @@ export const EmployeeTable = () => {
       try {
         const response = await reqCreateEmployee({
           ...data,
+          status: 'PENDING',
           businessUnit: {
-            id: params.id,
+            id: params.unitId,
           },
         })
         dispatch(addItem(response.data))
@@ -57,9 +58,11 @@ export const EmployeeTable = () => {
     },
   }
 
+  /* const tabs = [{ name: 'Empleados' }, { name: 'Roles' }, { name: 'Invitaciones' }] */
+
   const newEmployeeModal = {
-    title: 'Agrega un nuevo empleado',
-    buttonTitle: 'Agregar',
+    title: 'Invitar a un empleado',
+    buttonTitle: 'Invitar',
     ...modalInputs,
     action: tableActions.create,
   }
@@ -71,11 +74,82 @@ export const EmployeeTable = () => {
   }
 
   return (
-    <AppTable
-      columnsData={columnsData}
-      tableActions={tableActions}
-      addItemModal={<AddItemModal modal={newEmployeeModal} />}
-      editItemModal={<EditItemModal modal={editEmployeeModal} />}
-    />
+    <>
+      {/*
+      <Tabs tabs={tabs} />
+      <div className='flex gap-4 w-full overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 pb-[15px] '>
+        <div
+          className={` w-[285px] h-[76px] rounded-[10px] flex-shrink-0   flex flex-col justify-center cursor-pointer`}
+        >
+          <span className=' text-[18px] text-white font-[500]'>Vendedor</span>
+          <div className='tarjetaempleados flex gap-4'>
+            <p className=' flex justify-center items-center gap-1  text-white  '>
+              20 <span className=' text-[#4b4b4b] font-[500] '>Empleados</span>{' '}
+            </p>
+            <p className=' flex justify-center items-center gap-1  text-white  '>
+              20 <span className=' text-[#4b4b4b] font-[500] '>Empleados</span>{' '}
+            </p>
+          </div>
+        </div>
+        <div
+          className={` w-[285px] h-[76px] rounded-[10px] flex-shrink-0   flex flex-col justify-center cursor-pointer`}
+        >
+          <span className=' text-[18px] text-white font-[500]'>Vendedor</span>
+          <div className='tarjetaempleados flex gap-4'>
+            <p className=' flex justify-center items-center gap-1  text-white  '>
+              20 <span className=' text-[#4b4b4b] font-[500] '>Empleados</span>{' '}
+            </p>
+            <p className=' flex justify-center items-center gap-1  text-white  '>
+              20 <span className=' text-[#4b4b4b] font-[500] '>Empleados</span>{' '}
+            </p>
+          </div>
+        </div>
+        <div
+          className={` w-[285px] h-[76px] rounded-[10px] flex-shrink-0   flex flex-col justify-center cursor-pointer`}
+        >
+          <span className=' text-[18px] text-white font-[500]'>Vendedor</span>
+          <div className='tarjetaempleados flex gap-4'>
+            <p className=' flex justify-center items-center gap-1  text-white  '>
+              20 <span className=' text-[#4b4b4b] font-[500] '>Empleados</span>{' '}
+            </p>
+            <p className=' flex justify-center items-center gap-1  text-white  '>
+              20 <span className=' text-[#4b4b4b] font-[500] '>Empleados</span>{' '}
+            </p>
+          </div>
+        </div>
+        <div
+          className={` w-[285px] h-[76px] rounded-[10px] flex-shrink-0   flex flex-col justify-center cursor-pointer`}
+        >
+          <span className=' text-[18px] text-white font-[500]'>Vendedor</span>
+          <div className='tarjetaempleados flex gap-4'>
+            <p className=' flex justify-center items-center gap-1  text-white  '>
+              20 <span className=' text-[#4b4b4b] font-[500] '>Empleados</span>{' '}
+            </p>
+            <p className=' flex justify-center items-center gap-1  text-white  '>
+              20 <span className=' text-[#4b4b4b] font-[500] '>Empleados</span>{' '}
+            </p>
+          </div>
+        </div>
+        <div
+          className={` w-[285px] h-[76px] rounded-[10px] flex-shrink-0   flex flex-col justify-center cursor-pointer`}
+        >
+          <span className=' text-[18px] text-white font-[500]'>Vendedor</span>
+          <div className='tarjetaempleados flex gap-4'>
+            <p className=' flex justify-center items-center gap-1  text-white  '>
+              20 <span className=' text-[#4b4b4b] font-[500] '>Empleados</span>{' '}
+            </p>
+            <p className=' flex justify-center items-center gap-1  text-white  '>
+              20 <span className=' text-[#4b4b4b] font-[500] '>Empleados</span>{' '}
+            </p>
+          </div>
+        </div>
+      </div> */}
+      <AppTable
+        columnsData={columnsData}
+        tableActions={tableActions}
+        addItemModal={<AddItemModal modal={newEmployeeModal} />}
+        editItemModal={<EditItemModal modal={editEmployeeModal} />}
+      />
+    </>
   )
 }

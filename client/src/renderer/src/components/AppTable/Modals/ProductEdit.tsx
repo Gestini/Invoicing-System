@@ -21,13 +21,13 @@ import { useDispatch, useSelector } from 'react-redux'
 export const EditProductModal = ({ modal }) => {
   const params = useParams()
   const dispatch = useDispatch()
-  const users = useSelector((state: any) => state.table.data)
-  const currentItemIdEdit = useSelector((state: any) => state.table.currentItemIdEdit)
+  const users = useSelector((state: any) => state.unit.table.data)
+  const currentItemIdEdit = useSelector((state: any) => state.unit.table.currentItemIdEdit)
   const currentUserEdit = users.find((item: { id: any }) => item.id == currentItemIdEdit)
   const [suppliers, setSuppliers] = React.useState([])
   const [data, setData] = React.useState({
     businessUnit: {
-      id: params.id,
+      id: params.unitId,
     },
   })
   const [errors, setErrors] = React.useState({
@@ -48,7 +48,7 @@ export const EditProductModal = ({ modal }) => {
 
   React.useEffect(() => {
     const GetSupplier = async () => {
-      const response = await reqGetSupplier(params.id)
+      const response = await reqGetSupplier(params.unitId)
       setSuppliers(response.data)
     }
     GetSupplier()
@@ -107,7 +107,7 @@ export const EditProductModal = ({ modal }) => {
       handleResetCurrentIdEdit()
       setData({
         businessUnit: {
-          id: params.id,
+          id: params.unitId,
         },
       })
       onClose()

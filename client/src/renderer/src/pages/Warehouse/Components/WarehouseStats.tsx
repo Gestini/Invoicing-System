@@ -3,7 +3,7 @@ import { wareHouseInterface } from '@renderer/features/warehouseSlice'
 import { useSelector } from 'react-redux'
 
 export const WarehouseStats = () => {
-  const warehouse: wareHouseInterface = useSelector((state: any) => state.warehouse)
+  const warehouse: wareHouseInterface = useSelector((state: any) => state.unit.warehouse)
   const currentWarehouseId = warehouse.currentWarehouseId
 
   const datita = [
@@ -40,7 +40,7 @@ export const WarehouseStats = () => {
   if (currentWarehouseId == '' || warehouse.data.length === 0) return
 
   return (
-    <div className='flex flex-wrap gap-[53px]'>
+    <div className='flex flex-wrap gap-[33px] mb-4'>
       {datita.map((ele, ind) => (
         <div key={ind}>
           <p className='flex gap-1 items-center text-c-gray text-[16px]'>

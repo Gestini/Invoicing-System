@@ -12,7 +12,7 @@ export const RolePerms = () => {
   const [searchTerm, setSearchTerm] = React.useState('')
   const handleSearch = (e: any) => setSearchTerm(e.target.value)
 
-  const roles = useSelector((state: any) => state.roles)
+  const roles = useSelector((state: any) => state.unit.roles)
   const currentRole = roles.data.find((item: Role) => item.id === roles.currentRoleIdEdit)
 
   const changePermissions = async (
@@ -48,7 +48,7 @@ export const RolePerms = () => {
         startContent={<SearchIcon />}
       />
       <div className='flex items-center flex-col gap-4'>
-        {permissions
+        {Object.values(permissions)
           .filter((item: permsMap) => item.title.toLowerCase().includes(searchTerm.toLowerCase()))
           .map((item, index) => {
             const hasPermissions = currentRole?.permissions?.some(

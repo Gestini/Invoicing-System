@@ -13,7 +13,7 @@ export const RoleUsers = () => {
   const [result, setResult] = React.useState([])
   const [searchValue, setSearchValue] = React.useState('')
   const handleChange = async (e: any) => setSearchValue(e)
-  const roles = useSelector((state: any) => state.roles)
+  const roles = useSelector((state: any) => state.unit.roles)
   const currentRole: Role = roles.data.find((item: Role) => item.id === roles.currentRoleIdEdit)
 
   const filteredData = result.filter(
@@ -25,7 +25,7 @@ export const RoleUsers = () => {
       if (searchValue.trim() == '') return
       if (searchValue.length < 3) return
 
-      const response = await reqSearchEmployeeByName(params.id, searchValue)
+      const response = await reqSearchEmployeeByName(params.unitId, searchValue)
       if (response.data.length == 0) return
       setResult(response.data)
     }

@@ -2,8 +2,9 @@ import { authApi, api, apiNode } from './axios'
 
 /* Rutas usuarios */
 export const reqSearchUserByUsername = (username: string) =>
-  api.get(`/user/get-by-username/${username}`)
+  api.get(`/user/search-by-username/${username}`)
 export const reqLoadUsersByIds = (data: any) => api.post("/user/get-by-ids", data)
+export const reqLoadUserSessions = (data: any) => api.post("/user/get-user-sessions", data)
 
 /* Rutas para manejar el auth */
 export const reqAuthLogin = async (data: any) => authApi.post('/auth/login', data)
@@ -65,8 +66,8 @@ export const reqRemovePermissionRole = async (roleId: any, permissionId) =>
 export const reqAddRoleUser = async (data: any) => api.post('/role/add-user', data)
 export const reqRemoveRoleUser = async (roleId: any, userId: any) =>
   api.delete(`/role/remove-user/${roleId}/${userId}`)
-export const reqUserHasPermissions = (userId: any, permissionName: any) =>
-  api.get(`/role/has-permissions/${userId}/${permissionName}`)
+export const reqUserHasPermissions = ({ unitId, permissionName }) =>
+  api.get(`/role/has-permissions/${unitId}/${permissionName}`)
 
 /* Rutas empleados */
 export const reqCreateEmployee = async (data: any) => api.post('/employee', data)
@@ -76,6 +77,7 @@ export const reqSearchEmployeeByName = (unitId: any, name: string) =>
 export const reqLoadEmployeeByRole = (id: any) => api.get(`/role/get-employees/${id}`)
 export const reqDeleteEmployee = (id: any) => api.delete(`/employee/delete/${id}`)
 export const reqEditEmployee = (id: any, data: any) => api.put(`/employee/edit/${id}`, data)
+export const reqLeaveUnit = (id: any) => api.delete(`/employee/leave-unit/${id}`)
 
 // RUTAS CON BACKEND NODE
 

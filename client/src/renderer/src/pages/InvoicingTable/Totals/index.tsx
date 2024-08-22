@@ -7,7 +7,7 @@ import { Card, CardHeader, CardBody, Divider } from '@nextui-org/react'
 
 export const Totals = () => {
   const dispatch = useDispatch()
-  const newInvoicing = useSelector((state: any) => state.newInvoicing)
+  const newInvoicing = useSelector((state: any) => state.unit.newInvoicing)
 
   const currentTab = newInvoicing?.tabs?.find((item: any) => item.id == newInvoicing.currentTabId)
 

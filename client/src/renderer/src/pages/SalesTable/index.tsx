@@ -12,11 +12,11 @@ import { reqGetAllInvoicesByUnit, reqDeleteInvoice } from '@renderer/api/request
 export const SalesTable = () => {
   const dispatch = useDispatch()
   const params = useParams()
-  const table = useSelector((state: any) => state.table)
+  const table = useSelector((state: any) => state.unit.table)
 
   React.useEffect(() => {
     const loadData = async () => {
-      const response = await reqGetAllInvoicesByUnit(params.id)
+      const response = await reqGetAllInvoicesByUnit(params.unitId)
       dispatch(setTableData(response.data))
     }
     loadData()

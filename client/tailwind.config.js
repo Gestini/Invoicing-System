@@ -50,6 +50,7 @@ module.exports = {
         'c-bg-color-2': 'var(--c-bg-color-2)',
         'c-primary-sidebar': 'var(--c-primary-sidebar)',
         'c-card': 'var(--c-card)',
+        'c-card-4': 'var(--c-card-4)',
         'c-title': 'var(--c-title)',
         'c-gray': 'var(--c-gray)',
         'c-error': '#B93B3B',

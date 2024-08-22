@@ -17,9 +17,9 @@ import { useDispatch, useSelector } from 'react-redux'
 export const EditItemModal = ({ modal }) => {
   const dispatch = useDispatch()
   const [data, setData] = React.useState({})
-  const users = useSelector((state: any) => state.table.data)
+  const users = useSelector((state: any) => state.unit.table.data)
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
-  const currentItemIdEdit = useSelector((state: any) => state.table.currentItemIdEdit)
+  const currentItemIdEdit = useSelector((state: any) => state.unit.table.currentItemIdEdit)
   const currentUserEdit = users.find((item: { id: any }) => item.id == currentItemIdEdit)
 
   React.useEffect(() => {
@@ -103,6 +103,7 @@ export const EditItemModal = ({ modal }) => {
             <Button
               color='danger'
               variant='light'
+              radius='sm'
               onPress={() => {
                 handleResetCurrentIdEdit()
                 onClose()
@@ -110,7 +111,12 @@ export const EditItemModal = ({ modal }) => {
             >
               Cerrar
             </Button>
-            <Button color='primary' onPress={() => handleAddNewUser()}>
+            <Button
+              color='primary'
+              onPress={() => handleAddNewUser()}
+              className='bg-c-primary'
+              radius='sm'
+            >
               Guardar
             </Button>
           </ModalFooter>
