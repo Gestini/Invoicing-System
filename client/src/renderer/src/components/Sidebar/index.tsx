@@ -143,6 +143,37 @@ export const Sidebar = () => {
       direct: true
     },
     {
+      path: `/operations/`,
+      icon: <BiUser />,
+      text: 'Operaciones',
+      data: [
+        {
+          path: `/operations/sales/${unit?.id}`,
+          name: 'Ventas',
+        },
+        {
+          path: `/operations/invoicing/${unit?.id}`,
+          name: 'Facturación',
+        },
+        {
+          path: `/operations/invoicing/${unit?.id}/afip`,
+          name: 'Facturación AFIP',
+        },
+        {
+          path: `/operations/clients/${unit?.id}`,
+          name: 'Clientes',
+        },
+        {
+          path: `/operations/reports/${unit?.id}`,
+          name: 'Informes',
+        },
+        {
+          path: `/operations/orders/${unit?.id}`,
+          name: 'Pedidos',
+        },
+      ],
+    },
+    {
       path: `/hr/`,
       icon: <BiGroup />,
       text: 'Recursos Humanos (RRHH)',
@@ -181,33 +212,7 @@ export const Sidebar = () => {
         },
       ],
     },
-    {
-      path: `/operations/`,
-      icon: <BiUser />,
-      text: 'Operaciones',
-      data: [
-        {
-          path: `/operations/sales/${unit?.id}`,
-          name: 'Ventas',
-        },
-        {
-          path: `/operations/invoicing/${unit?.id}`,
-          name: 'Facturación',
-        },
-        {
-          path: `/operations/clients/${unit?.id}`,
-          name: 'Clientes',
-        },
-        {
-          path: `/operations/reports/${unit?.id}`,
-          name: 'Informes',
-        },
-        {
-          path: `/operations/orders/${unit?.id}`,
-          name: 'Pedidos',
-        },
-      ],
-    }
+
 
   ];
 

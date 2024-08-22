@@ -4,6 +4,7 @@ import Informes from '@renderer/pages/Informes'
 import Register from '@renderer/pages/Auth/Register'
 import Companies from '@renderer/pages/Companies/Companies'
 import { Roles } from '@renderer/pages/Roles'
+import Facturation from '@renderer/pages/Facturation'
 import { Warehouse } from '@renderer/pages/Warehouse'
 import { SalesTable } from '@renderer/pages/SalesTable'
 import { ClientTable } from '@renderer/pages/ClientTable'
@@ -45,6 +46,7 @@ const Router = () => {
           <Route path='/hr/:id/roles' element={<Roles />} />
           <Route path='/hr/roles/:id' element={<Roles />} />
 
+
           {/* POS */}
           <Route path='/pos/close-cash/:id' element={<Roles />} />
           <Route path='/pos/close-cash-history/:id' element={<Roles />} />
@@ -52,6 +54,10 @@ const Router = () => {
           <Route path='/pos/debit-note/:id' element={<Roles />} />
           <Route path='/pos/barcode-scanner/:id' element={<Roles />} />
           <Route path='/pos/email-sending/:id' element={<Roles />} />
+          {/* FACTURACION */}
+          <Route path='/operations/invoicing/:id/afip' element={<Facturation />} />
+          {/* <Route path='/create-credit-invoice' element={<Facturation />} />
+          <Route path='/create-credit-note' element={<Facturation />} /> */}
 
 
           {/* OPERACIONES */}

@@ -1,4 +1,4 @@
-import { authApi, api } from './axios'
+import { authApi, api, apiNode } from './axios'
 
 /* Rutas usuarios */
 export const reqSearchUserByUsername = (username: string) =>
@@ -76,3 +76,12 @@ export const reqSearchEmployeeByName = (unitId: any, name: string) =>
 export const reqLoadEmployeeByRole = (id: any) => api.get(`/role/get-employees/${id}`)
 export const reqDeleteEmployee = (id: any) => api.delete(`/employee/delete/${id}`)
 export const reqEditEmployee = (id: any, data: any) => api.put(`/employee/edit/${id}`, data)
+
+// RUTAS CON BACKEND NODE
+
+
+
+/* Rutas AFIP */
+export const reqCreateInvoiceAfip = async (data: any) => apiNode.post('/create-invoice', data)
+export const reqCreateCreditInvoiceAfip = async (data: any) => apiNode.post('/create-credit-invoice', data)
+export const reqCreateCreditNoteAfip = async (data: any) => apiNode.post('/create-credit-note', data)
