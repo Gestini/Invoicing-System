@@ -109,7 +109,7 @@ const operationsRoutes: RouteSection = {
   routes: [
     { path: '/sales', element: <SalesTable />, title: 'ventas' },
     { path: '/invoicing', element: <InvoicingTable />, title: 'facturación' },
-    { path: `/invoicing/afip`, element: <Facturation />, title: 'Facturación AFIP' },
+    { path: '/afip', element: <Facturation />, title: 'Facturación AFIP' },
     { path: '/clients', element: <ClientTable />, title: 'clientes' },
     { path: '/reports', element: <></>, title: 'informes' },
     { path: '/orders', element: <></>, title: 'órdenes' },
