@@ -1,6 +1,12 @@
+import ProductTable from '../components/Tables/ProductTable'
+
 const Informes = () => {
   return (
-    <h4 className="di">Informes</h4>
+    <h4 className="w-full flex justify-center items-center">
+      <div>
+        <ProductTable />
+      </div>
+    </h4>
   )
 }
 

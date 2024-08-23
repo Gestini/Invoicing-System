@@ -1,13 +1,13 @@
 *::-webkit-scrollbar {
-  width: 6px;
-  background: var(--bgColor);
+  width: 3px;
+  background: transparent
 }
 
 *::-webkit-scrollbar-thumb {
-  background: var(--scrollBg);
+  background: var(--c-primary);
   border-radius: 10px;
 }
 
 *::-webkit-scrollbar-thumb:hover {
-  background: var(--scrollBgHover);
+  background: var(--c-primary-hover);
 }

@@ -1,36 +1,53 @@
-import Home from '@renderer/pages/Home'
-import Ventas from '@renderer/pages/Ventas'
-import Pedidos from '@renderer/pages/Pedidos'
-import Stock from '@renderer/pages/Stock'
-import User from '@renderer/pages/User'
-import Informes from '@renderer/pages/Informes'
-import Presupuestos from '@renderer/pages/Presupuestos'
-import Ajustes from '@renderer/pages/Ajustes'
-import Ayuda from '@renderer/pages/Ayuda'
-import Facturar from '@renderer/pages/Facturar'
+import Invite from '@renderer/pages/Invite/Invite'
+import Companies from '@renderer/pages/Companies/Companies'
+import MercadoPago from '@renderer/pages/suscription/mercadopago'
 import { Route, Routes } from 'react-router-dom'
-import ProtectedRouteSession from './middlewares/ProtectedRouteSession'
-import ProtectedRouteAuth from './middlewares/ProtectedRouteAuth'
+import { ThemeMiddleware } from './middlewares/ThemeMiddleware'
+import { ProtectedRouteAuth } from './middlewares/ProtectedRouteAuth'
+import { routes, authRoutes } from './routesData'
+import { ProtectedRouteSession } from './middlewares/ProtectedRouteSession'
+import { CurrentSecctionMiddleware } from './middlewares/CurrentSecctionMiddleware'
+import { LoadCurrentUnitMiddleware } from './middlewares/LoadCurrentUnitMiddleware'
+import { NavbarAndSidebarMiddleware } from './middlewares/NavbarAndSidebarMiddleware'
+import { SectionPermissionMiddleware } from './middlewares/SectionPermissionMiddleware'
 
 const Router = () => {
   return (
     <Routes>
-      <Route path='*' element={<><h1>ERROR 404</h1></>} />
-      <Route element={<ProtectedRouteSession />}>
-        <Route path="/" element={<Home />} />
-        <Route path="/ventas" element={<Ventas />} />
-        <Route path="/Facturar" element={<Facturar />} />
-        <Route path="/pedidos" element={<Pedidos />} />
-        <Route path="/stock" element={<Stock />} />
-        <Route path="/usuario" element={<User />} />
-        <Route path="/informes" element={<Informes />} />
-        <Route path="/presupuestos" element={<Presupuestos />} />
-        <Route path="/ajustes" element={<Ajustes />} />
-        <Route path="/ayuda" element={<Ayuda />} />
+      <Route element={<ThemeMiddleware />}>
+        <Route path={'*'} element={<></>} />
+        <Route path={'/invite'} element={<Invite />} />
+        <Route element={<ProtectedRouteSession />}>
+          <Route path={'/'} element={<Companies />} />
+          <Route path={'/mp'} element={<MercadoPago />} />
+          <Route element={<LoadCurrentUnitMiddleware />}>
+            <Route element={<NavbarAndSidebarMiddleware />}>
+              {routes.map((route: any, index: number) => (
+                <Route
+                  key={index}
+                  path={route.path}
+                  element={
+                    <SectionPermissionMiddleware permission={route.permission}>
+                      <CurrentSecctionMiddleware
+                        icon={route.icon}
+                        title={route.title}
+                        section={route.section}
+                        routesLength={route.routesLength}
+                      >
+                        {route.element}
+                      </CurrentSecctionMiddleware>
+                    </SectionPermissionMiddleware>
+                  }
+                />
+              ))}
+            </Route>
+          </Route>
+        </Route>
       </Route>
       <Route element={<ProtectedRouteAuth />}>
-        <Route path='/login' element={<></>} />
-        <Route path='/register' element={<></>} />
+        {authRoutes.routes.map((route, index) => (
+          <Route key={index} path={route.path} element={route.element} />
+        ))}
       </Route>
     </Routes>
   )

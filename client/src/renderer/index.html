@@ -1,23 +1,18 @@
 <!doctype html>
-<html>
+<html lang="en" style="background: var(--c-bg-color)">
   <head>
-  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="UTF-8" />
     <title>Electron</title>
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
     <meta
-    http-equiv="Content-Security-Policy"
-    content="
-      default-src 'self'; 
-      script-src 'self'; 
-      style-src 'self' 'unsafe-inline'; 
-      img-src 'self' https://img.logoipsum.com https://ui-avatars.com data:;
-    "
-  />
+      http-equiv="Content-Security-Policy"
+      content="img-src 'self' https://img.logoipsum.com https://ui-avatars.com https://i.pravatar.cc data:;"
+    />
   </head>
-
-  <body class="light">
+  <body id="variantOne">
     <div id="root"></div>
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

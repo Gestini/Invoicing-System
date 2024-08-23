@@ -35,9 +35,6 @@ public class SupplierModel {
     @Column
     private String phone;
 
-    @Column
-    private String address;
-
     @Email(message = "Email should be valid")
     @Column
     private String email;
@@ -47,6 +44,18 @@ public class SupplierModel {
 
     @Column
     private String supplierType;
+
+    @Column
+    private String reasonSocial;
+
+    @Column
+    private String address;
+
+    @Column
+    private String dni;
+
+    @Column
+    private String saleCondition;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "business_unit_id", nullable = false)
@@ -59,6 +68,30 @@ public class SupplierModel {
 
     public void setBusinessUnit(BusinessUnitsModel businessUnit) {
         this.businessUnit = businessUnit;
+    }
+
+    public String getReasonSocial() {
+        return reasonSocial;
+    }
+
+    public void setReasonSocial(String reasonSocial) {
+        this.reasonSocial = reasonSocial;
+    }
+
+    public String getDni() {
+        return dni;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
+    }
+
+    public String getSaleCondition() {
+        return saleCondition;
+    }
+
+    public void setSaleCondition(String saleCondition) {
+        this.saleCondition = saleCondition;
     }
 
     public Long getId() {

@@ -3,19 +3,27 @@ const { nextui } = require('@nextui-org/react')
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
-
+    './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
     './src/renderer/*.{js,ts,jsx,tsx,mdx}',
-    './src/renderer/src/**/*.{js,ts,jsx,tsx,mdx}'
+    './src/renderer/src/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {
+      height: {
+        'calc-sidebar': 'calc(100vh - 50px)',
+        'seccio-general': 'calc(100vh - 45px)',
+        'seccion-tabla': 'calc(100vh - 125px)',
+      },
+      width: {
+        navbar: 'calc(100% - 50px)',
+      },
       gridTemplateColumns: {
         // Define a custom grid template for auto-fill with minmax
-        'auto-fill-minmax-cards': 'repeat(auto-fill, minmax(250px, 1fr))',
+        'auto-fill-cards': 'repeat(auto-fill, minmax(250px, 1fr))',
       },
       boxShadow: {
-        'cards': 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
+        cards: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
+        point: 'var(--c-primary-variant-1) 0px 0px 15px',
       },
       spacing: {
         '25px': '25px',
@@ -28,56 +36,54 @@ module.exports = {
         navBackground: '#F5F2F0',
       },
       colors: {
-        'c-primary': '#007bff', // Color principal
-        'c-secondary': '#33BBCF', // Color secundario
-        'c-error': '#B93B3B', // Color para errores
-        'c-grey': ' #0000008A', //Color clarito para detalles
-        'c-borde': '#003399',        // Color para botones grises transparentes
-        'c-primary-hover': '#eaf6ff',
-        'c-primary-hover2': '#f7fcff'
-
-        // color para hover de botones 
-
-
-        /* ***********************************
-  
-        Solo pongan los colores así como aparece aquí arriba, no se cuestionen el porqué. 
-        No hay nada más que hacer, así lo quieren tailwind y next ui y no sirven bien las cosas de otra forma. fin. 
-        No hay necesidad de extender y configurar esto con componentes de next ui!!!! 
-        
-        *********************************** */
+        'c-primary': 'var(--c-primary)',
+        'c-primary-variant-1': 'var(--c-primary-variant-1)',
+        'c-primary-variant-2': 'var(--c-primary-variant-2)',
+        'c-primary-variant-3': 'var(--c-primary-variant-3)',
+        'c-primary-variant-4': 'var(--c-primary-variant-4)',
+        'c-primary-hover': 'var(--c-primary-hover)',
+        'c-primary-hover2': 'var(--c-primary-hover2)',
+        'c-company-bg-color': 'var(--c-company-bg-color)',
+        'c-primary-route-active': 'var(--c-primary-route-active)',
+        'c-primary-route-hover': 'var(--c-primary-route-hover)',
+        'c-secondary': 'var(--c-secondary)',
+        'c-bg-color-2': 'var(--c-bg-color-2)',
+        'c-primary-sidebar': 'var(--c-primary-sidebar)',
+        'c-card': 'var(--c-card)',
+        'c-card-4': 'var(--c-card-4)',
+        'c-title': 'var(--c-title)',
+        'c-title-opacity': 'var(--c-title-opacity)',
+        'c-gray': 'var(--c-gray)',
+        'c-error': '#B93B3B',
+        'c-borde': '#003399',
+        'c-gray': 'var(--c-primary-gray)',
+        'c-border': 'var(--c-border)',
+        'c-primary-opacity': 'var(--c-primary-opacity)',
+        'c-selected': 'var(--c-bg-selected)',
+        'c-input-color': 'var(--c-input-color)',
+        'c-sidebar-text': 'var(--c-sidebar-text)',
+        'c-sidebar-bg': 'var(--c-sidebar-bg)',
+        'c-sidebar-bg-2': 'var(--c-sidebar-bg-2)',
       },
     },
     screens: {
       sm: '640px',
-      // => @media (min-width: 640px) { ... }
 
       md: '768px',
-      // => @media (min-width: 768px) { ... }
 
       lg: '1024px',
-      // => @media (min-width: 1024px) { ... }
 
       xl: '1280px',
-      // => @media (min-width: 1280px) { ... }
 
       '2xl': '1536px',
-      // => @media (min-width: 1536px) { ... }
 
       '2k': '2129px',
-      //'2k': '2560px',
-      // => @media (min-width: 1536px) { ... }
 
       '3k': '3326px',
 
-      //'4k': '3840px',
-      // => @media (min-width: 1536px) { ... }
-
       '5k': '5120px',
-      // => @media (min-width: 1536px) { ... }
     },
   },
   darkMode: 'class',
-  plugins: [nextui()]
-
+  plugins: [nextui()],
 }

@@ -1,51 +1,67 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
-import { Navigate, useLocation, useNavigate, Outlet } from 'react-router-dom'
-import RouterCol from '../RouterCol'
+import { Outlet } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
+import { setMyUser } from '@renderer/features/userSlice'
+import { useLocation } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { reqAuthLoadProfileByToken } from '@renderer/api/requests'
 
-const ProtectedRouteAuth = () => {
+export const ProtectedRouteSession = () => {
   const location = useLocation()
-  const dispatch = useDispatch()
   const token = localStorage.getItem('token')
-  const navigate = useNavigate()
+  const dispatch = useDispatch()
 
-  // if (!token) return <Navigate to='/login' />
+  if (!token) return <Navigate to='/login' />
+  const user = useSelector((state: any) => state.user.user)
 
-  // React.useEffect(() => {
-  //     const loadProfile = async () => {
-  //         try {
-  //             if (token) {
-  //                 const response = await authLoadProfileByToken(token)
-  //                 dispatch(setMyUser(response.data))
-  //             }
-  //         } catch (error) {
-  //             localStorage.removeItem('token')
-  //             console.log(error)
-  //         }
-  //     }
-  //     loadProfile()
-  // }, [token])
+  React.useEffect(() => {
+    const loadProfile = async () => {
+      try {
+        if (!token) return
 
-  // React.useEffect(() => {
-  //     const loadHospitalStats = async () => {
-  //         try {
-  //             const response = await reqGetHospitalStats()
-  //             dispatch(setHospitalStats(response.data))
-  //         } catch (error) {
-  //             localStorage.removeItem('token')
-  //         }
-  //     }
-  //     loadHospitalStats()
-  // })
+        const response = await reqAuthLoadProfileByToken(token)
+        if (!response.data) return
 
-  const handleNavigate = (path: string) => navigate(path)
+        dispatch(setMyUser(response.data))
 
-  return (
-    <div className='flex'>
-      <RouterCol />
-      <Outlet />
-    </div>
-  )
+        const currentSessions = localStorage.getItem('sessions')
+        if (!currentSessions) {
+          return localStorage.setItem(
+            'sessions',
+            JSON.stringify([
+              {
+                userId: response.data?.id,
+                token,
+              },
+            ]),
+          )
+        }
+
+        const partseSessions = JSON.parse(currentSessions)
+        const AuxSessions = [...partseSessions]
+        const userFound = partseSessions.find((item: any) => item.userId == response.data.id)
+
+        if (!userFound) {
+          AuxSessions.push({
+            userId: response.data?.id,
+            token,
+          })
+          return localStorage.setItem('sessions', JSON.stringify(AuxSessions))
+        }
+
+        if (token !== userFound.token) {
+          AuxSessions[AuxSessions.indexOf(userFound)].token = token
+          return localStorage.setItem('sessions', JSON.stringify(AuxSessions))
+        }
+      } catch (error) {
+        localStorage.removeItem('token')
+        window.location.reload()
+      }
+    }
+    loadProfile()
+  }, [token, location])
+
+  if (user === null) return <></>
+
+  return <Outlet />
 }
-
-export default ProtectedRouteAuth

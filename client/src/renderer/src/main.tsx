@@ -1,13 +1,13 @@
-import './index.css'
-import { NextUIProvider } from '@nextui-org/react'
-import React from 'react'
-import ReactDOM from 'react-dom/client'
 import App from './App'
-import { HashRouter } from 'react-router-dom'
+import React from 'react'
+import store from './store'
+import ReactDOM from 'react-dom/client'
 import { Provider } from 'react-redux'
-import store from './redux/store/store'
+import { HashRouter } from 'react-router-dom'
+import { NextUIProvider } from '@nextui-org/react'
 import './styles/main.scss'
-import "./styles/theme.scss"
+import './styles/theme.scss'
+import './styles/webkit.scss'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -18,5 +18,5 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         </HashRouter>
       </Provider>
     </NextUIProvider>
-  </React.StrictMode>
+  </React.StrictMode>,
 )

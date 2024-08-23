@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Claims;
+
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -28,8 +29,7 @@ public class JwtService {
 
     private String getToken(Map<String, Object> extraClaims, UserDetails user) {
 
-        return Jwts
-                .builder()
+        return Jwts.builder()
                 .setClaims(extraClaims)
                 .setSubject(user.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -44,12 +44,10 @@ public class JwtService {
     }
 
     public String getUsernameFromToken(String token) {
-
         return getClaim(token, Claims::getSubject);
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
-
         final String username = getUsernameFromToken(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
@@ -70,11 +68,9 @@ public class JwtService {
 
     private Date getExpiration(String token) {
         return getClaim(token, Claims::getExpiration);
-
     }
 
     private boolean isTokenExpired(String token) {
         return getExpiration(token).before(new Date());
     }
-
 }
