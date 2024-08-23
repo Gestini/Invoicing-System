@@ -1,3 +1,4 @@
+import { BiMailIcon } from '../Icons/BiMailIcon'
 import { IoPersonSharp } from 'react-icons/io5'
 import { BiChevronRight } from 'react-icons/bi'
 import { IoIosArrowDown } from 'react-icons/io'
@@ -33,15 +34,7 @@ const TeamMember = ({ name, role, roleColor }) => {
         size='sm'
         classNames={{ badge: 'bg-[#e97067] w-2 h-2 min-w-2 min-h-2' }}
       >
-        <svg
-          xmlns='http://www.w3.org/2000/svg'
-          width='24'
-          height='24'
-          viewBox='0 0 24 24'
-          fill='#616262'
-        >
-          <path d='M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4.7-8 5.334L4 8.7V6.297l8 5.333 8-5.333V8.7z'></path>
-        </svg>
+        <BiMailIcon />
       </Badge>
     </div>
   )
