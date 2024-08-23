@@ -157,7 +157,7 @@ export const routes = [
         icon: item.icon,
         path: item.path + route.path,
         routesLength: item.routes.length,
-        permission: item.permission,
+        permission: item.permission || 'none',
       })),
     ),
   [],

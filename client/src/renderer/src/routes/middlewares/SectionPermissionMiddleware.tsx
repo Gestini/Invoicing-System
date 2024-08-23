@@ -11,8 +11,6 @@ export const SectionPermissionMiddleware = ({ permission, children }) => {
   React.useEffect(() => {
     const validatePermissions = async () => {
       try {
-        if (!permission) return setHasPermissions(true)
-
         const response = await reqUserHasPermissions({
           unitId: unit.id,
           permissionName: permission,
