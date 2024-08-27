@@ -1,4 +1,4 @@
-import { UserUnits } from './Components/userUnits'
+import { UserUnits } from './Components/UserUnits'
 import { SidebarSections } from './Components/SidebarSections'
 
 export const Sidebar = () => {

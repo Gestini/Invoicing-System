@@ -72,8 +72,8 @@ export const SidebarSections = () => {
           if (item.routes.length == 1) {
             return (
               <SidebarSectionItem
+                key={index}
                 item={item}
-                index={index}
                 baseItemPath={baseItemPath}
                 hasPermissions={hasPermissions}
                 baseLocationPath={baseLocationPath}
@@ -83,6 +83,7 @@ export const SidebarSections = () => {
 
           return (
             <SidebarSectionAcordion
+              key={index}
               item={item}
               index={index}
               baseItemPath={baseItemPath}
