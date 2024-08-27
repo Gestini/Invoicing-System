@@ -6,17 +6,10 @@ import { useSelector } from 'react-redux'
 import { ShortCellValue } from '../../AppTable/TableComponents/ShortCellValue'
 import { Accordion, AccordionItem, Badge } from '@nextui-org/react'
 
-export const SidebarSectionItem = ({
-  item,
-  index,
-  baseItemPath,
-  hasPermissions,
-  baseLocationPath,
-}) => {
+export const SidebarSectionItem = ({ item, baseItemPath, hasPermissions, baseLocationPath }) => {
   return (
     <NavLink
       to={hasPermissions ? '#' : item.path + item.routes[0].path}
-      key={index}
       className={`${hasPermissions ? 'cursor-no-drop opacity-50' : 'cursor-pointer'}  rounded-md font-medium flex items-center text-c-title ${baseLocationPath === baseItemPath ? 'bg-c-primary-variant-4' : ''}`}
     >
       <div className='flex gap-1 items-center h-[36px]'>
