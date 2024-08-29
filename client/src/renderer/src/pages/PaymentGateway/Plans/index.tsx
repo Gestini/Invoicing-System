@@ -12,52 +12,56 @@ const PlanCard = ({ plan }) => {
 
   return (
     <Card
-      className={`overflow-visible bg-c-card flex flex-col justify-between h-[450px] rounded-lg p-8 w-full max-w-xs mx-auto ${plan.isPopular ? 'transform translate-y-7' : ''}`}
+      className={`overflow-visible bg-c-card flex flex-col h-[450px] rounded-lg p-8 w-full max-w-xs mx-auto ${plan.isPopular ? 'transform translate-y-7' : ''}`}
     >
-      <div>
+      <div className='flex items-center justify-center content-center flex-col'>
         {plan.isPopular && (
-          <div className='absolute -top-4 left-1/2 transform -translate-x-1/2 z-10'>
+          <div className='absolute -top-4'>
             <span className='text-xs font-bold bg-c-primary text-white py-4 px-3 rounded-md shadow-sm'>
               Primer mes gratis
             </span>
           </div>
         )}
-        <h2 className='text-xl text-c-title mb-4'>{plan.name}</h2>
-        <p className='mt-4 text-6xl font-extrabold text-c-title'>
-          {plan.price}
-          <span className='text-lg font-medium text-gray-400'>/ Mes</span>
-        </p>
-        <p className='mt-2 text-sm text-c-title'>{plan.description}</p>
-        <ul className='mt-4 space-y-2'>
-          {features.map((feature, index) => (
-            <li key={index} className='text-c-title flex items-center'>
-              <svg
-                className='w-4 h-4 mr-2 text-c-title'
-                fill='none'
-                stroke='currentColor'
-                viewBox='0 0 24 24'
-                xmlns='http://www.w3.org/2000/svg'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth='2'
-                  d='M5 13l4 4L19 7'
-                ></path>
-              </svg>
-              {feature}
-            </li>
-          ))}
-        </ul>
       </div>
-      <Link to={`/payment/${plan.id}/${params.unitId}`} target='_blank'>
-        <Button
-          className='relative bg-gray-200 text-black py-2 px-4 rounded-lg w-full hover:bg-gray-300 transition-colors z-10'
-          endContent={<BiLinkExternal />}
-        >
-          Susbribirse
-        </Button>
-      </Link>
+      <div className='flex flex-col h-full justify-between'>
+        <div className='flex flex-col gap-4'>
+          <h2 className='text-xl text-c-title'>{plan.name}</h2>
+          <p className='text-6xl font-extrabold text-c-title'>
+            {plan.price}
+            <span className='text-lg font-medium text-gray-400'>/ Mes</span>
+          </p>
+          <p className='text-sm text-c-title'>{plan.description}</p>
+          <ul className='flex gap-1 flex-col'>
+            {features.map((feature, index) => (
+              <li key={index} className='flex gap-2 text-c-title items-center'>
+                <svg
+                  className='w-4 h-4 text-c-title'
+                  fill='none'
+                  stroke='currentColor'
+                  viewBox='0 0 24 24'
+                  xmlns='http://www.w3.org/2000/svg'
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    strokeWidth='2'
+                    d='M5 13l4 4L19 7'
+                  ></path>
+                </svg>
+                {feature}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <Link to={`/payment/${plan.id}/${params.unitId}`} target='_blank'>
+          <Button
+            className='relative bg-gray-200 text-black py-2 px-4 rounded-lg w-full hover:bg-gray-300 transition-colors z-10'
+            endContent={<BiLinkExternal />}
+          >
+            Susbribirse
+          </Button>
+        </Link>
+      </div>
     </Card>
   )
 }
