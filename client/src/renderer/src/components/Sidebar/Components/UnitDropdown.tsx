@@ -47,8 +47,6 @@ export const UnitDropdown = ({ unitItem, openDropdownId, setOpenDropdownId }) =>
     >
       <DropdownTrigger>
         <div
-          onContextMenu={handleOpenDropdown}
-          onClick={handleNavigate}
           className={`${
             unitItem.id == unit.id ? 'rounded-md bg-c-primary-variant-4' : ''
           } transition-all duration-500 ease-in-out flex items-center justify-center h-[32px] w-[32px] cursor-pointer`}
@@ -67,6 +65,8 @@ export const UnitDropdown = ({ unitItem, openDropdownId, setOpenDropdownId }) =>
             }}
           >
             <div
+              onContextMenu={handleOpenDropdown}
+              onClick={handleNavigate}
               className={`${
                 unitItem.id == unit.id ? 'rounded-full' : 'rounded-full'
               } transition-all duration-500 ease-in-out w-[24px] h-[24px] uppercase flex items-center justify-center font-semibold text-c-title`}
