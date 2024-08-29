@@ -26,8 +26,10 @@
   --c-top-3: #9b734b;
 
   --c-arrow-stats: #25a86d;
-
   --gradient-dashboard: #ffffff;
+
+  // TABS COLOR
+  --c-tabs: #131313;
 }
 
 .dark {
@@ -58,14 +60,17 @@
 
   --c-arrow-stats: #34f59f;
 
-  --gradient-dashboard: linear-gradient(
-    to right,
-    var(--c-primary-variant-4),
-    var(--c-primary-variant-2)
-  );
+  --gradient-dashboard: linear-gradient(to right,
+      var(--c-primary-variant-4),
+      var(--c-primary-variant-2));
+
+  // TABS COLOR
+  --c-tabs: #7c7c7c;
+
 }
 
 #variantOne {
+  --c-logo: #71717a;
   --c-primary: #3b82f6;
   --c-secondary: #f56565;
   --c-sidebar-bg: #1c1c20;
@@ -87,6 +92,7 @@
 }
 
 #variantTwo {
+  --c-logo: #71717a;
   --c-primary: #ef4444;
   --c-secondary: #33bbcf;
   --c-sidebar-bg: #201c1c;
@@ -108,6 +114,7 @@
 }
 
 #variantThree {
+  --c-logo: #71717a;
   --c-primary: #8b5cf6;
   --c-secondary: #33bbcf;
   --c-sidebar-bg: #1e1c20;
@@ -129,6 +136,7 @@
 }
 
 #variantFour {
+  --c-logo: #71717a;
   --c-primary: #ec4899;
   --c-secondary: #33bbcf;
   --c-sidebar-bg: #201c1f;
@@ -150,6 +158,7 @@
 }
 
 #variantFive {
+  --c-logo: #71717a;
   --c-primary: #dd872c;
   --c-secondary: #33bbcf;
   --c-sidebar-bg: #201e1c;
@@ -171,6 +180,7 @@
 }
 
 #variantSix {
+  --c-logo: #62b167;
   --c-primary: #62b167;
   --c-secondary: #f56565;
   --c-sidebar-bg: #1c201d;

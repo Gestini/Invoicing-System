@@ -38,11 +38,11 @@ export const Tabs: React.FC<WarehouseTabsProps> = ({ tabs }) => {
           ))}
         </select>
       </div>
-      <ul className='hidden border border-c-border text-sm font-medium text-center rounded-lg shadow sm:flex dark:divide-gray-700 text-c-gray w-fit'>
+      <ul className='hidden border border-c-border text-sm font-medium text-center rounded-lg shadow sm:flex text-c-tabs w-fit'>
         {tabs.map((tab, index) => (
           <li key={index} className='cursor-pointer'>
             <span
-              className={`inline-block w-full px-5 py-[6px]  
+              className={`inline-block w-full px-5 py-[6px]
                 ${activeTab === index ? 'text-c-primary bg-c-primary-variant-3' : 'hover:text-c-primary-variant-4 bg-transparent hover:bg-c-primary-variant-4'}
                 ${index === 0 ? 'rounded-l-lg' : ''}
                 ${index === tabs.length - 1 ? 'rounded-r-lg' : ''}`}

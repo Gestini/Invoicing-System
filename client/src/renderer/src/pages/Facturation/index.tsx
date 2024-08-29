@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { reqCreateInvoiceAfip } from '@renderer/api/requests';
 import { factura as facturaTemplate } from './data'; // Asegúrate de que la ruta es correcta
+import { Tabs } from '@renderer/components/tab/Tabs';
+import FacturaDesign from './FacturaDesing'
 
 const InvoiceForm = () => {
     const [factura, setFactura] = useState(facturaTemplate);
@@ -74,56 +76,77 @@ const InvoiceForm = () => {
         }
     };
 
+    const tabs = [
+        { name: 'Facturas', content: 'Facturas' },
+        { name: 'Facturas de credito', content: 'Facturas de credito' },
+        { name: 'Notas de credito', content: 'Notas de credito' },
+    ]
+
     return (
-        <div className="p-6 bg-white shadow-lg rounded-lg">
-            {factura.map(section => (
-                <div key={section.section} className="mb-6">
-                    <h3 className="text-xl font-semibold mb-4">{section.section}</h3>
-                    {section.info.map(infoItem => (
-                        !infoItem.invisible && (
-                            <div key={infoItem.name} className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    {infoItem.title}
-                                </label>
-                                {infoItem.type === 'input' ? (
-                                    <input
-                                        type="text"
-                                        value={infoItem.value}
-                                        onChange={e => handleChange(section.section, infoItem.name, e.target.value)}
-                                        className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    />
-                                ) : infoItem.type === 'select' ? (
-                                    <select
-                                        value={infoItem.value}
-                                        onChange={e => handleSelectChange(section.section, infoItem.name, e.target.value)}
-                                        className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    >
-                                        <option value="">Seleccione</option>
-                                        {infoItem.options.map(option => (
-                                            <option key={option} value={option}>
-                                                {option}
-                                            </option>
-                                        ))}
-                                    </select>
-                                ) : null}
-                            </div>
-                        )
-                    ))}
-                </div>
-            ))}
-            {errorMessage && (
-                <div className="text-red-600 mb-4">
-                    {errorMessage}
-                </div>
-            )}
-            <button
-                onClick={handleSubmit}
-                className={`w-full py-3 px-4 font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-700'}`}
-                disabled={loading} // Desactiva el botón cuando está cargando
-            >
-                {loading ? 'Cargando...' : 'Crear PDF'}
-            </button>
-        </div>
+        <FacturaDesign />
+        // <>
+        //     <Tabs tabs={tabs} />
+        //     <div className="relative w-full max-w-[210mm] min-h-[297mm] p-8 bg-white  mx-auto mt-5">
+
+        //         {/* PUNTA DE LA HOJA */}
+        //         <div className="absolute right-0 top-0  w-10 h-10">
+        //             {/* Primer triángulo */}
+        //             <div className="absolute top-0 left-0 w-0 h-0 border-r-[40px] border-r-transparent border-b-[40px] border-b-c-bg-color-2"></div>
+        //             {/* Segundo triángulo */}
+        //             <div className="absolute bottom-0 right-0 w-0 h-0 border-l-[40px] border-l-transparent border-t-[40px] border-t-c-bg-color"></div>
+        //         </div>
+        //         {/* Contenido de la boleta */}
+        //         <h1 className="text-2xl font-bold mb-4">Boleta de AFIP</h1>
+
+        //         {factura.map(section => (
+        //             <div key={section.section} className="mb-1">
+        //                 <h3 className="text-xl font-semibold mb-4">{section.section}</h3>
+        //                 {section.info.map(infoItem => (
+        //                     !infoItem.invisible && (
+        //                         <div key={infoItem.name} className="mb-1 flex gap-4">
+        //                             <label className="block text-sm font-medium text-gray-700 w-52">
+        //                                 {infoItem.title}
+        //                             </label>
+        //                             {infoItem.type === 'input' ? (
+        //                                 <input
+        //                                     type="text"
+        //                                     value={infoItem.value}
+        //                                     onChange={e => handleChange(section.section, infoItem.name, e.target.value)}
+        //                                     className="border w-40 border-gray-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        //                                 />
+        //                             ) : infoItem.type === 'select' ? (
+        //                                 <select
+        //                                     value={infoItem.value}
+        //                                     onChange={e => handleSelectChange(section.section, infoItem.name, e.target.value)}
+        //                                     className=" border  w-40 border-gray-300 rounded-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        //                                 >
+        //                                     <option value="">Seleccione</option>
+        //                                     {infoItem.options.map(option => (
+        //                                         <option key={option} value={option}>
+        //                                             {option}
+        //                                         </option>
+        //                                     ))}
+        //                                 </select>
+        //                             ) : null}
+        //                         </div>
+        //                     )
+        //                 ))}
+        //             </div>
+        //         ))}
+        //         {errorMessage && (
+        //             <div className="text-red-600 mb-4">
+        //                 {errorMessage}
+        //             </div>
+        //         )}
+        //         <button
+        //             onClick={handleSubmit}
+        //             className={`w-full py-3 px-4 font-semibold rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-700'}`}
+        //             disabled={loading} // Desactiva el botón cuando está cargando
+        //         >
+        //             {loading ? 'Cargando...' : 'Crear PDF'}
+        //         </button>
+        //     </div>
+        // </>
     );
 };
 

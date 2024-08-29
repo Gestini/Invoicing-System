@@ -12,7 +12,7 @@ export const UserUnits = () => {
   return (
     <div className='w-[48px] bg-c-sidebar-bg-2 h-full flex flex-col items-center py-5 gap-[11px]'>
       <Link to={'/'}>
-        <div className='h-[49px] w-[36px]  flex justify-center items-center rounded-md mb-[17px]'>
+        <div className='h-[49px] w-[36px] flex justify-center items-center rounded-md mb-[17px]'>
           <GestinyLogo />
         </div>
       </Link>

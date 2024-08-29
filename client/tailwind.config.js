@@ -47,6 +47,7 @@ module.exports = {
         'c-primary-route-active': 'var(--c-primary-route-active)',
         'c-primary-route-hover': 'var(--c-primary-route-hover)',
         'c-secondary': 'var(--c-secondary)',
+        'c-bg-color': 'var(--c-bg-color)',
         'c-bg-color-2': 'var(--c-bg-color-2)',
         'c-primary-sidebar': 'var(--c-primary-sidebar)',
         'c-card': 'var(--c-card)',
@@ -64,6 +65,11 @@ module.exports = {
         'c-sidebar-text': 'var(--c-sidebar-text)',
         'c-sidebar-bg': 'var(--c-sidebar-bg)',
         'c-sidebar-bg-2': 'var(--c-sidebar-bg-2)',
+        'c-logo': 'var(--c-logo)',
+
+
+        // TABS
+        'c-tabs': 'var(--c-tabs)',
       },
     },
     screens: {
