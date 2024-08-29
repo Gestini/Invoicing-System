@@ -1,7 +1,7 @@
 import Invite from '@renderer/pages/Invite/Invite'
 import Companies from '@renderer/pages/Companies/Companies'
-import MercadoPago from '@renderer/pages/suscription/mercadopago'
 import { Route, Routes } from 'react-router-dom'
+import { PaymentGateway } from '@renderer/pages/PaymentGateway'
 import { ThemeMiddleware } from './middlewares/ThemeMiddleware'
 import { ProtectedRouteAuth } from './middlewares/ProtectedRouteAuth'
 import { routes, authRoutes } from './routesData'
@@ -14,13 +14,24 @@ import { SectionPermissionMiddleware } from './middlewares/SectionPermissionMidd
 const Router = () => {
   return (
     <Routes>
-      <Route element={<ThemeMiddleware />}>
-        <Route path={'*'} element={<></>} />
-        <Route path={'/invite'} element={<Invite />} />
-        <Route element={<ProtectedRouteSession />}>
+      <Route path={'*'} element={<></>} />
+      <Route path={'/invite'} element={<Invite />} />
+      <Route element={<ProtectedRouteSession />}>
+        <Route element={<ThemeMiddleware />}>
           <Route path={'/'} element={<Companies />} />
-          <Route path={'/mp'} element={<MercadoPago />} />
+        </Route>
+        <Route element={<LoadCurrentUnitMiddleware />}>
           <Route element={<LoadCurrentUnitMiddleware />}>
+            <Route
+              path={'/payment/:planId/:unitId'}
+              element={
+                <SectionPermissionMiddleware permission={'*'}>
+                  <PaymentGateway />
+                </SectionPermissionMiddleware>
+              }
+            />
+          </Route>
+          <Route element={<ThemeMiddleware />}>
             <Route element={<NavbarAndSidebarMiddleware />}>
               {routes.map((route: any, index: number) => (
                 <Route

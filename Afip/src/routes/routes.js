@@ -26,16 +26,13 @@ router.post('/create-invoice', async (req, res) => {
     try {
         // Datos recibidos del frontend
         const facturaData = req.body;
-
         // Nombre para el archivo PDF
         const name = 'PDF de prueba';
-
         // Leer y compilar el archivo HTML
         const templatePath = path.join(__dirname, '../../bill.html');
         const htmlTemplate = fs.readFileSync(templatePath, 'utf8');
         const template = handlebars.compile(htmlTemplate);
         const html = template(facturaData);
-
         // Opciones para el archivo PDF
         const options = {
             width: 8,
@@ -44,7 +41,6 @@ router.post('/create-invoice', async (req, res) => {
             marginTop: 0.1,
             marginBottom: 0.1,
         };
-
         // Crear el PDF
         const pdfResponse = await afip.ElectronicBilling.createPDF({
             html: html,
