@@ -14,7 +14,16 @@ import Facturation from '@renderer/pages/Facturation'
 import RecoverPasswordChange from '@renderer/pages/Auth/RecoverPasswordChange'
 import RecoverPasswordCode from '@renderer/pages/Auth/RecoverPasswordCode'
 import RecoverPasswordEmail from '@renderer/pages/Auth/RecoverPasswordEmail'
-import { BiBox, BiUser, BiLeaf, BiGroup, BiCalculator, BiSolidDashboard } from 'react-icons/bi'
+import {
+  BiBox,
+  BiUser,
+  BiLeaf,
+  BiGroup,
+  BiCalculator,
+  BiSolidDashboard,
+  BiBadgeCheck,
+} from 'react-icons/bi'
+import Plans from '@renderer/pages/PaymentGateway/Plans'
 
 interface Route {
   path: string
@@ -35,6 +44,14 @@ const generalRoutes: RouteSection = {
   path: '/dashboard/:unitId',
   section: 'Dashboard',
   routes: [{ path: '', element: <Home />, title: 'tablero' }],
+}
+
+const plansRoutes: RouteSection = {
+  icon: <BiBadgeCheck />,
+  path: '/plans/:unitId',
+  section: 'Planes',
+  routes: [{ path: '', element: <Plans />, title: 'tablero' }],
+  permission: permissions.admin.permission,
 }
 
 const warehouseRoutes: RouteSection = {
@@ -144,6 +161,7 @@ export const authRoutes: RouteSection = {
 export const routes = [
   hrRoutes,
   posRoutes,
+  plansRoutes,
   adminRoutes,
   generalRoutes,
   warehouseRoutes,
@@ -165,6 +183,7 @@ export const routes = [
 
 export const sidebarRoutes: RouteSection[] = [
   generalRoutes,
+  plansRoutes,
   warehouseRoutes,
   hrRoutes,
   operationsRoutes,
