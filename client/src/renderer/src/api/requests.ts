@@ -79,9 +79,9 @@ export const reqDeleteEmployee = (id: any) => api.delete(`/employee/delete/${id}
 export const reqEditEmployee = (id: any, data: any) => api.put(`/employee/edit/${id}`, data)
 export const reqLeaveUnit = (id: any) => api.delete(`/employee/leave-unit/${id}`)
 
-// RUTAS CON BACKEND NODE
-
-
+/* Rutas planes */
+export const reqGetAllPlans = () => api.get("/plans/get-all")
+export const reqGetPlan = (planId: any) => api.get(`/plans/get/${planId}`)
 
 /* Rutas AFIP */
 export const reqCreateInvoiceAfip = async (data: any) => apiNode.post('/create-invoice', data)
