@@ -3,7 +3,7 @@ import { BiCart } from 'react-icons/bi'
 import MercadoPagoLogo from '../../../assets/image/MercadoPagoLogo.png'
 import { BreadcrumbItem, Breadcrumbs, Checkbox, Button } from '@nextui-org/react'
 
-export const PaymentDetails = () => {
+export const PaymentDetails = ({ currentPlan }) => {
   const [currentPage, setCurrentPage] = React.useState<React.Key>('checkout')
 
   return (
@@ -75,7 +75,7 @@ export const PaymentDetails = () => {
         </div>
       </div>
       <Button type='submit' color='primary' radius='sm'>
-        Pagar $43.55 USD
+        Pagar ${currentPlan?.price} USD
       </Button>
     </div>
   )
