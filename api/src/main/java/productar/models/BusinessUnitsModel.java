@@ -8,12 +8,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "business_units")
-
 public class BusinessUnitsModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,6 +32,10 @@ public class BusinessUnitsModel {
     @JoinColumn(name = "owner_id", nullable = false)
     @NotNull(message = "Owner id cannot be null")
     private User owner;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "current_plan_id", nullable = true)
+    private BusinessUnitPlanModel plan;
 
     public String getLink() {
         return link;
@@ -71,6 +75,14 @@ public class BusinessUnitsModel {
 
     public void setOwner(User owner) {
         this.owner = owner;
+    }
+
+    public BusinessUnitPlanModel getPlan() {
+        return plan;
+    }
+
+    public void setPlan(BusinessUnitPlanModel plan) {
+        this.plan = plan;
     }
 
 }

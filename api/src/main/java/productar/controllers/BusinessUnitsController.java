@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import productar.models.BusinessUnitsModel;
 import productar.services.BusinessUnitsService;
-import productar.services.ProductService;
 
 @RestController
 @RequestMapping("/business-unit")
@@ -26,13 +25,10 @@ public class BusinessUnitsController {
     @Autowired
     private BusinessUnitsService businessUnitsService;
 
-    @Autowired
-    private ProductService productService;
-
     @PostMapping("/save")
     public ResponseEntity<BusinessUnitsModel> saveBusinessUnit(@RequestBody BusinessUnitsModel data,
             Authentication authentication) {
-        return businessUnitsService.saveBusinessUnit(data, authentication.getName());
+        return this.businessUnitsService.saveBusinessUnit(data, authentication.getName());
     }
 
     @GetMapping("/get-all")
@@ -47,15 +43,16 @@ public class BusinessUnitsController {
 
     @DeleteMapping(path = "/delete/{id}")
     public ResponseEntity<String> deleteBusinessUnitById(@PathVariable("id") Long id) {
-        // Primero, eliminar productos asociados
-        productService.deleteProductsByBusinessUnit(id);
-
-        // Luego, eliminar la unidad de negocio
-        return businessUnitsService.deleteBusinessUnitById(id);
+        return this.businessUnitsService.deleteBusinessUnitById(id);
     }
 
     @GetMapping("/get-by-owner")
     public List<BusinessUnitsModel> getBusinessUnitsByOwner() {
-        return businessUnitsService.getUserBusinessUnits();
+        return this.businessUnitsService.getUserBusinessUnits();
+    }
+
+    @PostMapping("/assign-plan/{token}")
+    public ResponseEntity<?> assingPlan(@PathVariable("token") String token) {
+        return this.businessUnitsService.assingPlan(token);
     }
 }

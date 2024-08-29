@@ -148,11 +148,6 @@ public class ProductService {
         return productRepository.findByReferenceCode(referenceCode);
     }
 
-    public void deleteProductsByBusinessUnit(Long businessUnitId) {
-        List<ProductModel> products = productRepository.findByBusinessUnitId(businessUnitId);
-        products.forEach(product -> productRepository.deleteById(product.getId()));
-    }
-
     public List<ProductResponseDTO> getProductsByDepositUnit(Long depositUnitId) {
         List<ProductModel> products = productRepository.findByDepositUnitId(depositUnitId);
         return products.stream()
