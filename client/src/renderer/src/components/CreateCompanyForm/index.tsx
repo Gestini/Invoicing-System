@@ -19,15 +19,18 @@ import { useDispatch } from 'react-redux'
 import { fieldConfig } from './data'
 import { reqCreateUnit } from '@renderer/api/requests'
 import './createCompany.scss'
+import { uploadImage } from '@renderer/utils/DigitalOcean/uploadImage'
 
 export const CreateUnitModal = () => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const dispatch = useDispatch()
   const [loading, setLoading] = React.useState(false)
+  const [file, setFile] = React.useState<File | null>(null)
   const [data, setData] = React.useState({
     name: '',
     link: '',
     description: '',
+    image: ''
   })
   const [errors, setErrors] = React.useState({})
 
@@ -40,7 +43,7 @@ export const CreateUnitModal = () => {
   }, [isOpen])
 
   const validateInputs = () => {
-    const newErrors = {}
+    const newErrors: { [key: string]: string } = {}
     let isValid = true
 
     fieldConfig.forEach((field) => {
@@ -54,24 +57,43 @@ export const CreateUnitModal = () => {
     return isValid
   }
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setData((prev) => ({ ...prev, [name]: value }))
     setErrors((prev) => ({ ...prev, [name]: '' }))
   }
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault() // Esto debería funcionar correctamente aquí
+
     if (!validateInputs()) return
     setLoading(true)
+
     try {
-      const res = await reqCreateUnit(data)
+      let imageUrl = ''
+      if (file) {
+        imageUrl = await uploadImage(e, file) // Manteniendo el evento en la función
+        // Actualiza el estado `data` con la URL de la imagen
+        setData((prev) => ({ ...prev, image: imageUrl }))
+      }
+
+      // Espera a que el estado `data` esté actualizado con la imagen
+      const updatedData = { ...data, image: imageUrl }
+
+      // Envía los datos al backend
+      const res = await reqCreateUnit(updatedData)
       dispatch(addUnit(res.data))
       setLoading(false)
       onClose()
     } catch (error) {
+      console.error('Error en la creación de la unidad:', error)
       setLoading(false)
     }
   }
+
+  React.useEffect(() => {
+    console.log(file)
+  }, [file])
 
   return (
     <div className='flex flex-col gap-2'>
@@ -101,70 +123,72 @@ export const CreateUnitModal = () => {
           <ModalHeader className='flex flex-col gap-1'>
             <h3 className='default-text-color'>Crear unidad</h3>
           </ModalHeader>
-          <ModalBody>
-            <div className='text-center mb-6'>
-              <div className='flex justify-center items-center'>
-                <img className='w-8 h-8 mb-4' src={Logo} alt='logo' />
+          <form onSubmit={handleSubmit}>
+            <ModalBody>
+              <div className='text-center mb-6'>
+                <div className='flex justify-center items-center'>
+                  <img className='w-8 h-8 mb-4' src={Logo} alt='logo' />
+                </div>
+                <h1 className='font-bold mb-2 text-gray-500 text-2xl'>
+                  Completa los datos de tu empresa para empezar a administrar tu unidad de negocio
+                </h1>
               </div>
-              <h1 className='font-bold mb-2 text-gray-500 text-2xl'>
-                Completa los datos de tu empresa para empezar a administrar tu unidad de negocio
-              </h1>
-            </div>
-            <div>
-              <div className='flex items-center justify-center w-full h-14 mb-4'>
-                <label className='flex flex-col p-2 items-center bg-c-primary rounded-lg tracking-wide border border-blue cursor-pointer hover:bg-c-primary-hover transition-all duration-300'>
-                  <GoUpload />
-                  <span className='text-c-title text-[12px]'>Selecciona una foto</span>
-                  <input type='file' className='hidden' accept='image/*' />
-                </label>
-              </div>
-              {fieldConfig.map((field, index) => {
-                const commonProps = {
-                  name: field.name,
-                  value: data[field.name],
-                  onChange: handleInputChange,
-                  isInvalid: !!errors[field.name],
-                  errorMessage: errors[field.name],
-                  placeholder: field.placeholder,
-                  maxLength: field.maxLength,
-                  className: 'mb-4',
-                }
+              <div>
+                <div className='flex items-center justify-center w-full h-14 mb-4'>
+                  <label className='flex flex-col p-2 items-center bg-c-primary rounded-lg tracking-wide border border-blue cursor-pointer hover:bg-c-primary-hover transition-all duration-300'>
+                    <GoUpload />
+                    <span className='text-c-title text-[12px]'>Selecciona una foto</span>
+                    <input type='file' onChange={(e) => { setFile(e.target.files ? e.target.files[0] : null) }} className='hidden' accept='image/*' />
+                  </label>
+                </div>
+                {fieldConfig.map((field, index) => {
+                  const commonProps = {
+                    name: field.name,
+                    value: data[field.name],
+                    onChange: handleInputChange,
+                    isInvalid: !!errors[field.name],
+                    errorMessage: errors[field.name],
+                    placeholder: field.placeholder,
+                    maxLength: field.maxLength,
+                    className: 'mb-4',
+                  }
 
-                return field.type === 'textarea' ? (
-                  <Textarea
-                    key={index}
-                    {...commonProps}
-                    variant='bordered'
-                    label={field.label}
-                    radius='sm'
-                  />
-                ) : (
-                  <Input
-                    key={index}
-                    {...commonProps}
-                    type={field.type}
-                    variant='bordered'
-                    label={field.label}
-                    radius='sm'
-                  />
-                )
-              })}
-            </div>
-          </ModalBody>
-          <ModalFooter>
-            <Button color='danger' variant='light' onPress={onClose} radius='sm'>
-              Cerrar
-            </Button>
-            <Button
-              color='secondary'
-              radius='sm'
-              className='bg-c-primary'
-              isLoading={loading}
-              onClick={handleSubmit}
-            >
-              {loading ? 'Cargando...' : 'Crear'}
-            </Button>
-          </ModalFooter>
+                  return field.type === 'textarea' ? (
+                    <Textarea
+                      key={index}
+                      {...commonProps}
+                      variant='bordered'
+                      label={field.label}
+                      radius='sm'
+                    />
+                  ) : (
+                    <Input
+                      key={index}
+                      {...commonProps}
+                      type={field.type}
+                      variant='bordered'
+                      label={field.label}
+                      radius='sm'
+                    />
+                  )
+                })}
+              </div>
+            </ModalBody>
+            <ModalFooter>
+              <Button color='danger' variant='light' onPress={onClose} radius='sm'>
+                Cerrar
+              </Button>
+              <Button
+                color='secondary'
+                radius='sm'
+                className='bg-c-primary'
+                isLoading={loading}
+                type="submit"
+              >
+                {loading ? 'Cargando...' : 'Crear'}
+              </Button>
+            </ModalFooter>
+          </form>
         </ModalContent>
       </Modal>
     </div>

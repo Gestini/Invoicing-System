@@ -15,6 +15,7 @@ interface Owner {
 
 interface BusinessUnit {
   id: number
+  image: string
   link: string
   name: string
   owner: Owner
@@ -44,6 +45,7 @@ const Card: React.FC<CardProps> = ({ unit }) => {
     }
   }
 
+
   return (
     <div
       onDoubleClick={handleNavigate}
@@ -51,7 +53,12 @@ const Card: React.FC<CardProps> = ({ unit }) => {
     >
       <div className='flex justify-between items-center mb-3'>
         <div className='w-10 bg-[#f7f7f7] p-1 rounded-lg flex'>
-          <img src={Logo} className='w-full' alt='' />
+          <img
+            src={unit.image || Logo}
+            className='w-full'
+            alt='Imagen de unidad'
+            onError={(e) => (e.currentTarget.src = Logo)}
+          />
         </div>
         {user.id == unit.owner.id ? (
           <Dropdown placement='bottom-start' className='bg-c-card text-c-title'>

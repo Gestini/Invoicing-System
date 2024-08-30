@@ -6,6 +6,8 @@ import { IoIosArrowDown } from 'react-icons/io'
 export const DashboardHeaderInfo = () => {
   const user = useSelector((state: any) => state.user.user)
   const unit = useSelector((state: any) => state.currentUnit)
+
+  console.log(unit)
   
   return (
     <Card classNames={{ base: 'rounded-lg' }}>

@@ -3,7 +3,9 @@ import { StatsCardGrid } from '@renderer/components/Dashbord/StatsItem'
 import { TeamDashboard } from '@renderer/components/Dashbord/TeamMember'
 import { SalesDashboard } from '@renderer/components/Dashbord/SalesItem'
 import { DashboardHeaderInfo } from '@renderer/components/Dashbord/HeaderInfo'
+import React from 'react'
 import './Home.scss'
+
 
 const Home = () => {
   return (
