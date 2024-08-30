@@ -28,6 +28,9 @@ public class BusinessUnitsModel {
     @Column
     private String link;
 
+    @Column
+    private String image;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "owner_id", nullable = false)
     @NotNull(message = "Owner id cannot be null")
@@ -43,6 +46,14 @@ public class BusinessUnitsModel {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public Long getId() {
