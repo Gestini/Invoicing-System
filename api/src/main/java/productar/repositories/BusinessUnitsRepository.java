@@ -10,5 +10,6 @@ import productar.models.BusinessUnitsModel;
 @Repository
 public interface BusinessUnitsRepository extends JpaRepository<BusinessUnitsModel, Long> {
     List<BusinessUnitsModel> findByOwnerUsername(String username);
-
+    List<BusinessUnitsModel> findByEcommerceTrue();
 }
+

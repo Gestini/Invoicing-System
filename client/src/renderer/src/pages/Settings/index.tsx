@@ -69,11 +69,13 @@ const Index = () => {
         imageUrl = await uploadImage(file); // Upload image and get the URL
       }
 
+      const fullUrl = `http://gestini.${data.link}.com`;
+
       // Send only the fields that are updated (including the image if changed)
       await reqUpdateUnitById(unit?.id, {
         name: data.name,
         description: data.description,
-        link: data.link,
+        link: fullUrl,
         ecommerce: data.ecommerce,
         image: imageUrl,
       });

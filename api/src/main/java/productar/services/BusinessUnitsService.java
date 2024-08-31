@@ -62,6 +62,10 @@ public class BusinessUnitsService {
         return (ArrayList<BusinessUnitsModel>) businessUnitsRepository.findAll();
     }
 
+    public ArrayList<BusinessUnitsModel> getAllEcommerceBusinessUnits() {
+        return (ArrayList<BusinessUnitsModel>) businessUnitsRepository.findByEcommerceTrue();
+    }
+
     public List<BusinessUnitsModel> getBusinessUnitsByToken() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = ((UserDetails) authentication.getPrincipal()).getUsername();
@@ -130,53 +134,55 @@ public class BusinessUnitsService {
         try {
             // Obtener todas las Claims del token
             Claims claims = getAllClaims(token);
-    
+
             // Extraer información específica del token
             Long planId = claims.get("planId", Long.class);
             Long unitId = claims.get("unitId", Long.class);
-    
+
             // Verifica que el PlanModel existe
             PlanModel selectedPlan = planRepository.findById(planId)
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Plan no encontrado"));
-    
+
             // Verifica que la Unidad de Negocio existe
             BusinessUnitsModel selectedUnit = businessUnitsRepository.findById(unitId)
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Unidad no encontrada"));
-    
+
             // Elimina el plan actual si existe
             BusinessUnitPlanModel currentPlan = selectedUnit.getPlan();
             if (currentPlan != null) {
                 // Elimina la referencia al plan actual en la unidad de negocio
                 selectedUnit.setPlan(null);
                 businessUnitsRepository.save(selectedUnit);
-                
+
                 // Elimina el plan actual
                 businessUnitsPlanRepository.delete(currentPlan);
             }
-    
+
             // Crear el objeto BusinessUnitPlanModel
             BusinessUnitPlanModel businessUnitPlan = new BusinessUnitPlanModel();
             businessUnitPlan.setCreatedAt(LocalDate.now());
             businessUnitPlan.setEndDate(LocalDate.now().plusMonths(1));
             businessUnitPlan.setPlan(selectedPlan);
-    
+
             // Guardar el nuevo plan en la base de datos
             BusinessUnitPlanModel savedPlan = businessUnitsPlanRepository.save(businessUnitPlan);
-    
+
             // Actualizar la unidad de negocio para referirse al nuevo plan asignado
             selectedUnit.setPlan(savedPlan);
             businessUnitsRepository.save(selectedUnit);
-    
+
             return ResponseEntity.status(HttpStatus.OK).body("Plan asignado correctamente a la unidad de negocio");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("Ocurrió un error inesperado: " + e.getMessage());
         }
     }
 
-    public ResponseEntity<BusinessUnitsModel> updateBusinessUnit(Long id, BusinessUnitsModel updatedData, String username) {
+    public ResponseEntity<BusinessUnitsModel> updateBusinessUnit(Long id, BusinessUnitsModel updatedData,
+            String username) {
         // Buscar la unidad de negocio por ID
         BusinessUnitsModel existingBusinessUnit = businessUnitsRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Unidad de negocio no encontrada"));
+                .orElseThrow(
+                        () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Unidad de negocio no encontrada"));
 
         // Verificar que el usuario autenticado sea el dueño de la unidad
         User owner = existingBusinessUnit.getOwner();
@@ -210,7 +216,6 @@ public class BusinessUnitsService {
 
         return ResponseEntity.ok(savedBusinessUnit);
     }
-    
 
     private Key getKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY_PLAN);

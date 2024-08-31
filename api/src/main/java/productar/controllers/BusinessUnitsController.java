@@ -41,6 +41,12 @@ public class BusinessUnitsController {
     public Optional<BusinessUnitsModel> getBusinessUnitById(@PathVariable("id") Long id) {
         return this.businessUnitsService.getBusinessUnitById(id);
     }
+    
+    @GetMapping("/get-all-ecommerce")
+    public ArrayList<BusinessUnitsModel> getAllEcommerceBusinessUnits() {
+        return this.businessUnitsService.getAllEcommerceBusinessUnits();
+    }
+    
 
     @DeleteMapping(path = "/delete/{id}")
     public ResponseEntity<String> deleteBusinessUnitById(@PathVariable("id") Long id) {

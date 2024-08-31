@@ -8,7 +8,7 @@ export const DashboardHeaderInfo = () => {
   const unit = useSelector((state: any) => state.currentUnit)
 
   console.log(unit)
-  
+
   return (
     <Card classNames={{ base: 'rounded-lg' }}>
       <div className='homewelcomedashbord w-full rounded-lg py-[30px] px-[40px] flex justify-between items-center '>
@@ -20,13 +20,20 @@ export const DashboardHeaderInfo = () => {
         </div>
         <div className='rigthwelcome flex gap-8'>
           <div className='cardwelcomeselect gap-4 items-center flex'>
-            <div className='flex items-center justify-center w-[60px] h-[60px] bg-c-primary-variant-4 rounded-lg '>
+            <div className='flex items-center justify-center w-[60px] h-[50px] bg-c-primary-variant-4 rounded-lg '>
               <div
                 className={
-                  'text-c-title rounded-lg transition-all duration-500 ease-in-out w-[24px] h-[24px] uppercase flex items-center justify-center font-semibold'
+                  'rounded-lg transition-all duration-500 ease-in-out w-[40px] h-[40px] uppercase flex items-center justify-center'
                 }
               >
-                {unit.name.slice(0, 2)}
+                {
+                  unit.image ?
+                    <img src={unit.image} className='w-full h-full' alt='' />
+                    :
+                    <span className='text-c-title font-semibold text-[22px]'>
+                      {unit.name.slice(0, 2)}
+                    </span>
+                }
               </div>
             </div>
             <div className='midcardselect flex flex-col min-w-32'>

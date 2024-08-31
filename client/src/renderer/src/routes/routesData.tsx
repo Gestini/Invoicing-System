@@ -1,34 +1,32 @@
-import Home from '@renderer/pages/Home'
 import Login from '@renderer/pages/Auth/Login'
-import Register from '@renderer/pages/Auth/Register'
-import { Roles } from '@renderer/pages/Roles'
-import { Warehouse } from '@renderer/pages/Warehouse'
-import { SalesTable } from '@renderer/pages/SalesTable'
-import { ClientTable } from '@renderer/pages/ClientTable'
-import { permissions } from '@renderer/pages/Roles/Permissions'
-import { ReactElement } from 'react'
-import { SupplierTable } from '@renderer/pages/SupplierTable'
-import { EmployeeTable } from '@renderer/pages/EmployeeTable'
-import { InvoicingTable } from '@renderer/pages/InvoicingTable'
-import Facturation from '@renderer/pages/Facturation'
 import RecoverPasswordChange from '@renderer/pages/Auth/RecoverPasswordChange'
 import RecoverPasswordCode from '@renderer/pages/Auth/RecoverPasswordCode'
 import RecoverPasswordEmail from '@renderer/pages/Auth/RecoverPasswordEmail'
-import { IoMdSettings } from "react-icons/io";
-import {
-  MdDashboard,
-  MdAssessment,
-  MdBusiness,
-  MdWarehouse,
-  MdPeople,
-  MdSettings,
-  MdPointOfSale,
-  MdAdminPanelSettings,
-  MdAttachMoney,
-  MdShoppingCart
-} from 'react-icons/md';
+import Register from '@renderer/pages/Auth/Register'
+import { ClientTable } from '@renderer/pages/ClientTable'
+import { EmployeeTable } from '@renderer/pages/EmployeeTable'
+import Facturation from '@renderer/pages/Facturation'
+import Home from '@renderer/pages/Home'
+import { InvoicingTable } from '@renderer/pages/InvoicingTable'
 import Plans from '@renderer/pages/PaymentGateway/Plans'
+import { Roles } from '@renderer/pages/Roles'
+import { permissions } from '@renderer/pages/Roles/Permissions'
+import { SalesTable } from '@renderer/pages/SalesTable'
 import Settings from '@renderer/pages/Settings'
+import { SupplierTable } from '@renderer/pages/SupplierTable'
+import { Warehouse } from '@renderer/pages/Warehouse'
+import { ReactElement } from 'react'
+import Shops from '@renderer/pages/Settings/Shops'
+import {
+  MdAdminPanelSettings,
+  MdAssessment,
+  MdAttachMoney,
+  MdDashboard,
+  MdPeople,
+  MdPointOfSale,
+  MdShoppingCart,
+  MdWarehouse
+} from 'react-icons/md'
 
 interface Route {
   path: string
@@ -168,8 +166,8 @@ const UnitInfo: RouteSection = {
   path: '/settings/:unitId',
   section: 'Tienda',
   routes: [
-    { path: '', element: <Settings />, title: 'General' },
-    { path: '', element: <Settings />, title: 'Metricas' }
+    { path: '/tienda/general', element: <Settings />, title: 'General' },
+    { path: '/tienda/shops', element: <Shops />, title: 'Metricas' }
   ],
   permission: permissions.admin.permission,
 }

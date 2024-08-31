@@ -77,7 +77,6 @@ export const UnitDropdown = ({ unitItem, openDropdownId, setOpenDropdownId }) =>
                   <span>
                     {unitItem.name.slice(0, 2)}
                   </span>
-
               }
             </div>
 
