@@ -172,6 +172,44 @@ public class BusinessUnitsService {
             return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("Ocurrió un error inesperado: " + e.getMessage());
         }
     }
+
+    public ResponseEntity<BusinessUnitsModel> updateBusinessUnit(Long id, BusinessUnitsModel updatedData, String username) {
+        // Buscar la unidad de negocio por ID
+        BusinessUnitsModel existingBusinessUnit = businessUnitsRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Unidad de negocio no encontrada"));
+
+        // Verificar que el usuario autenticado sea el dueño de la unidad
+        User owner = existingBusinessUnit.getOwner();
+        if (!owner.getUsername().equals(username)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        // Actualizar solo los campos provistos en updatedData
+        if (Optional.ofNullable(updatedData.getName()).isPresent()) {
+            existingBusinessUnit.setName(updatedData.getName());
+        }
+
+        if (Optional.ofNullable(updatedData.getDescription()).isPresent()) {
+            existingBusinessUnit.setDescription(updatedData.getDescription());
+        }
+
+        if (Optional.ofNullable(updatedData.getLink()).isPresent()) {
+            existingBusinessUnit.setLink(updatedData.getLink());
+        }
+
+        if (Optional.ofNullable(updatedData.getImage()).isPresent()) {
+            existingBusinessUnit.setImage(updatedData.getImage());
+        }
+
+        if (Optional.ofNullable(updatedData.getEcommerce()).isPresent()) {
+            existingBusinessUnit.setEcommerce(updatedData.getEcommerce());
+        }
+
+        // Guardar la unidad de negocio actualizada en la base de datos
+        BusinessUnitsModel savedBusinessUnit = businessUnitsRepository.save(existingBusinessUnit);
+
+        return ResponseEntity.ok(savedBusinessUnit);
+    }
     
 
     private Key getKey() {

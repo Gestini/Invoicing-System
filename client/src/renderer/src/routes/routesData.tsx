@@ -14,16 +14,21 @@ import Facturation from '@renderer/pages/Facturation'
 import RecoverPasswordChange from '@renderer/pages/Auth/RecoverPasswordChange'
 import RecoverPasswordCode from '@renderer/pages/Auth/RecoverPasswordCode'
 import RecoverPasswordEmail from '@renderer/pages/Auth/RecoverPasswordEmail'
+import { IoMdSettings } from "react-icons/io";
 import {
-  BiBox,
-  BiUser,
-  BiLeaf,
-  BiGroup,
-  BiCalculator,
-  BiSolidDashboard,
-  BiBadgeCheck,
-} from 'react-icons/bi'
+  MdDashboard,
+  MdAssessment,
+  MdBusiness,
+  MdWarehouse,
+  MdPeople,
+  MdSettings,
+  MdPointOfSale,
+  MdAdminPanelSettings,
+  MdAttachMoney,
+  MdShoppingCart
+} from 'react-icons/md';
 import Plans from '@renderer/pages/PaymentGateway/Plans'
+import Settings from '@renderer/pages/Settings'
 
 interface Route {
   path: string
@@ -40,14 +45,14 @@ interface RouteSection {
 }
 
 const generalRoutes: RouteSection = {
-  icon: <BiSolidDashboard />,
+  icon: <MdDashboard />,
   path: '/dashboard/:unitId',
   section: 'Dashboard',
   routes: [{ path: '', element: <Home />, title: 'tablero' }],
 }
 
 const plansRoutes: RouteSection = {
-  icon: <BiBadgeCheck />,
+  icon: <MdAssessment />,
   path: '/plans/:unitId',
   section: 'Planes',
   routes: [{ path: '', element: <Plans />, title: 'tablero' }],
@@ -55,7 +60,7 @@ const plansRoutes: RouteSection = {
 }
 
 const warehouseRoutes: RouteSection = {
-  icon: <BiBox />,
+  icon: <MdWarehouse />,
   path: '/warehouse/:unitId',
   section: 'Depósitos',
   permission: permissions.warehouse.permission,
@@ -77,7 +82,7 @@ const warehouseRoutes: RouteSection = {
 }
 
 const posRoutes: RouteSection = {
-  icon: <BiLeaf />,
+  icon: <MdPointOfSale />,
   path: '/pos/:unitId',
   section: 'Punto de Venta',
   permission: permissions.pos.permission,
@@ -96,7 +101,7 @@ const posRoutes: RouteSection = {
 }
 
 const hrRoutes: RouteSection = {
-  icon: <BiGroup />,
+  icon: <MdPeople />,
   path: '/hr/:unitId',
   section: 'Recursos Humanos',
   permission: permissions.hr.permission,
@@ -108,7 +113,7 @@ const hrRoutes: RouteSection = {
 }
 
 const adminRoutes: RouteSection = {
-  icon: <BiCalculator />,
+  icon: <MdAdminPanelSettings />,
   path: '/admin/:unitId',
   section: 'Admin',
   permission: permissions.admin.permission,
@@ -119,7 +124,7 @@ const adminRoutes: RouteSection = {
 }
 
 const operationsRoutes: RouteSection = {
-  icon: <BiUser />,
+  icon: <MdAttachMoney />,
   path: '/operations/:unitId',
   section: 'Operaciones',
   permission: permissions.operations.permission,
@@ -158,6 +163,17 @@ export const authRoutes: RouteSection = {
   ],
 }
 
+const UnitInfo: RouteSection = {
+  icon: <MdShoppingCart />,
+  path: '/settings/:unitId',
+  section: 'Tienda',
+  routes: [
+    { path: '', element: <Settings />, title: 'General' },
+    { path: '', element: <Settings />, title: 'Metricas' }
+  ],
+  permission: permissions.admin.permission,
+}
+
 export const routes = [
   hrRoutes,
   posRoutes,
@@ -166,6 +182,7 @@ export const routes = [
   generalRoutes,
   warehouseRoutes,
   operationsRoutes,
+  UnitInfo,
 ].reduce(
   (acc: any, item: RouteSection) =>
     acc.concat(
@@ -189,4 +206,5 @@ export const sidebarRoutes: RouteSection[] = [
   operationsRoutes,
   posRoutes,
   adminRoutes,
+  UnitInfo,
 ]

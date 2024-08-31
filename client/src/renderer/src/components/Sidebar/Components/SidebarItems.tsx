@@ -14,7 +14,7 @@ export const SidebarSectionItem = ({ item, baseItemPath, hasPermissions, baseLoc
     >
       <div className='flex gap-1 items-center h-[36px]'>
         <span
-          className={`${baseLocationPath === baseItemPath ? 'text-c-primary' : 'text-c-title'} text-[20px] px-1`}
+          className={`${baseLocationPath === baseItemPath ? 'text-c-primary' : 'text-c-title'} flex items-center text-[20px] px-1`}
         >
           <Badge
             color='danger'
@@ -72,7 +72,7 @@ export const SidebarSectionAcordion = ({
         title={
           <div className='flex gap-1 items-center'>
             <span
-              className={`${baseLocationPath === baseItemPath ? 'text-c-primary' : 'text-c-title'} text-[20px] px-1`}
+              className={`${baseLocationPath === baseItemPath ? 'text-c-primary' : 'text-c-title'} flex items-center text-[20px] px-1`}
             >
               <Badge
                 color='danger'

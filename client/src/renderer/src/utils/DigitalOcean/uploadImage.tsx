@@ -1,9 +1,7 @@
 import { s3Client } from './index'
 import { PutObjectCommand } from '@aws-sdk/client-s3'
 
-export const uploadImage = async (event: React.FormEvent<HTMLFormElement>, file) => {
-    event.preventDefault();
-
+export const uploadImage = async (file) => {
     if (file) {
         try {
             const bucketParams = {

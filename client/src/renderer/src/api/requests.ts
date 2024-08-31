@@ -19,6 +19,7 @@ export const reqAuthChangePassword = async (data: any) => authApi.post('/auth/re
 export const reqCreateUnit = async (data: any) => api.post('/business-unit/save', data)
 export const reqGetUnitById = async (id: any) => api.get('/business-unit/get/' + id)
 export const reqGetUnitByOwner = async () => api.get('/business-unit/get-by-owner')
+export const reqUpdateUnitById = async (id: any, data: any) => api.put(`/business-unit/update/${id}`, data);
 export const reqDeleteUnitById = async (id: any) => api.delete(`/business-unit/delete/${id}`)
 
 /* Rutas productos */

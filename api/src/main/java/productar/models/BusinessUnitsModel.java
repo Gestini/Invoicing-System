@@ -31,6 +31,9 @@ public class BusinessUnitsModel {
     @Column
     private String image;
 
+    @Column
+    private Boolean ecommerce = false;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "owner_id", nullable = false)
     @NotNull(message = "Owner id cannot be null")
@@ -39,6 +42,14 @@ public class BusinessUnitsModel {
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "current_plan_id", nullable = true)
     private BusinessUnitPlanModel plan;
+
+    public Boolean getEcommerce() {
+        return ecommerce;
+    }
+
+    public void setEcommerce(Boolean ecommerce) {
+        this.ecommerce = ecommerce;
+    }
 
     public String getLink() {
         return link;

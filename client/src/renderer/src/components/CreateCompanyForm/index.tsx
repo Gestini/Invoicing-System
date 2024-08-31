@@ -70,9 +70,9 @@ export const CreateUnitModal = () => {
     setLoading(true)
 
     try {
-      let imageUrl = ''
+      let imageUrl = '' || undefined
       if (file) {
-        imageUrl = await uploadImage(e, file) // Manteniendo el evento en la función
+        imageUrl = await uploadImage(file) // Manteniendo el evento en la función
         // Actualiza el estado `data` con la URL de la imagen
         setData((prev) => ({ ...prev, image: imageUrl }))
       }
