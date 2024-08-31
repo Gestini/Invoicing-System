@@ -1,9 +1,9 @@
-import React from 'react';
-import { Input, Switch, Button } from "@nextui-org/react";
-import { useDispatch, useSelector } from 'react-redux';
+import { Button, Input, Switch } from "@nextui-org/react";
 import { reqUpdateUnitById } from '@renderer/api/requests';
-import toast from 'react-hot-toast';
 import { uploadImage } from '@renderer/utils/DigitalOcean/uploadImage';
+import React from 'react';
+import toast from 'react-hot-toast';
+import { useSelector } from 'react-redux';
 
 const Index = () => {
   const unit = useSelector((state: any) => state.currentUnit);
@@ -66,12 +66,10 @@ const Index = () => {
       let imageUrl = data.image;
 
       if (file) {
-        imageUrl = await uploadImage(file); // Upload image and get the URL
+        imageUrl = await uploadImage(file); 
       }
 
       const fullUrl = `http://gestini.${data.link}.com`;
-
-      // Send only the fields that are updated (including the image if changed)
       await reqUpdateUnitById(unit?.id, {
         name: data.name,
         description: data.description,
