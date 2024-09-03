@@ -5,7 +5,7 @@ export const CurrentSecctionMiddleware = ({ section, icon, title, children, rout
   const unit = useSelector((state: any) => state.currentUnit)
 
   return (
-    <div className='ml-[225px] px-[20px] mt-5 mb-5'>
+    <div className=' px-[20px] mt-12 mb-5 w-full'>
       {unit !== null && (
         <div className='w-full h-full flex flex-col gap-4'>
           {routesLength === 1 ? (

@@ -4,10 +4,10 @@ import { Outlet } from 'react-router-dom'
 
 export const NavbarAndSidebarMiddleware = () => {
   return (
-    <>
+    <div className='flex'>
       <Navbar />
       <Sidebar />
       <Outlet />
-    </>
+    </div>
   )
 }

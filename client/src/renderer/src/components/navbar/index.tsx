@@ -1,11 +1,11 @@
-import React from 'react'
 import { Input } from '@nextui-org/react'
-import { SearchIcon } from '../Icons'
+import React from 'react'
 import { useSelector } from 'react-redux'
+import { SearchIcon } from '../Icons'
 import { NavbarUserOptions } from './UserOptions'
 
 export const Navbar = () => {
-  const [_, setIsVisible] = React.useState(false)
+  const [isVisible, setIsVisible] = React.useState(false)
   const unit = useSelector((state: any) => state.currentUnit)
 
   React.useEffect(() => {
@@ -24,16 +24,16 @@ export const Navbar = () => {
   }, [unit])
 
   return (
-    <nav className='w-full bg-c-bg-color flex items-center pt-6'>
+    <nav className='w-full fixed top-0 left-0 flex items-center pt-6'>
       <div className='w-full h-full px-[18px] pl-[245px]'>
         <div className='relative flex items-center justify-between w-full h-full'>
           <div className='w-[384px]'>
-            <Input
+            {/* <Input
               isClearable
               className='w-full text-c-gray'
               placeholder='Buscar'
               startContent={<SearchIcon />}
-            />
+            /> */}
           </div>
           <div className='inset-y-0 right-0 flex items-center'>
             <div className='h-[50px] flex justify-center items-center'>
@@ -41,13 +41,13 @@ export const Navbar = () => {
             </div>
           </div>
         </div>
-        {/* <div
+        <div
           className={`fixed inset-0 flex items-center justify-center bg-gradient-to-b from-black  to-c-bg-color-2 transition-opacity duration-700 ease-in pointer-events-none ${isVisible ? 'opacity-85 pointer-events-auto' : 'opacity-0'} z-50`}
         >
           <h5 className='text-white font-semibold text-[30px]'>
             Bienvenido a<span className='text-c-primary-variant-1'> {unit?.name}</span>
           </h5>
-        </div> */}
+        </div>
       </div>
     </nav>
   )

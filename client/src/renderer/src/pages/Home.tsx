@@ -8,8 +8,8 @@ import './Home.scss'
 
 const Home = () => {
   return (
-    <div className='flex gap-4 w-full justify-end dashbordsection '>
-      <div className='maindashboard flex-grow flex flex-col gap-4 '>
+    <div className='flex gap-4 w-full justify-end dashbordsection'>
+      <div className='flex-grow flex flex-col gap-4'>
         <DashboardHeaderInfo />
         <StatsCardGrid />
         <GraphView />

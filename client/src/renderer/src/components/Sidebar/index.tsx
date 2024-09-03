@@ -3,9 +3,11 @@ import { SidebarSections } from './Components/SidebarSections'
 
 export const Sidebar = () => {
   return (
-    <nav className='flex fixed z-10 left-0 top-0 h-screen items-center justify-between'>
-      <UserUnits />
-      <SidebarSections />
-    </nav>
+    <div className='sticky top-0 left-0 h-full'>
+      <div className='flex'>
+        <UserUnits />
+        <SidebarSections />
+      </div>
+    </div>
   )
 }

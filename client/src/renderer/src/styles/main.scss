@@ -38,6 +38,11 @@ input[type='color'] {
   border-radius: 50%;
 }
 
+.animation {
+  transition: all;
+  transition-duration: 300ms;
+}
+
 .sidebarthumb {
   &::-webkit-scrollbar-thumb {
     background: transparent;
