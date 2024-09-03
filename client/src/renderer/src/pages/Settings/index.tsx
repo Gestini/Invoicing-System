@@ -11,10 +11,6 @@ const Index = () => {
   const [file, setFile] = React.useState<File | null>(null);
   const [loading, setLoading] = React.useState(false);
 
-  React.useEffect(() => {
-    console.log(unit)
-  }, [unit]);
-
   // Initial state based on unit
   const [data, setData] = React.useState({
     name: unit?.name || '',

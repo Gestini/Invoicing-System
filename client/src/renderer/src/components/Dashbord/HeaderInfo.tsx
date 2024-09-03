@@ -7,8 +7,6 @@ export const DashboardHeaderInfo = () => {
   const user = useSelector((state: any) => state.user.user)
   const unit = useSelector((state: any) => state.currentUnit)
 
-  console.log(unit)
-
   return (
     <Card classNames={{ base: 'rounded-lg' }}>
       <div className='homewelcomedashbord w-full rounded-lg py-[30px] px-[40px] flex justify-between items-center '>
