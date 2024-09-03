@@ -1,5 +1,6 @@
 import { UserUnits } from './Components/UserUnits'
 import { SidebarSections } from './Components/SidebarSections'
+import { BsThreeDots } from 'react-icons/bs'
 
 export const Sidebar = () => {
   return (

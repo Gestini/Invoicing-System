@@ -2,6 +2,7 @@ package productar.services;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,4 +83,37 @@ public class UserService {
         return (User) authentication.getPrincipal();
     }
 
+    public User updateUser(String username, User data) {
+        // Buscar el usuario por username
+        User existingUser = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Actualiza los campos solo si los datos no son null
+        if (Optional.ofNullable(data.getUsername()).isPresent()) {
+            existingUser.setUsername(data.getUsername());
+        }
+        if (Optional.ofNullable(data.getEmail()).isPresent()) {
+            existingUser.setEmail(data.getEmail());
+        }
+        if (Optional.ofNullable(data.getPassword()).isPresent()) {
+            existingUser.setPassword(data.getPassword());
+        }
+        if (Optional.ofNullable(data.getLastname()).isPresent()) {
+            existingUser.setLastname(data.getLastname());
+        }
+        if (Optional.ofNullable(data.getFirtsname()).isPresent()) {
+            existingUser.setFirtsname(data.getFirtsname());
+        }
+        if (Optional.ofNullable(data.getCountry()).isPresent()) {
+            existingUser.setCountry(data.getCountry());
+        }
+        if (Optional.ofNullable(data.getJobposition()).isPresent()) {
+            existingUser.setJobposition(data.getJobposition());
+        }
+        if (data.getRole() != null) { 
+            existingUser.setRole(data.getRole());
+        }
+        // Guarda los cambios en el repositorio
+        return userRepository.save(existingUser);
+    }
 }
