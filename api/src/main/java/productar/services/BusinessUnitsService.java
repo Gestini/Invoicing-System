@@ -189,29 +189,21 @@ public class BusinessUnitsService {
         if (!owner.getUsername().equals(username)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
-
-        // Actualizar solo los campos provistos en updatedData
         if (Optional.ofNullable(updatedData.getName()).isPresent()) {
             existingBusinessUnit.setName(updatedData.getName());
         }
-
         if (Optional.ofNullable(updatedData.getDescription()).isPresent()) {
             existingBusinessUnit.setDescription(updatedData.getDescription());
         }
-
         if (Optional.ofNullable(updatedData.getLink()).isPresent()) {
             existingBusinessUnit.setLink(updatedData.getLink());
         }
-
         if (Optional.ofNullable(updatedData.getImage()).isPresent()) {
             existingBusinessUnit.setImage(updatedData.getImage());
         }
-
         if (Optional.ofNullable(updatedData.getEcommerce()).isPresent()) {
             existingBusinessUnit.setEcommerce(updatedData.getEcommerce());
         }
-
-        // Guardar la unidad de negocio actualizada en la base de datos
         BusinessUnitsModel savedBusinessUnit = businessUnitsRepository.save(existingBusinessUnit);
 
         return ResponseEntity.ok(savedBusinessUnit);

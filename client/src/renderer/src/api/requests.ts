@@ -5,6 +5,7 @@ export const reqSearchUserByUsername = (username: string) =>
   api.get(`/user/search-by-username/${username}`)
 export const reqLoadUsersByIds = (data: any) => api.post("/user/get-by-ids", data)
 export const reqLoadUserSessions = (data: any) => api.post("/user/get-user-sessions", data)
+export const reqUpdateUser = (username: string, data: any) => api.put(`/user/update/${username}`, data);
 
 /* Rutas para manejar el auth */
 export const reqAuthLogin = async (data: any) => authApi.post('/auth/login', data)

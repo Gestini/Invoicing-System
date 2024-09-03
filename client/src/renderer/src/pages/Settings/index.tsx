@@ -11,11 +11,6 @@ const Index = () => {
   const [file, setFile] = React.useState<File | null>(null);
   const [loading, setLoading] = React.useState(false);
 
-  React.useEffect(() => {
-    console.log(unit)
-  }, [unit]);
-
-  // Initial state based on unit
   const [data, setData] = React.useState({
     name: unit?.name || '',
     description: unit?.description || '',
@@ -66,7 +61,7 @@ const Index = () => {
       let imageUrl = data.image;
 
       if (file) {
-        imageUrl = await uploadImage(file); 
+        imageUrl = await uploadImage(file);
       }
 
       const fullUrl = `http://gestini.${data.link}.com`;
@@ -90,25 +85,44 @@ const Index = () => {
 
   return (
     <div className='flex flex-col gap-2'>
-      <div className="relative w-[100px] h-[100px] p-2 cursor-pointer">
-        <input
-          type="file"
-          id="fileInput"
-          className="hidden"
-          accept="image/*"
-          onChange={handleFileChange} // Handle file change
-        />
-        <label htmlFor="fileInput" className="block w-full h-full">
-          <img
-            id="previewImage"
-            src={data.image} // Use updated image from state
-            alt="Preview Image"
-            className="w-full h-full object-contain rounded-lg"
-          />
-          <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center text-white text-lg font-semibold opacity-0 hover:opacity-100 transition-opacity rounded-lg">
-            Editar
-          </div>
-        </label>
+      <div className="relative w-[100px] h-[100px] cursor-pointer rounded-md overflow-hidden">
+        {data.image ?
+          <>
+            <input
+              type="file"
+              id="fileInput"
+              className="hidden"
+              accept="image/*"
+              onChange={handleFileChange}
+            />
+            <label htmlFor="fileInput" className="block w-full h-full">
+              <img
+                id="previewImage"
+                src={data.image}
+                alt="Preview Image"
+                className="w-full h-full object-contain rounded-lg"
+              />
+              <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center text-white text-lg font-semibold opacity-0 hover:opacity-100 transition-opacity rounded-lg">
+                Editar
+              </div>
+            </label>
+          </> :
+          <>
+            <input
+              type="file"
+              id="fileInput"
+              className="hidden"
+              accept="image/*"
+              onChange={handleFileChange}
+            />
+            <label htmlFor="fileInput" className="block w-full h-full bg-c-card overflow-hidden rounded-md">
+              <div id="previewImage" className="w-full h-full object-contain rounded-lg overflow-hidden flex justify-center items-center uppercase text-[40px] font-semibold text-c-title">{data.name.slice(0,2)}</div>
+              <div className="absolute  inset-0 bg-black bg-opacity-40 flex items-center justify-center text-white text-lg font-semibold opacity-0 hover:opacity-100 transition-opacity rounded-lg">
+                Editar
+              </div>
+            </label>
+          </>
+        }
       </div>
 
       <div className='flex flex-col gap-1'>

@@ -1,5 +1,6 @@
 import Invite from '@renderer/pages/Invite/Invite'
 import Companies from '@renderer/pages/Companies/Companies'
+import User from '@renderer/pages/User'
 import { Route, Routes } from 'react-router-dom'
 import { PaymentGateway } from '@renderer/pages/PaymentGateway'
 import { ThemeMiddleware } from './middlewares/ThemeMiddleware'
@@ -51,6 +52,7 @@ const Router = () => {
                   }
                 />
               ))}
+              <Route path='/user/:unitId' element={<User />} />
             </Route>
           </Route>
         </Route>

@@ -12,7 +12,7 @@ import {
   DropdownSection,
   DropdownTrigger,
 } from '@nextui-org/react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { toggleModal } from '@renderer/features/currentModal'
 import { useDispatch } from 'react-redux'
 import { setSelectedUserToChange } from '@renderer/features/userSessions'
@@ -24,6 +24,7 @@ export const UserAvatarDropdown = () => {
   const user = useSelector((state: any) => state.user.user)
   const [sessions, setSessions] = React.useState<any>([])
   const currentSessions = localStorage.getItem('sessions')
+  const unit = useSelector((state: any) => state.currentUnit)
 
   React.useEffect(() => {
     if (!currentSessions) return
@@ -97,12 +98,12 @@ export const UserAvatarDropdown = () => {
             }}
             className='h-[50px] w-[50px]'
           />
-          <div className='ml-[10px] text-center'>
+          <div className='ml-[10px]'>
             <p className='text-c-title text-[14px] font-semibold'>
               <ShortCellValue cellValue={user?.username} maxLength={12} />
             </p>
-            <p className='w-fit px-[10px] py-[2px] mt-1 bg-[rgb(160,219,142)]/20 rounded-md text-[#A0DB8E] text-[12px]'>
-              CEO
+            <p className='w-fit px-[10px] py-[2px] mt-1 bg-c-primary-variant-3 rounded-md text-c-primary text-[12px]'>
+              {user?.jobposition || 'Sin asignar'}
             </p>
           </div>
         </div>
@@ -122,16 +123,9 @@ export const UserAvatarDropdown = () => {
               />
               <span className='text-[20px]'>¡Hola, {user.username}!</span>
             </div>
-          </DropdownItem>
-          <DropdownItem
-            key='settings'
-            className='flex'
-            onClick={() => handleToggleModal('SettingsModal')}
-            classNames={{
-              base: 'mt-2 text-center p-2 w-[200px] h-[30px] rounded-full justify-center flex border-1',
-            }}
-          >
-            Ajustes
+            <Link to={`/user/${unit.id}`} className='w-full mt-4 text-center rounded-3xl justify-center border-1 block p-2 border-gray-300 hover:border-gray-500 duration-300'>
+              Ajustes
+            </Link>
           </DropdownItem>
         </DropdownSection>
         <DropdownSection>
@@ -152,7 +146,7 @@ export const UserAvatarDropdown = () => {
                     <span className='text-[10px]'>{item.user.email}</span>
                   </div>
                   {user.id == item.user.id && (
-                    <span className='px-[4px] py-[2px] bg-[rgb(160,219,142)]/20 rounded-md text-[#A0DB8E] text-[18px]'>
+                    <span className='px-[4px] py-[2px] bg-[rgb(160,219,142)]/20 rounded-md text-[rgb(160,219,142)] text-[18px]'>
                       <BiCheck />
                     </span>
                   )}
