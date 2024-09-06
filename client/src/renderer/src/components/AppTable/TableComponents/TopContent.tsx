@@ -67,7 +67,7 @@ export const TopContent = ({
                   <DropdownTrigger className='sm:flex'>
                     <Button
                       endContent={
-                        <FilterIcon className='text-red text-2xl mr-2 w-[20px] h-[20px]' />
+                        <FilterIcon className='text-c-title text-2xl mr-2 w-[20px] h-[20px]' />
                       }
                       variant='flat'
                       radius='sm'

@@ -1,7 +1,7 @@
 import { Card } from '@nextui-org/react'
 import { useSelector } from 'react-redux'
-import { getFormattedDate } from '@renderer/utils/getFormattedDate'
 import { IoIosArrowDown } from 'react-icons/io'
+import { getFormattedDate } from '@renderer/utils/getFormattedDate'
 
 export const DashboardHeaderInfo = () => {
   const user = useSelector((state: any) => state.user.user)
@@ -26,7 +26,7 @@ export const DashboardHeaderInfo = () => {
               >
                 {
                   unit.image ?
-                    <img src={unit.image} className='w-full h-full' alt='' />
+                    <img src={unit.image} className='w-full h-full rounded-sm' alt='' />
                     :
                     <span className='text-c-title font-semibold text-[22px]'>
                       {unit.name.slice(0, 2)}
