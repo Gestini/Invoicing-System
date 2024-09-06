@@ -97,7 +97,7 @@ export const UserAvatarDropdown = () => {
             }}
             className='h-[50px] w-[50px]'
           />
-          <div className='ml-[10px] hidden sm:flex flex-col'>
+          <div className='ml-[10px] hidden md:flex flex-col'>
             <p className='text-c-title text-[14px] font-semibold'>
               <ShortCellValue cellValue={user?.username} maxLength={12} />
             </p>
