@@ -1,11 +1,14 @@
 package productar.services;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -83,37 +86,39 @@ public class UserService {
         return (User) authentication.getPrincipal();
     }
 
-    public User updateUser(String username, User data) {
-        // Buscar el usuario por username
-        User existingUser = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public ResponseEntity<?> updateUser(User data) {
+        try {
+            User currentUser = getCurrentUser();
+            Optional<User> existingUserOptional = userRepository.findByUsername(currentUser.getUsername());
 
-        // Actualiza los campos solo si los datos no son null
-        if (Optional.ofNullable(data.getUsername()).isPresent()) {
-            existingUser.setUsername(data.getUsername());
+            if (!existingUserOptional.isPresent()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
+            }
+
+            User existingUser = existingUserOptional.get();
+
+            copyNonNullProperties(data, existingUser);
+
+            userRepository.save(existingUser);
+
+            return ResponseEntity.ok("Usuario actualizado correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error inesperado");
         }
-        if (Optional.ofNullable(data.getEmail()).isPresent()) {
-            existingUser.setEmail(data.getEmail());
+    }
+
+    private void copyNonNullProperties(User source, User existingUser) {
+        Field[] fields = User.class.getDeclaredFields();
+        for (Field field : fields) {
+            try {
+                field.setAccessible(true);
+                Object value = field.get(source);
+                if (value != null) {
+                    field.set(existingUser, value);
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
         }
-        if (Optional.ofNullable(data.getPassword()).isPresent()) {
-            existingUser.setPassword(data.getPassword());
-        }
-        if (Optional.ofNullable(data.getLastname()).isPresent()) {
-            existingUser.setLastname(data.getLastname());
-        }
-        if (Optional.ofNullable(data.getFirtsname()).isPresent()) {
-            existingUser.setFirtsname(data.getFirtsname());
-        }
-        if (Optional.ofNullable(data.getCountry()).isPresent()) {
-            existingUser.setCountry(data.getCountry());
-        }
-        if (Optional.ofNullable(data.getJobposition()).isPresent()) {
-            existingUser.setJobposition(data.getJobposition());
-        }
-        if (data.getRole() != null) { 
-            existingUser.setRole(data.getRole());
-        }
-        // Guarda los cambios en el repositorio
-        return userRepository.save(existingUser);
     }
 }
