@@ -62,11 +62,11 @@ export const AddNewAccountModal = ({ errors }) => {
 
   return (
     <Modal
-      placement='top-center'
       scrollBehavior={'inside'}
       backdrop='blur'
       isOpen={modalStates.modals.AddNewAccountModal}
       onClose={handleToggleModal}
+      placement='center'
     >
       <ModalContent>
         <>

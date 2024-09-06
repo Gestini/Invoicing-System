@@ -50,11 +50,11 @@ export const LogInAsModal = ({ errors }) => {
 
   return (
     <Modal
-      placement='top-center'
       scrollBehavior={'inside'}
       backdrop='blur'
       isOpen={modalStates.modals.LogInAsModal}
       onClose={() => handleToggleModal()}
+      placement='center'
     >
       <ModalContent>
         <ModalHeader className='flex flex-col gap-1'>

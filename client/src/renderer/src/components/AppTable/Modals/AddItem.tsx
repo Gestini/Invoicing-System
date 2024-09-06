@@ -40,7 +40,13 @@ export const AddItemModal = ({ modal }) => {
       >
         {modal?.buttonTitle}
       </Button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} scrollBehavior={'inside'} backdrop='blur'>
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        scrollBehavior={'inside'}
+        backdrop='blur'
+        placement='center'
+      >
         <ModalContent>
           <ModalHeader className='flex flex-col gap-1'>
             <h3 className='default-text-color'>{modal?.title}</h3>

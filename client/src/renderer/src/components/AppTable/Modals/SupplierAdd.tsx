@@ -127,6 +127,7 @@ export const AddSupplierModal = ({ modal }) => {
         scrollBehavior={'inside'}
         backdrop='blur'
         className='bg-c-card'
+        placement='center'
       >
         <ModalContent>
           <ModalHeader className='flex flex-col gap-1'>

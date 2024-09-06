@@ -53,6 +53,7 @@ export const EditItemModal = ({ modal }) => {
         backdrop='blur'
         onOpenChange={onOpenChange}
         scrollBehavior={'inside'}
+        placement='center'
       >
         <ModalContent>
           <ModalHeader className='flex flex-col gap-1'>
