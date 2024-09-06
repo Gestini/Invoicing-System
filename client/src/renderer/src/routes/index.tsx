@@ -20,6 +20,7 @@ const Router = () => {
       <Route element={<ProtectedRouteSession />}>
         <Route element={<ThemeMiddleware />}>
           <Route path={'/'} element={<Companies />} />
+          <Route path='/account/edit' element={<User />} />
         </Route>
         <Route element={<LoadCurrentUnitMiddleware />}>
           <Route element={<LoadCurrentUnitMiddleware />}>
@@ -52,7 +53,6 @@ const Router = () => {
                   }
                 />
               ))}
-              <Route path='/user/:unitId' element={<User />} />
             </Route>
           </Route>
         </Route>
