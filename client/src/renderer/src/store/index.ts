@@ -6,6 +6,7 @@ import { manageUserSlice } from '@renderer/features/userSlice'
 import { manageTableSlice } from '@renderer/features/tableSlice'
 import { manageCurrentUnit } from '@renderer/features/currentUnitSlice'
 import { manageModalsSlice } from '@renderer/features/currentModal'
+import { manageSidebarSlice } from '@renderer/features/sidebarSlice'
 import { manageCurrentTheme } from '@renderer/features/currentTheme'
 import { manageUserSessionsSlice } from '@renderer/features/userSessions'
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
@@ -30,6 +31,7 @@ const appReducer = combineReducers({
   user: userReducers,
   unit: unitReducers,
   units: manageUnits.reducer,
+  sidebar: manageSidebarSlice.reducer,
   currentUnit: manageCurrentUnit.reducer,
 })
 
