@@ -58,7 +58,8 @@ export const GraphView = () => {
   const [mainColor, setMainColor] = React.useState('transparent')
   const [parsedMainColor, setParsedMainColor] = React.useState('transparent')
   const currentTheme = useSelector((state: any) => state.user.currentTheme)
-
+  const sidebarState = useSelector((state: any) => state.sidebar)
+  
   React.useEffect(() => {
     const style = getComputedStyle(document.body)
     const computedMainColor = style.getPropertyValue('--c-primary').trim()
@@ -115,7 +116,7 @@ export const GraphView = () => {
             <h3 className='font-medium'>{item.title}</h3>
           </CardHeader>
           <CardBody>
-            <ChartComponent data={item.initialData} colors={item.colors} />
+            <ChartComponent data={item.initialData} colors={item.colors} sidebarState={sidebarState} />
           </CardBody>
         </Card>
       ))}

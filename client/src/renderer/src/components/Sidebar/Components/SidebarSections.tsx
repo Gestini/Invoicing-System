@@ -1,20 +1,23 @@
 import React from 'react'
+import { BiMenu } from 'react-icons/bi'
 import { setUnits } from '@renderer/features/unitsSlice'
 import { permissions } from '@renderer/pages/Roles/Permissions'
 import { useLocation } from 'react-router-dom'
 import { sidebarRoutes } from '@renderer/routes/routesData'
+import { sidebarStateType } from '@renderer/features/sidebarSlice'
+import { setSidebarState } from '@renderer/features/sidebarSlice'
+import { SidebarSectionItem } from './SidebarSectionItem'
+import { SidebarSectionAcordion } from './SidebarSectionAcordion'
 import { useDispatch, useSelector } from 'react-redux'
 import { reqGetUnitByOwner, reqUserHasPermissions } from '@renderer/api/requests'
-import { SidebarSectionAcordion, SidebarSectionItem } from './SidebarItems'
-import { FaArrowRightToBracket } from "react-icons/fa6";
-
 
 export const SidebarSections = () => {
   const unit = useSelector((state: any) => state.currentUnit)
   const user = useSelector((state: any) => state.user.user)
   const location = useLocation()
   const dispatch = useDispatch()
-  const [activeSidebar, setActiveSidebar] = React.useState(false)
+
+  const sidebarState: sidebarStateType = useSelector((state: any) => state.sidebar)
   const [view, setView] = React.useState<Record<string, any>>({})
 
   const updatedRoutesConfig = sidebarRoutes.map((section) => {
@@ -63,50 +66,61 @@ export const SidebarSections = () => {
 
   const getBasePath = (path: string) => path.split('/')[1]
 
-  const [options, setOptions] = React.useState(false)
-  const handleSidebar = () => setActiveSidebar(!activeSidebar)
+  const handleSidebar = () => {
+    dispatch(setSidebarState(!sidebarState.isActive))
+    localStorage.setItem('sidebarState', !sidebarState.isActive ? 'active' : 'none')
+  }
 
   return (
-    <div className={`bg-c-sidebar-bg w-[300px] h-screen border-r-md rounded-r-2xl flex flex-col justify-between  gap-[16px] p-5 px-[6px] pr-[8px] relative max-w-[50px]  ${activeSidebar && 'max-w-[225px]'} animation`}>
-      <div>
-        <span className='font-semibold pt-[8px] text-[11px] text-gray-500 block pl-[4px]'>Menu</span>
-        <div className='px-0 flex flex-col gap-[11px] max-h-[510px] overflow-y-auto overflow-x-hidden  sidebarthumb mt-[41px]'>
-          {updatedRoutesConfig.map((item: any, index: number) => {
-            const baseLocationPath = getBasePath(location.pathname)
-            const baseItemPath = getBasePath(item.path)
-            const hasPermissions = view[item.permission] !== undefined && !view[item.permission]
+    <>
+      <div
+        className={`bg-c-sidebar-bg w-[300px] pt-5 pb-5 h-screen border-r-md rounded-r-2xl flex flex-col justify-between gap-[16px] relative ${sidebarState.isActive ? 'max-w-[225px]' : 'max-w-[50px]'} animation`}
+      >
+        <div className='flex flex-col max-h-[90%]'>
+          <span className='flex pl-[10px] font-semibold text-[11px] text-gray-500 mb-[17px]'>
+            Menu
+          </span>
+          <div className='px-[6px] pr-[6px] overflow-y-auto overflow-x-hidden sidebarthumb flex flex-col gap-[11px] '>
+            {updatedRoutesConfig.map((item: any, index: number) => {
+              const baseLocationPath = getBasePath(location.pathname)
+              const baseItemPath = getBasePath(item.path)
+              const hasPermissions = view[item.permission] !== undefined && !view[item.permission]
 
-            if (item.routes.length == 1) {
+              if (item.routes.length == 1) {
+                return (
+                  <SidebarSectionItem
+                    key={index}
+                    item={item}
+                    baseItemPath={baseItemPath}
+                    hasPermissions={hasPermissions}
+                    baseLocationPath={baseLocationPath}
+                    activeSidebar={sidebarState.isActive}
+                  />
+                )
+              }
+
               return (
-                <SidebarSectionItem
+                <SidebarSectionAcordion
                   key={index}
                   item={item}
+                  index={index}
                   baseItemPath={baseItemPath}
                   hasPermissions={hasPermissions}
                   baseLocationPath={baseLocationPath}
-                  activeSidebar={activeSidebar}
+                  activeSidebar={sidebarState.isActive}
+                  handleSidebar={handleSidebar}
                 />
               )
-            }
-
-            return (
-              <SidebarSectionAcordion
-                key={index}
-                item={item}
-                index={index}
-                baseItemPath={baseItemPath}
-                hasPermissions={hasPermissions}
-                baseLocationPath={baseLocationPath}
-                activeSidebar={activeSidebar}
-                handleSidebar={handleSidebar}
-              />
-            )
-          })}
+            })}
+          </div>
+        </div>
+        <div
+          onClick={handleSidebar}
+          className='cursor-pointer ml-[10px] h-[30px] w-[30px] flex items-center justify-center bg-c-primary-variant-4 rounded-md'
+        >
+          <BiMenu className={`text-c-title animation ${sidebarState.isActive && 'rotate-180'}`} />
         </div>
       </div>
-      <div onClick={handleSidebar} className='ml-[4px] h-[30px] w-[30px] flex items-center justify-center bg-c-primary-variant-4 rounded-md'>
-        <FaArrowRightToBracket className={`cursor-pointer text-c-title animation ${activeSidebar && 'rotate-180'}`} />
-      </div>
-    </div>
+    </>
   )
 }
