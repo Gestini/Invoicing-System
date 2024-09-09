@@ -3,11 +3,9 @@ import { SidebarSections } from './Components/SidebarSections'
 
 export const Sidebar = () => {
   return (
-    <div className='sticky top-0 left-0 h-full'>
-      <div className='flex'>
+    <div className='sticky flex top-0 left-0 h-screen'>
         <UserUnits />
         <SidebarSections />
-      </div>
     </div>
   )
 }

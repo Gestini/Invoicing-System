@@ -67,7 +67,7 @@ export const SidebarSections = () => {
   const handleSidebar = () => setActiveSidebar(!activeSidebar)
 
   return (
-    <div className={`bg-c-sidebar-bg w-[300px] h-screen border-r-md rounded-r-2xl flex flex-col justify-between  gap-[16px] p-5 px-[6px] pr-[8px] relative max-w-[50px]  ${activeSidebar && 'max-w-[225px]'} animation`}>
+    <div className={`bg-c-sidebar-bg w-[300px] h-screen border-r-md rounded-r-2xl flex flex-col justify-between  gap-[16px] p-5 px-[6px] pr-[8px] relative ${activeSidebar ? 'max-w-[225px]' : 'max-w-[50px]'} animation`}>
       <div>
         <span className='font-semibold pt-[8px] text-[11px] text-gray-500 block pl-[4px]'>Menu</span>
         <div className='px-0 flex flex-col gap-[11px] max-h-[510px] overflow-y-auto overflow-x-hidden  sidebarthumb mt-[41px]'>

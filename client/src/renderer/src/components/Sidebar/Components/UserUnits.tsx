@@ -15,7 +15,7 @@ export const UserUnits = () => {
   const handleToggleModal = (modalName: string) => dispatch(toggleModal(modalName))
 
   return (
-    <div className='w-[48px] bg-c-sidebar-bg-2 h-screen flex flex-col items-center justify-between py-5'>
+    <div className='w-[48px] bg-c-sidebar-bg-2 h-full flex flex-col items-center justify-between py-5'>
       <Link to={'/'}>
         <div className='h-[49px] w-[36px] flex justify-center items-center rounded-md mb-[17px]'>
           <GestinyLogo />
