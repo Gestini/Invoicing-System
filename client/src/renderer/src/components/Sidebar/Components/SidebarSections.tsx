@@ -10,6 +10,8 @@ import { SidebarSectionItem } from './SidebarSectionItem'
 import { SidebarSectionAcordion } from './SidebarSectionAcordion'
 import { useDispatch, useSelector } from 'react-redux'
 import { reqGetUnitByOwner, reqUserHasPermissions } from '@renderer/api/requests'
+import { FaArrowRightFromBracket } from "react-icons/fa6";
+
 
 export const SidebarSections = () => {
   const unit = useSelector((state: any) => state.currentUnit)
@@ -118,7 +120,7 @@ export const SidebarSections = () => {
           onClick={handleSidebar}
           className='cursor-pointer ml-[10px] h-[30px] w-[30px] flex items-center justify-center bg-c-primary-variant-4 rounded-md'
         >
-          <BiMenu className={`text-c-title animation ${sidebarState.isActive && 'rotate-180'}`} />
+          <FaArrowRightFromBracket  className={`text-c-title animation ${sidebarState.isActive && 'rotate-180'}`} />
         </div>
       </div>
     </>

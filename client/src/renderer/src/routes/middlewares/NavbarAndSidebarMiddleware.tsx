@@ -16,7 +16,7 @@ export const NavbarAndSidebarMiddleware = () => {
   }, [])
 
   return (
-    <div className='flex'>
+    <div className='flex overflow-hidden max-h-screen'>
       <Sidebar />
       <Outlet />
     </div>

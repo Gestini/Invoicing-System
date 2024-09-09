@@ -15,7 +15,7 @@ import { SectionPermissionMiddleware } from './middlewares/SectionPermissionMidd
 const Router = () => {
   return (
     <Routes>
-      <Route path={'*'} element={<></>} />
+      <Route path={'*'} element={<>Error</>} />
       <Route path={'/invite'} element={<Invite />} />
       <Route element={<ProtectedRouteSession />}>
         <Route element={<ThemeMiddleware />}>
