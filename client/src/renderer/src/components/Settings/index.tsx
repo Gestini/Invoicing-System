@@ -22,6 +22,7 @@ export const Settings = () => {
         scrollBehavior={'inside'}
         backdrop='blur'
         size='sm'
+        placement='center'
       >
         <ModalContent>
           <ModalHeader className='flex flex-col gap-1'>

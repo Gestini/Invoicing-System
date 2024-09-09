@@ -62,7 +62,13 @@ export const CreateWarehouse = () => {
           <PlusIcon />
         </div>
       </Tooltip>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} scrollBehavior={'inside'} backdrop='blur'>
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        scrollBehavior={'inside'}
+        backdrop='blur'
+        placement='center'
+      >
         <ModalContent>
           <ModalHeader>
             <h4 className='text-c-title font-semibold text-2xl'>Crear un nuevo depósito</h4>

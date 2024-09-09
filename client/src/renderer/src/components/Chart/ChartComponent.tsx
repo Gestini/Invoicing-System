@@ -1,15 +1,33 @@
-import { ColorType, createChart } from 'lightweight-charts'
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { ColorType, createChart, IChartApi, ISeriesApi } from 'lightweight-charts'
 
-export const ChartComponent = ({ data, colors }) => {
-  const chartContainerRef = React.useRef<HTMLDivElement | null>(null)
+interface ChartComponentProps {
+  data: { time: string; value: number }[]
+  colors: {
+    backgroundColor: string
+    textColor: string
+    lineColor: string
+    areaTopColor: string
+    areaBottomColor: string
+  }
+  sidebarState: boolean
+}
 
-  React.useEffect(() => {
+export const ChartComponent: React.FC<ChartComponentProps> = ({ data, colors, sidebarState }) => {
+  const chartContainerRef = useRef<HTMLDivElement | null>(null)
+  const chartRef = useRef<IChartApi | null>(null)
+  const seriesRef = useRef<ISeriesApi<'Area'> | null>(null)
+
+  const [isMounted, setIsMounted] = useState(false)
+
+  useEffect(() => {
+    setIsMounted(true)
+
     if (!chartContainerRef.current) return
 
     const handleResize = () => {
-      if (chartContainerRef.current) {
-        chart.applyOptions({ width: chartContainerRef.current.clientWidth })
+      if (isMounted && chartContainerRef.current && chartRef.current) {
+        chartRef.current.applyOptions({ width: chartContainerRef.current.clientWidth })
       }
     }
 
@@ -29,6 +47,8 @@ export const ChartComponent = ({ data, colors }) => {
         },
       },
     })
+    chartRef.current = chart
+
     chart.timeScale().fitContent()
 
     const newSeries = chart.addAreaSeries({
@@ -36,15 +56,27 @@ export const ChartComponent = ({ data, colors }) => {
       topColor: colors.areaTopColor,
       bottomColor: colors.areaBottomColor,
     })
+    seriesRef.current = newSeries
     newSeries.setData(data)
 
     window.addEventListener('resize', handleResize)
 
+    setTimeout(() => {
+      handleResize()
+      if (isMounted && chartRef.current) {
+        chartRef.current.timeScale().fitContent()
+        handleResize()
+      }
+    }, 300)
+
     return () => {
+      setIsMounted(false)
       window.removeEventListener('resize', handleResize)
-      chart.remove()
+      if (chartRef.current) {
+        chartRef.current.remove()
+      }
     }
-  }, [data, colors])
+  }, [data, colors, sidebarState, isMounted])
 
   return <div ref={chartContainerRef} />
 }

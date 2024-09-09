@@ -99,6 +99,7 @@ export const EditSupplierModal = ({ modal }) => {
         onOpenChange={onOpenChange}
         scrollBehavior={'inside'}
         size='5xl'
+        placement='center'
       >
         <ModalContent>
           <ModalHeader className='flex flex-col gap-1'>

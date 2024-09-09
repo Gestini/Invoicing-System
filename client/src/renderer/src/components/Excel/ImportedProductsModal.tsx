@@ -15,7 +15,7 @@ import {
 
 const ImportedProductsModal = ({ isOpen, onClose, onConfirmImport, products }) => {
   return (
-    <Modal isOpen={isOpen} size={'5xl'} onClose={onClose}>
+    <Modal isOpen={isOpen} size={'5xl'} onClose={onClose} placement='center'>
       <ModalContent>
         <ModalHeader>Productos Importados</ModalHeader>
         <ModalBody>

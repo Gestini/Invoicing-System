@@ -39,6 +39,7 @@ export const EditWarehouse = ({ isOpen, onOpenChange, onClose, id }) => {
       onOpenChange={onOpenChange}
       scrollBehavior={'inside'}
       backdrop='blur'
+      placement='center'
     >
       <ModalContent>
         <ModalHeader>

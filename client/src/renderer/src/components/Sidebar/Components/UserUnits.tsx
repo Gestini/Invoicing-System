@@ -1,12 +1,11 @@
+import React from 'react'
+import { Link } from 'react-router-dom'
 import { GestinyLogo } from '@renderer/assets/GestinyLogo'
 import { toggleModal } from '@renderer/features/currentModal'
-import React from 'react'
 import { BsThreeDots } from 'react-icons/bs'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { CreateUnitModal } from '../../CreateCompanyForm'
 import { UnitDropdown } from './UnitDropdown'
-
+import { CreateUnitModal } from '../../CreateCompanyForm'
+import { useDispatch, useSelector } from 'react-redux'
 
 export const UserUnits = () => {
   const dispatch = useDispatch()
@@ -32,7 +31,10 @@ export const UserUnits = () => {
         ))}
         <CreateUnitModal />
       </div>
-      <BsThreeDots className='cursor-pointer text-c-title' onClick={() => handleToggleModal('SettingsModal')} />
+      <BsThreeDots
+        className='cursor-pointer text-c-title'
+        onClick={() => handleToggleModal('SettingsModal')}
+      />
     </div>
   )
 }

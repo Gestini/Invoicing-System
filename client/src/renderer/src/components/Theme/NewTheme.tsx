@@ -25,7 +25,7 @@ export const NewTheme = () => {
           <FaPlus className='text-white h-3 w-3' />
         </div>
       </Tooltip>
-      <Modal backdrop='blur' isOpen={isOpen} onClose={onCloseAndClear}>
+      <Modal backdrop='blur' isOpen={isOpen} onClose={onCloseAndClear} placement='center'>
         <ModalContent>
           <ModalHeader className='flex flex-col gap-1'>Modal Title</ModalHeader>
           <ModalBody>

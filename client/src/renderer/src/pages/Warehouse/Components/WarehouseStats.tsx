@@ -46,7 +46,7 @@ export const WarehouseStats = () => {
           <p className='flex gap-1 items-center text-c-gray text-[16px]'>
             {ele.text} <ErrorIcon />
           </p>
-          <span className='font-semibold text-white text-[24px]'>{ele.amount}</span>
+          <span className='font-semibold text-c-title text-[24px]'>{ele.amount}</span>
         </div>
       ))}
     </div>

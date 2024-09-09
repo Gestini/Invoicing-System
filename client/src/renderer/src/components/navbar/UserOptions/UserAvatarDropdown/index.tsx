@@ -12,9 +12,9 @@ import {
   DropdownSection,
   DropdownTrigger,
 } from '@nextui-org/react'
-import { Link, useNavigate } from 'react-router-dom'
 import { toggleModal } from '@renderer/features/currentModal'
 import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import { setSelectedUserToChange } from '@renderer/features/userSessions'
 
 export const UserAvatarDropdown = () => {
@@ -24,7 +24,6 @@ export const UserAvatarDropdown = () => {
   const user = useSelector((state: any) => state.user.user)
   const [sessions, setSessions] = React.useState<any>([])
   const currentSessions = localStorage.getItem('sessions')
-  const unit = useSelector((state: any) => state.currentUnit)
 
   React.useEffect(() => {
     if (!currentSessions) return
@@ -89,7 +88,7 @@ export const UserAvatarDropdown = () => {
   return (
     <Dropdown className='text-c-title w-[400px] bg-c-card'>
       <DropdownTrigger>
-        <div className='flex'>
+        <div className='flex items-center cursor-pointer'>
           <Avatar
             as='button'
             classNames={{
@@ -98,7 +97,7 @@ export const UserAvatarDropdown = () => {
             }}
             className='h-[50px] w-[50px]'
           />
-          <div className='ml-[10px]'>
+          <div className='ml-[10px] hidden md:flex flex-col'>
             <p className='text-c-title text-[14px] font-semibold'>
               <ShortCellValue cellValue={user?.username} maxLength={12} />
             </p>
@@ -123,9 +122,13 @@ export const UserAvatarDropdown = () => {
               />
               <span className='text-[20px]'>¡Hola, {user.username}!</span>
             </div>
-            <Link to={`/user/${unit.id}`} className='w-full mt-4 text-center rounded-3xl justify-center border-1 block p-2 border-gray-300 hover:border-gray-500 duration-300'>
-              Ajustes
-            </Link>
+          </DropdownItem>
+          <DropdownItem
+            key='settings'
+            onClick={() => navigate('/account/edit')}
+            className='mt-4 text-center rounded-3xl justify-center border-1 block border-gray-300 hover:border-gray-500 duration-300'
+          >
+            Ajustes
           </DropdownItem>
         </DropdownSection>
         <DropdownSection>

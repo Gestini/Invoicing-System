@@ -15,24 +15,23 @@ import lombok.RequiredArgsConstructor;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-        private final JwtAuthenticationFilter jwtAuthenticationFilter;
-        private final AuthenticationProvider authProvider;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final AuthenticationProvider authProvider;
 
-        @Bean
-        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-                return http
-                                .csrf(csrf -> csrf.disable()) // Desactivar CSRF (opcional, pero no recomendado en
-                                                              // producción)
-                                .authorizeHttpRequests(authRequest -> authRequest
-                                                .requestMatchers("/auth/**", "/business-unit/get-all-ecommerce")
-                                                .permitAll() // Permitir acceso público a
-                                                // /auth/**
-                                                .anyRequest().authenticated()) // Requerir autenticación para cualquier
-                                                                               // otra ruta
-                                .sessionManagement(sessionManager -> sessionManager
-                                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                                .authenticationProvider(authProvider)
-                                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                                .build();
-        }
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http
+                .csrf(csrf -> csrf.disable()) // Desactivar CSRF (opcional, pero no recomendado en
+                                              // producción)
+                .authorizeHttpRequests(authRequest -> authRequest
+                        .requestMatchers("/auth/**", "/business-unit/get-all-ecommerce")
+                        .permitAll() // Permitir acceso público a /auth/** */
+                        .anyRequest().authenticated()) // Requerir autenticación para cualquier
+                                                       // otra ruta
+                .sessionManagement(sessionManager -> sessionManager
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authProvider)
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
+    }
 }

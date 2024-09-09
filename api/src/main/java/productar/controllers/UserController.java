@@ -52,9 +52,8 @@ public class UserController {
         return userService.searchByUsername(username);
     }
 
-    @PutMapping("/update/{username}")
-    public ResponseEntity<User> updateUser(@PathVariable String username, @RequestBody User data) {
-        User updatedUser = userService.updateUser(username, data);
-        return ResponseEntity.ok(updatedUser);
+    @PutMapping("/update")
+    public ResponseEntity<?> updateUser(@RequestBody User data) {
+        return userService.updateUser(data);
     }
 }

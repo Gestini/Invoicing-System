@@ -5,6 +5,7 @@ const afip = require('../config/afip');
 const { factura, notadecredito, facturadeCredito } = require('../data/facturas');
 const path = require('path');
 const handlebars = require('handlebars')
+const axios = require('axios')
 
 // Ruta para verificar el estado
 router.get('/', (req, res) => {

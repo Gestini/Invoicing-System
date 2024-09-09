@@ -30,7 +30,7 @@ export const CreateUnitModal = () => {
     name: '',
     link: '',
     description: '',
-    image: ''
+    image: '',
   })
   const [errors, setErrors] = React.useState({})
 
@@ -63,9 +63,7 @@ export const CreateUnitModal = () => {
     setErrors((prev) => ({ ...prev, [name]: '' }))
   }
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault() // Esto debería funcionar correctamente aquí
-
+  const handleSubmit = async () => {
     if (!validateInputs()) return
     setLoading(true)
 
@@ -91,10 +89,6 @@ export const CreateUnitModal = () => {
     }
   }
 
-  React.useEffect(() => {
-    console.log(file)
-  }, [file])
-
   return (
     <div className='flex flex-col gap-2'>
       <Tooltip
@@ -118,13 +112,14 @@ export const CreateUnitModal = () => {
         onOpenChange={onOpenChange}
         scrollBehavior={'inside'}
         backdrop='blur'
+        placement='center'
       >
         <ModalContent>
           <ModalHeader className='flex flex-col gap-1'>
             <h3 className='default-text-color'>Crear unidad</h3>
           </ModalHeader>
-          <form onSubmit={handleSubmit}>
-            <ModalBody>
+          <ModalBody>
+            <form onSubmit={handleSubmit}>
               <div className='text-center mb-6'>
                 <div className='flex justify-center items-center'>
                   <img className='w-8 h-8 mb-4' src={Logo} alt='logo' />
@@ -138,7 +133,14 @@ export const CreateUnitModal = () => {
                   <label className='flex flex-col p-2 items-center bg-c-primary rounded-lg tracking-wide border border-blue cursor-pointer hover:bg-c-primary-hover transition-all duration-300'>
                     <GoUpload />
                     <span className='text-c-title text-[12px]'>Selecciona una foto</span>
-                    <input type='file' onChange={(e) => { setFile(e.target.files ? e.target.files[0] : null) }} className='hidden' accept='image/*' />
+                    <input
+                      type='file'
+                      onChange={(e) => {
+                        setFile(e.target.files ? e.target.files[0] : null)
+                      }}
+                      className='hidden'
+                      accept='image/*'
+                    />
                   </label>
                 </div>
                 {fieldConfig.map((field, index) => {
@@ -173,22 +175,23 @@ export const CreateUnitModal = () => {
                   )
                 })}
               </div>
-            </ModalBody>
-            <ModalFooter>
-              <Button color='danger' variant='light' onPress={onClose} radius='sm'>
-                Cerrar
-              </Button>
-              <Button
-                color='secondary'
-                radius='sm'
-                className='bg-c-primary'
-                isLoading={loading}
-                type="submit"
-              >
-                {loading ? 'Cargando...' : 'Crear'}
-              </Button>
-            </ModalFooter>
-          </form>
+            </form>
+          </ModalBody>
+          <ModalFooter>
+            <Button color='danger' variant='light' onPress={onClose} radius='sm'>
+              Cerrar
+            </Button>
+            <Button
+              onClick={handleSubmit}
+              color='secondary'
+              radius='sm'
+              className='bg-c-primary'
+              isLoading={loading}
+              type='submit'
+            >
+              {loading ? 'Cargando...' : 'Crear'}
+            </Button>
+          </ModalFooter>
         </ModalContent>
       </Modal>
     </div>

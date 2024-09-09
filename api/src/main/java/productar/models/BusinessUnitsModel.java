@@ -39,33 +39,13 @@ public class BusinessUnitsModel {
     @NotNull(message = "Owner id cannot be null")
     private User owner;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "company_id", nullable = true)
+    private CompanyModel company;
+
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "current_plan_id", nullable = true)
     private BusinessUnitPlanModel plan;
-
-    public Boolean getEcommerce() {
-        return ecommerce;
-    }
-
-    public void setEcommerce(Boolean ecommerce) {
-        this.ecommerce = ecommerce;
-    }
-
-    public String getLink() {
-        return link;
-    }
-
-    public void setLink(String link) {
-        this.link = link;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
 
     public Long getId() {
         return id;
@@ -91,12 +71,44 @@ public class BusinessUnitsModel {
         this.description = description;
     }
 
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public Boolean getEcommerce() {
+        return ecommerce;
+    }
+
+    public void setEcommerce(Boolean ecommerce) {
+        this.ecommerce = ecommerce;
+    }
+
     public User getOwner() {
         return owner;
     }
 
     public void setOwner(User owner) {
         this.owner = owner;
+    }
+
+    public CompanyModel getCompany() {
+        return company;
+    }
+
+    public void setCompany(CompanyModel company) {
+        this.company = company;
     }
 
     public BusinessUnitPlanModel getPlan() {

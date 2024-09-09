@@ -47,8 +47,9 @@ export const UnitDropdown = ({ unitItem, openDropdownId, setOpenDropdownId }) =>
     >
       <DropdownTrigger>
         <div
-          className={`${unitItem.id == unit.id ? 'rounded-md bg-c-primary-variant-4' : ''
-            } transition-all duration-500 ease-in-out flex items-center justify-center h-[32px] w-[32px] cursor-pointer`}
+          className={`${
+            unitItem.id == unit.id ? 'rounded-md bg-c-primary-variant-4' : ''
+          } transition-all duration-500 ease-in-out flex items-center justify-center h-[32px] w-[32px] cursor-pointer`}
         >
           <Tooltip
             placement='right'
@@ -63,23 +64,19 @@ export const UnitDropdown = ({ unitItem, openDropdownId, setOpenDropdownId }) =>
               content: 'bg-c-sidebar-bg-2',
             }}
           >
-
             <div
               onContextMenu={handleOpenDropdown}
               onClick={handleNavigate}
-              className={`${unitItem.id == unit.id ? 'rounded-full' : 'rounded-full'
-                } transition-all duration-500 ease-in-out w-[24px] h-[24px] uppercase flex items-center justify-center font-semibold text-c-title`}
+              className={`${
+                unitItem.id == unit.id ? 'rounded-full' : 'rounded-full'
+              } transition-all duration-500 ease-in-out w-[24px] h-[24px] uppercase flex items-center justify-center font-semibold text-c-title`}
             >
-              {
-                unitItem.image ?
-                  <img src={unitItem.image} className='w-full h-full' alt='' />
-                  :
-                  <span>
-                    {unitItem.name.slice(0, 2)}
-                  </span>
-              }
+              {unitItem.image ? (
+                <img src={unitItem.image} className='w-full h-full rounded-sm' alt='' />
+              ) : (
+                <span>{unitItem.name.slice(0, 2)}</span>
+              )}
             </div>
-
           </Tooltip>
         </div>
       </DropdownTrigger>

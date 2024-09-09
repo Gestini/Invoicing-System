@@ -14,6 +14,7 @@ export const SettingsModal = () => {
       scrollBehavior={'inside'}
       backdrop='blur'
       size='sm'
+      placement='center'
       isOpen={modalStates.modals.SettingsModal}
       onClose={handleToggleModal}
     >

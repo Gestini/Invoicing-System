@@ -25,7 +25,7 @@ const Invite = () => {
   }, [token, navigate])
 
   return (
-    <Modal size={'md'} isOpen={isOpen} onClose={onClose}>
+    <Modal size={'md'} isOpen={isOpen} onClose={onClose} placement='center'>
       <ModalContent>
         <ModalHeader className='flex flex-col gap-1'>Modal Title</ModalHeader>
       </ModalContent>
