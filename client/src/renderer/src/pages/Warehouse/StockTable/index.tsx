@@ -16,7 +16,7 @@ import { addItem, deleteItem, editItem, setTableData } from '@renderer/features/
 
 export const StockTable = () => {
   const dispatch = useDispatch()
-  const table = useSelector((state: any) => state.table)
+  const table = useSelector((state: any) => state.unit.table)
 
   const warehouse: wareHouseInterface = useSelector((state: any) => state.unit.warehouse)
   const currentWarehouseId = warehouse.currentWarehouseId
