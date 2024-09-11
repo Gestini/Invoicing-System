@@ -51,7 +51,7 @@ export const reqGetAllInvoicesByUnit = async (id: any) => api.get(`/invoicing/ge
 export const reqCreateDeposit = async (data: any) => api.post('/deposit/save', data)
 export const reqEditDeposit = async (id: any, data: any) => api.put(`/deposit/${id}`, data)
 export const reqDeleteDeposit = async (id: any) => api.delete(`/deposit/${id}`)
-export const reqGetDepositByUnit = async (id: any) => api.get(`/deposit/${id}`)
+export const reqGetDepositByUnit = async (id: any) => api.get(`/deposit/get-by-unit-id/${id}`)
 
 /* Rutas clientes */
 export const reqCreateClient = async (data: any) => api.post('/clients', data)
@@ -84,8 +84,8 @@ export const reqEditEmployee = (id: any, data: any) => api.put(`/employee/edit/$
 export const reqLeaveUnit = (id: any) => api.delete(`/employee/leave-unit/${id}`)
 
 /* Rutas planes */
-export const reqGetAllPlans = () => api.get("/plans/get-all")
-export const reqGetPlan = (planId: any) => api.get(`/plans/get/${planId}`)
+export const reqGetAllPlans = () => api.get("/plan/get-all")
+export const reqGetPlan = (planId: any) => api.get(`/plan/get/${planId}`)
 
 /* Rutas AFIP */
 export const reqCreateInvoiceAfip = async (data: any) => apiNode.post('/create-invoice', data)
