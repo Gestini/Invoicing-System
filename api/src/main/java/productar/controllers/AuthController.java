@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
 import productar.dto.LoginRequest;
-import productar.dto.RegisterRequest;
 import productar.dto.PasswordResetRequest;
 import productar.dto.PasswordResetTokenRequest;
+import productar.dto.RegisterRequest;
 import productar.models.User;
 import productar.services.AuthService;
 import productar.services.EmailSenderService;

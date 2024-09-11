@@ -19,7 +19,7 @@ public class InvitationModel {
     private Long id;
 
     @ManyToOne
-    private BusinessUnitsModel businessUnit;
+    private BusinessUnitModel businessUnit;
 
     @ManyToOne
     private User inviter;
@@ -41,11 +41,11 @@ public class InvitationModel {
         this.id = id;
     }
 
-    public BusinessUnitsModel getBusinessUnit() {
+    public BusinessUnitModel getBusinessUnit() {
         return businessUnit;
     }
 
-    public void setBusinessUnit(BusinessUnitsModel businessUnit) {
+    public void setBusinessUnit(BusinessUnitModel businessUnit) {
         this.businessUnit = businessUnit;
     }
 

@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import productar.models.BusinessUnitsModel;
+import productar.models.BusinessUnitModel;
 import productar.models.EmployeeModel;
 import productar.models.InvitationModel;
 import productar.models.User;
@@ -56,7 +56,7 @@ public class EmployeeService {
         invitation.setAccepted(false);
         invitation.setEmployee(employee);
 
-        BusinessUnitsModel businessUnit = businessUnitsRepository
+        BusinessUnitModel businessUnit = businessUnitsRepository
                 .findById(employee.getBusinessUnit().getId())
                 .orElseThrow(() -> new RuntimeException("Unidad no encontrada"));
 

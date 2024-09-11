@@ -1,15 +1,15 @@
 package productar.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import productar.dto.SupplierDTO;
-import productar.models.BusinessUnitsModel;
+import productar.models.BusinessUnitModel;
 import productar.models.SupplierModel;
 import productar.repositories.SupplierRepository;
 
@@ -19,7 +19,7 @@ public class SupplierService {
     @Autowired
     private SupplierRepository supplierRepository;
 
-    public SupplierModel createSupplier(SupplierModel supplier, BusinessUnitsModel businessUnit) {
+    public SupplierModel createSupplier(SupplierModel supplier, BusinessUnitModel businessUnit) {
         supplier.setBusinessUnit(businessUnit);
         return supplierRepository.save(supplier);
     }
