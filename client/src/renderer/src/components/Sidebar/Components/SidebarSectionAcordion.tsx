@@ -20,7 +20,7 @@ export const SidebarSectionAcordion = ({
 
   React.useEffect(() => {
     setSelectedKeys([])
-  }, [unit])
+  }, [unit.id])
 
   const openSidebar = () => {
     if (!activeSidebar) {
