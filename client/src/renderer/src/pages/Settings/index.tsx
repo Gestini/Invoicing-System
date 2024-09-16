@@ -64,7 +64,7 @@ const Index = () => {
         imageUrl = await uploadImage(file);
       }
 
-      const fullUrl = `http://gestini.${data.link}.com`;
+      const fullUrl = `${data.link}`;
       await reqUpdateUnitById(unit?.id, {
         name: data.name,
         description: data.description,
@@ -116,7 +116,7 @@ const Index = () => {
               onChange={handleFileChange}
             />
             <label htmlFor="fileInput" className="block w-full h-full bg-c-card overflow-hidden rounded-md">
-              <div id="previewImage" className="w-full h-full object-contain rounded-lg overflow-hidden flex justify-center items-center uppercase text-[40px] font-semibold text-c-title">{data.name.slice(0,2)}</div>
+              <div id="previewImage" className="w-full h-full object-contain rounded-lg overflow-hidden flex justify-center items-center uppercase text-[40px] font-semibold text-c-title">{data.name.slice(0, 2)}</div>
               <div className="absolute  inset-0 bg-black bg-opacity-40 flex items-center justify-center text-white text-lg font-semibold opacity-0 hover:opacity-100 transition-opacity rounded-lg">
                 Editar
               </div>
