@@ -1,6 +1,7 @@
 import Invite from '@renderer/pages/Invite/Invite'
 import Companies from '@renderer/pages/Companies/Companies'
 import User from '@renderer/pages/User'
+import UnitSettings from '../pages/UnitSettings'
 import { Route, Routes } from 'react-router-dom'
 import { PaymentGateway } from '@renderer/pages/PaymentGateway'
 import { ThemeMiddleware } from './middlewares/ThemeMiddleware'
@@ -11,6 +12,10 @@ import { CurrentSecctionMiddleware } from './middlewares/CurrentSecctionMiddlewa
 import { LoadCurrentUnitMiddleware } from './middlewares/LoadCurrentUnitMiddleware'
 import { NavbarAndSidebarMiddleware } from './middlewares/NavbarAndSidebarMiddleware'
 import { SectionPermissionMiddleware } from './middlewares/SectionPermissionMiddleware'
+import Navbar from '@renderer/components/SettingsUnit/Navbar'
+import PlanSettings from '@renderer/pages/UnitSettings/PlanSettings'
+import Integration from '@renderer/pages/UnitSettings/Integration'
+import UnitConfig from '@renderer/pages/UnitSettings/UnitConfig'
 
 const Router = () => {
   return (
@@ -18,6 +23,12 @@ const Router = () => {
       <Route path={'*'} element={<>Error</>} />
       <Route path={'/invite'} element={<Invite />} />
       <Route element={<ProtectedRouteSession />}>
+        <Route path={'/settings/:id'} element={<UnitSettings />}>
+          {/* Rutas anidadas para cada sección del Settings */}
+          <Route path={'general'} element={<UnitConfig />} />
+          <Route path={'plan'} element={<PlanSettings />} />
+          <Route path={'integraciones'} element={<Integration />} />
+        </Route>
         <Route element={<ThemeMiddleware />}>
           <Route path={'/'} element={<Companies />} />
           <Route path='/account/edit' element={<User />} />
