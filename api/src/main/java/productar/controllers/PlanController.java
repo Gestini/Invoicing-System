@@ -17,7 +17,7 @@ import productar.models.PlanModel;
 import productar.services.PlanService;
 
 @RestController
-@RequestMapping("/plans")
+@RequestMapping("/plan")
 public class PlanController {
 
     @Autowired

@@ -10,28 +10,27 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-public class InvitationModel {
+@Table(name = "business_unit_deposit")
+public class BusinessUnitDepositModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "business_unit_id", nullable = false)
+    @NotNull(message = "La unidad de negocio no puede ser nula")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private BusinessUnitModel businessUnit;
 
-    @ManyToOne
-    private User inviter;
-
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "employee_id", nullable = false)
-    @NotNull(message = "El empleado no puede ser nulo")
+    @JoinColumn(name = "deposit_id", nullable = false)
+    @NotNull(message = "El deposito no puede ser nulo")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private EmployeeModel employee;
-
-    private String token;
-    private boolean accepted;
+    private DepositModel deposit;
 
     public Long getId() {
         return id;
@@ -49,36 +48,12 @@ public class InvitationModel {
         this.businessUnit = businessUnit;
     }
 
-    public User getInviter() {
-        return inviter;
+    public DepositModel getDeposit() {
+        return deposit;
     }
 
-    public void setInviter(User inviter) {
-        this.inviter = inviter;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public boolean isAccepted() {
-        return accepted;
-    }
-
-    public void setAccepted(boolean accepted) {
-        this.accepted = accepted;
-    }
-
-    public EmployeeModel getEmployee() {
-        return employee;
-    }
-
-    public void setEmployee(EmployeeModel employee) {
-        this.employee = employee;
+    public void setDeposit(DepositModel deposit) {
+        this.deposit = deposit;
     }
 
 }

@@ -1,5 +1,6 @@
 package productar.services;
 
+import java.lang.reflect.Field;
 import java.security.Key;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import productar.models.BusinessUnitPlanModel;
-import productar.models.BusinessUnitsModel;
+import productar.models.BusinessUnitModel;
 import productar.models.EmployeeModel;
 import productar.models.PlanModel;
 import productar.models.User;
@@ -34,7 +35,7 @@ import productar.repositories.PlanRepository;
 import productar.repositories.UserRepository;
 
 @Service
-public class BusinessUnitsService {
+public class BusinessUnitService {
     @Autowired
     private BusinessUnitsRepository businessUnitsRepository;
 
@@ -54,37 +55,41 @@ public class BusinessUnitsService {
     private String SECRET_KEY_PLAN;
 
     public Boolean BusinessExists(Long id) {
-        Optional<BusinessUnitsModel> businessUnit = businessUnitsRepository.findById(id);
+        Optional<BusinessUnitModel> businessUnit = businessUnitsRepository.findById(id);
         return businessUnit.isPresent();
     }
 
-    public ArrayList<BusinessUnitsModel> getAllBusinessUnit() {
-        return (ArrayList<BusinessUnitsModel>) businessUnitsRepository.findAll();
+    public ArrayList<BusinessUnitModel> getAllBusinessUnit() {
+        return (ArrayList<BusinessUnitModel>) businessUnitsRepository.findAll();
     }
 
-    public ArrayList<BusinessUnitsModel> getAllEcommerceBusinessUnits() {
-        return (ArrayList<BusinessUnitsModel>) businessUnitsRepository.findByEcommerceTrue();
+    public List<BusinessUnitModel> findAllUnitsWithEcommerce() {
+        return businessUnitsRepository.findAllUnitsWithEcommerce();
     }
 
-    public List<BusinessUnitsModel> getBusinessUnitsByToken() {
+    public BusinessUnitModel findByUnitIdAndEcommerce(Long unitId) {
+        return businessUnitsRepository.findByUnitIdAndEcommerce(unitId);
+    }
+
+    public List<BusinessUnitModel> getBusinessUnitsByToken() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = ((UserDetails) authentication.getPrincipal()).getUsername();
 
         // Buscar las unidades de negocio asociadas al usuario
-        List<BusinessUnitsModel> businessUnits = businessUnitsRepository.findByOwnerUsername(username);
+        List<BusinessUnitModel> businessUnits = businessUnitsRepository.findByOwnerUsername(username);
 
         return businessUnits;
     }
 
-    public List<BusinessUnitsModel> getUserBusinessUnits() {
+    public List<BusinessUnitModel> getUserBusinessUnits() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = ((UserDetails) authentication.getPrincipal()).getUsername();
 
         // Obtener unidades donde el usuario es dueño
-        List<BusinessUnitsModel> ownedUnits = businessUnitsRepository.findByOwnerUsername(username);
+        List<BusinessUnitModel> ownedUnits = businessUnitsRepository.findByOwnerUsername(username);
 
         // Obtener unidades donde el usuario es empleado
-        List<BusinessUnitsModel> employeeUnits = employeeRepository.findByUserUsername(username)
+        List<BusinessUnitModel> employeeUnits = employeeRepository.findByUserUsername(username)
                 .stream()
                 .map(EmployeeModel::getBusinessUnit)
                 .collect(Collectors.toList());
@@ -95,22 +100,22 @@ public class BusinessUnitsService {
         return ownedUnits.stream().distinct().collect(Collectors.toList());
     }
 
-    public ResponseEntity<BusinessUnitsModel> saveBusinessUnit(BusinessUnitsModel businessUnit, String username) {
+    public ResponseEntity<BusinessUnitModel> saveBusinessUnit(BusinessUnitModel businessUnit, String username) {
         User owner = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
 
         businessUnit.setOwner(owner);
-        BusinessUnitsModel saved = businessUnitsRepository.save(businessUnit);
+        BusinessUnitModel saved = businessUnitsRepository.save(businessUnit);
 
         return ResponseEntity.status(HttpStatus.OK).body(saved);
     }
 
-    public Optional<BusinessUnitsModel> getBusinessUnitById(Long id) {
+    public Optional<BusinessUnitModel> getBusinessUnitById(Long id) {
         return businessUnitsRepository.findById(id);
     }
 
     public ResponseEntity<String> deleteBusinessUnitById(Long id) {
-        BusinessUnitsModel businessUnit = businessUnitsRepository.findById(id)
+        BusinessUnitModel businessUnit = businessUnitsRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("Unidad de negocio no encontrada"));
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -144,7 +149,7 @@ public class BusinessUnitsService {
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Plan no encontrado"));
 
             // Verifica que la Unidad de Negocio existe
-            BusinessUnitsModel selectedUnit = businessUnitsRepository.findById(unitId)
+            BusinessUnitModel selectedUnit = businessUnitsRepository.findById(unitId)
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Unidad no encontrada"));
 
             // Elimina el plan actual si existe
@@ -177,36 +182,27 @@ public class BusinessUnitsService {
         }
     }
 
-    public ResponseEntity<BusinessUnitsModel> updateBusinessUnit(Long id, BusinessUnitsModel updatedData,
-            String username) {
-        // Buscar la unidad de negocio por ID
-        BusinessUnitsModel existingBusinessUnit = businessUnitsRepository.findById(id)
-                .orElseThrow(
-                        () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Unidad de negocio no encontrada"));
+    public ResponseEntity<?> updateBusinessUnit(Long id, BusinessUnitModel updatedData) {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String username = ((UserDetails) authentication.getPrincipal()).getUsername();
 
-        // Verificar que el usuario autenticado sea el dueño de la unidad
-        User owner = existingBusinessUnit.getOwner();
-        if (!owner.getUsername().equals(username)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-        }
-        if (Optional.ofNullable(updatedData.getName()).isPresent()) {
-            existingBusinessUnit.setName(updatedData.getName());
-        }
-        if (Optional.ofNullable(updatedData.getDescription()).isPresent()) {
-            existingBusinessUnit.setDescription(updatedData.getDescription());
-        }
-        if (Optional.ofNullable(updatedData.getLink()).isPresent()) {
-            existingBusinessUnit.setLink(updatedData.getLink());
-        }
-        if (Optional.ofNullable(updatedData.getImage()).isPresent()) {
-            existingBusinessUnit.setImage(updatedData.getImage());
-        }
-        if (Optional.ofNullable(updatedData.getEcommerce()).isPresent()) {
-            existingBusinessUnit.setEcommerce(updatedData.getEcommerce());
-        }
-        BusinessUnitsModel savedBusinessUnit = businessUnitsRepository.save(existingBusinessUnit);
+            BusinessUnitModel businessUnit = businessUnitsRepository.findById(id)
+                    .orElseThrow(() -> new UsernameNotFoundException("Unidad de negocio no encontrada"));
 
-        return ResponseEntity.ok(savedBusinessUnit);
+            User owner = businessUnit.getOwner();
+            if (!owner.getUsername().equals(username)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            }
+
+            copyNonNullProperties(updatedData, businessUnit);
+
+            businessUnitsRepository.save(businessUnit);
+
+            return ResponseEntity.ok("Unidad actualizada correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error" + e.getMessage());
+        }
     }
 
     private Key getKey() {
@@ -221,6 +217,21 @@ public class BusinessUnitsService {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+    }
+
+    private void copyNonNullProperties(BusinessUnitModel source, BusinessUnitModel target) {
+        Field[] fields = BusinessUnitModel.class.getDeclaredFields();
+        for (Field field : fields) {
+            try {
+                field.setAccessible(true);
+                Object value = field.get(source);
+                if (value != null) {
+                    field.set(target, value);
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }

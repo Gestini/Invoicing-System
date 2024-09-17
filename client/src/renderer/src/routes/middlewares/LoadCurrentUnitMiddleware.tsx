@@ -26,7 +26,7 @@ export const LoadCurrentUnitMiddleware = () => {
     loadUserCompanies()
   }, [params.unitId])
 
-  if (unit === null) return <></>
+  if (!unit.id) return <></>
 
   return <Outlet />
 }

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import productar.dto.ClientDTO;
-import productar.models.BusinessUnitsModel;
+import productar.models.BusinessUnitModel;
 import productar.models.ClientModel;
 import productar.services.ClientService;
 
@@ -55,7 +55,7 @@ public class ClientController {
             return ResponseEntity.badRequest().build();
         }
 
-        BusinessUnitsModel businessUnit = new BusinessUnitsModel();
+        BusinessUnitModel businessUnit = new BusinessUnitModel();
         businessUnit.setId(Client.getBusinessUnit().getId());
 
         ClientModel createdClient = clientService.createClient(Client, businessUnit);

@@ -1,8 +1,19 @@
 package productar.models;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import java.util.List;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "invoice")
@@ -23,7 +34,7 @@ public class InvoicingModel {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "business_unit_id", nullable = false)
     @NotNull(message = "La unidad de negocio no puede ser nula")
-    private BusinessUnitsModel businessUnit;
+    private BusinessUnitModel businessUnit;
 
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductInvoicingModel> products;
@@ -84,11 +95,11 @@ public class InvoicingModel {
         this.total = total;
     }
 
-    public BusinessUnitsModel getBusinessUnit() {
+    public BusinessUnitModel getBusinessUnit() {
         return businessUnit;
     }
 
-    public void setBusinessUnit(BusinessUnitsModel businessUnit) {
+    public void setBusinessUnit(BusinessUnitModel businessUnit) {
         this.businessUnit = businessUnit;
     }
 

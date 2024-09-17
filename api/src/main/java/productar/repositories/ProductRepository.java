@@ -11,14 +11,15 @@ import productar.models.ProductModel;
 
 @Repository
 public interface ProductRepository extends JpaRepository<ProductModel, Long> {
-    List<ProductModel> findByBusinessUnitId(Long businessUnitId);
+    @Query("SELECT product FROM ProductModel product WHERE product.depositUnit.id = :depositId")
+    List<ProductModel> findProductsByDepositId(@Param("depositId") Long depositId);
 
     List<ProductModel> findByCategory(String category);
 
     List<ProductModel> findByName(String name);
 
-    @Query("SELECT product FROM ProductModel product JOIN product.businessUnit businessUnit WHERE LOWER(product.name) LIKE LOWER(CONCAT('%', :name, '%')) AND businessUnit.id = :businessUnitId")
-    List<ProductModel> findByNameAndBusinessUnitId(@Param("name") String name, @Param("businessUnitId") Long businessUnitId);
+    @Query("SELECT product FROM ProductModel product JOIN product.depositUnit depositUnit WHERE LOWER(product.name) LIKE LOWER(CONCAT('%', :name, '%')) AND depositUnit.id = :depositId")
+    List<ProductModel> findByNameAndDepositId(@Param("name") String name, @Param("depositId") Long depositId);
 
     List<ProductModel> findByReferenceCode(String referenceCode);
 

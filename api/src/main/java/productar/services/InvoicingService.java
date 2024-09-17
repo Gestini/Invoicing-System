@@ -1,5 +1,9 @@
 package productar.services;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,10 +15,6 @@ import productar.models.ProductInvoicingModel;
 import productar.models.ProductModel;
 import productar.repositories.InvoicingRepository;
 import productar.repositories.ProductRepository;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class InvoicingService {

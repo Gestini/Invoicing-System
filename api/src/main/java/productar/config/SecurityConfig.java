@@ -24,7 +24,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // Desactivar CSRF (opcional, pero no recomendado en
                                               // producción)
                 .authorizeHttpRequests(authRequest -> authRequest
-                        .requestMatchers("/auth/**", "/business-unit/get-all-ecommerce")
+                        .requestMatchers("/auth/**", "/business-unit/get-by-id-and-ecommerce/{unitId}")
                         .permitAll() // Permitir acceso público a /auth/** */
                         .anyRequest().authenticated()) // Requerir autenticación para cualquier
                                                        // otra ruta

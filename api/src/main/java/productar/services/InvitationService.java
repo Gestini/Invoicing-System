@@ -6,9 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import productar.models.EmployeeModel;
+import productar.models.EmployeeModel.EmployeeStatus;
 import productar.models.InvitationModel;
 import productar.models.User;
-import productar.models.EmployeeModel.EmployeeStatus;
 import productar.repositories.EmployeeRepository;
 import productar.repositories.InvitationRepository;
 import productar.repositories.UserRepository;

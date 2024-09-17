@@ -1,5 +1,8 @@
 package productar.models;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,8 +15,8 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "deposit_units")
-public class DepositUnitsModel {
+@Table(name = "deposit")
+public class DepositModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,9 +25,10 @@ public class DepositUnitsModel {
     private String name;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "business_unit_id", nullable = false)
-    @NotNull(message = "La unidad de negocio no puede ser nula")
-    private BusinessUnitsModel businessUnit;
+    @JoinColumn(name = "company_id", nullable = false)
+    @NotNull(message = "La compañia no puede ser nula")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private CompanyModel company;
 
     public Long getId() {
         return id;
@@ -42,12 +46,12 @@ public class DepositUnitsModel {
         this.name = name;
     }
 
-    public BusinessUnitsModel getBusinessUnit() {
-        return businessUnit;
+    public CompanyModel getCompany() {
+        return company;
     }
 
-    public void setBusinessUnit(BusinessUnitsModel businessUnit) {
-        this.businessUnit = businessUnit;
+    public void setCompany(CompanyModel company) {
+        this.company = company;
     }
 
 }

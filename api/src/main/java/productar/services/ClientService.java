@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import productar.dto.ClientDTO;
-import productar.models.BusinessUnitsModel;
+import productar.models.BusinessUnitModel;
 import productar.models.ClientModel;
 import productar.repositories.ClientRepository;
 
@@ -19,7 +19,7 @@ public class ClientService {
     @Autowired
     private ClientRepository clientRepository;
 
-    public ClientModel createClient(ClientModel Client, BusinessUnitsModel businessUnit) {
+    public ClientModel createClient(ClientModel Client, BusinessUnitModel businessUnit) {
         Client.setBusinessUnit(businessUnit);
         return clientRepository.save(Client);
     }

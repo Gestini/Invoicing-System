@@ -13,8 +13,8 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "business_units")
-public class BusinessUnitsModel {
+@Table(name = "business_unit")
+public class BusinessUnitModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,7 +32,7 @@ public class BusinessUnitsModel {
     private String image;
 
     @Column
-    private Boolean ecommerce = false;
+    private Boolean ecommerce;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "owner_id", nullable = false)

@@ -1,25 +1,24 @@
-import React from 'react'
-import Logo from '../../assets/electron.svg'
 import {
+  Button,
   Input,
   Modal,
-  Button,
-  Tooltip,
-  Textarea,
   ModalBody,
+  ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalContent,
+  Textarea,
+  Tooltip,
   useDisclosure,
 } from '@nextui-org/react'
-import { addUnit } from '@renderer/features/unitsSlice'
-import { PlusIcon } from '@renderer/components/Icons'
-import { GoUpload } from 'react-icons/go'
-import { useDispatch } from 'react-redux'
-import { fieldConfig } from './data'
 import { reqCreateUnit } from '@renderer/api/requests'
-import './createCompany.scss'
+import { PlusIcon } from '@renderer/components/Icons'
+import { addUnit } from '@renderer/features/unitsSlice'
 import { uploadImage } from '@renderer/utils/DigitalOcean/uploadImage'
+import React from 'react'
+import { useDispatch } from 'react-redux'
+import './createCompany.scss'
+import { fieldConfig } from './data'
+import { GoUpload } from 'react-icons/go'
 
 export const CreateUnitModal = () => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
@@ -28,7 +27,6 @@ export const CreateUnitModal = () => {
   const [file, setFile] = React.useState<File | null>(null)
   const [data, setData] = React.useState({
     name: '',
-    link: '',
     description: '',
     image: '',
   })
@@ -107,7 +105,7 @@ export const CreateUnitModal = () => {
         </div>
       </Tooltip>
       <Modal
-        size='2xl'
+        size='xl'
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         scrollBehavior={'inside'}
@@ -119,30 +117,46 @@ export const CreateUnitModal = () => {
             <h3 className='default-text-color'>Crear unidad</h3>
           </ModalHeader>
           <ModalBody>
-            <form onSubmit={handleSubmit}>
-              <div className='text-center mb-6'>
-                <div className='flex justify-center items-center'>
-                  <img className='w-8 h-8 mb-4' src={Logo} alt='logo' />
+            <form onSubmit={handleSubmit} >
+              <div className='text-center mb-4'>
+                <div>
+                  {/* <p className='font-bold mb-2 text-gray-500 text-center'>
+                    Completa los datos de tu empresa y comienza a administrar
+                  </p> */}
+                  <div className='flex flex-col items-center justify-center w-full'>
+                    <span className='text-gray-500 mb-2 font-bold text-sm text-center'>Logo</span>
+                    <label className='relative flex flex-col items-center justify-center w-24 h-24 bg-transparent border border-c-border rounded-lg cursor-pointer transition duration-300 overflow-hidden'>
+                      {file ? (
+                        <img
+                          src={URL.createObjectURL(file)}
+                          alt='Logo Empresa'
+                          className='w-full h-full object-cover'
+                        />
+                      ) : (
+                        <>
+                          <GoUpload className='text-gray-500 text-2xl mb-2' />
+                          <span className='text-gray-500 text-sm'>Seleccionar</span>
+                        </>
+                      )}
+                      <input
+                        type='file'
+                        onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)}
+                        className='hidden'
+                        accept='image/*'
+                      />
+                    </label>
+                    {file && (
+                      <button
+                        onClick={() => setFile(null)}
+                        className='mt-2 text-red-500 text-sm underline hover:text-red-700 text-left'
+                      >
+                        Eliminar imagen
+                      </button>
+                    )}
+                  </div>
                 </div>
-                <h1 className='font-bold mb-2 text-gray-500 text-2xl'>
-                  Completa los datos de tu empresa para empezar a administrar tu unidad de negocio
-                </h1>
               </div>
               <div>
-                <div className='flex items-center justify-center w-full h-14 mb-4'>
-                  <label className='flex flex-col p-2 items-center bg-c-primary rounded-lg tracking-wide border border-blue cursor-pointer hover:bg-c-primary-hover transition-all duration-300'>
-                    <GoUpload />
-                    <span className='text-c-title text-[12px]'>Selecciona una foto</span>
-                    <input
-                      type='file'
-                      onChange={(e) => {
-                        setFile(e.target.files ? e.target.files[0] : null)
-                      }}
-                      className='hidden'
-                      accept='image/*'
-                    />
-                  </label>
-                </div>
                 {fieldConfig.map((field, index) => {
                   const commonProps = {
                     name: field.name,

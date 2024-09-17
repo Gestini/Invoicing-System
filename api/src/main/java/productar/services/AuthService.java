@@ -1,6 +1,7 @@
 package productar.services;
 
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import java.util.regex.Pattern;
 
 import lombok.RequiredArgsConstructor;
 import productar.dto.LoginRequest;

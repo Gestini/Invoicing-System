@@ -1,14 +1,15 @@
 package productar.services;
 
-import lombok.RequiredArgsConstructor;
+import java.time.LocalDateTime;
+import java.util.UUID;
+
 import org.springframework.stereotype.Service;
+
+import lombok.RequiredArgsConstructor;
 import productar.models.PasswordResetToken;
 import productar.models.User;
 import productar.repositories.PasswordResetTokenRepository;
 import productar.repositories.UserRepository;
-
-import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
