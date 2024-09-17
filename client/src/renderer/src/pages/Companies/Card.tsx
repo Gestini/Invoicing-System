@@ -3,7 +3,7 @@ import Logo from '@renderer/assets/image/google.svg'
 import { setUnit } from '@renderer/features/currentUnitSlice'
 import { SlOptions } from 'react-icons/sl'
 import { deleteUnit } from '@renderer/features/unitsSlice'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { FaExternalLinkAlt } from 'react-icons/fa'
 import { reqDeleteUnitById } from '@renderer/api/requests'
 import { useDispatch, useSelector } from 'react-redux'
@@ -45,7 +45,6 @@ const Card: React.FC<CardProps> = ({ unit }) => {
     }
   }
 
-
   return (
     <div
       onDoubleClick={handleNavigate}
@@ -78,7 +77,12 @@ const Card: React.FC<CardProps> = ({ unit }) => {
               <DropdownItem key='Open' onClick={handleNavigate}>
                 Abrir
               </DropdownItem>
-              <DropdownItem key='Edit'>Editar unidad</DropdownItem>
+
+              <DropdownItem key='Edit'>
+                {' '}
+                <Link to={`/settings/${unit.id}`}>Configurar</Link>
+              </DropdownItem>
+
               <DropdownItem
                 key='delete'
                 className='text-danger'
