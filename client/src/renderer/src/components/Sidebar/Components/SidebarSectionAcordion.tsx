@@ -92,12 +92,12 @@ export const SidebarSectionAcordion = ({
                 <>
                   <div
                     className={`h-[6px] w-[6px] rounded-full transition-all duration-200 ${
-                      isActive ? 'bg-c-primary shadow-point' : 'bg-gray-400 group-hover:bg-gray-300'
+                      isActive ? 'bg-c-primary shadow-point' : 'bg-gray-400 group-hover:bg-c-text'
                     }`}
                   ></div>
                   <span
                     className={`transition-all duration-200 ${
-                      isActive ? 'text-c-primary' : 'text-gray-400 group-hover:text-gray-300'
+                      isActive ? 'text-c-primary' : 'text-gray-400 group-hover:text-c-text'
                     }`}
                   >
                     {capitalize(ele.title)}
