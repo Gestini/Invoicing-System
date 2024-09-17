@@ -12,7 +12,6 @@ import { CurrentSecctionMiddleware } from './middlewares/CurrentSecctionMiddlewa
 import { LoadCurrentUnitMiddleware } from './middlewares/LoadCurrentUnitMiddleware'
 import { NavbarAndSidebarMiddleware } from './middlewares/NavbarAndSidebarMiddleware'
 import { SectionPermissionMiddleware } from './middlewares/SectionPermissionMiddleware'
-import Navbar from '@renderer/components/SettingsUnit/Navbar'
 import PlanSettings from '@renderer/pages/UnitSettings/PlanSettings'
 import Integration from '@renderer/pages/UnitSettings/Integration'
 import UnitConfig from '@renderer/pages/UnitSettings/UnitConfig'

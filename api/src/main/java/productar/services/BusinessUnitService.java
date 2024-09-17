@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +25,16 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import productar.models.BusinessUnitPlanModel;
+import productar.dto.IntegrationDTO;
 import productar.models.BusinessUnitModel;
 import productar.models.EmployeeModel;
+import productar.models.IntegrationModel;
 import productar.models.PlanModel;
 import productar.models.User;
 import productar.repositories.BusinessUnitsPlanRepository;
 import productar.repositories.BusinessUnitsRepository;
 import productar.repositories.EmployeeRepository;
+import productar.repositories.IntegrationRepository;
 import productar.repositories.PlanRepository;
 import productar.repositories.UserRepository;
 
@@ -50,6 +54,9 @@ public class BusinessUnitService {
 
     @Autowired
     private PlanRepository planRepository;
+
+    @Autowired
+    private IntegrationRepository integrationRepository;
 
     @Value("${secretKeyPlan}")
     private String SECRET_KEY_PLAN;
@@ -105,9 +112,19 @@ public class BusinessUnitService {
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
 
         businessUnit.setOwner(owner);
-        BusinessUnitModel saved = businessUnitsRepository.save(businessUnit);
+        BusinessUnitModel savedBusinessUnit = businessUnitsRepository.save(businessUnit);
 
-        return ResponseEntity.status(HttpStatus.OK).body(saved);
+        // Crear la integración predeterminada "AFIP" para la nueva unidad de negocio
+        IntegrationModel afipIntegration = new IntegrationModel();
+        afipIntegration.setName("AFIP");
+        afipIntegration.setDescription("Integración predeterminada AFIP");
+        afipIntegration.setImage("afip-image-url"); // Asegúrate de usar la URL correcta
+        afipIntegration.setBusinessUnit(savedBusinessUnit);
+        afipIntegration.setIsActive(true); // Activa por defecto
+
+        integrationRepository.save(afipIntegration);
+
+        return ResponseEntity.status(HttpStatus.OK).body(savedBusinessUnit);
     }
 
     public Optional<BusinessUnitModel> getBusinessUnitById(Long id) {
@@ -203,6 +220,20 @@ public class BusinessUnitService {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error" + e.getMessage());
         }
+    }
+
+    public Set<IntegrationDTO> getIntegrationsByBusinessUnitId(Long id) {
+        BusinessUnitModel unit = businessUnitsRepository.findById(id)
+                .orElseThrow();
+        return unit.getIntegrations().stream()
+                .map(integration -> new IntegrationDTO(
+                        integration.getId(),
+                        integration.getName(),
+                        integration.getDescription(),
+                        integration.getImage(), // Incluimos el campo image
+                        integration.getIsActive() // Incluimos el campo isActive
+                ))
+                .collect(Collectors.toSet());
     }
 
     private Key getKey() {

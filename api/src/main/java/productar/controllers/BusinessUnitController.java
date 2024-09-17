@@ -3,8 +3,10 @@ package productar.controllers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import productar.dto.IntegrationDTO;
 import productar.models.BusinessUnitModel;
+import productar.models.IntegrationModel;
 import productar.services.BusinessUnitService;
 
 @RestController
@@ -71,5 +75,11 @@ public class BusinessUnitController {
     public ResponseEntity<?> updateBusinessUnit(
             @PathVariable("id") Long id, @RequestBody BusinessUnitModel data) {
         return this.businessUnitsService.updateBusinessUnit(id, data);
+    }
+
+    @GetMapping("/get-integrations/{id}")
+    public ResponseEntity<Set<IntegrationDTO>> getIntegrations(@PathVariable("id") Long id) {
+        Set<IntegrationDTO> integrations = businessUnitsService.getIntegrationsByBusinessUnitId(id);
+        return ResponseEntity.ok(integrations);
     }
 }
