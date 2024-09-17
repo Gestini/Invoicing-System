@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { GestinyLogo } from '@renderer/assets/GestinyLogo'
+import { GestiniLogo } from '@renderer/assets/GestiniLogo'
 import { toggleModal } from '@renderer/features/currentModal'
 import { BsThreeDots } from 'react-icons/bs'
 import { UnitDropdown } from './UnitDropdown'
@@ -17,7 +17,7 @@ export const UserUnits = () => {
     <div className='w-[48px] bg-c-sidebar-bg-2 h-screen flex flex-col items-center justify-between py-5'>
       <Link to={'/'}>
         <div className='h-[49px] w-[36px] flex justify-center items-center rounded-md mb-[17px]'>
-          <GestinyLogo />
+          <GestiniLogo   />
         </div>
       </Link>
       <div className='flex-grow  gap-[11px] flex flex-col'>

@@ -4,10 +4,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="UTF-8" />
     <title>Electron</title>
+    
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-    <meta http-equiv="Content-Security-Policy" content="img-src 'self' https://img.logoipsum.com https://ui-avatars.com https://i.pravatar.cc https://nyc3.digitaloceanspaces.com data:;">
+    <meta http-equiv="Content-Security-Policy" content="img-src 'self' blob: https://img.logoipsum.com https://ui-avatars.com https://i.pravatar.cc https://nyc3.digitaloceanspaces.com data:;">
   </head>
-  <body id="variantOne">
+  <body id="variantSix">
     <div id="root"></div>
     <script src="https://sdk.mercadopago.com/js/v2"></script>
     <script type="module" src="/src/main.tsx"></script>

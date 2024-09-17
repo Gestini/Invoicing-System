@@ -14,6 +14,7 @@ import { reqGetUnitByOwner } from '@renderer/api/requests'
 import { productStatusOptions } from '@renderer/components/Tables/ProductTable/data'
 import { useDispatch, useSelector } from 'react-redux'
 import { ChevronDownIcon, SearchIcon } from '@renderer/components/Icons'
+import { GestiniLogo } from '@renderer/assets/GestiniLogo'
 
 const Companies = () => {
   const companies = useSelector((state: any) => state.units.data)
@@ -34,7 +35,13 @@ const Companies = () => {
 
   return (
     <div className='flex flex-col'>
+
       <div className='flex flex-col w-full mb-2 rounded-md bg-c-bg-color p-5 gap-4'>
+
+        <div className='flex gap-4 items-center'>
+          <GestiniLogo />
+          <span className='text-c-logo text-2xl font-bold'>Gestini</span>
+        </div>
         <div className='flex justify-between gap-3 items-end'>
           <Input
             isClearable
@@ -75,12 +82,17 @@ const Companies = () => {
             <CreateUnitModal />
           </div>
         </div>
+        {
+          companies.length == 0 && <div>No hay unidades de negocio creadas</div>
+        }
       </div>
       <div className='rounded-md bg-c-bg-color'>
+
         <div className='grid grid-cols-auto-fill-cards gap-5 p-5 w-[100%] h-full'>
-          {companies.map((unit) => (
+          {companies?.map((unit) => (
             <Card key={unit.id} unit={unit} />
           ))}
+
         </div>
       </div>
     </div>

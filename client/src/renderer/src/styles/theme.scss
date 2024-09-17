@@ -1,6 +1,7 @@
 .light {
   --c-title: #71717a;
   --c-title-opacity: #979797c2;
+  --c-default: #62b167;
 
   --c-card: #fefeff;
   --c-card-2: #2f2f33;
@@ -15,7 +16,7 @@
   --c-bg-color-2: #ececec;
   --c-bg-selected: #e9e9e9;
 
-  --c-border: rgba(255, 255, 255, 0.1);
+  --c-border: rgba(0, 0, 0, 0.1);
   --c-input-color: #151615;
 
   --c-sidebar-text: #8e8e93;
@@ -35,6 +36,8 @@
 .dark {
   --c-title: #e4e4e4;
   --c-title-opacity: #e4e4e481;
+  --c-default: #62b167;
+  
 
   --c-card: #18181b;
   --c-card-2: #2f2f33;

@@ -37,6 +37,7 @@ module.exports = {
       },
       colors: {
         'c-primary': 'var(--c-primary)',
+        'c-default': 'var(--c-default)',
         'c-primary-variant-1': 'var(--c-primary-variant-1)',
         'c-primary-variant-2': 'var(--c-primary-variant-2)',
         'c-primary-variant-3': 'var(--c-primary-variant-3)',
