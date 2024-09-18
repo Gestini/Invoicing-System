@@ -53,9 +53,6 @@ public class BusinessUnitModel {
     @JoinColumn(name = "current_plan_id", nullable = true)
     private BusinessUnitPlanModel plan;
 
-    @OneToMany(mappedBy = "businessUnit")
-    @JsonManagedReference
-    private Set<IntegrationModel> integrations;
 
     public Long getId() {
         return id;
@@ -129,12 +126,6 @@ public class BusinessUnitModel {
         this.plan = plan;
     }
 
-    public Set<IntegrationModel> getIntegrations() {
-        return integrations;
-    }
 
-    public void setIntegrations(Set<IntegrationModel> integrations) {
-        this.integrations = integrations;
-    }
 
 }

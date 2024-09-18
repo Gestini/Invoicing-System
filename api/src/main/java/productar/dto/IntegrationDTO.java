@@ -1,22 +1,27 @@
 package productar.dto;
 
-public class IntegrationDTO {
+import java.util.Map;
 
+public class IntegrationDTO {
     private Long id;
     private String name;
     private String description;
-    private String image;
-    private Boolean isActive;
+    private Boolean enabled;
+    private String imageUrl; // Añadido campo para la URL de la imagen
+    private Map<String, Object> configData; // Añadido campo para la configuración inicial
 
-    // Constructor
-    public IntegrationDTO(Long id, String name, String description, String image, Boolean isActive) {
+    // Constructor actualizado
+    public IntegrationDTO(Long id, String name, String description, Boolean enabled, String imageUrl,
+            Map<String, Object> configData) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.image = image;
-        this.isActive = isActive;
+        this.enabled = enabled;
+        this.imageUrl = imageUrl;
+        this.configData = configData;
     }
 
+    // Getters y Setters
     public Long getId() {
         return id;
     }
@@ -41,20 +46,27 @@ public class IntegrationDTO {
         this.description = description;
     }
 
-    public String getImage() {
-        return image;
+    public Boolean getEnabled() {
+        return enabled;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 
-    public Boolean getIsActive() {
-        return isActive;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setIsActive(Boolean isActive) {
-        this.isActive = isActive;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
+    public Map<String, Object> getConfigData() {
+        return configData;
+    }
+
+    public void setConfigData(Map<String, Object> configData) {
+        this.configData = configData;
+    }
 }

@@ -18,9 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import productar.dto.IntegrationDTO;
 import productar.models.BusinessUnitModel;
-import productar.models.IntegrationModel;
+
 import productar.services.BusinessUnitService;
 
 @RestController
@@ -77,9 +76,4 @@ public class BusinessUnitController {
         return this.businessUnitsService.updateBusinessUnit(id, data);
     }
 
-    @GetMapping("/get-integrations/{id}")
-    public ResponseEntity<Set<IntegrationDTO>> getIntegrations(@PathVariable("id") Long id) {
-        Set<IntegrationDTO> integrations = businessUnitsService.getIntegrationsByBusinessUnitId(id);
-        return ResponseEntity.ok(integrations);
-    }
 }
