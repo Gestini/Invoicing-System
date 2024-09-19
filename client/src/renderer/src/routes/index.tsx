@@ -1,17 +1,12 @@
 import Invite from '@renderer/pages/Invite/Invite'
-import Companies from '@renderer/pages/Companies/Companies'
-import User from '@renderer/pages/User'
+
 import UnitSettings from '../pages/UnitSettings'
 import { Route, Routes } from 'react-router-dom'
-import { PaymentGateway } from '@renderer/pages/PaymentGateway'
-import { ThemeMiddleware } from './middlewares/ThemeMiddleware'
+
 import { ProtectedRouteAuth } from './middlewares/ProtectedRouteAuth'
-import { routes, authRoutes } from './routesData'
+import { authRoutes } from './routesData'
 import { ProtectedRouteSession } from './middlewares/ProtectedRouteSession'
-import { CurrentSecctionMiddleware } from './middlewares/CurrentSecctionMiddleware'
-import { LoadCurrentUnitMiddleware } from './middlewares/LoadCurrentUnitMiddleware'
-import { NavbarAndSidebarMiddleware } from './middlewares/NavbarAndSidebarMiddleware'
-import { SectionPermissionMiddleware } from './middlewares/SectionPermissionMiddleware'
+
 import PlanSettings from '@renderer/pages/UnitSettings/PlanSettings'
 import Integration from '@renderer/pages/UnitSettings/Integration'
 import UnitConfig from '@renderer/pages/UnitSettings/UnitConfig'

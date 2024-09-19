@@ -1,7 +1,7 @@
 'useclient'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Switch } from '@nextui-org/switch'
-import Afip from '../../assets/Icons/thumbnail.webp'
+
 import { useParams } from 'react-router-dom'
 import { reqGetIntegrationsByUnit } from '@renderer/api/requests'
 
