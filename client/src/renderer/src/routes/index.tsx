@@ -22,49 +22,10 @@ const Router = () => {
       <Route path={'*'} element={<>Error</>} />
       <Route path={'/invite'} element={<Invite />} />
       <Route element={<ProtectedRouteSession />}>
-        <Route path={'/settings/:id'} element={<UnitSettings />}>
-          {/* Rutas anidadas para cada sección del Settings */}
-          <Route path={'general'} element={<UnitConfig />} />
-          <Route path={'plan'} element={<PlanSettings />} />
-          <Route path={'integraciones'} element={<Integration />} />
-        </Route>
-        <Route element={<ThemeMiddleware />}>
-          <Route path={'/'} element={<Companies />} />
-          <Route path='/account/edit' element={<User />} />
-        </Route>
-        <Route element={<LoadCurrentUnitMiddleware />}>
-          <Route element={<LoadCurrentUnitMiddleware />}>
-            <Route
-              path={'/payment/:planId/:unitId'}
-              element={
-                <SectionPermissionMiddleware permission={'*'}>
-                  <PaymentGateway />
-                </SectionPermissionMiddleware>
-              }
-            />
-          </Route>
-          <Route element={<ThemeMiddleware />}>
-            <Route element={<NavbarAndSidebarMiddleware />}>
-              {routes.map((route: any, index: number) => (
-                <Route
-                  key={index}
-                  path={route.path}
-                  element={
-                    <SectionPermissionMiddleware permission={route.permission}>
-                      <CurrentSecctionMiddleware
-                        icon={route.icon}
-                        title={route.title}
-                        section={route.section}
-                        routesLength={route.routesLength}
-                      >
-                        {route.element}
-                      </CurrentSecctionMiddleware>
-                    </SectionPermissionMiddleware>
-                  }
-                />
-              ))}
-            </Route>
-          </Route>
+        <Route path='/settings/:id' element={<UnitSettings />}>
+          <Route path='general' element={<UnitConfig />} />
+          <Route path='plan' element={<PlanSettings />} />
+          <Route path='integraciones' element={<Integration />} />
         </Route>
       </Route>
       <Route element={<ProtectedRouteAuth />}>
