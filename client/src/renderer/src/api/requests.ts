@@ -91,3 +91,7 @@ export const reqGetPlan = (planId: any) => api.get(`/plan/get/${planId}`)
 export const reqCreateInvoiceAfip = async (data: any) => apiNode.post('/create-invoice', data)
 export const reqCreateCreditInvoiceAfip = async (data: any) => apiNode.post('/create-credit-invoice', data)
 export const reqCreateCreditNoteAfip = async (data: any) => apiNode.post('/create-credit-note', data)
+
+/* Rutas INTEGRACIONES */
+export const reqGetIntegrationsByUnit = async (id: any) => api.get(`/integrations/${id}`)
+

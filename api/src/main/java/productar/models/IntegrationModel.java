@@ -23,6 +23,17 @@ public class IntegrationModel {
     @Column(name = "image_url") // Renombra la columna en la base de datos
     private String imageUrl; // Añade este campo para la URL de la imagen
 
+    @Column(name = "config_data", columnDefinition = "TEXT") // Almacena JSON o texto
+    private String configData;
+
+    public String getConfigData() {
+        return configData;
+    }
+
+    public void setConfigData(String configData) {
+        this.configData = configData;
+    }
+
     public Long getId() {
         return id;
     }

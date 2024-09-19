@@ -7,6 +7,7 @@ public class CreateIntegrationRequest {
     private String description;
     private String imageUrl;
     private Boolean enabled;
+
     private Map<String, Object> configData; // Configuración inicial
 
     // Getters y Setters
