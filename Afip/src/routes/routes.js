@@ -20,10 +20,10 @@ router.get("/", (req, res) => {
   res.json({ message: "Listen to port 4000" });
 });
 
-const taxId = 27451220050;
-const username = "27451220050";
-const password = "Josecapo123.";
-const alias = "testing3";
+const taxId = "";
+const username = "";
+const password = "";
+const alias = "";
 
 const certPath = path.resolve(__dirname, "cert.txt");
 const keyPath = path.resolve(__dirname, "privateKey.txt");
