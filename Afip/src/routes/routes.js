@@ -194,38 +194,64 @@ const afip = new Afip({ CUIT: taxId, cert: cert, key: key });
 // });
 
 // Ruta para crear una factura
-router.get("/create-voucher", async (req, res) => {
+router.post("/create-voucher", async (req, res) => {
   try {
+    // Obtener datos del cuerpo de la solicitud
+    const {
+      punto_de_venta,
+      tipo_de_factura,
+      concepto,
+      tipo_de_documento,
+      numero_de_documento,
+      importe_gravado,
+      importe_exento_iva,
+      importe_iva,
+      fecha_servicio_desde,
+      fecha_servicio_hasta,
+      fecha_vencimiento_pago,
+    } = req.body;
+
+    // Validar campos requeridos
+    const missingFields = [];
+    if (punto_de_venta === undefined) missingFields.push("punto_de_venta");
+    if (tipo_de_factura === undefined) missingFields.push("tipo_de_factura");
+    if (concepto === undefined) missingFields.push("concepto");
+    if (tipo_de_documento === undefined)
+      missingFields.push("tipo_de_documento");
+    if (numero_de_documento === undefined)
+      missingFields.push("numero_de_documento");
+    if (importe_gravado === undefined) missingFields.push("importe_gravado");
+    if (importe_exento_iva === undefined)
+      missingFields.push("importe_exento_iva");
+    if (importe_iva === undefined) missingFields.push("importe_iva");
+
+    if (concepto === 2 || concepto === 3) {
+      if (fecha_servicio_desde === undefined)
+        missingFields.push("fecha_servicio_desde");
+      if (fecha_servicio_hasta === undefined)
+        missingFields.push("fecha_servicio_hasta");
+      if (fecha_vencimiento_pago === undefined)
+        missingFields.push("fecha_vencimiento_pago");
+    }
+
+    if (missingFields.length > 0) {
+      return res.status(400).json({
+        success: false,
+        message: `Faltan los siguientes campos: ${missingFields.join(", ")}`,
+      });
+    }
+
     // Obtener el último número de factura
-    const punto_de_venta = 1;
-    const tipo_de_factura = 1; // 1 = Factura A
     const last_voucher = await afip.ElectronicBilling.getLastVoucher(
       punto_de_venta,
       tipo_de_factura
     );
-
-    // Datos de la factura
-    const concepto = 1;
-    const tipo_de_documento = 80;
-    const numero_de_documento = 33693450239;
     const numero_de_factura = last_voucher + 1;
     const fecha = new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
       .toISOString()
       .split("T")[0];
-    const importe_gravado = 100;
-    const importe_exento_iva = 0;
-    const importe_iva = 21;
 
-    let fecha_servicio_desde = null,
-      fecha_servicio_hasta = null,
-      fecha_vencimiento_pago = null;
-
-    if (concepto === 2 || concepto === 3) {
-      fecha_servicio_desde = 20191213;
-      fecha_servicio_hasta = 20191213;
-      fecha_vencimiento_pago = 20191213;
-    }
-
+    // Crear el objeto de datos para la factura
     const data = {
       CantReg: 1,
       PtoVta: punto_de_venta,
@@ -236,9 +262,12 @@ router.get("/create-voucher", async (req, res) => {
       CbteDesde: numero_de_factura,
       CbteHasta: numero_de_factura,
       CbteFch: parseInt(fecha.replace(/-/g, "")),
-      FchServDesde: fecha_servicio_desde,
-      FchServHasta: fecha_servicio_hasta,
-      FchVtoPago: fecha_vencimiento_pago,
+      FchServDesde:
+        concepto === 2 || concepto === 3 ? fecha_servicio_desde : null,
+      FchServHasta:
+        concepto === 2 || concepto === 3 ? fecha_servicio_hasta : null,
+      FchVtoPago:
+        concepto === 2 || concepto === 3 ? fecha_vencimiento_pago : null,
       ImpTotal: importe_gravado + importe_iva + importe_exento_iva,
       ImpTotConc: 0,
       ImpNeto: importe_gravado,
@@ -610,14 +639,22 @@ router.get("/create-voucher", async (req, res) => {
 // Ruta para generar y mostrar el certificado
 router.get("/generate-cert", async (req, res) => {
   try {
+    const wsid = "wsfe";
     // Creamos el certificado
-    const result = await afip.CreateCert(username, password, alias);
+    const certResult = await afip.CreateCert(username, password, alias);
+
+    // Creamos la autorización
+    const authResult = await afip.CreateWSAuth(username, password, alias, wsid);
 
     // Configuramos los encabezados para enviar texto
     res.setHeader("Content-Type", "text/plain");
 
     // Enviamos el certificado y la key en texto plano
-    res.send(`CERTIFICATE:\n${result.cert}\n\nKEY:\n${result.key}`);
+    res.send(
+      `CERTIFICATE:\n${certResult.cert}\n\nKEY:\n${
+        certResult.key
+      }\n\nAUTHORIZATION:\n${JSON.stringify(authResult, null, 2)}`
+    );
   } catch (error) {
     // En caso de error, enviamos un mensaje de error
     res.status(500).send(`Error: ${error.message}`);
