@@ -94,4 +94,6 @@ export const reqCreateCreditNoteAfip = async (data: any) => apiNode.post('/creat
 
 /* Rutas INTEGRACIONES */
 export const reqGetIntegrationsByUnit = async (id: any) => api.get(`/integrations/${id}`)
+export const reqGetConfigIntegrationsByUnit = async (id: any,idintegration:any) => api.get(`/integrations/${id}/config/${idintegration}`)
+export const reqPatchConfigIntegrationsByUnit = async (id: any, payload:any) => api.patch(`/integrations/${id}/configure`, payload)
 
