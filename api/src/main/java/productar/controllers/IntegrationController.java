@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,17 +46,15 @@ public class IntegrationController {
         List<IntegrationModel> integrations = integrationService.getAllIntegrations();
         List<IntegrationDTO> integrationDTOs = integrations.stream()
                 .map(integration -> {
-                    // Recupera la configuración para cada integración
-                    IntegrationConfigResponse configData = integrationService.getIntegrationConfigForBusinessUnit(null,
-                            integration.getId());
+                    // Aquí obtienes la configuración de la integración directamente
+                    Map<String, Object> configData = integrationService.getIntegrationConfig(integration.getId());
                     return new IntegrationDTO(
                             integration.getId(),
                             integration.getName(),
                             integration.getDescription(),
                             true, // Ajusta este valor según la lógica de tu aplicación
-                            integration.getImageUrl(), // Incluye el campo imageUrl aquí
-                            configData != null ? configData.getConfigData() : null // Configuración inicial
-                    );
+                            integration.getImageUrl(),
+                            configData);
                 })
                 .collect(Collectors.toList());
         return ResponseEntity.ok(integrationDTOs);
@@ -111,12 +110,15 @@ public class IntegrationController {
 
     @PostMapping("/assign")
     public ResponseEntity<String> assignIntegrationToBusinessUnit(@RequestBody IntegrationAssignmentRequest request) {
+        System.out.println("Request received: " + request);
         try {
             integrationService.assignIntegrationToBusinessUnit(
-                    request.getBusinessUnitId(),
                     request.getIntegrationId(),
-                    request.getEnabled());
+                    request.getBusinessUnitId());
             return ResponseEntity.status(HttpStatus.OK).body("Integración asignada correctamente");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Error al asignar la integración: " + e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Error al asignar la integración: " + e.getMessage());
@@ -145,6 +147,17 @@ public class IntegrationController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Error al actualizar la integración: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/update-integration/{id}")
+    public ResponseEntity<?> updateIntegrationDetails(
+            @PathVariable("id") Long id, @RequestBody IntegrationModel updatedDetails) {
+        try {
+            integrationService.updateIntegrationDetails(id, updatedDetails);
+            return ResponseEntity.ok("Integración actualizada con éxito");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al actualizar la integración");
         }
     }
 

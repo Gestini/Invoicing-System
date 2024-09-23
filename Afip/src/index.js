@@ -1,10 +1,19 @@
+<<<<<<< HEAD
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors'); // Importa el paquete cors
 const routes = require('./routes/routes'); // Asegúrate de que la ruta al archivo de rutas es correcta
 const Afip = require('@afipsdk/afip.js');
 
+=======
+const express = require("express");
+const morgan = require("morgan");
+const cors = require("cors"); // Importa el paquete cors
+const routes = require("./routes/routes"); // Asegúrate de que la ruta al archivo de rutas es correcta
+>>>>>>> ae81e340df4eeaa071b610ffa69a2269a3ffaf3e
 const app = express();
+const bodyParser = require("body-parser");
+
 const port = process.env.PORT || 4000;
 
 // Instanciamos Afip globalmente para usarlo en varias rutas
@@ -35,22 +44,30 @@ async function createAfipCert() {
 createAfipCert();
 
 // Middleware para registrar solicitudes HTTP
-app.use(morgan('dev'));
+app.use(morgan("dev"));
 
 // Middleware para parsear JSON
-app.use(express.json());
+app.use(bodyParser.json());
 
+<<<<<<< HEAD
 // Configura CORS
 app.use(cors({
     origin: 'http://localhost:5173' // Permite solicitudes solo desde este origen
 }));
+=======
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Permite solicitudes solo desde este origen
+  })
+);
+>>>>>>> ae81e340df4eeaa071b610ffa69a2269a3ffaf3e
 
 // Usar rutas definidas en routes
-app.use('/', routes); // Esto usa las rutas definidas en tu archivo de rutas
+app.use("/", routes); // Esto usa las rutas definidas en tu archivo de rutas
 
 // Ruta principal
-app.get('/', (req, res) => {
-    res.send('Hello World!');
+app.get("/", (req, res) => {
+  res.send("Hello World!");
 });
 
 // Ruta para crear una factura en AFIP
@@ -100,5 +117,5 @@ app.post('/create-invoice-afip', async (req, res) => {
 
 // Escuchar en el puerto definido
 app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+  console.log(`Server is running on http://localhost:${port}`);
 });

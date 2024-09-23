@@ -20,7 +20,6 @@ const Companies = () => {
   const companies = useSelector((state: any) => state.units.data)
   const user = useSelector((state: any) => state.user.user)
   const dispatch = useDispatch()
-
   React.useEffect(() => {
     const loadUserCompanies = async () => {
       try {

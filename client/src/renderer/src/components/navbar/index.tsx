@@ -24,7 +24,7 @@ export const Navbar = () => {
   }, [unit])
 
   return (
-    <nav className='w-full left-0 flex items-center'>
+    <nav className='w-full flex items-center sticky top-0 z-40 p-3 pl-3 bg-c-bg-color'>
       <div className='w-full'>
         <div className='relative flex items-center gap-4 justify-between w-full'>
           <div className='w-[384px]'>
@@ -43,13 +43,15 @@ export const Navbar = () => {
             </div>
           </div>
         </div>
-        {/*         <div
+        {/*
+        <div
           className={`fixed inset-0 flex items-center justify-center bg-gradient-to-b from-black  to-c-bg-color-2 transition-opacity duration-700 ease-in pointer-events-none ${isVisible ? 'opacity-85 pointer-events-auto' : 'opacity-0'} z-50`}
         >
           <h5 className='text-white font-semibold text-[30px]'>
             Bienvenido a<span className='text-c-primary-variant-1'> {unit?.name}</span>
           </h5>
-        </div> */}
+        </div> 
+        */}
       </div>
     </nav>
   )

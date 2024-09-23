@@ -1,106 +1,114 @@
-'useclient'
-import React, { useState } from 'react'
-import { Switch } from '@nextui-org/switch'
-import Afip from '../../assets/Icons/thumbnail.webp'
+'use client'
 
-const cardData = [
-  {
-    nombre: 'Afip',
-    activador: 'Activar 1',
-    desactivador: 'Desactivar 1',
-    descripcion: 'Descripción breve del Card 1. Aquí puedes agregar más detalles si es necesario.',
-    footer: 'Footer del Card 1',
-    imagen: Afip,
-    isEnabled: true, // Añade este campo para definir si el Switch está habilitado
-  },
-  {
-    nombre: 'Otro',
-    activador: 'Activar 2',
-    desactivador: 'Desactivar 2',
-    descripcion: 'Descripción breve del Card 2. Aquí puedes agregar más detalles si es necesario.',
-    footer: 'Footer del Card 2',
-    imagen: Afip,
-    isEnabled: false, // El Switch está desactivado en esta carta
-  },
-  {
-    nombre: 'Otro',
-    activador: 'Activar 2',
-    desactivador: 'Desactivar 2',
-    descripcion: 'Descripción breve del Card 2. Aquí puedes agregar más detalles si es necesario.',
-    footer: 'Footer del Card 2',
-    imagen: Afip,
-    isEnabled: false, // El Switch está desactivado en esta carta
-  },
-  {
-    nombre: 'Otro',
-    activador: 'Activar 2',
-    desactivador: 'Desactivar 2',
-    descripcion: 'Descripción breve del Card 2. Aquí puedes agregar más detalles si es necesario.',
-    footer: 'Footer del Card 2',
-    imagen: Afip,
-    isEnabled: false, // El Switch está desactivado en esta carta
-  },
-  {
-    nombre: 'Otro',
-    activador: 'Activar 2',
-    desactivador: 'Desactivar 2',
-    descripcion: 'Descripción breve del Card 2. Aquí puedes agregar más detalles si es necesario.',
-    footer: 'Footer del Card 2',
-    imagen: Afip,
-    isEnabled: false, // El Switch está desactivado en esta carta
-  },
-]
+import { useEffect, useState } from 'react'
+import { Switch } from '@nextui-org/switch'
+import { useParams } from 'react-router-dom'
+import { reqGetIntegrationsByUnit } from '@renderer/api/requests'
+import ConfigModal from '../../components/Modal/ConfigModal' // Asegúrate de importar tu modal
+
+interface Integration {
+  imageUrl: string
+  name: string
+  enabled: boolean
+  description: string
+  id: number // Necesitamos el ID para identificar cada integración
+}
 
 const Integration = () => {
-  const [switchStates, setSwitchStates] = useState(
-    cardData.reduce((acc, card, index) => {
-      acc[index] = card.isEnabled
-      return acc
-    }, {}),
-  )
+  const { id } = useParams()
+  const [integrations, setIntegrations] = useState<Integration[]>([])
+  const [loading, setLoading] = useState(true) // Estado de carga
+  const [error, setError] = useState<string | null>(null) // Estado de error
+  const [selectedIntegration, setSelectedIntegration] = useState<Integration | null>(null) // Estado para la integración seleccionada
 
-  const handleSwitchChange = (index) => {
-    setSwitchStates((prevStates) => ({
-      ...prevStates,
-      [index]: !prevStates[index],
-    }))
+  useEffect(() => {
+    const fetchIntegrations = async () => {
+      try {
+        const response = await reqGetIntegrationsByUnit(id)
+        setIntegrations(Array.isArray(response.data) ? response.data : [])
+      } catch (err) {
+        if (err instanceof Error) {
+          setError(err.message)
+        } else {
+          setError('An unknown error occurred')
+        }
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchIntegrations()
+  }, [id])
+
+  const handleSwitchChange = (index: number) => {
+    const updatedIntegrations = [...integrations]
+    updatedIntegrations[index].enabled = !updatedIntegrations[index].enabled // Cambia el estado localmente
+    setIntegrations(updatedIntegrations) // Actualiza el estado
   }
+
+  const handleOpenConfigModal = (integration: Integration) => {
+    setSelectedIntegration(integration) // Establece la integración seleccionada
+  }
+
+  const handleCloseConfigModal = () => {
+    setSelectedIntegration(null) // Cierra el modal
+  }
+
   return (
     <div className='w-full h-full'>
-      <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
-        {cardData.map((card, index) => (
-          <div key={index} className='bg-white p-3 shadow-md rounded-md flex flex-col gap-4'>
-            <div className='topsectioncard-integration flex w-full justify-between'>
-              <div className='infocardtop-integration flex gap-2 font-[600] items-center'>
-                <div
-                  className='w-[50px] h-[50px] rounded-xl'
-                  style={{
-                    backgroundImage: `url(${card.imagen})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat',
-                  }}
-                ></div>
-                <span>{card.nombre}</span>
+      {loading ? ( // Muestra un loading mientras se están cargando las integraciones
+        <div>Loading...</div>
+      ) : error ? ( // Muestra un mensaje de error si hay uno
+        <div>Error: {error}</div>
+      ) : (
+        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
+          {integrations.map((card, index) => (
+            <div key={index} className='bg-white p-3 shadow-md rounded-md flex flex-col gap-4'>
+              <div className='topsectioncard-integration flex w-full justify-between'>
+                <div className='infocardtop-integration flex gap-2 font-[600] items-center'>
+                  <div
+                    className='w-[50px] h-[50px] rounded-xl'
+                    style={{
+                      backgroundImage: `url(${card.imageUrl})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      backgroundRepeat: 'no-repeat',
+                    }}
+                  ></div>
+                  <span>{card.name}</span>
+                </div>
+                <div className='infocardtoggle flex items-start'>
+                  <Switch
+                    size='sm'
+                    color='primary'
+                    isSelected={card.enabled} // Controla el estado del Switch basado en `enabled`
+                    onValueChange={() => handleSwitchChange(index)} // Cambia solo el estado visual
+                  />
+                </div>
               </div>
-              <div className='infocardtoggle flex items-start'>
-                <Switch
-                  size='sm'
-                  color='primary'
-                  isSelected={switchStates[index]} // Usa el estado local para definir el estado del Switch
-                  onValueChange={() => handleSwitchChange(index)} // Maneja el cambio de estado
-                />
+              <p className='text-[12px] w-full'>{card.description}</p>
+              <div className='border border-divider w-full'></div>
+              <div
+                className='fottercard-integration w-full flex justify-end text-[14px] font-[600] text-c-primary cursor-pointer'
+                onClick={() => handleOpenConfigModal(card)} // Abre el modal de configuración
+              >
+                Configurar
               </div>
             </div>
-            <p className='text-[12px] w-full'>Integraciones con Afip</p>
-            <div className='border border-divider w-full'></div>
-            <div className='fottercard-integration w-full flex justify-end text-[14px] font-[600] text-c-primary cursor-pointer'>
-              Ver Integración
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
+
+      {/* Mostrar el modal solo si hay una integración seleccionada */}
+      {selectedIntegration && (
+        <ConfigModal
+          unitId={id || ''}
+          integrationId={selectedIntegration.id}
+          onClose={handleCloseConfigModal}
+        />
+      )}
     </div>
   )
 }
+
 export default Integration

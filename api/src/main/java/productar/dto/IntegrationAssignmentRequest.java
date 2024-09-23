@@ -3,7 +3,7 @@ package productar.dto;
 public class IntegrationAssignmentRequest {
     private Long businessUnitId;
     private Long integrationId;
-    private Boolean enabled;
+
 
     // Getters y Setters
     public Long getBusinessUnitId() {
@@ -22,11 +22,5 @@ public class IntegrationAssignmentRequest {
         this.integrationId = integrationId;
     }
 
-    public Boolean getEnabled() {
-        return enabled;
-    }
 
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
-    }
 }

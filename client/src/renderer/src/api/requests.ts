@@ -1,4 +1,4 @@
-import { authApi, api, apiNode } from './axios'
+import { authApi, api, apiNode, afipApi } from './axios'
 
 /* Rutas usuarios */
 export const reqSearchUserByUsername = (username: string) =>
@@ -91,3 +91,10 @@ export const reqGetPlan = (planId: any) => api.get(`/plan/get/${planId}`)
 export const reqCreateInvoiceAfip = async (data: any) => apiNode.post('/create-invoice', data)
 export const reqCreateCreditInvoiceAfip = async (data: any) => apiNode.post('/create-credit-invoice', data)
 export const reqCreateCreditNoteAfip = async (data: any) => apiNode.post('/create-credit-note', data)
+
+/* Rutas INTEGRACIONES */
+export const reqGenerateCert = async (connectionData) => afipApi.post('/generate-cert', connectionData );
+export const reqGetIntegrationsByUnit = async (id: any) => api.get(`/integrations/${id}`)
+export const reqGetConfigIntegrationsByUnit = async (id: any,idintegration:any) => api.get(`/integrations/${id}/config/${idintegration}`)
+export const reqPatchConfigIntegrationsByUnit = async (id: any, payload:any) => api.patch(`/integrations/${id}/configure`, payload)
+

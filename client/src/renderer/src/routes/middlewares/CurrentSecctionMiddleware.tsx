@@ -1,4 +1,4 @@
-import { Navbar } from '@renderer/components/Navbar'
+import { Navbar } from '../../components/navbar/index'
 import { capitalize } from '@renderer/components/AppTable/TableComponents/utils'
 import { useSelector } from 'react-redux'
 
@@ -6,10 +6,10 @@ export const CurrentSecctionMiddleware = ({ section, icon, title, children, rout
   const unit = useSelector((state: any) => state.currentUnit)
 
   return (
-    <div className='w-full overflow-x-hidden overflow-y-auto  rounded-2xl flex flex-col gap-4 p-3 overflow-hidden '>
+    <div className='w-full h-full'>
       <Navbar />
       {unit.id && (
-        <div className='w-full flex flex-col gap-4 overflow-auto flex-grow pr-3'>
+        <div className='w-full flex flex-col gap-4 flex-grow pr-3 pb-3 pl-3'>
           {routesLength === 1 ? (
             <div>
               <h6 className='font-semibold flex items-center text-[#4f4d4d]'>

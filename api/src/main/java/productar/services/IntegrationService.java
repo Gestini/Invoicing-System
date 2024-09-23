@@ -45,36 +45,27 @@ public class IntegrationService {
     }
 
     public void createIntegration(CreateIntegrationRequest createRequest) {
+        // Crear una nueva instancia de IntegrationModel
         IntegrationModel newIntegration = new IntegrationModel();
         newIntegration.setName(createRequest.getName());
         newIntegration.setDescription(createRequest.getDescription());
         newIntegration.setImageUrl(createRequest.getImageUrl());
 
-        // Guarda la nueva integración
-        integrationRepository.save(newIntegration);
-
-        // Crea una nueva entrada en BusinessUnitIntegrationModel si hay un
-        // businessUnitId
-        // En este caso, puedes dejar businessUnit como null o manejarlo si es necesario
-        BusinessUnitIntegrationModel businessUnitIntegration = new BusinessUnitIntegrationModel();
-        businessUnitIntegration.setIntegration(newIntegration);
-        businessUnitIntegration.setEnabled(createRequest.getEnabled() != null ? createRequest.getEnabled() : true);
-
-        // Almacena configData si está presente en la solicitud
+        // Almacenar configData directamente en la tabla de integraciones
         if (createRequest.getConfigData() != null) {
             ObjectMapper objectMapper = new ObjectMapper();
             try {
                 String configDataJson = objectMapper.writeValueAsString(createRequest.getConfigData());
-                businessUnitIntegration.setConfigData(configDataJson);
+                newIntegration.setConfigData(configDataJson);
             } catch (Exception e) {
                 throw new RuntimeException("Error al convertir configData a JSON", e);
             }
         } else {
-            businessUnitIntegration.setConfigData(""); // O puedes usar null si prefieres
+            newIntegration.setConfigData(null); // O un valor predeterminado
         }
 
-        // Guarda la relación BusinessUnitIntegrationModel
-        businessUnitIntegrationRepository.save(businessUnitIntegration);
+        // Guardar la nueva integración en la base de datos
+        integrationRepository.save(newIntegration);
     }
 
     public List<BusinessUnitIntegrationModel> getIntegrationsForBusinessUnit(Long businessUnitId) {
@@ -138,7 +129,9 @@ public class IntegrationService {
                 .findByBusinessUnitIdAndIntegrationId(businessUnitId, configRequest.getIntegrationId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Integración no encontrada"));
 
-        // Actualiza los campos si son proporcionados
+        // Imprime el estado del objeto antes de la actualización
+        System.out.println("Integration Model Before Update: " + integrationModel);
+
         if (configRequest.getEnabled() != null) {
             integrationModel.setEnabled(configRequest.getEnabled());
         }
@@ -151,19 +144,48 @@ public class IntegrationService {
                         ? objectMapper.readValue(existingConfigData, Map.class)
                         : new HashMap<>();
 
-                // Actualiza la configuración existente con los datos proporcionados
                 Map<String, Object> newConfigMap = objectMapper.convertValue(configRequest.getConfigData(), Map.class);
+
+                // Verificar propiedades nuevas
+                for (String key : newConfigMap.keySet()) {
+                    if (!existingConfigMap.containsKey(key)) {
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                                "Propiedad '" + key + "' no es editable");
+                    }
+                }
+
+                // Actualizar la configuración existente con los datos proporcionados
                 existingConfigMap.putAll(newConfigMap);
 
-                // Convierte el mapa de configuración a JSON
                 String updatedConfigData = objectMapper.writeValueAsString(existingConfigMap);
                 integrationModel.setConfigData(updatedConfigData);
+
+                // Imprime la configuración actualizada
+                System.out.println("Updated Config Data: " + updatedConfigData);
             } catch (Exception e) {
                 throw new RuntimeException("Error al actualizar la configuración", e);
             }
         }
 
+        // Guarda el modelo actualizado
         businessUnitIntegrationRepository.save(integrationModel);
+    }
+
+    public Map<String, Object> getIntegrationConfig(Long integrationId) {
+        IntegrationModel integration = integrationRepository.findById(integrationId)
+                .orElseThrow(() -> new RuntimeException("Integración no encontrada: " + integrationId));
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, Object> configDataMap = null;
+        try {
+            if (integration.getConfigData() != null) {
+                configDataMap = objectMapper.readValue(integration.getConfigData(), Map.class);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return configDataMap;
     }
 
     public IntegrationConfigResponse getIntegrationConfigForBusinessUnit(Long businessUnitId, Long integrationId) {
@@ -197,21 +219,53 @@ public class IntegrationService {
         }
     }
 
-    public void assignIntegrationToBusinessUnit(Long businessUnitId, Long integrationId, Boolean enabled) {
+    public void assignIntegrationToBusinessUnit(Long integrationId, Long businessUnitId) {
+        System.out.println("ID de Integración: " + integrationId);
+        System.out.println("ID de Unidad de Negocio: " + businessUnitId);
 
-        BusinessUnitModel businessUnit = businessUnitsRepository.findById(businessUnitId)
-                .orElseThrow(
-                        () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Unidad de negocio no encontrada"));
+        // Verificar si la integración ya está asignada a la unidad de negocio
+        boolean alreadyAssigned = businessUnitIntegrationRepository
+                .findByBusinessUnitIdAndIntegrationId(businessUnitId, integrationId)
+                .isPresent();
+
+        if (alreadyAssigned) {
+            throw new RuntimeException("La integración ya está asignada a esta unidad de negocio");
+        }
 
         IntegrationModel integration = integrationRepository.findById(integrationId)
+                .orElseThrow(() -> new RuntimeException("Integración no encontrada: " + integrationId));
+
+        BusinessUnitModel businessUnit = businessUnitsRepository.findById(businessUnitId)
+                .orElseThrow(() -> new RuntimeException("Unidad de negocio no encontrada: " + businessUnitId));
+
+        System.out.println("Integración encontrada: " + integration);
+        System.out.println("Unidad de negocio encontrada: " + businessUnit);
+
+        BusinessUnitIntegrationModel businessUnitIntegration = new BusinessUnitIntegrationModel();
+        businessUnitIntegration.setIntegration(integration);
+        businessUnitIntegration.setBusinessUnit(businessUnit);
+
+        // Copiar la configuración inicial de la integración
+        businessUnitIntegration.setConfigData(integration.getConfigData());
+
+        businessUnitIntegrationRepository.save(businessUnitIntegration);
+    }
+
+    public void updateIntegrationDetails(Long integrationId, IntegrationModel updatedDetails) {
+        IntegrationModel existingIntegration = integrationRepository.findById(integrationId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Integración no encontrada"));
 
-        BusinessUnitIntegrationModel integrationModel = new BusinessUnitIntegrationModel();
-        integrationModel.setBusinessUnit(businessUnit);
-        integrationModel.setIntegration(integration);
-        integrationModel.setEnabled(enabled);
-        integrationModel.setConfigData(""); // Deja configData vacío o como valor predeterminado
+        if (updatedDetails.getName() != null) {
+            existingIntegration.setName(updatedDetails.getName());
+        }
+        if (updatedDetails.getDescription() != null) {
+            existingIntegration.setDescription(updatedDetails.getDescription());
+        }
+        if (updatedDetails.getImageUrl() != null) {
+            existingIntegration.setImageUrl(updatedDetails.getImageUrl());
+        }
+        // Aquí puedes añadir otros campos generales si es necesario
 
-        businessUnitIntegrationRepository.save(integrationModel);
+        integrationRepository.save(existingIntegration);
     }
 }
