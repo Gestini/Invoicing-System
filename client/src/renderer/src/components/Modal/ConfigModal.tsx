@@ -5,11 +5,7 @@ import {
 } from '@renderer/api/requests'
 
 interface ConfigData {
-  cuil: string
-  user: string
-  password: string
-  key: string
-  cert: string
+  [key: string]: string
 }
 
 interface IntegrationConfig {
@@ -28,15 +24,27 @@ const ConfigModal = ({
 }) => {
   const [config, setConfig] = useState<IntegrationConfig | null>(null)
   const [formData, setFormData] = useState<ConfigData | null>(null)
-  const [originalFormData, setOriginalFormData] = useState<ConfigData | null>(null) // Guardar los datos originales
+  const [originalFormData, setOriginalFormData] = useState<ConfigData | null>(null)
+  const [fileData, setFileData] = useState<{ [key: string]: File | null }>({})
+  const [isFileUploaded, setIsFileUploaded] = useState<{ [key: string]: boolean }>({})
 
   useEffect(() => {
-    // Petición para obtener la configuración
     reqGetConfigIntegrationsByUnit(unitId, integrationId)
       .then((response) => {
         setConfig(response.data)
-        setFormData(response.data.configData) // Inicializar con los datos de la respuesta
-        setOriginalFormData(response.data.configData) // Guardar los datos originales para detectar cambios
+        setFormData(response.data.configData)
+        setOriginalFormData(response.data.configData)
+
+        // Establecer el estado si hay archivos ya cargados
+        const fileKeys = Object.keys(response.data.configData).filter((key) => key.startsWith('f-'))
+        const uploadedFileState = fileKeys.reduce(
+          (acc, key) => {
+            acc[key] = Boolean(response.data.configData[key])
+            return acc
+          },
+          {} as { [key: string]: boolean },
+        )
+        setIsFileUploaded(uploadedFileState)
       })
       .catch((error) => {
         console.error('Error al obtener la configuración', error)
@@ -53,13 +61,55 @@ const ConfigModal = ({
     }
   }
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, files } = e.target
+    if (files && files.length > 0) {
+      const file = files[0]
+      console.log('Archivo seleccionado:', file)
+      if (file.size === 0) {
+        console.error('El archivo está vacío')
+        return
+      }
+      setFileData({
+        ...fileData,
+        [name]: file,
+      })
+      setIsFileUploaded({ ...isFileUploaded, [name]: true })
+    } else {
+      console.error('No se ha seleccionado ningún archivo')
+    }
+  }
+
+  const removeUploadedFile = (key: string) => {
+    setIsFileUploaded({ ...isFileUploaded, [key]: false })
+    setFileData({ ...fileData, [key]: null })
+  }
+
+  const uploadTextFileToCloudinary = async (file: File): Promise<string> => {
+    const formData = new FormData()
+    formData.append('file', file)
+    formData.append('upload_preset', 'preset_pabs')
+
+    const response = await fetch(`https://api.cloudinary.com/v1_1/dlmjzjb9x/raw/upload`, {
+      method: 'POST',
+      body: formData,
+    })
+
+    const data = await response.json()
+    if (data.secure_url) {
+      return data.secure_url
+    } else {
+      throw new Error('Error al subir el archivo: ' + data.message)
+    }
+  }
+
   const getChangedData = () => {
     if (!originalFormData || !formData) return null
 
     const changedData: Partial<ConfigData> = {}
     Object.keys(formData).forEach((key) => {
-      if (formData[key as keyof ConfigData] !== originalFormData[key as keyof ConfigData]) {
-        changedData[key as keyof ConfigData] = formData[key as keyof ConfigData]
+      if (formData[key] !== originalFormData[key]) {
+        changedData[key] = formData[key]
       }
     })
     return changedData
@@ -67,18 +117,29 @@ const ConfigModal = ({
 
   const handleSave = async () => {
     const changedData = getChangedData()
-
     if (changedData) {
-      const payload = {
+      const payload: any = {
         integrationId,
-        enabled: config?.enabled || true, // Mantener el valor de `enabled` o usar true por defecto
-        configData: changedData,
+
+        configData: { ...changedData },
+      }
+
+      for (const key in fileData) {
+        if (fileData[key]) {
+          try {
+            const fileUrl = await uploadTextFileToCloudinary(fileData[key] as File)
+            payload.configData[key] = fileUrl
+          } catch (error) {
+            console.error('Error al subir el archivo', error)
+            return
+          }
+        }
       }
 
       try {
         await reqPatchConfigIntegrationsByUnit(unitId, payload)
         console.log('Configuración actualizada:', payload)
-        onClose() // Cerrar el modal después de guardar
+        onClose()
       } catch (error) {
         console.error('Error al actualizar la configuración', error)
       }
@@ -89,6 +150,10 @@ const ConfigModal = ({
 
   if (!config || !formData) return <div>Cargando...</div>
 
+  const cleanLabel = (key: string) => {
+    return key.replace(/^s-/, '').replace(/^f-/, '')
+  }
+
   return (
     <div className='fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75'>
       <div className='bg-white rounded-lg shadow-lg w-full max-w-md mx-4 sm:mx-auto p-6'>
@@ -97,16 +162,59 @@ const ConfigModal = ({
           {Object.keys(formData).map((key) => (
             <div key={key} className='form-group mb-4'>
               <label htmlFor={key} className='block text-sm font-medium text-gray-700'>
-                {key}
+                {cleanLabel(key)}
               </label>
-              <input
-                type='text'
-                id={key}
-                name={key}
-                value={formData[key as keyof ConfigData]}
-                onChange={handleInputChange}
-                className='mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
-              />
+              {key.startsWith('s-') ? (
+                <input
+                  type='text'
+                  id={key}
+                  name={key}
+                  value={formData[key]}
+                  onChange={handleInputChange}
+                  className='mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+                />
+              ) : key.startsWith('f-') ? (
+                <>
+                  {isFileUploaded[key] ? (
+                    <div className='flex items-center justify-between'>
+                      <span>
+                        <a
+                          href={formData[key]}
+                          target='_blank'
+                          rel='noopener noreferrer'
+                          className='text-blue-600'
+                        >
+                          Ver archivo actual
+                        </a>
+                      </span>
+                      <button
+                        type='button'
+                        onClick={() => removeUploadedFile(key)}
+                        className='text-red-600 hover:text-red-800'
+                      >
+                        ❌
+                      </button>
+                    </div>
+                  ) : (
+                    <input
+                      type='file'
+                      id={key}
+                      name={key}
+                      onChange={handleFileChange}
+                      className='mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+                    />
+                  )}
+                </>
+              ) : (
+                <input
+                  type='text'
+                  id={key}
+                  name={key}
+                  value={formData[key]}
+                  onChange={handleInputChange}
+                  className='mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+                />
+              )}
             </div>
           ))}
           <div className='flex justify-end space-x-2'>
