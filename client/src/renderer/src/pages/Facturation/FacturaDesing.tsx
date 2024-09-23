@@ -68,7 +68,7 @@ const InvoiceForm: React.FC = () => {
                     <div>
                         <div className="border p-2">
                             <div className="flex">
-                                <p className="w-1/2"><strong>Fecha de Vto. del pago:</strong> <input type="text" name="dueDate" value={formData.dueDate} onChange={handleInputChange} className="border" /></p>
+                                <p className="w-1/2"><strong>Fecha de Vto. del pago:</strong> <input type="text" name="dueDate" value={formData.issueDate} onChange={handleInputChange} className="border" /></p>
                             </div>
                         </div>
                     </div>

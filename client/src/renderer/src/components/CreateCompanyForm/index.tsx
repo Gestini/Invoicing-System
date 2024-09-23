@@ -25,10 +25,14 @@ export const CreateUnitModal = () => {
   const dispatch = useDispatch()
   const [loading, setLoading] = React.useState(false)
   const [file, setFile] = React.useState<File | null>(null)
-  const [data, setData] = React.useState({
+  const [data, setData] = React.useState<{
+    name: string
+    description: string
+    image: string | undefined // Allow image to be string or undefined
+  }>({
     name: '',
     description: '',
-    image: '',
+    image: undefined, // Initialize as undefined
   })
   const [errors, setErrors] = React.useState({})
 
@@ -66,17 +70,20 @@ export const CreateUnitModal = () => {
     setLoading(true)
 
     try {
-      let imageUrl = '' || undefined
+      let imageUrl: string | undefined = undefined
+
+      // Check if file is not null before uploading
       if (file) {
-        imageUrl = await uploadImage(file) // Manteniendo el evento en la función
-        // Actualiza el estado `data` con la URL de la imagen
-        setData((prev) => ({ ...prev, image: imageUrl }))
+        imageUrl = (await uploadImage(file)) || undefined // Handle potential null response
       }
 
-      // Espera a que el estado `data` esté actualizado con la imagen
+      // Update the state `data` with the URL of the image
+      setData((prev) => ({ ...prev, image: imageUrl }))
+
+      // Wait for `data` state to be updated with the image
       const updatedData = { ...data, image: imageUrl }
 
-      // Envía los datos al backend
+      // Send the data to the backend
       const res = await reqCreateUnit(updatedData)
       dispatch(addUnit(res.data))
       setLoading(false)
@@ -117,7 +124,7 @@ export const CreateUnitModal = () => {
             <h3 className='default-text-color'>Crear unidad</h3>
           </ModalHeader>
           <ModalBody>
-            <form onSubmit={handleSubmit} >
+            <form onSubmit={handleSubmit}>
               <div className='text-center mb-4'>
                 <div>
                   {/* <p className='font-bold mb-2 text-gray-500 text-center'>

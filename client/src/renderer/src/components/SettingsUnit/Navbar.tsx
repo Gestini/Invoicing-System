@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Tabs, Tab } from '@nextui-org/react'
 import { useNavigate } from 'react-router-dom'
 
