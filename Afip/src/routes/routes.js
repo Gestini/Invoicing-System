@@ -676,10 +676,8 @@ router.post("/generate-cert", async (req, res) => {
       // Enviar la respuesta en formato JSON
       res.json({
         "s-user": username,
-        "s-password": password,
         "f-cert": certUrl,
         "f-key": keyUrl,
-        "authorization": authResult,
       });
     } catch (error) {
       // En caso de error, enviamos un mensaje de error
