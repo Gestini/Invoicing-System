@@ -22,7 +22,7 @@ router.get("/", (req, res) => {
 
 const taxId = "";
 const username = "";
-const password = "";
+const password = "d";
 const alias = "";
 
 const certPath = path.resolve(__dirname, "cert.txt");
