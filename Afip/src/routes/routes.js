@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const fs = require('fs');
-const afip = require('../config/afip');
 const { factura, notadecredito, facturadeCredito } = require('../data/facturas');
 const path = require('path');
 const handlebars = require('handlebars')
@@ -128,5 +127,13 @@ router.post('/create-credit-note', async (req, res) => {
         res.status(500).json({ error: 'Error al crear la Nota de Crédito' });
     }
 });
+
+
+
+router.post('/get-points', async (req, res) => {
+    const red = await afip.ElectronicBilling.getVoucherTypes();
+    return red
+})
+
 
 module.exports = router;
