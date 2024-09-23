@@ -5,7 +5,7 @@ import {
 } from '@renderer/api/requests'
 
 interface ConfigData {
-  [key: string]: string
+  [key: string]: string | boolean // Permite tanto strings como booleans
 }
 
 interface IntegrationConfig {
@@ -27,7 +27,13 @@ const ConfigModal = ({
   const [originalFormData, setOriginalFormData] = useState<ConfigData | null>(null)
   const [fileData, setFileData] = useState<{ [key: string]: File | null }>({})
   const [isFileUploaded, setIsFileUploaded] = useState<{ [key: string]: boolean }>({})
-
+  const [currentStep, setCurrentStep] = useState(1) // Estado para controlar la etapa
+  const [connectionData, setConnectionData] = useState({
+    taxId: '',
+    username: '',
+    password: '',
+    alias: '',
+  })
   useEffect(() => {
     reqGetConfigIntegrationsByUnit(unitId, integrationId)
       .then((response) => {
@@ -59,6 +65,17 @@ const ConfigModal = ({
         [name]: value,
       })
     }
+  }
+
+  const handleConnectionInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    console.log(name)
+    setConnectionData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }))
+
+    console.log(connectionData)
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -153,87 +170,188 @@ const ConfigModal = ({
   const cleanLabel = (key: string) => {
     return key.replace(/^s-/, '').replace(/^f-/, '')
   }
+  const isSpecificIntegration = integrationId === 1 // Cambia '3' al ID específico que necesites
+
+  const connectAccount = async () => {
+    try {
+      const response = await fetch('http://localhost:4000/generate-cert', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(connectionData),
+      })
+
+      if (!response.ok) {
+        throw new Error('Error al conectar la cuenta')
+      }
+
+      const result = await response.text()
+      console.log(result)
+      setCurrentStep(2)
+    } catch (error) {
+      console.error('Error al conectar la cuenta:', error)
+    }
+  }
+  console.log(formData['a-isauth'] == true)
 
   return (
     <div className='fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75'>
       <div className='bg-white rounded-lg shadow-lg w-full max-w-md mx-4 sm:mx-auto p-6'>
-        <h2 className='text-2xl font-bold mb-4'>Editar Configuración</h2>
-        <form>
-          {Object.keys(formData).map((key) => (
-            <div key={key} className='form-group mb-4'>
-              <label htmlFor={key} className='block text-sm font-medium text-gray-700'>
-                {cleanLabel(key)}
+        {isSpecificIntegration &&
+        currentStep === 1 &&
+        formData &&
+        formData['a-isauth'] === false ? (
+          <>
+            <h2 className='text-2xl font-bold mb-4'>Conectar tu Cuenta</h2>
+            <div className='mb-4'>
+              <label className='block text-sm font-medium mb-1' htmlFor='taxId'>
+                Tax ID
               </label>
-              {key.startsWith('s-') ? (
-                <input
-                  type='text'
-                  id={key}
-                  name={key}
-                  value={formData[key]}
-                  onChange={handleInputChange}
-                  className='mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
-                />
-              ) : key.startsWith('f-') ? (
-                <>
-                  {isFileUploaded[key] ? (
-                    <div className='flex items-center justify-between'>
-                      <span>
-                        <a
-                          href={formData[key]}
-                          target='_blank'
-                          rel='noopener noreferrer'
-                          className='text-blue-600'
-                        >
-                          Ver archivo actual
-                        </a>
-                      </span>
-                      <button
-                        type='button'
-                        onClick={() => removeUploadedFile(key)}
-                        className='text-red-600 hover:text-red-800'
-                      >
-                        ❌
-                      </button>
-                    </div>
-                  ) : (
-                    <input
-                      type='file'
-                      id={key}
-                      name={key}
-                      onChange={handleFileChange}
-                      className='mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
-                    />
-                  )}
-                </>
-              ) : (
-                <input
-                  type='text'
-                  id={key}
-                  name={key}
-                  value={formData[key]}
-                  onChange={handleInputChange}
-                  className='mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
-                />
-              )}
+              <input
+                type='text'
+                name='taxId'
+                value={connectionData.taxId}
+                onChange={handleConnectionInputChange}
+                required
+                className='border border-gray-300 rounded p-2 w-full'
+              />
             </div>
-          ))}
-          <div className='flex justify-end space-x-2'>
+            <div className='mb-4'>
+              <label className='block text-sm font-medium mb-1' htmlFor='username'>
+                Username
+              </label>
+              <input
+                type='text'
+                name='username'
+                value={connectionData.username}
+                onChange={handleConnectionInputChange}
+                required
+                className='border border-gray-300 rounded p-2 w-full'
+              />
+            </div>
+            <div className='mb-4'>
+              <label className='block text-sm font-medium mb-1' htmlFor='password'>
+                Password
+              </label>
+              <input
+                type='password'
+                name='password'
+                value={connectionData.password}
+                onChange={handleConnectionInputChange}
+                required
+                className='border border-gray-300 rounded p-2 w-full'
+              />
+            </div>
+            <div className='mb-4'>
+              <label className='block text-sm font-medium mb-1' htmlFor='alias'>
+                Alias
+              </label>
+              <input
+                type='text'
+                name='alias'
+                value={connectionData.alias}
+                onChange={handleConnectionInputChange}
+                required
+                className='border border-gray-300 rounded p-2 w-full'
+              />
+            </div>
             <button
               type='button'
-              onClick={handleSave}
-              className='px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500'
+              onClick={connectAccount}
+              className='px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700'
             >
-              Guardar
+              Conectar
             </button>
-            <button
-              type='button'
-              onClick={onClose}
-              className='px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400'
-            >
-              Cerrar
-            </button>
-          </div>
-        </form>
+          </>
+        ) : (
+          <>
+            {' '}
+            <h2 className='text-2xl font-bold mb-4'>Editar Configuración</h2>
+            <form>
+              {Object.keys(formData)
+                .filter((key) => !key.startsWith('a-')) // Filtra las claves que empiezan con 'a-'
+                .map((key) => (
+                  <div key={key} className='form-group mb-4'>
+                    <label htmlFor={key} className='block text-sm font-medium text-gray-700'>
+                      {cleanLabel(key)}
+                    </label>
+                    {key.startsWith('s-') ? (
+                      <input
+                        type='text'
+                        id={key}
+                        name={key}
+                        value={
+                          formData[key] !== true && formData[key] !== false ? formData[key] : ''
+                        }
+                        onChange={handleInputChange}
+                        className='mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+                      />
+                    ) : key.startsWith('f-') ? (
+                      <>
+                        {isFileUploaded[key] ? (
+                          <div className='flex items-center justify-between'>
+                            <span>
+                              <a
+                                href={typeof formData[key] === 'string' ? formData[key] : '#'}
+                                target='_blank'
+                                rel='noopener noreferrer'
+                                className='text-blue-600'
+                              >
+                                Ver archivo actual
+                              </a>
+                            </span>
+                            <button
+                              type='button'
+                              onClick={() => removeUploadedFile(key)}
+                              className='text-red-600 hover:text-red-800'
+                            >
+                              ❌
+                            </button>
+                          </div>
+                        ) : (
+                          <input
+                            type='file'
+                            id={key}
+                            name={key}
+                            onChange={handleFileChange}
+                            className='mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+                          />
+                        )}
+                      </>
+                    ) : (
+                      <input
+                        type='text'
+                        id={key}
+                        name={key}
+                        value={
+                          formData[key] !== true && formData[key] !== false ? formData[key] : ''
+                        }
+                        onChange={handleInputChange}
+                        className='mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+                      />
+                    )}
+                  </div>
+                ))}
+              <div className='flex justify-end space-x-2'>
+                <button
+                  type='button'
+                  onClick={handleSave}
+                  className='px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500'
+                >
+                  Guardar
+                </button>
+                <button
+                  type='button'
+                  onClick={onClose}
+                  className='px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400'
+                >
+                  Cerrar
+                </button>
+              </div>
+            </form>
+          </>
+        )}
       </div>
     </div>
   )
