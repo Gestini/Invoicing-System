@@ -637,27 +637,53 @@ router.post("/create-voucher", async (req, res) => {
   }
 });
 // Ruta para generar y mostrar el certificado
-router.get("/generate-cert", async (req, res) => {
-  try {
-    const wsid = "wsfe";
-    // Creamos el certificado
-    const certResult = await afip.CreateCert(username, password, alias);
+router.post("/generate-cert", async (req, res) => {
+    try {
+      // Obtener los valores del cuerpo de la solicitud
+      const { username, taxId, password, alias, wsid = "wsfe" } = req.body;
 
-    // Creamos la autorización
-    const authResult = await afip.CreateWSAuth(username, password, alias, wsid);
-
-    // Configuramos los encabezados para enviar texto
-    res.setHeader("Content-Type", "text/plain");
-
-    // Enviamos el certificado y la key en texto plano
-    res.send(
-      `CERTIFICATE:\n${certResult.cert}\n\nKEY:\n${
-        certResult.key
-      }\n\nAUTHORIZATION:\n${JSON.stringify(authResult, null, 2)}`
-    );
-  } catch (error) {
-    // En caso de error, enviamos un mensaje de error
-    res.status(500).send(`Error: ${error.message}`);
-  }
-});
+      const afip = new Afip({ CUIT: taxId});
+  
+      // Creamos el certificado
+      const certResult = await afip.CreateCert(username, password, alias);
+  
+      // Creamos la autorización
+      const authResult = await afip.CreateWSAuth(username, password, alias, wsid);
+  
+      // Función para subir un archivo de texto a Cloudinary
+      const uploadTextFileToCloudinary = async (text) => {
+        const formData = new FormData();
+        formData.append('file', new Blob([text], { type: 'text/plain' }));
+        formData.append('upload_preset', 'preset_pabs');
+  
+        const response = await fetch(`https://api.cloudinary.com/v1_1/dlmjzjb9x/raw/upload`, {
+          method: 'POST',
+          body: formData,
+        });
+  
+        const data = await response.json();
+        if (data.secure_url) {
+          return data.secure_url;
+        } else {
+          throw new Error('Error al subir el archivo: ' + data.message);
+        }
+      };
+  
+      // Subir los certificados a Cloudinary
+      const certUrl = await uploadTextFileToCloudinary(certResult.cert, `${username}_cert.txt`);
+      const keyUrl = await uploadTextFileToCloudinary(certResult.key, `${username}_key.txt`);
+  
+      // Enviar la respuesta en formato JSON
+      res.json({
+        "s-user": username,
+        "s-password": password,
+        "f-cert": certUrl,
+        "f-key": keyUrl,
+        "authorization": authResult,
+      });
+    } catch (error) {
+      // En caso de error, enviamos un mensaje de error
+      res.status(500).send(`Error: ${error.message}`);
+    }
+  });
 module.exports = router;
