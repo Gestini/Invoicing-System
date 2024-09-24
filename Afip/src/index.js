@@ -1,16 +1,7 @@
-<<<<<<< HEAD
-const express = require('express');
-const morgan = require('morgan');
-const cors = require('cors'); // Importa el paquete cors
-const routes = require('./routes/routes'); // Asegúrate de que la ruta al archivo de rutas es correcta
-const Afip = require('@afipsdk/afip.js');
-
-=======
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors"); // Importa el paquete cors
 const routes = require("./routes/routes"); // Asegúrate de que la ruta al archivo de rutas es correcta
->>>>>>> ae81e340df4eeaa071b610ffa69a2269a3ffaf3e
 const app = express();
 const bodyParser = require("body-parser");
 const ValidationTokenMiddleware = require("./middlewares/ValidationToken")
@@ -49,18 +40,11 @@ app.use(morgan("dev"));
 // Middleware para parsear JSON
 app.use(bodyParser.json());
 
-<<<<<<< HEAD
-// Configura CORS
-app.use(cors({
-    origin: 'http://localhost:5173' // Permite solicitudes solo desde este origen
-}));
-=======
 app.use(
   cors({
     origin: "http://localhost:5173", // Permite solicitudes solo desde este origen
   })
 );
->>>>>>> ae81e340df4eeaa071b610ffa69a2269a3ffaf3e
 
 app.use('/', ValidationTokenMiddleware, routes) 
 
