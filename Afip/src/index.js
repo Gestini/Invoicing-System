@@ -4,7 +4,7 @@ const cors = require("cors"); // Importa el paquete cors
 const routes = require("./routes/routes"); // Asegúrate de que la ruta al archivo de rutas es correcta
 const app = express();
 const bodyParser = require("body-parser");
-
+const ValidationTokenMiddleware = require("./middlewares/ValidationToken")
 const port = process.env.PORT || 4000;
 
 // Middleware para registrar solicitudes HTTP
@@ -22,8 +22,7 @@ app.use(
 // Si solo deseas permitir solicitudes desde un origen específico, configura CORS de la siguiente manera:
 // app.use(cors({ origin: 'http://localhost:5173' }));
 
-// Usar rutas definidas en routes
-app.use("/", routes); // Esto usa las rutas definidas en tu archivo de rutas
+app.use('/', ValidationTokenMiddleware, routes) 
 
 // Ruta principal
 app.get("/", (req, res) => {
