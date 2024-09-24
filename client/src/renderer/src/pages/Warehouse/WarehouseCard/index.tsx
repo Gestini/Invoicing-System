@@ -63,7 +63,7 @@ export const WarehouseCard = () => {
   const iconClasses = 'text-xl text-default-500 pointer-events-none flex-shrink-0'
   return (
     <>
-      <div className='flex flex-col w-full gap-2'>
+      <div className='flex flex-col w-full'>
         <div className={`flex items-center justify-between gap-4`}>
           {warehouse.data.length === 0 && (
             <p className='text-foreground-400 align-middle text-center'>
@@ -71,17 +71,67 @@ export const WarehouseCard = () => {
             </p>
           )}
         </div>
-        <div className='flex gap-4 w-full overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 pb-[15px] '>
+        <div className='flex gap-4 w-full overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200'>
+          <div
+            className='bg-c-card
+                w-[285px] h-[76px] rounded-[10px] flex-shrink-0  px-[19px] py-[21px] flex items-center justify-between cursor-pointer shadow-sm'
+          >
+            <div
+              className={`bg-c-card-variant-3 p-2 rounded-lg`}
+            >
+              <LocalIcon
+                color={`var(--c-primary)`}
+              />
+            </div>
+            <div className='flex items-center gap-[10px]'>
+              <div className='flex flex-col '>
+                <span className='text-[24px] h-8 text-c-primary'>
+                  <ShortCellValue cellValue={'Inventario'} maxLength={10} />
+                </span>
+                <span className='text-[12px] text-c-title'>Buenos aires</span>
+              </div>
+              <div>
+                <Dropdown className='text-c-title bg-c-card'>
+                  <DropdownTrigger>
+                    <Button isIconOnly size='sm' variant='light'>
+                      <VerticalDotsIcon className='text-default-300' />
+                    </Button>
+                  </DropdownTrigger>
+                  <DropdownMenu variant='faded' aria-label='Dropdown menu with icons'>
+                    <DropdownItem
+                      key='edit'
+                      className='default-text-color'
+                      onPress={() => handleEdit(ele.id)}
+                      startContent={<EditDocumentIcon className={iconClasses} />}
+                    >
+                      Editar
+                    </DropdownItem>
+                    <DropdownItem
+                      key='delete'
+                      className='text-danger'
+                      color='danger'
+                      onPress={() => handleDelete(ele.id)}
+                      startContent={
+                        <DeleteDocumentIcon className={cn(iconClasses, 'text-danger')} />
+                      }
+                    >
+                      Borrar
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              </div>
+            </div>
+          </div>
           {warehouse.data.length > 0 &&
             warehouse.data.map((ele: any, ind: number) => (
               <div
                 key={ind}
                 onClick={() => openWarehouse(ele.id)}
-                className={`${currentWarehouseId == ele.id ? 'bg-c-primary-variant-3' : 'bg-[#1f2121]'}
-                w-[285px] h-[76px] rounded-[10px] flex-shrink-0  px-[19px] py-[21px] flex items-center justify-between cursor-pointer`}
+                className={`${currentWarehouseId == ele.id ? 'bg-c-primary-variant-3' : 'bg-c-card'}
+                w-[285px] h-[76px] rounded-[10px] flex-shrink-0 shadow-sm  px-[19px] py-[21px] flex items-center justify-between cursor-pointer`}
               >
                 <div
-                  className={`${currentWarehouseId == ele.id ? 'bg-c-primary-variant-3' : 'bg-[#323535]'}  p-2 rounded-lg`}
+                  className={`${currentWarehouseId == ele.id ? 'bg-c-primary-variant-3' : 'bg-c-card-variant-3'}  p-2 rounded-lg`}
                 >
                   <LocalIcon
                     color={`${currentWarehouseId == ele.id ? 'var(--c-primary)' : 'white'}`}
@@ -89,10 +139,10 @@ export const WarehouseCard = () => {
                 </div>
                 <div className='flex items-center gap-[10px]'>
                   <div className='flex flex-col '>
-                    <span className='text-[24px] h-8 text-white'>
+                    <span className='text-[24px] h-8 text-c-primary'>
                       <ShortCellValue cellValue={ele.name} maxLength={10} />
                     </span>
-                    <span className='text-[12px] text-c-gray'>Buenos aires</span>
+                    <span className='text-[12px] text-c-title'>Buenos aires</span>
                   </div>
                   <div>
                     <Dropdown className='text-c-title bg-c-card'>

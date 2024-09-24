@@ -72,7 +72,7 @@ export const UnitDropdown = ({ unitItem, openDropdownId, setOpenDropdownId }) =>
               } transition-all duration-500 ease-in-out w-[24px] h-[24px] uppercase flex items-center justify-center font-semibold text-c-title`}
             >
               {unitItem.image ? (
-                <img src={unitItem.image} className='w-full h-full rounded-sm' alt='' />
+                <img src={unitItem.image} className='w-full h-full rounded-sm object-contain' alt='' />
               ) : (
                 <span>{unitItem.name.slice(0, 2)}</span>
               )}

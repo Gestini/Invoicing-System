@@ -48,7 +48,7 @@ export const TopContent = ({
 
   return (
     <>
-      <div className='flex flex-col gap-4'>
+      <div className='flex flex-col'>
         <div className='flex justify-between gap-3 items-end'>
           <div className='flex gap-3'>
             <Input
@@ -66,8 +66,9 @@ export const TopContent = ({
                 <Dropdown className='bg-c-card text-c-title'>
                   <DropdownTrigger className='sm:flex'>
                     <Button
+                    className='bg-c-filter shadow-sm'
                       endContent={
-                        <FilterIcon className='text-c-title text-2xl mr-2 w-[20px] h-[20px]' />
+                        <FilterIcon className='text-c-title  text-2xl mr-2 w-[20px] h-[20px]' />
                       }
                       variant='flat'
                       radius='sm'
@@ -94,8 +95,8 @@ export const TopContent = ({
             </div>
           </div>
           <div className='flex gap-3'>
-            <ExportTableDropdown />
-            {columnsData?.columns && (
+            {/* <ExportTableDropdown /> */}
+            {/* {columnsData?.columns && (
               <Dropdown>
                 <DropdownTrigger className='sm:flex'>
                   <Button endContent={<ChevronDownIcon className='text-small' />} variant='flat' radius="sm">
@@ -117,11 +118,11 @@ export const TopContent = ({
                   ))}
                 </DropdownMenu>
               </Dropdown>
-            )}
+            )} */}
             {addItemModal}
           </div>
         </div>
-        <div className='flex justify-between items-center'>
+        {/* <div className='flex justify-between items-center'>
           <span className='text-default-400 text-small'>{users.length} Resultados en total</span>
           <label className='flex items-center text-default-400 text-small'>
             Resultados por página:
@@ -134,9 +135,9 @@ export const TopContent = ({
               <option value='15'>15</option>
             </select>
           </label>
-        </div>
+        </div> */}
+        {editItemModal}
       </div>
-      {editItemModal}
     </>
   )
 }

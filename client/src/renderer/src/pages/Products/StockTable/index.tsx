@@ -67,7 +67,7 @@ export const StockTable = () => {
 
   const newProductModal = {
     title: 'Agrega un nuevo producto',
-    buttonTitle: 'Crear orden',
+    buttonTitle: 'Crear producto',
     ...modalInputs,
     action: tableActions.create,
   }

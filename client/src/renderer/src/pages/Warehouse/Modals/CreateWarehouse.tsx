@@ -57,7 +57,7 @@ export const CreateWarehouse = () => {
       <Tooltip content='Crear depósito'>
         <div
           onClick={onOpen}
-          className='h-[76px] rounded-[10px] px-[10px] py-[20px] bg-[#1f2121] text-c-gray flex items-center justify-between cursor-pointer'
+          className='h-[76px] rounded-[10px] px-[10px] py-[20px] bg-c-card text-c-text flex shadow-sm items-center justify-between cursor-pointer'
         >
           <PlusIcon />
         </div>

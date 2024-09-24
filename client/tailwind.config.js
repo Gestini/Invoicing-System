@@ -72,6 +72,12 @@ module.exports = {
 
         // TABS
         'c-tabs': 'var(--c-tabs)',
+
+        // GESTION DE PRODUCTOS
+        'c-card-variant-3': 'var(--c-card-variant-3)',
+
+        // FILTERS
+        'c-filter': 'var(--c-filter)'
       },
     },
     screens: {

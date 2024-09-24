@@ -13,10 +13,10 @@ export const Warehouse = () => {
   ]
 
   return (
-    <div className='flex gap-4 flex-col'>
+    <div className='flex gap-2 flex-col'>
       <Tabs tabs={tabs} />
       <WarehouseCard />
-      <WarehouseStats />
+      {/* <WarehouseStats /> */}
       <StockTable />
     </div>
   )
