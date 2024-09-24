@@ -13,7 +13,7 @@ const routes = require("./routes/routes"); // Asegúrate de que la ruta al archi
 >>>>>>> ae81e340df4eeaa071b610ffa69a2269a3ffaf3e
 const app = express();
 const bodyParser = require("body-parser");
-
+const ValidationTokenMiddleware = require("./middlewares/ValidationToken")
 const port = process.env.PORT || 4000;
 
 // Instanciamos Afip globalmente para usarlo en varias rutas
@@ -62,8 +62,7 @@ app.use(
 );
 >>>>>>> ae81e340df4eeaa071b610ffa69a2269a3ffaf3e
 
-// Usar rutas definidas en routes
-app.use("/", routes); // Esto usa las rutas definidas en tu archivo de rutas
+app.use('/', ValidationTokenMiddleware, routes) 
 
 // Ruta principal
 app.get("/", (req, res) => {

@@ -56,4 +56,10 @@ public class UserController {
     public ResponseEntity<?> updateUser(@RequestBody User data) {
         return userService.updateUser(data);
     }
+
+    @GetMapping("/info")
+    public ResponseEntity<?> getUserInfoByToken() {
+        return ResponseEntity.ok(userService.getCurrentUser());
+    }
+
 }
