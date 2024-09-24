@@ -9,9 +9,9 @@ export const AuthSubmit = ({ label, disabled = false, waitTime = 0 }) => {
 
   return (
     <Button
-      color='primary'
+      // color='primary'
       type='submit'
-      className='buttonsubmitsesion mt-[10px] mb-[24px]'
+      className='buttonsubmitsesion mt-[10px] mb-[24px] bg-c-default text-white font-bold'
       isDisabled={disabled}
     >
       {disabled && waitTime > 0 ? `${formatTime(waitTime / 1000)}` : label}
