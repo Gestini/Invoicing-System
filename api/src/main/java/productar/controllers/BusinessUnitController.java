@@ -2,11 +2,9 @@ package productar.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,9 +25,8 @@ public class BusinessUnitController {
     private BusinessUnitService businessUnitsService;
 
     @PostMapping("/save")
-    public ResponseEntity<BusinessUnitModel> saveBusinessUnit(@RequestBody BusinessUnitModel data,
-            Authentication authentication) {
-        return this.businessUnitsService.saveBusinessUnit(data, authentication.getName());
+    public ResponseEntity<BusinessUnitModel> saveBusinessUnit(@RequestBody BusinessUnitModel data) {
+        return this.businessUnitsService.saveBusinessUnit(data);
     }
 
     @GetMapping("/get-all")
@@ -38,7 +35,7 @@ public class BusinessUnitController {
     }
 
     @GetMapping(path = "/get/{id}")
-    public Optional<BusinessUnitModel> getBusinessUnitById(@PathVariable("id") Long id) {
+    public ResponseEntity<?> getBusinessUnitById(@PathVariable("id") Long id) {
         return this.businessUnitsService.getBusinessUnitById(id);
     }
 
@@ -60,6 +57,11 @@ public class BusinessUnitController {
     @GetMapping("/get-by-owner")
     public List<BusinessUnitModel> getBusinessUnitsByOwner() {
         return this.businessUnitsService.getUserBusinessUnits();
+    }
+
+    @GetMapping("/get-by-company-id/{companyId}")
+    public List<BusinessUnitModel> findUnitsByCompanyId(@PathVariable Long companyId) {
+        return this.businessUnitsService.findUnitsByCompanyId(companyId);
     }
 
     @PostMapping("/assign-plan/{token}")

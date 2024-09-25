@@ -32,7 +32,6 @@ import productar.repositories.BusinessUnitsPlanRepository;
 import productar.repositories.BusinessUnitsRepository;
 import productar.repositories.EmployeeRepository;
 import productar.repositories.PlanRepository;
-import productar.repositories.UserRepository;
 
 @Service
 public class BusinessUnitService {
@@ -41,9 +40,6 @@ public class BusinessUnitService {
 
     @Autowired
     private EmployeeRepository employeeRepository;
-
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
     private BusinessUnitsPlanRepository businessUnitsPlanRepository;
@@ -69,6 +65,10 @@ public class BusinessUnitService {
 
     public BusinessUnitModel findByUnitIdAndEcommerce(Long unitId) {
         return businessUnitsRepository.findByUnitIdAndEcommerce(unitId);
+    }
+
+    public List<BusinessUnitModel> findUnitsByCompanyId(Long companyId) {
+        return businessUnitsRepository.findUnitsByCompanyId(companyId);
     }
 
     public List<BusinessUnitModel> getBusinessUnitsByToken() {
@@ -100,18 +100,25 @@ public class BusinessUnitService {
         return ownedUnits.stream().distinct().collect(Collectors.toList());
     }
 
-    public ResponseEntity<BusinessUnitModel> saveBusinessUnit(BusinessUnitModel businessUnit, String username) {
-        User owner = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+    public ResponseEntity<BusinessUnitModel> saveBusinessUnit(BusinessUnitModel businessUnit) {
 
-        businessUnit.setOwner(owner);
         BusinessUnitModel savedBusinessUnit = businessUnitsRepository.save(businessUnit);
 
         return ResponseEntity.status(HttpStatus.OK).body(savedBusinessUnit);
     }
 
-    public Optional<BusinessUnitModel> getBusinessUnitById(Long id) {
-        return businessUnitsRepository.findById(id);
+    public ResponseEntity<?> getBusinessUnitById(Long id) {
+        try {
+            Optional<BusinessUnitModel> unit = businessUnitsRepository.findById(id);
+
+            if (!unit.isPresent()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Unidad de negocio no encontrada");
+            }
+
+            return ResponseEntity.ok(unit);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("Ocurrió un error");
+        }
     }
 
     public ResponseEntity<String> deleteBusinessUnitById(Long id) {
@@ -120,7 +127,7 @@ public class BusinessUnitService {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();
-        User owner = businessUnit.getOwner();
+        User owner = businessUnit.getCompany().getOwner();
 
         if (!owner.getId().equals(user.getId())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Solo el dueño puede eliminar la unidad");
@@ -190,7 +197,7 @@ public class BusinessUnitService {
             BusinessUnitModel businessUnit = businessUnitsRepository.findById(id)
                     .orElseThrow(() -> new UsernameNotFoundException("Unidad de negocio no encontrada"));
 
-            User owner = businessUnit.getOwner();
+            User owner = businessUnit.getCompany().getOwner();
             if (!owner.getUsername().equals(username)) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
             }

@@ -21,7 +21,7 @@ public class CompanyController {
     CompanyService companyService;
 
     @PostMapping("/create")
-    public CompanyModel createCompany(@RequestBody CompanyModel newCompany) {
+    public ResponseEntity<?> createCompany(@RequestBody CompanyModel newCompany) {
         return this.companyService.createCompany(newCompany);
     }
 
@@ -33,5 +33,15 @@ public class CompanyController {
     @GetMapping("/get-by-id/{companyId}")
     public ResponseEntity<?> findCompanyById(@PathVariable("companyId") Long companyId) {
         return this.companyService.findCompanyById(companyId);
+    }
+
+    @GetMapping("/get-by-owner")
+    public ResponseEntity<?> findByOwnerId() {
+        return this.companyService.findCompanyByOwnerId();
+    }
+
+    @GetMapping("/get-unit-by-company/{companyId}")
+    public ResponseEntity<?> findUnitByCompany(@PathVariable Long companyId) {
+        return this.companyService.findUnitByCompany(companyId);
     }
 }

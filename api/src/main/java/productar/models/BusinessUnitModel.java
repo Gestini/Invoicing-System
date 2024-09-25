@@ -10,7 +10,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "business_unit")
@@ -35,18 +34,12 @@ public class BusinessUnitModel {
     private Boolean ecommerce;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "owner_id", nullable = false)
-    @NotNull(message = "Owner id cannot be null")
-    private User owner;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "company_id", nullable = true)
+    @JoinColumn(name = "company_id", nullable = false)
     private CompanyModel company;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "current_plan_id", nullable = true)
     private BusinessUnitPlanModel plan;
-
 
     public Long getId() {
         return id;
@@ -96,14 +89,6 @@ public class BusinessUnitModel {
         this.ecommerce = ecommerce;
     }
 
-    public User getOwner() {
-        return owner;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
-    }
-
     public CompanyModel getCompany() {
         return company;
     }
@@ -119,7 +104,5 @@ public class BusinessUnitModel {
     public void setPlan(BusinessUnitPlanModel plan) {
         this.plan = plan;
     }
-
-
 
 }
