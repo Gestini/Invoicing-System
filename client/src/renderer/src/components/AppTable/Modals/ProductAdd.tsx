@@ -69,7 +69,7 @@ export const AddProductModal = ({ modal }) => {
   })
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     if (e.target.name == 'supplierUnit') {
       setInfo({
         ...info,

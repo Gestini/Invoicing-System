@@ -19,7 +19,7 @@ export const EditWarehouse = ({ isOpen, onOpenChange, onClose, id }) => {
   const warehouse = useSelector((state: RootState) => state.unit.warehouse)
   const currentWarehouseEdit = warehouse.data.find((item: any) => item.id == id)
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     let name = e.target.name
     let value = e.target.value
     setData({

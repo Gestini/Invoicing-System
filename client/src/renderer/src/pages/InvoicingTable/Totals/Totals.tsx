@@ -14,7 +14,7 @@ export const TotalsInputs = () => {
     dispatch(setTotal())
   }, [newInvoicing])
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let name = e.target.name
     let value = parseInt(e.target.value)
     dispatch(editTotal({ name, value }))

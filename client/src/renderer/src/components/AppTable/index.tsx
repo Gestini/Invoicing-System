@@ -19,6 +19,7 @@ import {
 export const AppTable = ({ columnsData, tableActions, addItemModal, editItemModal }) => {
   const dispatch = useDispatch()
   type User = (typeof users)[0]
+  type Column = (typeof columnsData.columns)[0]
   const users = useSelector((state: RootState) => state.unit.table.data)
 
   const [page, setPage] = React.useState(1)
@@ -37,7 +38,7 @@ export const AppTable = ({ columnsData, tableActions, addItemModal, editItemModa
   const headerColumns = React.useMemo(() => {
     if (visibleColumns === 'all') return columnsData.columns
 
-    return columnsData.columns.filter((column: any) =>
+    return columnsData.columns.filter((column: Column) =>
       Array.from(visibleColumns).includes(column.uid),
     )
   }, [visibleColumns])
@@ -91,8 +92,8 @@ export const AppTable = ({ columnsData, tableActions, addItemModal, editItemModa
     })
   }, [sortDescriptor, items])
 
-  const handleDeleteItem = async (id: any) => tableActions.delete(id)
-  const handleSetCurrentIdEdit = (id: any) => dispatch(setCurrentItemId(id))
+  const handleDeleteItem = async (id: number) => tableActions.delete(id)
+  const handleSetCurrentIdEdit = (id: number) => dispatch(setCurrentItemId(id))
 
   return (
     <div className='max-w-table'>
@@ -139,7 +140,7 @@ export const AppTable = ({ columnsData, tableActions, addItemModal, editItemModa
         onSortChange={setSortDescriptor}
       >
         <TableHeader columns={headerColumns}>
-          {(column: any) => (
+          {(column: Column) => (
             <TableColumn
               key={column.uid}
               align={column.uid === 'actions' ? 'center' : 'start'}

@@ -26,7 +26,7 @@ export const CreateRoleModal = () => {
     permissions: [],
   })
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     let name = e.target.name
     let value = e.target.value
     setData({

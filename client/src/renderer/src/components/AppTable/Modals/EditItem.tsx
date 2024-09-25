@@ -21,13 +21,13 @@ export const EditItemModal = ({ modal }) => {
   const users = useSelector((state: RootState) => state.unit.table.data)
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const currentItemIdEdit = useSelector((state: RootState) => state.unit.table.currentItemIdEdit)
-  const currentUserEdit = users.find((item: { id: any }) => item.id == currentItemIdEdit)
+  const currentUserEdit = users.find((item) => item.id == currentItemIdEdit)
 
   React.useEffect(() => {
     if (currentItemIdEdit !== -1) onOpen()
   }, [currentItemIdEdit])
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     let name = e.target.name
     let value = e.target.value
     let intValues = ['age']
@@ -83,7 +83,7 @@ export const EditItemModal = ({ modal }) => {
                     key={index}
                     name={item.name}
                     label={item.label}
-                    onChange={(e) => handleChange(e)}
+                    onChange={handleChange}
                     className='max-w-x default-text-color'
                     defaultSelectedKeys={[currentUserEdit && currentUserEdit[item.name]]}
                   >

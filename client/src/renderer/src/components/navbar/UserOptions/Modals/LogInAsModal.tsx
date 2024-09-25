@@ -28,7 +28,7 @@ export const LogInAsModal = ({ errors }) => {
     password: '',
   })
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target
     setData({
       ...data,

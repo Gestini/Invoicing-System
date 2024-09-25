@@ -31,6 +31,9 @@ export const EditProductModal = ({ modal }) => {
     businessUnit: {
       id: params.unitId,
     },
+    supplierUnit: {
+      id: '',
+    },
   })
   const [errors, setErrors] = React.useState({
     name: '',
@@ -56,11 +59,11 @@ export const EditProductModal = ({ modal }) => {
     GetSupplier()
   }, [])
 
-  const handleChange = (e: any) => {
-    if (e.target.name == 'supplierUnit') {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    if (e.target.name === 'supplierUnit') {
       setData({
         ...data,
-        [e.target.name]: { id: e.target.value },
+        supplierUnit: { id: e.target.value }, // Asegúrate de actualizar correctamente supplierUnit
       })
     } else {
       setData({
@@ -110,6 +113,9 @@ export const EditProductModal = ({ modal }) => {
       setData({
         businessUnit: {
           id: params.unitId,
+        },
+        supplierUnit: {
+          id: '', // Agrega el supplierUnit en la estructura del estado
         },
       })
       onClose()

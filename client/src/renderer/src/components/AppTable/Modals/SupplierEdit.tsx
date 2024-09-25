@@ -39,7 +39,7 @@ export const EditSupplierModal = ({ modal }) => {
     if (currentItemIdEdit !== -1) onOpen()
   }, [currentItemIdEdit])
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     let name = e.target.name
     let value = e.target.value
     let intValues = ['age']

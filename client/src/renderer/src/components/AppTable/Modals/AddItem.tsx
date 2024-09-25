@@ -17,7 +17,7 @@ export const AddItemModal = ({ modal }) => {
   const [data, setData] = React.useState<any>({})
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setData({
       ...data,
       [e.target.name]: e.target.value,
