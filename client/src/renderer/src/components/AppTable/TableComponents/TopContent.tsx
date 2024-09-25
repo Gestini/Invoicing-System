@@ -6,13 +6,13 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from '@nextui-org/react'
-import { RootState } from '@renderer/store'
+/* import { RootState } from '@renderer/store' */
 import { SearchIcon } from '../../Icons/SearchIcon'
 import { capitalize } from './utils'
 import { FilterIcon } from '@renderer/components/Icons/FilterIcon'
-import { useSelector } from 'react-redux'
-import { ChevronDownIcon } from '../../Icons/ChevronDownIcon'
-import { ExportTableDropdown } from '../Exports/ExportTableDropdown'
+/* import { useSelector } from 'react-redux' */
+/* import { ChevronDownIcon } from '../../Icons/ChevronDownIcon'
+import { ExportTableDropdown } from '../Exports/ExportTableDropdown' */
 
 export const TopContent = ({
   setPage,
@@ -21,17 +21,17 @@ export const TopContent = ({
   statusFilter,
   addItemModal,
   editItemModal,
-  visibleColumns,
-  setRowsPerPage,
+  /* visibleColumns, */
+  /* setRowsPerPage, */
   setFilterValue,
   setStatusFilter,
-  setVisibleColumns,
+  /* setVisibleColumns, */
 }) => {
-  const users = useSelector((state: RootState) => state.unit.table.data)
-  const onRowsPerPageChange = (e: any) => {
+  /* const users = useSelector((state: RootState) => state.unit.table.data) */
+  /* const onRowsPerPageChange = (e: any) => {
     setRowsPerPage(parseInt(e.target.value))
     setPage(1)
-  }
+  } */
 
   const onSearchChange = (value) => {
     if (value) {
