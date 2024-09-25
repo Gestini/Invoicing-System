@@ -210,9 +210,9 @@ export const AddProductModal = ({ modal }) => {
     <div className='flex flex-col gap-2'>
       <Button
         onPress={onOpen}
-        className='bg-c-primary'
+        className='bg-c-filter shadow-sm text-c-text'
         color='secondary'
-        endContent={<PlusIcon />}
+        startContent={<PlusIcon className='text-c-primary-variant-1 w-[15px] h-[15px]' />}
         radius='sm'
       >
         {modal?.buttonTitle}

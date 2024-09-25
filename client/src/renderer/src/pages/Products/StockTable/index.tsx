@@ -7,18 +7,18 @@ import {
   reqGetProductByDeposit,
 } from '@renderer/api/requests'
 import { AppTable } from '@renderer/components/AppTable'
-import { RootState } from '@renderer/store'
 import { AddProductModal } from '@renderer/components/AppTable/Modals/ProductAdd'
 import { EditProductModal } from '@renderer/components/AppTable/Modals/ProductEdit'
+import { wareHouseInterface } from '@renderer/features/warehouseSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { columnsData, modalInputs } from './data'
 import { addItem, deleteItem, editItem, setTableData } from '@renderer/features/tableSlice'
 
 export const StockTable = () => {
   const dispatch = useDispatch()
-  const table = useSelector((state: RootState) => state.unit.table)
+  const table = useSelector((state: any) => state.unit.table)
 
-  const warehouse = useSelector((state: RootState) => state.unit.warehouse)
+  const warehouse: wareHouseInterface = useSelector((state: any) => state.unit.warehouse)
   const currentWarehouseId = warehouse.currentWarehouseId
 
   React.useEffect(() => {
@@ -67,7 +67,7 @@ export const StockTable = () => {
 
   const newProductModal = {
     title: 'Agrega un nuevo producto',
-    buttonTitle: 'Crear orden',
+    buttonTitle: 'Crear producto',
     ...modalInputs,
     action: tableActions.create,
   }

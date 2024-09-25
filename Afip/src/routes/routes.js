@@ -1,5 +1,12 @@
 const express = require("express");
 const router = express.Router();
+<<<<<<< HEAD
+const fs = require('fs');
+const { factura, notadecredito, facturadeCredito } = require('../data/facturas');
+const path = require('path');
+const handlebars = require('handlebars')
+const axios = require('axios')
+=======
 const fs = require("fs");
 
 const {
@@ -14,6 +21,7 @@ const forge = require("node-forge");
 const bodyParser = require("body-parser");
 const archiver = require("archiver");
 const Afip = require("@afipsdk/afip.js"); // Asegúrate de instalar afip.js con npm
+>>>>>>> ae81e340df4eeaa071b610ffa69a2269a3ffaf3e
 
 // Ruta para verificar el estado
 router.get("/", (req, res) => {
@@ -683,5 +691,89 @@ router.post("/generate-cert", async (req, res) => {
       // En caso de error, enviamos un mensaje de error
       res.status(500).send(`Error: ${error.message}`);
     }
+<<<<<<< HEAD
+});
+
+// Ruta para crear una Factura de Crédito
+router.post('/create-credit-invoice', async (req, res) => {
+    try {
+        // Leer y compilar el archivo HTML de la plantilla
+        const templatePath = path.join(__dirname, '../../bill.html');
+        const htmlTemplate = fs.readFileSync(templatePath, 'utf8');
+        const template = handlebars.compile(htmlTemplate);
+        const html = template(facturadeCredito);
+
+        // Opciones para el archivo PDF
+        const options = {
+            width: 8,
+            marginLeft: 0.1,
+            marginRight: 0.1,
+            marginTop: 0.1,
+            marginBottom: 0.1,
+        };
+
+        // Crear el PDF
+        const pdfResponse = await afip.ElectronicBilling.createPDF({
+            html: html,
+            file_name: 'Factura_Credito_',
+            options: options
+        });
+
+        // Mostrar la URL del archivo creado
+        res.json({ file: pdfResponse.file });
+
+    } catch (error) {
+        console.error('Error al crear el PDF:', error);
+        res.status(500).json({ error: 'Error al crear el PDF' });
+    }
+});
+
+// Ruta para crear un PDF de una Nota de Crédito
+router.post('/create-credit-note', async (req, res) => {
+    try {
+        // Nombre para el archivo PDF
+        const name = 'Nota de Crédito';
+
+        // Leer y compilar el archivo HTML
+        const templatePath = path.join(__dirname, '../../credit_note.html'); // Asegúrate de tener un template específico para la Nota de Crédito
+        const htmlTemplate = fs.readFileSync(templatePath, 'utf8');
+        const template = handlebars.compile(htmlTemplate);
+        const html = template(notadecredito);
+
+        // Opciones para el archivo PDF
+        const options = {
+            width: 8,
+            marginLeft: 0.1,
+            marginRight: 0.1,
+            marginTop: 0.1,
+            marginBottom: 0.1,
+        };
+
+        // Crear el PDF
+        const pdfResponse = await afip.ElectronicBilling.createPDF({
+            html: html,
+            file_name: name,
+            options: options
+        });
+
+        // Mostrar la URL del archivo creado
+        res.json({ file: pdfResponse.file });
+
+    } catch (error) {
+        console.error('Error al crear la Nota de Crédito:', error);
+        res.status(500).json({ error: 'Error al crear la Nota de Crédito' });
+    }
+});
+
+
+
+router.post('/get-points', async (req, res) => {
+    const red = await afip.ElectronicBilling.getVoucherTypes();
+    return red
+})
+
+
+=======
   });
+>>>>>>> ae81e340df4eeaa071b610ffa69a2269a3ffaf3e
 module.exports = router;

@@ -58,7 +58,7 @@ export const reqUpdateInvoice = async (id: any, data: any) => api.put(`/invoicin
 export const reqGetAllInvoicesByUnit = async (id: any) => api.get(`/invoicing/get-by-unit/${id}`)
 
 /* Rutas depositos */
-export const reqCreateDeposit = async (data: any) => api.post('/deposit/save', data)
+export const reqCreateDeposit = async (data: any) => api.post('/deposit/create', data)
 export const reqEditDeposit = async (id: any, data: any) => api.put(`/deposit/${id}`, data)
 export const reqDeleteDeposit = async (id: any) => api.delete(`/deposit/${id}`)
 export const reqGetDepositByUnit = async (id: any) => api.get(`/deposit/get-by-unit-id/${id}`)

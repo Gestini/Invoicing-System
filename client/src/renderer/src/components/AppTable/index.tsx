@@ -151,15 +151,25 @@ export const AppTable = ({ columnsData, tableActions, addItemModal, editItemModa
           )}
         </TableHeader>
         <TableBody emptyContent={'Sin resultados'} items={sortedItems}>
-          {(item) => (
-            <TableRow key={item.id}>
-              {(columnKey) => (
-                <TableCell className='default-text-color'>
-                  {RenderCell(item, columnKey, handleDeleteItem, handleSetCurrentIdEdit)}
-                </TableCell>
-              )}
-            </TableRow>
-          )}
+          {item => {
+            return (
+              <TableRow key={item.id}>
+                {columnKey => (
+                  <TableCell className='default-text-color capitalize'>
+                    {/* ESTILO DE CATEGORIAS */}
+                    {columnKey === 'category' ? (
+                      // Estilo especial para la celda de categoría
+                      <span className="bg-c-primary-variant-3 text-c-primary px-2 py-[2px] rounded-md text-[12px]">
+                        {item[columnKey]}
+                      </span>  
+                    ) : (
+                      RenderCell(item, columnKey, handleDeleteItem, handleSetCurrentIdEdit)
+                    )}
+                  </TableCell>
+                )}
+              </TableRow>
+            );
+          }}
         </TableBody>
       </Table>
     </div>

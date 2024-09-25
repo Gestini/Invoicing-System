@@ -15,6 +15,7 @@ import { SalesTable } from '@renderer/pages/SalesTable'
 import Settings from '@renderer/pages/Settings'
 import { SupplierTable } from '@renderer/pages/SupplierTable'
 import { Warehouse } from '@renderer/pages/Warehouse'
+import Products from '@renderer/pages/Products'
 import { ReactElement } from 'react'
 import Shops from '@renderer/pages/Settings/Shops'
 import {
@@ -63,7 +64,8 @@ const warehouseRoutes: RouteSection = {
   section: 'Depósitos',
   permission: permissions.warehouse.permission,
   routes: [
-    { path: '/product-management', element: <Warehouse />, title: 'productos' },
+    { path: '/product-management', element: <Warehouse />, title: 'Depositos' },
+    { path: '/brands', element: <Products />, title: 'productos' },
     { path: '/price-management', element: <></>, title: 'precios' },
     { path: '/stock-management', element: <></>, title: 'inventario' },
     {
@@ -74,7 +76,6 @@ const warehouseRoutes: RouteSection = {
     { path: '/inventory-list', element: <></>, title: 'lista de inventario' },
     { path: '/reception-management', element: <></>, title: 'recepción' },
     { path: '/categories', element: <></>, title: 'categorías' },
-    { path: '/brands', element: <></>, title: 'marcas' },
     { path: '/consumptions', element: <></>, title: 'consumos' },
   ],
 }

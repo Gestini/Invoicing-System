@@ -26,7 +26,11 @@ export const DashboardHeaderInfo = () => {
                 }
               >
                 {unit.image ? (
-                  <img src={unit.image} className='w-full h-full rounded-sm' alt='' />
+                  <img
+                    src={unit.image}
+                    className='w-full h-full rounded-sm object-contain'
+                    alt=''
+                  />
                 ) : (
                   <span className='text-c-title font-semibold text-[22px]'>
                     {unit.name.slice(0, 2)}
