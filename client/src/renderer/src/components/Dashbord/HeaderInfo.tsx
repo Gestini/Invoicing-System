@@ -1,17 +1,18 @@
 import { Card } from '@nextui-org/react'
+import { RootState } from '@renderer/store'
 import { useSelector } from 'react-redux'
 import { IoIosArrowDown } from 'react-icons/io'
 import { getFormattedDate } from '@renderer/utils/getFormattedDate'
 
 export const DashboardHeaderInfo = () => {
-  const user = useSelector((state: any) => state.user.user)
-  const unit = useSelector((state: any) => state.currentUnit)
+  const user = useSelector((state: RootState) => state.user.user)
+  const unit = useSelector((state: RootState) => state.currentUnit)
 
   return (
     <Card classNames={{ base: 'rounded-lg' }}>
       <div className='homewelcomedashbord w-full rounded-lg py-[30px] px-[40px] flex justify-between items-center '>
         <div className='leftwelcome flex flex-col text-c-title gap-3 '>
-          <span className='titlewelcome text-[25px]'>Hola, {user.username}</span>
+          <span className='titlewelcome text-[25px]'>Hola, {user?.username}</span>
           <span className='mt-[-10px] font-semibold text-c-title-opacity'>
             {getFormattedDate()}
           </span>

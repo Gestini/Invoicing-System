@@ -1,23 +1,24 @@
+import React from 'react'
 import {
   Button,
   Input,
   Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
   Textarea,
+  ModalBody,
+  ModalHeader,
+  ModalFooter,
+  ModalContent,
 } from '@nextui-org/react'
-import { reqCreateUnit } from '@renderer/api/requests'
-import { uploadImage } from '@renderer/utils/DigitalOcean/uploadImage'
-import React from 'react'
 import { GoUpload } from 'react-icons/go'
+import { RootState } from '@renderer/store'
 import { useSelector } from 'react-redux'
-import './createCompany.scss'
+import { uploadImage } from '@renderer/utils/DigitalOcean/uploadImage'
 import { fieldConfig } from './data'
+import { reqCreateUnit } from '@renderer/api/requests'
+import './createCompany.scss'
 
 export const CreateUnitModal = ({ isOpen, closeModal }) => {
-  const unit = useSelector((state: any) => state.currentUnit)
+  const unit = useSelector((state: RootState) => state.currentUnit)
   const [loading, setLoading] = React.useState(false)
   const [file, setFile] = React.useState<File | null>(null)
   const [data, setData] = React.useState<{

@@ -1,13 +1,14 @@
 import React from 'react'
 import { setTotal } from '@renderer/features/newInvoicing'
 import { BiDollar } from 'react-icons/bi'
+import { RootState } from '@renderer/store'
 import { TotalsInputs } from './Totals'
 import { useDispatch, useSelector } from 'react-redux'
 import { Card, CardHeader, CardBody, Divider } from '@nextui-org/react'
 
 export const Totals = () => {
   const dispatch = useDispatch()
-  const newInvoicing = useSelector((state: any) => state.unit.newInvoicing)
+  const newInvoicing = useSelector((state: RootState) => state.unit.newInvoicing)
 
   const currentTab = newInvoicing?.tabs?.find((item: any) => item.id == newInvoicing.currentTabId)
 

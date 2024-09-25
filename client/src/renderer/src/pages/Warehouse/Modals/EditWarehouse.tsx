@@ -8,14 +8,15 @@ import {
   ModalHeader,
   ModalContent,
 } from '@nextui-org/react'
+import { RootState } from '@renderer/store'
+import { editWarehouse } from '@renderer/features/warehouseSlice'
 import { reqEditDeposit } from '@renderer/api/requests'
 import { useDispatch, useSelector } from 'react-redux'
-import { editWarehouse, wareHouseInterface } from '@renderer/features/warehouseSlice'
 
 export const EditWarehouse = ({ isOpen, onOpenChange, onClose, id }) => {
   const dispatch = useDispatch()
   const [data, setData] = React.useState<any>({})
-  const warehouse: wareHouseInterface = useSelector((state: any) => state.unit.warehouse)
+  const warehouse = useSelector((state: RootState) => state.unit.warehouse)
   const currentWarehouseEdit = warehouse.data.find((item: any) => item.id == id)
 
   const handleChange = (e: any) => {

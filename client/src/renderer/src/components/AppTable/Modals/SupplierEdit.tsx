@@ -12,6 +12,7 @@ import {
   ModalContent,
   useDisclosure,
 } from '@nextui-org/react'
+import { RootState } from '@renderer/store'
 import { useParams } from 'react-router-dom'
 import { setCurrentItemId } from '@renderer/features/tableSlice'
 import { useDispatch, useSelector } from 'react-redux'
@@ -29,10 +30,9 @@ export const EditSupplierModal = ({ modal }) => {
   const [errors, setErrors] = React.useState({
     name: '',
   })
-  const users = useSelector((state: any) => state.unit.table.data)
-
+  const users = useSelector((state: RootState) => state.unit.table.data)
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
-  const currentItemIdEdit = useSelector((state: any) => state.unit.table.currentItemIdEdit)
+  const currentItemIdEdit = useSelector((state: RootState) => state.unit.table.currentItemIdEdit)
   const currentUserEdit = users.find((item: { id: any }) => item.id == currentItemIdEdit)
 
   React.useEffect(() => {

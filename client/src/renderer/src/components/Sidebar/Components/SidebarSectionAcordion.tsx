@@ -1,5 +1,6 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+import { RootState } from '@renderer/store'
 import { capitalize } from '../../AppTable/TableComponents/utils'
 import { BiLockIcon } from '@renderer/components/Icons/BiLockIcon'
 import { useSelector } from 'react-redux'
@@ -15,7 +16,7 @@ export const SidebarSectionAcordion = ({
   hasPermissions,
   baseLocationPath,
 }) => {
-  const unit = useSelector((state: any) => state.currentUnit)
+  const unit = useSelector((state: RootState) => state.currentUnit)
   const [selectedKeys, setSelectedKeys] = React.useState<any>([])
 
   React.useEffect(() => {

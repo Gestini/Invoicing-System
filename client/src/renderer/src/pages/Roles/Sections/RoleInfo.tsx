@@ -1,18 +1,20 @@
 import React from 'react'
+import { RootState } from '@renderer/store'
+import { RoleModel } from '@renderer/interfaces/role'
 import { Button, cn, Input } from '@nextui-org/react'
 import { DeleteDocumentIcon } from '@renderer/components/Icons/DeleteDocumentIcon'
+import { deleteRole, editRole } from '@renderer/features/roleSlice'
 import { useDispatch, useSelector } from 'react-redux'
-import { deleteRole, editRole, Role } from '@renderer/features/roleSlice'
 import { reqDeleteRole, reqEditRole } from '@renderer/api/requests'
 
 export const RoleInfo = () => {
   const dispatch = useDispatch()
-  const roles = useSelector((state: any) => state.unit.roles)
-  const currentRole = roles.data.find((item: Role) => item.id === roles.currentRoleIdEdit)
+  const roles = useSelector((state: RootState) => state.unit.roles)
+  const currentRole = roles.data.find((item) => item.id === roles.currentRoleIdEdit)
   const [inputs, setInputs] = React.useState({
     name: '',
   })
-  const [role, setRole] = React.useState<Role | null>(null)
+  const [role, setRole] = React.useState<RoleModel | null>(null)
 
   React.useEffect(() => {
     if (currentRole) {

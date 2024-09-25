@@ -57,4 +57,6 @@ const store: any = configureStore({
   reducer: rootReducer,
 })
 
+export type RootState = ReturnType<typeof appReducer>
+
 export default store

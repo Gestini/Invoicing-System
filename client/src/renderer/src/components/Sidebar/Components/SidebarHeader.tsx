@@ -1,10 +1,11 @@
-import { ShortCellValue } from '@renderer/components/AppTable/TableComponents/ShortCellValue'
-import { FaCog, FaHome } from 'react-icons/fa'
+import { RootState } from '@renderer/store'
 import { useSelector } from 'react-redux'
+import { FaCog, FaHome } from 'react-icons/fa'
+import { ShortCellValue } from '@renderer/components/AppTable/TableComponents/ShortCellValue'
 import { SelectUnitDropdown } from './SelectUnitDropdown'
 
 export const SidebarHeader = ({ activeSidebar }) => {
-  const unit = useSelector((state: any) => state.currentUnit)
+  const unit = useSelector((state: RootState) => state.currentUnit)
 
   return (
     <div className='transition-transform w-full flex gap-4 items-center justify-between bg-c-primary-variant-4 rounded-lg p-1'>

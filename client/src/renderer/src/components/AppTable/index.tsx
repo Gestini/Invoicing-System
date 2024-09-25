@@ -1,4 +1,5 @@
 import React from 'react'
+import { RootState } from '@renderer/store'
 import { TopContent } from './TableComponents/TopContent'
 import { RenderCell } from './TableComponents/RenderCell'
 import { BottomContent } from './TableComponents/BottomContent'
@@ -18,7 +19,7 @@ import {
 export const AppTable = ({ columnsData, tableActions, addItemModal, editItemModal }) => {
   const dispatch = useDispatch()
   type User = (typeof users)[0]
-  const users = useSelector((state: any) => state.unit.table.data)
+  const users = useSelector((state: RootState) => state.unit.table.data)
 
   const [page, setPage] = React.useState(1)
   const [filterValue, setFilterValue] = React.useState('')

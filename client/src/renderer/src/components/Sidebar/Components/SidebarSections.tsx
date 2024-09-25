@@ -1,4 +1,5 @@
 import React from 'react'
+import { RootState } from '@renderer/store'
 import { permissions } from '@renderer/pages/Roles/Permissions'
 import { useLocation } from 'react-router-dom'
 import { setCompanies } from '@renderer/features/companiesSlice'
@@ -13,19 +14,21 @@ import { useDispatch, useSelector } from 'react-redux'
 import { reqGetCompanyByOwner, reqUserHasPermissions } from '@renderer/api/requests'
 
 export const SidebarSections = () => {
-  const unit = useSelector((state: any) => state.currentUnit)
-  const company = useSelector((state: any) => state.currentCompany)
-  const user = useSelector((state: any) => state.user.user)
+  const unit = useSelector((state: RootState) => state.currentUnit)
+  const company = useSelector((state: RootState) => state.currentCompany)
+  const user = useSelector((state: RootState) => state.user.user)
   const location = useLocation()
   const dispatch = useDispatch()
 
-  const sidebarState: sidebarStateType = useSelector((state: any) => state.sidebar)
+  const sidebarState: sidebarStateType = useSelector((state: RootState) => state.sidebar)
   const [view, setView] = React.useState<Record<string, any>>({})
 
   const updatedRoutesConfig = sidebarRoutes.map((section) => {
     return {
       ...section,
-      path: section.path.replace(':unitId', unit.id).replace(':companyId', company.id),
+      path: section.path
+        .replace(':unitId', String(unit?.id))
+        .replace(':companyId', String(company.id)),
     }
   })
 
@@ -52,7 +55,7 @@ export const SidebarSections = () => {
     }
 
     loadPermissions()
-  }, [user.id, unit.id])
+  }, [user?.id, unit.id])
 
   React.useEffect(() => {
     const loadUserCompanies = async () => {

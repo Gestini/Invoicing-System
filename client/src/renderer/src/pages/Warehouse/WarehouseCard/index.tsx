@@ -1,5 +1,6 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
+import { RootState } from '@renderer/store'
 import { EditWarehouse } from '../Modals/EditWarehouse'
 import { CreateWarehouse } from '../Modals/CreateWarehouse'
 import { useDispatch, useSelector } from 'react-redux'
@@ -16,12 +17,11 @@ import { reqGetDepositByUnit, reqDeleteDeposit } from '@renderer/api/requests'
 import {
   setWarehouses,
   deleteWarehouse,
-  wareHouseInterface,
   setCurrentWarehouseId,
 } from '@renderer/features/warehouseSlice'
-import { VerticalDotsIcon } from '@renderer/components/Icons'
 import { LocalIcon } from '@renderer/components/Icons/LocalIcon'
 import { ShortCellValue } from '@renderer/components/AppTable/TableComponents/ShortCellValue'
+import { VerticalDotsIcon } from '@renderer/components/Icons'
 import { EditDocumentIcon } from '@renderer/components/Icons/EditDocumentIcon'
 import { DeleteDocumentIcon } from '@renderer/components/Icons/DeleteDocumentIcon'
 
@@ -30,7 +30,7 @@ export const WarehouseCard = () => {
   const dispatch = useDispatch()
   const [currentEdit, setCurrentEdit] = React.useState(-1)
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
-  const warehouse: wareHouseInterface = useSelector((state: any) => state.unit.warehouse)
+  const warehouse = useSelector((state: RootState) => state.unit.warehouse)
   const currentWarehouseId = warehouse.currentWarehouseId
 
   React.useEffect(() => {
@@ -47,7 +47,7 @@ export const WarehouseCard = () => {
 
   const openWarehouse = (depositId: number) => dispatch(setCurrentWarehouseId(depositId))
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id: number) => {
     try {
       dispatch(deleteWarehouse(id))
       await reqDeleteDeposit(id)
@@ -56,11 +56,13 @@ export const WarehouseCard = () => {
     }
   }
 
-  const handleEdit = (id) => {
+  const handleEdit = (id: number) => {
     setCurrentEdit(id)
     onOpen()
   }
+
   const iconClasses = 'text-xl text-default-500 pointer-events-none flex-shrink-0'
+
   return (
     <>
       <div className='flex flex-col w-full gap-2'>
@@ -73,18 +75,18 @@ export const WarehouseCard = () => {
         </div>
         <div className='flex gap-4 w-full overflow-x-auto scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 pb-[15px] '>
           {warehouse.data.length > 0 &&
-            warehouse.data.map((ele: any, ind: number) => (
+            warehouse.data.map((ele, ind: number) => (
               <div
                 key={ind}
                 onClick={() => openWarehouse(ele.id)}
-                className={`${currentWarehouseId == ele.id ? 'bg-c-primary-variant-3' : 'bg-[#1f2121]'}
+                className={`${currentWarehouseId == String(ele.id) ? 'bg-c-primary-variant-3' : 'bg-[#1f2121]'}
                 w-[285px] h-[76px] rounded-[10px] flex-shrink-0  px-[19px] py-[21px] flex items-center justify-between cursor-pointer`}
               >
                 <div
-                  className={`${currentWarehouseId == ele.id ? 'bg-c-primary-variant-3' : 'bg-[#323535]'}  p-2 rounded-lg`}
+                  className={`${currentWarehouseId == String(ele.id) ? 'bg-c-primary-variant-3' : 'bg-[#323535]'}  p-2 rounded-lg`}
                 >
                   <LocalIcon
-                    color={`${currentWarehouseId == ele.id ? 'var(--c-primary)' : 'white'}`}
+                    color={`${currentWarehouseId == String(ele.id) ? 'var(--c-primary)' : 'white'}`}
                   />
                 </div>
                 <div className='flex items-center gap-[10px]'>

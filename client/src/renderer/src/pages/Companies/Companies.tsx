@@ -9,6 +9,7 @@ import {
   DropdownTrigger,
 } from '@nextui-org/react'
 import { Navbar } from '@renderer/components/Navbar'
+import { RootState } from '@renderer/store'
 import { setCompanies } from '@renderer/features/companiesSlice'
 import { CreateCompanyModal } from './Modals/CreateCompanyModal'
 import { reqGetCompanyByOwner } from '@renderer/api/requests'
@@ -17,8 +18,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { ChevronDownIcon, SearchIcon } from '@renderer/components/Icons'
 
 const Companies = () => {
-  const companies = useSelector((state: any) => state.companies.data)
-  const user = useSelector((state: any) => state.user.user)
+  const companies = useSelector((state: RootState) => state.companies.data)
+  const user = useSelector((state: RootState) => state.user.user)
   const dispatch = useDispatch()
 
   React.useEffect(() => {

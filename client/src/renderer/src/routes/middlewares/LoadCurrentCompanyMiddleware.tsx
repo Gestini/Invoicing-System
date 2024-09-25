@@ -1,4 +1,5 @@
 import React from 'react'
+import { RootState } from '@renderer/store'
 import { setCompany } from '@renderer/features/currentCompany'
 import { reqGetCompanyById } from '@renderer/api/requests'
 import { useDispatch, useSelector } from 'react-redux'
@@ -8,7 +9,7 @@ export const LoadCurrentCompanyMiddleware = () => {
   const params = useParams()
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const company = useSelector((state: any) => state.currentCompany)
+  const company = useSelector((state: RootState) => state.currentCompany)
 
   React.useEffect(() => {
     const loadCurrentCompany = async () => {

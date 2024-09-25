@@ -1,20 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
-
-interface unitInterface {
-  id: number
-  name: string
-  description: string
-  ecommerce: boolean
-  link: string
-  image: string
-  plan: any
-  owner: any
-  company: any
-}
+import { BusinessUnitModel } from '@renderer/interfaces/businessUnit'
 
 export const manageCurrentUnit = createSlice({
   name: 'currentUnit',
-  initialState: {} as unitInterface,
+  initialState: {} as BusinessUnitModel,
   reducers: {
     setUnit: (_, action) => action.payload,
     editCurrentUnit: (state, action) => {

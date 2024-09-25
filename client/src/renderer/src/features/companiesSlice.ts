@@ -1,9 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { CompanyModel } from '@renderer/interfaces/company'
 
 export const manageCompanies = createSlice({
   name: 'companies',
   initialState: {
-    data: <any[]>[],
+    data: <CompanyModel[]>[],
     currentUnitIdEdit: -1,
   },
   reducers: {

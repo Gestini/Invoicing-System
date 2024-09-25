@@ -1,11 +1,9 @@
-import { products } from './data'
 import { editAmount } from '@renderer/features/newInvoicing'
 import { useDispatch } from 'react-redux'
+import { ProductModel } from '@renderer/interfaces/product'
 import { BiMinus, BiPlus } from 'react-icons/bi'
 
-type Product = (typeof products)[0]
-
-export const EditAmount = ({ product }: { product: Product }) => {
+export const EditAmount = ({ product }: { product: ProductModel }) => {
   const dispatch = useDispatch()
   const handleClick = (handleType: string) => dispatch(editAmount({ id: product.id, handleType }))
 

@@ -1,4 +1,5 @@
 import React from 'react'
+import { RootState } from '@renderer/store'
 import { FaAngleDown } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
@@ -15,12 +16,11 @@ import { CreateUnitModal } from '@renderer/components/CreateCompanyForm'
 
 export const SelectUnitDropdown = ({ activeSidebar }) => {
   const navigate = useNavigate()
-  const company = useSelector((state: any) => state.currentCompany)
+  const company = useSelector((state: RootState) => state.currentCompany)
   const [sucursales, setSucursales] = React.useState([])
   const [isOpen, setIsOpen] = React.useState(false)
   const [modalIsOpen, setModalIsOpen] = React.useState(false)
-  const unit = useSelector((state: any) => state.currentUnit)
-  console.log(unit)
+  const unit = useSelector((state: RootState) => state.currentUnit)
 
   React.useEffect(() => {
     const loadData = async () => {

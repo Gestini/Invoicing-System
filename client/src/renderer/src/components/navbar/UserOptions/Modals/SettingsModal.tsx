@@ -1,4 +1,5 @@
 import MainColor from '../../../Theme/MainColor'
+import { RootState } from '@renderer/store'
 import { ChangeTheme } from '../../../Theme'
 import { toggleModal } from '@renderer/features/currentModal'
 import { useDispatch, useSelector } from 'react-redux'
@@ -6,7 +7,7 @@ import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@nextu
 
 export const SettingsModal = () => {
   const dispatch = useDispatch()
-  const modalStates = useSelector((state: any) => state.unit.modals)
+  const modalStates = useSelector((state: RootState) => state.unit.modals)
   const handleToggleModal = () => dispatch(toggleModal('SettingsModal'))
 
   return (

@@ -1,5 +1,6 @@
 import React from 'react'
 import { BiUser } from 'react-icons/bi'
+import { RootState } from '@renderer/store'
 import { SearchIcon } from '@renderer/components/Icons/SearchIcon'
 import {
   Input,
@@ -10,7 +11,6 @@ import {
   TableColumn,
   TableHeader,
 } from '@nextui-org/react'
-import { Role } from '@renderer/features/roleSlice'
 import { setRoles } from '@renderer/features/roleSlice'
 import { useParams } from 'react-router-dom'
 import { CreateRoleModal } from '../Modals/CreateRoleModal'
@@ -22,8 +22,8 @@ export const RoleTable = () => {
   const params = useParams()
   const dispatch = useDispatch()
   const [searchTerm, setSearchTerm] = React.useState('')
-  const roles = useSelector((state: any) => state.unit.roles)
-  const currentRole = roles.data.find((item: Role) => item.id === roles.currentRoleIdEdit)
+  const roles = useSelector((state: RootState) => state.unit.roles)
+  const currentRole = roles.data.find((item) => item.id === roles.currentRoleIdEdit)
 
   React.useEffect(() => {
     const loadData = async () => {

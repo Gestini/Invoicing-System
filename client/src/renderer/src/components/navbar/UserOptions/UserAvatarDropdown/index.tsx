@@ -12,6 +12,7 @@ import {
   DropdownSection,
   DropdownTrigger,
 } from '@nextui-org/react'
+import { RootState } from '@renderer/store'
 import { toggleModal } from '@renderer/features/currentModal'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -21,7 +22,7 @@ export const UserAvatarDropdown = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const token = localStorage.getItem('token')
-  const user = useSelector((state: any) => state.user.user)
+  const user = useSelector((state: RootState) => state.user.user)
   const [sessions, setSessions] = React.useState<any>([])
   const currentSessions = localStorage.getItem('sessions')
 
@@ -64,7 +65,7 @@ export const UserAvatarDropdown = () => {
   }
 
   const changeAccount = (id: number) => {
-    if (id == user.id) return
+    if (id == user?.id) return
     if (!currentSessions) return
 
     const partseSessions = JSON.parse(currentSessions)
@@ -99,7 +100,7 @@ export const UserAvatarDropdown = () => {
           />
           <div className='ml-[10px] hidden md:flex flex-col'>
             <p className='text-c-title text-[14px] font-semibold'>
-              <ShortCellValue cellValue={user?.username} maxLength={12} />
+              <ShortCellValue cellValue={user?.username || ''} maxLength={12} />
             </p>
             <p className='w-fit px-[10px] py-[2px] mt-1 bg-c-primary-variant-3 rounded-md text-c-primary text-[12px]'>
               {user?.jobposition || 'Sin asignar'}
@@ -111,7 +112,7 @@ export const UserAvatarDropdown = () => {
         <DropdownSection className='flex flex-col items-center content-center'>
           <DropdownItem key='profile' isReadOnly>
             <div className='infouserhere flex flex-col items-center gap-4 '>
-              {user.email}
+              {user?.email}
               <Avatar
                 as='button'
                 classNames={{
@@ -120,7 +121,7 @@ export const UserAvatarDropdown = () => {
                 }}
                 className='h-[100px] w-[100px]'
               />
-              <span className='text-[20px]'>¡Hola, {user.username}!</span>
+              <span className='text-[20px]'>¡Hola, {user?.username}!</span>
             </div>
           </DropdownItem>
           <DropdownItem
@@ -148,7 +149,7 @@ export const UserAvatarDropdown = () => {
                     <span>{item.user.username}</span>
                     <span className='text-[10px]'>{item.user.email}</span>
                   </div>
-                  {user.id == item.user.id && (
+                  {user?.id == item.user.id && (
                     <span className='px-[4px] py-[2px] bg-[rgb(160,219,142)]/20 rounded-md text-[rgb(160,219,142)] text-[18px]'>
                       <BiCheck />
                     </span>

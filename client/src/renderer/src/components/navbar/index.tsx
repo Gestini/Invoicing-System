@@ -1,5 +1,6 @@
 import React from 'react'
 import { Input } from '@nextui-org/react'
+import { RootState } from '@renderer/store'
 import { SearchIcon } from '../Icons'
 import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
@@ -8,7 +9,7 @@ import { NavbarUserOptions } from './UserOptions'
 
 export const Navbar = () => {
   const [_, setIsVisible] = React.useState(false)
-  const unit = useSelector((state: any) => state.currentUnit)
+  const unit = useSelector((state: RootState) => state.currentUnit)
   const location = useLocation()
 
   React.useEffect(() => {

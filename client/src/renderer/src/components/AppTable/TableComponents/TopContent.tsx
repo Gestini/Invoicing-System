@@ -6,12 +6,13 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from '@nextui-org/react'
+import { RootState } from '@renderer/store'
 import { SearchIcon } from '../../Icons/SearchIcon'
 import { capitalize } from './utils'
+import { FilterIcon } from '@renderer/components/Icons/FilterIcon'
 import { useSelector } from 'react-redux'
 import { ChevronDownIcon } from '../../Icons/ChevronDownIcon'
 import { ExportTableDropdown } from '../Exports/ExportTableDropdown'
-import { FilterIcon } from '@renderer/components/Icons/FilterIcon'
 
 export const TopContent = ({
   setPage,
@@ -26,7 +27,7 @@ export const TopContent = ({
   setStatusFilter,
   setVisibleColumns,
 }) => {
-  const users = useSelector((state: any) => state.unit.table.data)
+  const users = useSelector((state: RootState) => state.unit.table.data)
   const onRowsPerPageChange = (e: any) => {
     setRowsPerPage(parseInt(e.target.value))
     setPage(1)

@@ -1,4 +1,4 @@
-import { setUnit } from '@renderer/features/currentUnitSlice'
+import { RootState } from '@renderer/store'
 import { BiDoorOpen } from 'react-icons/bi'
 import { useNavigate } from 'react-router-dom'
 import { reqLeaveUnit } from '@renderer/api/requests'
@@ -8,14 +8,14 @@ import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Tooltip } from '
 
 export const UnitDropdown = ({ company, openDropdownId, setOpenDropdownId }) => {
   const navigate = useNavigate()
-  const unit = useSelector((state: any) => state.currentUnit)
-  const currentCompany = useSelector((state: any) => state.currentCompany)
-  const user = useSelector((state: any) => state.user.user)
+  const unit = useSelector((state: RootState) => state.currentUnit)
+  const currentCompany = useSelector((state: RootState) => state.currentCompany)
+  const user = useSelector((state: RootState) => state.user.user)
   const dispatch = useDispatch()
 
   const handleOpenDropdown = (event: any) => {
     event.preventDefault()
-    if (user.id == company.owner.id) return
+    if (user?.id == company.owner.id) return
     setOpenDropdownId(company.id)
   }
 

@@ -1,5 +1,6 @@
 import Logo from '@renderer/assets/image/google.svg'
 import { SlOptions } from 'react-icons/sl'
+import { RootState } from '@renderer/store'
 import { deleteCompany } from '@renderer/features/companiesSlice'
 import { Link, useNavigate } from 'react-router-dom'
 import { reqDeleteUnitById } from '@renderer/api/requests'
@@ -9,7 +10,7 @@ import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-o
 const Card = ({ company }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const user = useSelector((state: any) => state.user.user)
+  const user = useSelector((state: RootState) => state.user.user)
 
   const handleNavigate = () => {
     navigate(`/dashboard/${company?.id}`)
@@ -44,7 +45,7 @@ const Card = ({ company }) => {
             </div>
           )}
         </div>
-        {user.id == company?.owner.id ? (
+        {user?.id == company?.owner.id ? (
           <Dropdown placement='bottom-start' className='bg-c-card text-c-title'>
             <DropdownTrigger>
               <div>

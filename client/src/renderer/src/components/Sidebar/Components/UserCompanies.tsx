@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { RootState } from '@renderer/store'
 import { GestiniLogo } from '@renderer/assets/GestiniLogo'
 import { toggleModal } from '@renderer/features/currentModal'
 import { BsThreeDots } from 'react-icons/bs'
@@ -9,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 export const UserCompanies = () => {
   const dispatch = useDispatch()
-  const companies: any = useSelector((state: any) => state.companies.data)
+  const companies: any = useSelector((state: RootState) => state.companies.data)
   const [openDropdownId, setOpenDropdownId] = React.useState<string | null>(null)
   const handleToggleModal = (modalName: string) => dispatch(toggleModal(modalName))
 

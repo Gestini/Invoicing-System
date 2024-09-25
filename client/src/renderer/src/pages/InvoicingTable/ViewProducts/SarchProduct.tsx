@@ -1,4 +1,5 @@
 import React from 'react'
+import { RootState } from '@renderer/store'
 import { SearchIcon } from '@renderer/components/Icons/SearchIcon'
 import { addProduct } from '@renderer/features/newInvoicing'
 import { useDispatch, useSelector } from 'react-redux'
@@ -7,8 +8,8 @@ import { Autocomplete, AutocompleteItem } from '@nextui-org/react'
 
 export const SearchProduct = () => {
   const dispatch = useDispatch()
-  const unit = useSelector((state: any) => state.currentUnit)
-  const newInvoicing = useSelector((state: any) => state.unit.newInvoicing)
+  const unit = useSelector((state: RootState) => state.currentUnit)
+  const newInvoicing = useSelector((state: RootState) => state.unit.newInvoicing)
   const [result, setResult] = React.useState([])
   const [searchValue, setSearchValue] = React.useState('')
   const currentTab = newInvoicing?.tabs?.find((item: any) => item.id == newInvoicing.currentTabId)
