@@ -25,11 +25,11 @@ export const AppTable = ({ columnsData, tableActions, addItemModal, editItemModa
   const [page, setPage] = React.useState(1)
   const [filterValue, setFilterValue] = React.useState('')
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]))
-  const [visibleColumns, /* setVisibleColumns */] = React.useState<Selection>(
+  const [visibleColumns, /* setVisibleColumns */ _] = React.useState<Selection>(
     new Set(columnsData.InitialVisibleColumns),
   )
   const [statusFilter, setStatusFilter] = React.useState<Selection>('all')
-  const [rowsPerPage, /* setRowsPerPage */] = React.useState(5)
+  const [rowsPerPage, /* setRowsPerPage */__] = React.useState(5)
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
     column: 'age',
     direction: 'ascending',

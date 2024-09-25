@@ -1,6 +1,7 @@
+import { FaCog } from 'react-icons/fa'
 import { RootState } from '@renderer/store'
 import { useSelector } from 'react-redux'
-import { FaCog, FaHome } from 'react-icons/fa'
+import { MdHomeFilled } from 'react-icons/md'
 import { ShortCellValue } from '@renderer/components/AppTable/TableComponents/ShortCellValue'
 import { SelectUnitDropdown } from './SelectUnitDropdown'
 
@@ -11,7 +12,7 @@ export const SidebarHeader = ({ activeSidebar }) => {
     <div className='transition-transform w-full flex gap-4 items-center justify-between bg-c-primary-variant-4 rounded-lg p-1'>
       <div className='flex items-center gap-4'>
         <span className='flex items-center text-[20px] px-1 text-c-primary'>
-          <FaHome />
+          <MdHomeFilled />
         </span>
         <div className={`flex flex-col ${activeSidebar ? 'flex' : 'hidden'}`}>
           <h3 className='text-c-title text-[14px] rounded-sm flex items-center w-full'>
