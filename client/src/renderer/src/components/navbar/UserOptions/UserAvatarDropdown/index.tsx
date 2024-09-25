@@ -88,7 +88,7 @@ export const UserAvatarDropdown = () => {
   return (
     <Dropdown className='text-c-title w-[400px] bg-c-card'>
       <DropdownTrigger>
-        <div className='flex items-center cursor-pointer'>
+        <div className='flex items-center cursor-pointer transition-transform'>
           <Avatar
             as='button'
             classNames={{
