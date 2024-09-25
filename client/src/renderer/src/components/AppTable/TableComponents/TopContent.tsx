@@ -67,7 +67,7 @@ export const TopContent = ({
                 <Dropdown className='bg-c-card text-c-title'>
                   <DropdownTrigger className='sm:flex'>
                     <Button
-                    className='bg-c-filter shadow-sm'
+                      className='bg-c-filter shadow-sm'
                       endContent={
                         <FilterIcon className='text-c-title  text-2xl mr-2 w-[20px] h-[20px]' />
                       }

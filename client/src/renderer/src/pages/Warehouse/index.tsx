@@ -1,7 +1,6 @@
 import { Tabs } from '../../components/tab/Tabs'
 import { StockTable } from './StockTable'
 import { WarehouseCard } from './WarehouseCard'
-import { WarehouseStats } from './Components/WarehouseStats'
 
 export const Warehouse = () => {
   const tabs = [

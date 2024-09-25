@@ -9,7 +9,6 @@ export const AuthSubmit = ({ label, disabled = false, waitTime = 0 }) => {
 
   return (
     <Button
-      // color='primary'
       type='submit'
       className='buttonsubmitsesion mt-[10px] mb-[24px] bg-c-default text-white font-bold'
       isDisabled={disabled}

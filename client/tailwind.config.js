@@ -76,7 +76,7 @@ module.exports = {
         'c-card-variant-3': 'var(--c-card-variant-3)',
 
         // FILTERS
-        'c-filter': 'var(--c-filter)'
+        'c-filter': 'var(--c-filter)',
       },
     },
     screens: {
