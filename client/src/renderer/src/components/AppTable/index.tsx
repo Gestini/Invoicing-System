@@ -29,7 +29,7 @@ export const AppTable = ({ columnsData, tableActions, addItemModal, editItemModa
     new Set(columnsData.InitialVisibleColumns),
   )
   const [statusFilter, setStatusFilter] = React.useState<Selection>('all')
-  const [rowsPerPage, /* setRowsPerPage */__] = React.useState(5)
+  const [rowsPerPage, /* setRowsPerPage */ __] = React.useState(5)
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
     column: 'age',
     direction: 'ascending',
