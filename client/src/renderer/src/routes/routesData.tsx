@@ -25,7 +25,7 @@ import {
   MdPeople,
   MdPointOfSale,
   MdShoppingCart,
-  MdWarehouse
+  MdWarehouse,
 } from 'react-icons/md'
 
 interface Route {
@@ -167,7 +167,7 @@ const UnitInfo: RouteSection = {
   section: 'Tienda',
   routes: [
     { path: '/tienda/general', element: <Settings />, title: 'General' },
-    { path: '/tienda/shops', element: <Shops />, title: 'Metricas' }
+    { path: '/tienda/shops', element: <Shops />, title: 'Metricas' },
   ],
   permission: permissions.admin.permission,
 }

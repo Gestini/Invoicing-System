@@ -38,4 +38,5 @@ export const manageCompanies = createSlice({
   },
 })
 
-export const { setCompanies, addCompany, deleteCompany, editCompany, setCurrentCompanyId } = manageCompanies.actions
+export const { setCompanies, addCompany, deleteCompany, editCompany, setCurrentCompanyId } =
+  manageCompanies.actions

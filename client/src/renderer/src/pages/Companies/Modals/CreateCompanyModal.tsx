@@ -1,23 +1,22 @@
+import React from 'react'
 import {
-  Button,
   Input,
   Modal,
+  Button,
+  Tooltip,
+  Textarea,
   ModalBody,
-  ModalContent,
   ModalFooter,
   ModalHeader,
-  Textarea,
-  Tooltip,
+  ModalContent,
   useDisclosure,
 } from '@nextui-org/react'
-import { reqCreateCompany } from '@renderer/api/requests'
-import { PlusIcon } from '@renderer/components/Icons'
-import { addCompany } from '@renderer/features/CompaniesSlice'
-import { uploadImage } from '@renderer/utils/DigitalOcean/uploadImage'
-import React from 'react'
-import { useDispatch } from 'react-redux'
-
 import { GoUpload } from 'react-icons/go'
+import { PlusIcon } from '@renderer/components/Icons'
+import { addCompany } from '@renderer/features/companiesSlice'
+import { uploadImage } from '@renderer/utils/DigitalOcean/uploadImage'
+import { useDispatch } from 'react-redux'
+import { reqCreateCompany } from '@renderer/api/requests'
 
 export const CreateCompanyModal = () => {
   const fieldConfig = [

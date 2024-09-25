@@ -43,5 +43,5 @@ export const {
   setWarehouses,
   editWarehouse,
   deleteWarehouse,
-  setCurrentWarehouseId
+  setCurrentWarehouseId,
 } = manageWarehouse.actions

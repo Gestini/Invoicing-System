@@ -18,7 +18,7 @@ export const UserCompanies = () => {
     <div className='w-[48px] bg-c-sidebar-bg-2 h-screen flex flex-col items-center justify-between py-5'>
       <Link to={'/'}>
         <div className='h-[49px] w-[36px] flex justify-center items-center rounded-md mb-[17px]'>
-          <GestiniLogo   />
+          <GestiniLogo />
         </div>
       </Link>
       <div className='flex-grow  gap-[11px] flex flex-col'>

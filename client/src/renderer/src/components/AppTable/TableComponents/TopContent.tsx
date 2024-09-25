@@ -54,7 +54,7 @@ export const TopContent = ({
           <div className='flex gap-3'>
             <Input
               isClearable
-              radius="sm"
+              radius='sm'
               className='text-c-gray'
               placeholder='Buscar'
               startContent={<SearchIcon />}
@@ -99,7 +99,11 @@ export const TopContent = ({
             {columnsData?.columns && (
               <Dropdown>
                 <DropdownTrigger className='sm:flex'>
-                  <Button endContent={<ChevronDownIcon className='text-small' />} variant='flat' radius="sm">
+                  <Button
+                    endContent={<ChevronDownIcon className='text-small' />}
+                    variant='flat'
+                    radius='sm'
+                  >
                     Columnas
                   </Button>
                 </DropdownTrigger>

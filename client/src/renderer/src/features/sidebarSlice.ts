@@ -7,12 +7,12 @@ export interface sidebarStateType {
 export const manageSidebarSlice = createSlice({
   name: 'sidebar',
   initialState: {
-    isActive: false
+    isActive: false,
   } as sidebarStateType,
   reducers: {
     setSidebarState: (state, action) => {
       state.isActive = action.payload
-    }
+    },
   },
 })
 

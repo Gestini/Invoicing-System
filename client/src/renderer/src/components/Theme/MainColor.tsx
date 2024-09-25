@@ -1,6 +1,7 @@
 import React from 'react'
 import { Tooltip } from '@nextui-org/react'
 import { FaCheck } from 'react-icons/fa'
+import { RootState } from '@renderer/store'
 import { setCurrentTheme } from '@renderer/features/currentTheme'
 import { useColorManagement } from './Themes'
 import { useDispatch, useSelector } from 'react-redux'

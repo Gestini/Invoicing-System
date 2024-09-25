@@ -69,7 +69,6 @@ module.exports = {
         'c-sidebar-bg-2': 'var(--c-sidebar-bg-2)',
         'c-logo': 'var(--c-logo)',
 
-
         // TABS
         'c-tabs': 'var(--c-tabs)',
       },

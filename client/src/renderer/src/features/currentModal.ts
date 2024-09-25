@@ -7,13 +7,13 @@ export const manageModalsSlice = createSlice({
       LogInAsModal: false,
       SettingsModal: false,
       AddNewAccountModal: false,
-    }
+    },
   },
   reducers: {
     toggleModal: (state, action) => {
       const modalName = action.payload
       state.modals[modalName] = !state.modals[modalName]
-    }
+    },
   },
 })
 

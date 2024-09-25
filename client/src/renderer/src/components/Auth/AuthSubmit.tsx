@@ -1,11 +1,11 @@
-import { Button } from '@nextui-org/react';
+import { Button } from '@nextui-org/react'
 
 export const AuthSubmit = ({ label, disabled = false, waitTime = 0 }) => {
   const formatTime = (totalSeconds) => {
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
-    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-  };
+    const minutes = Math.floor(totalSeconds / 60)
+    const seconds = totalSeconds % 60
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`
+  }
 
   return (
     <Button
@@ -16,5 +16,5 @@ export const AuthSubmit = ({ label, disabled = false, waitTime = 0 }) => {
     >
       {disabled && waitTime > 0 ? `${formatTime(waitTime / 1000)}` : label}
     </Button>
-  );
-};
+  )
+}

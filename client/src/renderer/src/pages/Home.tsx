@@ -5,7 +5,6 @@ import { SalesDashboard } from '@renderer/components/Dashbord/SalesItem'
 import { DashboardHeaderInfo } from '@renderer/components/Dashbord/HeaderInfo'
 import './Home.scss'
 
-
 const Home = () => {
   return (
     <div className='flex gap-4 w-full justify-end dashbordsection'>

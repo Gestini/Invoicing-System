@@ -100,7 +100,10 @@ export const newInvoicing = createSlice({
       if (tabIndex === -1) return
 
       const tab = state.tabs[tabIndex]
-      let subtotal = tab.products.reduce((sum, product) => sum + product.price * product.quantity, 0)
+      let subtotal = tab.products.reduce(
+        (sum, product) => sum + product.price * product.quantity,
+        0,
+      )
       let applyAmount = 0.0
 
       tab.totalApply.forEach((item) => {

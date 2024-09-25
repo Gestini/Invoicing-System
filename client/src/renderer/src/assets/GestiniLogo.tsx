@@ -1,4 +1,4 @@
-export const GestiniLogo = ({ color='' }) => (
+export const GestiniLogo = ({ color = '' }) => (
   <svg width='15' height='29' viewBox='0 0 18 29' fill='none' xmlns='http://www.w3.org/2000/svg'>
     <g clipPath='url(#clip0_741_5096)'>
       <path

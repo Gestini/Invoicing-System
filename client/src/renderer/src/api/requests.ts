@@ -5,7 +5,7 @@ export const reqSearchUserByUsername = (username: string) =>
   api.get(`/user/search-by-username/${username}`)
 export const reqLoadUsersByIds = (data: any) => api.post('/user/get-by-ids', data)
 export const reqLoadUserSessions = (data: any) => api.post('/user/get-user-sessions', data)
-export const reqUpdateUser = (data: any) => api.put('/user/update', data);
+export const reqUpdateUser = (data: any) => api.put('/user/update', data)
 
 /* Rutas para manejar el auth */
 export const reqAuthLogin = async (data: any) => authApi.post('/auth/login', data)
@@ -20,17 +20,20 @@ export const reqAuthChangePassword = async (data: any) => authApi.post('/auth/re
 export const reqCreateCompany = async (data: any) => api.post('/company/create', data)
 export const reqGetCompanyByOwner = async () => api.get('/company/get-by-owner')
 export const reqGetCompanyById = async (id: any) => api.get(`/company/get-by-id/${id}`)
-export const reqGetUnitByCompanyId = async(id:any) => api.get(`/company/get-unit-by-company/${id}`)
+export const reqGetUnitByCompanyId = async (id: any) =>
+  api.get(`/company/get-unit-by-company/${id}`)
 
 /* Rutas unidades */
 export const reqCreateUnit = async (data: any) => api.post('/business-unit/save', data)
-export const reqGetUnits = async () => api.get('/business-unit/get-all');
+export const reqGetUnits = async () => api.get('/business-unit/get-all')
 export const reqGetUnitById = async (id: any) => api.get('/business-unit/get/' + id)
 export const reqGetUnitByOwner = async () => api.get('/business-unit/get-by-owner')
-export const reqUpdateUnitById = async (id: any, data: any) => api.put(`/business-unit/update/${id}`, data)
+export const reqUpdateUnitById = async (id: any, data: any) =>
+  api.put(`/business-unit/update/${id}`, data)
 export const reqGetUnitsByEcommerce = async () => api.get('/business-unit/get-all-ecommerce')
 export const reqDeleteUnitById = async (id: any) => api.delete(`/business-unit/delete/${id}`)
-export const reqGetUnitsByCompanyId = async (id: any) => api.get(`/business-unit/get-by-company-id/${id}`)
+export const reqGetUnitsByCompanyId = async (id: any) =>
+  api.get(`/business-unit/get-by-company-id/${id}`)
 
 /* Rutas productos */
 export const reqCreateProduct = async (data: any) => api.post('/products', data)
@@ -91,17 +94,21 @@ export const reqEditEmployee = (id: any, data: any) => api.put(`/employee/edit/$
 export const reqLeaveUnit = (id: any) => api.delete(`/employee/leave-unit/${id}`)
 
 /* Rutas planes */
-export const reqGetAllPlans = () => api.get("/plan/get-all")
+export const reqGetAllPlans = () => api.get('/plan/get-all')
 export const reqGetPlan = (planId: any) => api.get(`/plan/get/${planId}`)
 
 /* Rutas AFIP */
 export const reqCreateInvoiceAfip = async (data: any) => apiNode.post('/create-invoice', data)
-export const reqCreateCreditInvoiceAfip = async (data: any) => apiNode.post('/create-credit-invoice', data)
-export const reqCreateCreditNoteAfip = async (data: any) => apiNode.post('/create-credit-note', data)
+export const reqCreateCreditInvoiceAfip = async (data: any) =>
+  apiNode.post('/create-credit-invoice', data)
+export const reqCreateCreditNoteAfip = async (data: any) =>
+  apiNode.post('/create-credit-note', data)
 
 /* Rutas INTEGRACIONES */
-export const reqGenerateCert = async (connectionData) => afipApi.post('/generate-cert', connectionData);
+export const reqGenerateCert = async (connectionData) =>
+  afipApi.post('/generate-cert', connectionData)
 export const reqGetIntegrationsByUnit = async (id: any) => api.get(`/integrations/${id}`)
-export const reqGetConfigIntegrationsByUnit = async (id: any, idintegration: any) => api.get(`/integrations/${id}/config/${idintegration}`)
-export const reqPatchConfigIntegrationsByUnit = async (id: any, payload: any) => api.patch(`/integrations/${id}/configure`, payload)
-
+export const reqGetConfigIntegrationsByUnit = async (id: any, idintegration: any) =>
+  api.get(`/integrations/${id}/config/${idintegration}`)
+export const reqPatchConfigIntegrationsByUnit = async (id: any, payload: any) =>
+  api.patch(`/integrations/${id}/configure`, payload)

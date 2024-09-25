@@ -25,14 +25,13 @@ export const DashboardHeaderInfo = () => {
                   'rounded-lg transition-all duration-500 ease-in-out w-[40px] h-[40px] uppercase flex items-center justify-center'
                 }
               >
-                {
-                  unit.image ?
-                    <img src={unit.image} className='w-full h-full rounded-sm' alt='' />
-                    :
-                    <span className='text-c-title font-semibold text-[22px]'>
-                      {unit.name.slice(0, 2)}
-                    </span>
-                }
+                {unit.image ? (
+                  <img src={unit.image} className='w-full h-full rounded-sm' alt='' />
+                ) : (
+                  <span className='text-c-title font-semibold text-[22px]'>
+                    {unit.name.slice(0, 2)}
+                  </span>
+                )}
               </div>
             </div>
             <div className='midcardselect flex flex-col min-w-32'>

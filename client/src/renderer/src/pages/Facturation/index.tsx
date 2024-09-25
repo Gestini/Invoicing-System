@@ -1,77 +1,76 @@
-
 import FacturaDesign from './FacturaDesing'
 
 const InvoiceForm = () => {
-//   const [factura, setFactura] = useState(facturaTemplate)
-//   const [loading, setLoading] = useState(false) // Estado para manejar el loading
-//   const [errorMessage, setErrorMessage] = useState<string | null>(null) // Estado para manejar errores
+  //   const [factura, setFactura] = useState(facturaTemplate)
+  //   const [loading, setLoading] = useState(false) // Estado para manejar el loading
+  //   const [errorMessage, setErrorMessage] = useState<string | null>(null) // Estado para manejar errores
 
-//   const resetForm = () => {
-//     setFactura(facturaTemplate)
-//   }
+  //   const resetForm = () => {
+  //     setFactura(facturaTemplate)
+  //   }
 
-//   // Función para transformar la estructura de "factura" en un objeto plano
-//   const transformFacturaToObj = () => {
-//     const facturaObj = {}
-//     factura.forEach((section) => {
-//       section.info.forEach((infoItem) => {
-//         facturaObj[infoItem.name] = infoItem.value
-//       })
-//     })
-//     return facturaObj
-//   }
+  //   // Función para transformar la estructura de "factura" en un objeto plano
+  //   const transformFacturaToObj = () => {
+  //     const facturaObj = {}
+  //     factura.forEach((section) => {
+  //       section.info.forEach((infoItem) => {
+  //         facturaObj[infoItem.name] = infoItem.value
+  //       })
+  //     })
+  //     return facturaObj
+  //   }
 
-//   // Función para manejar cambios en los inputs
-//   const handleChange = (section, name, value) => {
-//     setFactura((prevFactura) =>
-//       prevFactura.map((item) =>
-//         item.section === section
-//           ? {
-//               ...item,
-//               info: item.info.map((infoItem) =>
-//                 infoItem.name === name ? { ...infoItem, value } : infoItem,
-//               ),
-//             }
-//           : item,
-//       ),
-//     )
+  //   // Función para manejar cambios en los inputs
+  //   const handleChange = (section, name, value) => {
+  //     setFactura((prevFactura) =>
+  //       prevFactura.map((item) =>
+  //         item.section === section
+  //           ? {
+  //               ...item,
+  //               info: item.info.map((infoItem) =>
+  //                 infoItem.name === name ? { ...infoItem, value } : infoItem,
+  //               ),
+  //             }
+  //           : item,
+  //       ),
+  //     )
 
-//     // Actualizar campos relacionados automáticamente
-//     if (name === 'billTypeLetter') {
-//       const billTypeMap = { A: 1, B: 6, C: 11 }
-//       const billTypeValue = billTypeMap[value] || ''
-//       handleChange('Datos de factura', 'billType', billTypeValue)
-//     }
-//   }
+  //     // Actualizar campos relacionados automáticamente
+  //     if (name === 'billTypeLetter') {
+  //       const billTypeMap = { A: 1, B: 6, C: 11 }
+  //       const billTypeValue = billTypeMap[value] || ''
+  //       handleChange('Datos de factura', 'billType', billTypeValue)
+  //     }
+  //   }
 
-//   // Función para manejar cambios en los selects
-//   const handleSelectChange = (section, name, value) => {
-//     handleChange(section, name, value)
-//   }
+  //   // Función para manejar cambios en los selects
+  //   const handleSelectChange = (section, name, value) => {
+  //     handleChange(section, name, value)
+  //   }
 
-//   // Función para manejar el envío del formulario
-//   const handleSubmit = async () => {
-//     const facturaObj = transformFacturaToObj()
-//     setLoading(true)
-//     setErrorMessage(null)
+  //   // Función para manejar el envío del formulario
+  //   const handleSubmit = async () => {
+  //     const facturaObj = transformFacturaToObj()
+  //     setLoading(true)
+  //     setErrorMessage(null)
 
-//     try {
-//       const response = await reqCreateInvoiceAfip(facturaObj)
-//       if (response && response.data && response.data.file) {
-//         window.open(response.data.file, '_blank')
-//       } else {
-//         setErrorMessage('Error: La respuesta del servidor no es válida.')
-//       }
-//     } catch (error) {
-//       if (error instanceof Error) {
-//         setErrorMessage(`Error: ${error.message}`)
-//       } else {
-//         setErrorMessage('Error: Ha ocurrido un error inesperado.')
-//       }
-//     } finally {
-//       setLoading(false) // Para asegurarte de que se oculta el loading después de la llamada
-//     }
-//   }
+  //     try {
+  //       const response = await reqCreateInvoiceAfip(facturaObj)
+  //       if (response && response.data && response.data.file) {
+  //         window.open(response.data.file, '_blank')
+  //       } else {
+  //         setErrorMessage('Error: La respuesta del servidor no es válida.')
+  //       }
+  //     } catch (error) {
+  //       if (error instanceof Error) {
+  //         setErrorMessage(`Error: ${error.message}`)
+  //       } else {
+  //         setErrorMessage('Error: Ha ocurrido un error inesperado.')
+  //       }
+  //     } finally {
+  //       setLoading(false) // Para asegurarte de que se oculta el loading después de la llamada
+  //     }
+  //   }
 
   return (
     <FacturaDesign />

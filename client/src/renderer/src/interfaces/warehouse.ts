@@ -1,7 +1,7 @@
-import { CompanyModel } from "./company"
+import { CompanyModel } from './company'
 
 export interface WarehouseModel {
-  id: number;
-  name: string;
-  company: CompanyModel;
+  id: number
+  name: string
+  company: CompanyModel
 }
