@@ -44,14 +44,14 @@ interface RouteSection {
 
 const generalRoutes: RouteSection = {
   icon: <MdDashboard />,
-  path: '/dashboard/:unitId',
+  path: '/dashboard/:companyId/:unitId?',
   section: 'Dashboard',
   routes: [{ path: '', element: <Home />, title: 'tablero' }],
 }
 
 const plansRoutes: RouteSection = {
   icon: <MdAssessment />,
-  path: '/plans/:unitId',
+  path: '/plans/:companyId/:unitId',
   section: 'Planes',
   routes: [{ path: '', element: <Plans />, title: 'tablero' }],
   permission: permissions.admin.permission,
@@ -59,7 +59,7 @@ const plansRoutes: RouteSection = {
 
 const warehouseRoutes: RouteSection = {
   icon: <MdWarehouse />,
-  path: '/warehouse/:unitId',
+  path: '/warehouse/:companyId/:unitId',
   section: 'Depósitos',
   permission: permissions.warehouse.permission,
   routes: [
@@ -81,7 +81,7 @@ const warehouseRoutes: RouteSection = {
 
 const posRoutes: RouteSection = {
   icon: <MdPointOfSale />,
-  path: '/pos/:unitId',
+  path: '/pos/:companyId/:unitId',
   section: 'Punto de Venta',
   permission: permissions.pos.permission,
   routes: [
@@ -100,7 +100,7 @@ const posRoutes: RouteSection = {
 
 const hrRoutes: RouteSection = {
   icon: <MdPeople />,
-  path: '/hr/:unitId',
+  path: '/hr/:companyId/:unitId',
   section: 'Recursos Humanos',
   permission: permissions.hr.permission,
   routes: [
@@ -112,7 +112,7 @@ const hrRoutes: RouteSection = {
 
 const adminRoutes: RouteSection = {
   icon: <MdAdminPanelSettings />,
-  path: '/admin/:unitId',
+  path: '/admin/:companyId/:unitId',
   section: 'Admin',
   permission: permissions.admin.permission,
   routes: [
@@ -123,7 +123,7 @@ const adminRoutes: RouteSection = {
 
 const operationsRoutes: RouteSection = {
   icon: <MdAttachMoney />,
-  path: '/operations/:unitId',
+  path: '/operations/:companyId/:unitId',
   section: 'Operaciones',
   permission: permissions.operations.permission,
   routes: [
@@ -163,7 +163,7 @@ export const authRoutes: RouteSection = {
 
 const UnitInfo: RouteSection = {
   icon: <MdShoppingCart />,
-  path: '/settings/:unitId',
+  path: '/settings/:companyId/:unitId',
   section: 'Tienda',
   routes: [
     { path: '/tienda/general', element: <Settings />, title: 'General' },

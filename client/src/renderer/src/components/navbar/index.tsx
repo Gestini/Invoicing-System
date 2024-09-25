@@ -1,12 +1,15 @@
-import { Input } from '@nextui-org/react'
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { Input } from '@nextui-org/react'
 import { SearchIcon } from '../Icons'
+import { useSelector } from 'react-redux'
+import { useLocation } from 'react-router-dom'
+import { GestiniLogo } from '@renderer/assets/GestiniLogo'
 import { NavbarUserOptions } from './UserOptions'
 
 export const Navbar = () => {
   const [_, setIsVisible] = React.useState(false)
   const unit = useSelector((state: any) => state.currentUnit)
+  const location = useLocation()
 
   React.useEffect(() => {
     if (!unit) return
@@ -28,14 +31,21 @@ export const Navbar = () => {
       <div className='w-full'>
         <div className='relative flex items-center gap-4 justify-between w-full'>
           <div className='w-[384px]'>
-            <Input
-              name='search'
-              type='text'
-              isClearable
-              className='w-full text-c-gray'
-              placeholder='Buscar'
-              startContent={<SearchIcon />}
-            />
+            {location.pathname == '/' ? (
+              <div className='flex gap-4 items-center'>
+                <GestiniLogo />
+                <span className='text-c-logo text-2xl font-bold'>Gestini</span>
+              </div>
+            ) : (
+              <Input
+                name='search'
+                type='text'
+                isClearable
+                className='w-full text-c-gray'
+                placeholder='Buscar'
+                startContent={<SearchIcon />}
+              />
+            )}
           </div>
           <div className='inset-y-0 right-0 flex items-center'>
             <div className='h-[50px] flex justify-center items-center'>

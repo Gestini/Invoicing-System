@@ -1,29 +1,30 @@
 import { setUnit } from '@renderer/features/currentUnitSlice'
 import { BiDoorOpen } from 'react-icons/bi'
-import { deleteUnit } from '@renderer/features/unitsSlice'
 import { useNavigate } from 'react-router-dom'
 import { reqLeaveUnit } from '@renderer/api/requests'
+import { deleteCompany } from '@renderer/features/companiesSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Tooltip } from '@nextui-org/react'
 
-export const UnitDropdown = ({ unitItem, openDropdownId, setOpenDropdownId }) => {
+export const UnitDropdown = ({ company, openDropdownId, setOpenDropdownId }) => {
   const navigate = useNavigate()
   const unit = useSelector((state: any) => state.currentUnit)
+  const currentCompany = useSelector((state: any) => state.currentCompany)
   const user = useSelector((state: any) => state.user.user)
   const dispatch = useDispatch()
 
   const handleOpenDropdown = (event: any) => {
     event.preventDefault()
-    if (user.id == unitItem.owner.id) return
-    setOpenDropdownId(unitItem.id)
+    if (user.id == company.owner.id) return
+    setOpenDropdownId(company.id)
   }
 
   const leaveUnit = async () => {
     try {
-      dispatch(deleteUnit(unitItem.id))
-      await reqLeaveUnit(unitItem.id)
+      dispatch(deleteCompany(company.id))
+      await reqLeaveUnit(company.id)
 
-      if (unitItem.id == unit.id) {
+      if (company.id == unit.id) {
         navigate('/')
       }
     } catch (error) {
@@ -32,14 +33,13 @@ export const UnitDropdown = ({ unitItem, openDropdownId, setOpenDropdownId }) =>
   }
 
   const handleNavigate = () => {
-    dispatch(setUnit(unitItem))
-    navigate(`/dashboard/${unitItem?.id}`)
+    navigate(`/dashboard/${company?.id}`)
     dispatch({ type: 'RESET_UNIT_STATE' })
   }
 
   return (
     <Dropdown
-      isOpen={openDropdownId == unitItem.id}
+      isOpen={openDropdownId == company.id}
       onClose={() => setOpenDropdownId(null)}
       classNames={{
         content: 'bg-c-sidebar-bg-2',
@@ -48,15 +48,15 @@ export const UnitDropdown = ({ unitItem, openDropdownId, setOpenDropdownId }) =>
       <DropdownTrigger>
         <div
           className={`${
-            unitItem.id == unit.id ? 'rounded-md bg-c-primary-variant-4' : ''
+            company.id == currentCompany?.id ? 'rounded-md bg-c-primary-variant-4' : ''
           } transition-all duration-500 ease-in-out flex items-center justify-center h-[32px] w-[32px] cursor-pointer`}
         >
           <Tooltip
             placement='right'
             content={
               <div className='px-1 py-2'>
-                <div className='text-small font-bold text-c-title'>{unitItem?.name}</div>
-                <div className='text-tiny text-c-title'>{unitItem?.description}</div>
+                <div className='text-small font-bold text-c-title'>{company?.name}</div>
+                <div className='text-tiny text-c-title'>{company?.description}</div>
               </div>
             }
             color='secondary'
@@ -68,13 +68,13 @@ export const UnitDropdown = ({ unitItem, openDropdownId, setOpenDropdownId }) =>
               onContextMenu={handleOpenDropdown}
               onClick={handleNavigate}
               className={`${
-                unitItem.id == unit.id ? 'rounded-full' : 'rounded-full'
+                company.id == unit.id ? 'rounded-full' : 'rounded-full'
               } transition-all duration-500 ease-in-out w-[24px] h-[24px] uppercase flex items-center justify-center font-semibold text-c-title`}
             >
-              {unitItem.image ? (
-                <img src={unitItem.image} className='w-full h-full rounded-sm' alt='' />
+              {company.image ? (
+                <img src={company.image} className='w-full h-full rounded-sm' alt='' />
               ) : (
-                <span>{unitItem.name.slice(0, 2)}</span>
+                <span>{company.name.slice(0, 2)}</span>
               )}
             </div>
           </Tooltip>

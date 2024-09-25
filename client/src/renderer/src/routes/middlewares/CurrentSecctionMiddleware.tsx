@@ -1,4 +1,4 @@
-import { Navbar } from '../../components/navbar/index'
+import { Navbar } from '../../components/Navbar'
 import { capitalize } from '@renderer/components/AppTable/TableComponents/utils'
 import { useSelector } from 'react-redux'
 

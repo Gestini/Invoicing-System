@@ -4,12 +4,12 @@ import { GestiniLogo } from '@renderer/assets/GestiniLogo'
 import { toggleModal } from '@renderer/features/currentModal'
 import { BsThreeDots } from 'react-icons/bs'
 import { UnitDropdown } from './UnitDropdown'
-import { CreateUnitModal } from '../../CreateCompanyForm'
+import { CreateCompanyModal } from '@renderer/pages/Companies/Modals/CreateCompanyModal'
 import { useDispatch, useSelector } from 'react-redux'
 
-export const UserUnits = () => {
+export const UserCompanies = () => {
   const dispatch = useDispatch()
-  const companies: any = useSelector((state: any) => state.units.data)
+  const companies: any = useSelector((state: any) => state.companies.data)
   const [openDropdownId, setOpenDropdownId] = React.useState<string | null>(null)
   const handleToggleModal = (modalName: string) => dispatch(toggleModal(modalName))
 
@@ -21,15 +21,15 @@ export const UserUnits = () => {
         </div>
       </Link>
       <div className='flex-grow  gap-[11px] flex flex-col'>
-        {companies.map((unitItem: any, index: any) => (
+        {companies.map((company: any, index: any) => (
           <UnitDropdown
             key={index}
-            unitItem={unitItem}
+            company={company}
             openDropdownId={openDropdownId}
             setOpenDropdownId={setOpenDropdownId}
           />
         ))}
-        <CreateUnitModal />
+        <CreateCompanyModal />
       </div>
       <BsThreeDots
         className='cursor-pointer text-c-title'

@@ -1,13 +1,14 @@
-import { manageUnits } from '@renderer/features/unitsSlice'
 import { manageRoles } from '@renderer/features/roleSlice'
 import { newInvoicing } from '@renderer/features/newInvoicing'
 import { manageWarehouse } from '@renderer/features/warehouseSlice'
 import { manageUserSlice } from '@renderer/features/userSlice'
+import { manageCompanies } from '@renderer/features/companiesSlice'
 import { manageTableSlice } from '@renderer/features/tableSlice'
 import { manageCurrentUnit } from '@renderer/features/currentUnitSlice'
 import { manageModalsSlice } from '@renderer/features/currentModal'
 import { manageSidebarSlice } from '@renderer/features/sidebarSlice'
 import { manageCurrentTheme } from '@renderer/features/currentTheme'
+import { manageCurrentCompany } from '@renderer/features/currentCompany'
 import { manageUserSessionsSlice } from '@renderer/features/userSessions'
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
 
@@ -30,9 +31,10 @@ const unitReducers = combineReducers({
 const appReducer = combineReducers({
   user: userReducers,
   unit: unitReducers,
-  units: manageUnits.reducer,
   sidebar: manageSidebarSlice.reducer,
+  companies: manageCompanies.reducer,
   currentUnit: manageCurrentUnit.reducer,
+  currentCompany: manageCurrentCompany.reducer,
 })
 
 const rootReducer = (state, action) => {
