@@ -6,7 +6,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,18 +23,14 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import productar.models.BusinessUnitPlanModel;
-import productar.models.BusinessUnitIntegrationModel;
 import productar.models.BusinessUnitModel;
+import productar.models.BusinessUnitPlanModel;
 import productar.models.EmployeeModel;
-import productar.models.IntegrationModel;
 import productar.models.PlanModel;
 import productar.models.User;
-import productar.repositories.BusinessUnitIntegrationRepository;
 import productar.repositories.BusinessUnitsPlanRepository;
 import productar.repositories.BusinessUnitsRepository;
 import productar.repositories.EmployeeRepository;
-import productar.repositories.IntegrationRepository;
 import productar.repositories.PlanRepository;
 import productar.repositories.UserRepository;
 
@@ -48,9 +43,6 @@ public class BusinessUnitService {
     private EmployeeRepository employeeRepository;
 
     @Autowired
-    private BusinessUnitIntegrationRepository businessUnitIntegrationRepository;
-
-    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -58,9 +50,6 @@ public class BusinessUnitService {
 
     @Autowired
     private PlanRepository planRepository;
-
-    @Autowired
-    private IntegrationRepository integrationRepository;
 
     @Value("${secretKeyPlan}")
     private String SECRET_KEY_PLAN;
