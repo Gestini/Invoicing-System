@@ -64,7 +64,7 @@ const Card = ({ company }) => {
                 color='danger'
                 onClick={handleDeleteUnit}
               >
-                Eliminar unidad
+                Eliminar empresa
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>
