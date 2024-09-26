@@ -65,7 +65,7 @@ public class CompanyService {
             User owner = company.get().getOwner();
 
             if (!owner.getId().equals(user.getId())) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Solo el dueño puede eliminar la unidad");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Solo el dueño puede eliminar la compañía");
             }
 
             companyRespository.deleteById(companyId);
