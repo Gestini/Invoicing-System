@@ -1,5 +1,4 @@
 import React from 'react'
-import { PlusIcon } from '@renderer/components/Icons/PlusIcon'
 import { RootState } from '@renderer/store'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
@@ -13,6 +12,7 @@ import {
   DropdownTrigger,
 } from '@nextui-org/react'
 import { MdHomeFilled } from 'react-icons/md'
+import { FaCog, FaPlus } from 'react-icons/fa'
 import { ShortCellValue } from '@renderer/components/AppTable/TableComponents/ShortCellValue'
 import { IoIosArrowDown } from 'react-icons/io'
 
@@ -97,13 +97,13 @@ export const SelectUnitDropdown = ({ activeSidebar }) => {
               </DropdownItem>
             )}
           </DropdownSection>
-          <DropdownItem color='default' key='key-ajustes'>
+          <DropdownItem color='default' key='key-ajustes' endContent={<FaCog />}>
             Ajustes
           </DropdownItem>
           <DropdownItem
             color='default'
             key='key-crearSucursal'
-            endContent={<PlusIcon />}
+            endContent={<FaPlus />}
             onPress={() => setModalIsOpen(!modalIsOpen)}
           >
             Crear sucursal
