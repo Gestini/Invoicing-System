@@ -121,15 +121,12 @@ export const CreateUnitModal = () => {
       >
         <ModalContent>
           <ModalHeader className='flex flex-col gap-1'>
-            <h3 className='default-text-color'>Crear unidad</h3>
+            <h3 className='default-text-color'>Crear empresa</h3>
           </ModalHeader>
           <ModalBody>
             <form onSubmit={handleSubmit}>
               <div className='text-center mb-4'>
                 <div>
-                  {/* <p className='font-bold mb-2 text-gray-500 text-center'>
-                    Completa los datos de tu empresa y comienza a administrar
-                  </p> */}
                   <div className='flex flex-col items-center justify-center w-full'>
                     <span className='text-gray-500 mb-2 font-bold text-sm text-center'>Logo</span>
                     <label className='relative flex flex-col items-center justify-center w-24 h-24 bg-transparent border border-c-border rounded-lg cursor-pointer transition duration-300 overflow-hidden'>

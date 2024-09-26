@@ -16,8 +16,10 @@ import Settings from '@renderer/pages/Settings'
 import { SupplierTable } from '@renderer/pages/SupplierTable'
 import { Warehouse } from '@renderer/pages/Warehouse'
 import Products from '@renderer/pages/Products'
+import Documents from '@renderer/pages/Documents'
 import { ReactElement } from 'react'
 import Shops from '@renderer/pages/Settings/Shops'
+
 import {
   MdAdminPanelSettings,
   MdAssessment,
@@ -26,7 +28,8 @@ import {
   MdPeople,
   MdPointOfSale,
   MdShoppingCart,
-  MdWarehouse
+  MdWarehouse,
+  MdFolder  
 } from 'react-icons/md'
 
 interface Route {
@@ -77,6 +80,16 @@ const warehouseRoutes: RouteSection = {
     { path: '/reception-management', element: <></>, title: 'recepción' },
     { path: '/categories', element: <></>, title: 'categorías' },
     { path: '/consumptions', element: <></>, title: 'consumos' },
+  ],
+}
+
+const documentsRoutes: RouteSection = {
+  icon: <MdFolder />,
+  path: '/documents/:unitId',
+  section: 'Documentos',
+  permission: permissions.documents.permission,
+  routes: [
+    { path: '/general', element: <Documents />, title: 'Documentos' },
   ],
 }
 
@@ -182,6 +195,7 @@ export const routes = [
   warehouseRoutes,
   operationsRoutes,
   UnitInfo,
+  documentsRoutes
 ].reduce(
   (acc: any, item: RouteSection) =>
     acc.concat(
@@ -206,4 +220,5 @@ export const sidebarRoutes: RouteSection[] = [
   posRoutes,
   adminRoutes,
   UnitInfo,
+  documentsRoutes,
 ]
