@@ -87,7 +87,7 @@ export const SelectUnitDropdown = ({ activeSidebar }) => {
           }}
           selectedKeys={[String(unit.id)]}
           onAction={(key) =>
-            key !== 'createUnit' && navigate('/dashboard/' + company.id + '/' + key)
+            !String(key).includes('key') && navigate('/dashboard/' + company.id + '/' + key)
           }
         >
           <DropdownSection title='Sucursales disponibles' showDivider items={sucursales}>
@@ -97,12 +97,12 @@ export const SelectUnitDropdown = ({ activeSidebar }) => {
               </DropdownItem>
             )}
           </DropdownSection>
-          <DropdownItem color='default' key='createUnit2'>
+          <DropdownItem color='default' key='key-ajustes'>
             Ajustes
           </DropdownItem>
           <DropdownItem
             color='default'
-            key='createUnit'
+            key='key-crearSucursal'
             endContent={<PlusIcon />}
             onPress={() => setModalIsOpen(!modalIsOpen)}
           >
