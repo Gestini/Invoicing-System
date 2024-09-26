@@ -1,7 +1,6 @@
 import React from 'react'
 import { PlusIcon } from '@renderer/components/Icons/PlusIcon'
 import { RootState } from '@renderer/store'
-import { FaAngleDown } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { CreateUnitModal } from '@renderer/components/CreateUnitModal'
@@ -13,6 +12,9 @@ import {
   DropdownSection,
   DropdownTrigger,
 } from '@nextui-org/react'
+import { MdHomeFilled } from 'react-icons/md'
+import { ShortCellValue } from '@renderer/components/AppTable/TableComponents/ShortCellValue'
+import { IoIosArrowDown } from 'react-icons/io'
 
 export const SelectUnitDropdown = ({ activeSidebar }) => {
   const navigate = useNavigate()
@@ -43,17 +45,46 @@ export const SelectUnitDropdown = ({ activeSidebar }) => {
         }}
       >
         <DropdownTrigger>
-          {activeSidebar && (
-            <div
-              className={`opacity-50 text-c-text cursor-pointer text-[18px] ${activeSidebar ? 'flex' : 'hidden'}`}
-            >
-              <FaAngleDown />
+          <div className='cursor-pointer hover:opacity-75 duration-200 ease-in-out transition-all w-full rounded-md font-medium flex p-[4px] text-c-title bg-c-primary-variant-4'>
+            <div className='flex items-center w-full h-[40px] gap-3'>
+              <span className='text-c-primary flex items-center text-[20px] h-full'>
+                <span className='flex justify-center pl-[6px]'>
+                  <MdHomeFilled />
+                </span>
+              </span>
+              {activeSidebar && (
+                <div className='transition-transform flex w-full items-center rounded-lg justify-between'>
+                  <div className={`flex flex-col ${activeSidebar ? 'flex' : 'hidden'}`}>
+                    <h3 className='text-c-title text-[13px] whitespace-nowrap rounded-sm flex items-center w-full'>
+                      <ShortCellValue cellValue={unit.name} maxLength={15} />
+                    </h3>
+                    <p className='text-c-text opacity-50 whitespace-nowrap'>
+                      <ShortCellValue
+                        cellValue={unit.address || company.description}
+                        maxLength={25}
+                      />
+                    </p>
+                  </div>
+                  <IoIosArrowDown className='text-c-text opacity-50 text-[14px] mr-1' />
+                </div>
+              )}
             </div>
-          )}
+          </div>
         </DropdownTrigger>
         <DropdownMenu
           aria-label='Dynamic Actions'
           selectionMode='multiple'
+          itemClasses={{
+            base: [
+              'rounded-md',
+              'text-default-500',
+              'transition-opacity',
+              'data-[hover=true]:text-foreground',
+              'data-[hover=true]:bg-c-primary-variant-2',
+              'dark:data-[hover=true]:bg-c-primary-variant-2',
+              'data-[selectable=true]:focus:bg-default-50',
+            ],
+          }}
           selectedKeys={[String(unit.id)]}
           onAction={(key) =>
             key !== 'createUnit' && navigate('/dashboard/' + company.id + '/' + key)
@@ -66,6 +97,9 @@ export const SelectUnitDropdown = ({ activeSidebar }) => {
               </DropdownItem>
             )}
           </DropdownSection>
+          <DropdownItem color='default' key='createUnit2'>
+            Ajustes
+          </DropdownItem>
           <DropdownItem
             color='default'
             key='createUnit'
