@@ -18,10 +18,10 @@ export const reqAuthChangePassword = async (data: any) => authApi.post('/auth/re
 
 /* Rutas compañias */
 export const reqCreateCompany = async (data: any) => api.post('/company/create', data)
-export const reqGetCompanyByOwner = async () => api.get('/company/get-by-owner')
+export const reqDeleteCompany = async (id: number) => api.delete(`/company/delete/${id}`)
 export const reqGetCompanyById = async (id: any) => api.get(`/company/get-by-id/${id}`)
-export const reqGetUnitByCompanyId = async (id: any) =>
-  api.get(`/company/get-unit-by-company/${id}`)
+export const reqGetCompanyByOwner = async () => api.get('/company/get-by-owner')
+export const reqGetUnitByCompanyId = async (id: any) => api.get(`/company/get-unit-by-company/${id}`)
 
 /* Rutas unidades */
 export const reqCreateUnit = async (data: any) => api.post('/business-unit/save', data)
