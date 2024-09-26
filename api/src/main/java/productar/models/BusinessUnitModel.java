@@ -34,6 +34,9 @@ public class BusinessUnitModel {
     private String image;
 
     @Column
+    private String address;
+
+    @Column
     private Boolean ecommerce;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -107,6 +110,14 @@ public class BusinessUnitModel {
 
     public void setPlan(BusinessUnitPlanModel plan) {
         this.plan = plan;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
 }

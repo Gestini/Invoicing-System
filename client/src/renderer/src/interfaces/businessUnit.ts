@@ -6,6 +6,7 @@ export interface BusinessUnitModel {
   description: string
   link: string
   image: string
+  address: string
   ecommerce: boolean
   company: CompanyModel
   plan?: PlanModel

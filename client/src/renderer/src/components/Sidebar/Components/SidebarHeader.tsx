@@ -19,7 +19,7 @@ export const SidebarHeader = ({ activeSidebar }) => {
             <ShortCellValue cellValue={unit.name} maxLength={10} />
           </h3>
           <p className='text-c-text opacity-50'>
-            <ShortCellValue cellValue={'Bs, Barrio Chino'} maxLength={16} />
+            <ShortCellValue cellValue={unit.address} maxLength={15} />
           </p>
         </div>
       </div>
