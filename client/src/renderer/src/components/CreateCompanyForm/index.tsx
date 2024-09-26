@@ -1,8 +1,8 @@
 import React from 'react'
 import {
-  Button,
   Input,
   Modal,
+  Button,
   Textarea,
   ModalBody,
   ModalHeader,
@@ -11,30 +11,30 @@ import {
 } from '@nextui-org/react'
 import { GoUpload } from 'react-icons/go'
 import { RootState } from '@renderer/store'
-import { useSelector } from 'react-redux'
 import { uploadImage } from '@renderer/utils/DigitalOcean/uploadImage'
 import { fieldConfig } from './data'
+import { useSelector } from 'react-redux'
 import { reqCreateUnit } from '@renderer/api/requests'
 import './createCompany.scss'
 
 export const CreateUnitModal = ({ isOpen, closeModal }) => {
-  const unit = useSelector((state: RootState) => state.currentUnit)
-  const [loading, setLoading] = React.useState(false)
+  const currentCompany = useSelector((state: RootState) => state.currentCompany)
   const [file, setFile] = React.useState<File | null>(null)
+  const [errors, setErrors] = React.useState({})
+  const [loading, setLoading] = React.useState(false)
   const [data, setData] = React.useState<{
     name: string
-    description: string
+    image: string | undefined
     company: any
-    image: string | undefined // Allow image to be string or undefined
+    description: string
   }>({
     name: '',
-    description: '',
+    image: undefined,
     company: {
-      id: unit.company.id,
+      id: currentCompany.id,
     },
-    image: undefined, // Initialize as undefined
+    description: '',
   })
-  const [errors, setErrors] = React.useState({})
 
   React.useEffect(() => {
     if (isOpen) {
@@ -81,7 +81,13 @@ export const CreateUnitModal = ({ isOpen, closeModal }) => {
       setData((prev) => ({ ...prev, image: imageUrl }))
 
       // Wait for `data` state to be updated with the image
-      const updatedData = { ...data, image: imageUrl }
+      const updatedData = {
+        ...data,
+        image: imageUrl,
+        company: {
+          id: currentCompany.id,
+        },
+      }
 
       // Send the data to the backend
       await reqCreateUnit(updatedData)

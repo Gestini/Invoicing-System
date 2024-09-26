@@ -15,7 +15,7 @@ export const SidebarHeader = ({ activeSidebar }) => {
           <MdHomeFilled />
         </span>
         <div className={`flex flex-col ${activeSidebar ? 'flex' : 'hidden'}`}>
-          <h3 className='text-c-title text-[14px] rounded-sm flex items-center w-full'>
+          <h3 className='text-c-title text-[13px] rounded-sm flex items-center w-full'>
             <ShortCellValue cellValue={unit.name} maxLength={10} />
           </h3>
           <p className='text-c-text opacity-50'>

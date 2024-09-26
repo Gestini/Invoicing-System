@@ -2,8 +2,8 @@ import Logo from '@renderer/assets/image/google.svg'
 import { SlOptions } from 'react-icons/sl'
 import { RootState } from '@renderer/store'
 import { deleteCompany } from '@renderer/features/companiesSlice'
+import { reqDeleteCompany } from '@renderer/api/requests'
 import { Link, useNavigate } from 'react-router-dom'
-import { reqDeleteUnitById } from '@renderer/api/requests'
 import { useDispatch, useSelector } from 'react-redux'
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/react'
 
@@ -12,14 +12,12 @@ const Card = ({ company }) => {
   const dispatch = useDispatch()
   const user = useSelector((state: RootState) => state.user.user)
 
-  const handleNavigate = () => {
-    navigate(`/dashboard/${company?.id}`)
-  }
+  const handleNavigate = () => navigate(`/dashboard/${company?.id}`)
 
   const handleDeleteUnit = () => {
     try {
       dispatch(deleteCompany(company.id))
-      reqDeleteUnitById(company.id)
+      reqDeleteCompany(company.id)
     } catch (error) {
       console.error('Error al eliminar la unidad:', error)
     }
@@ -46,21 +44,19 @@ const Card = ({ company }) => {
           )}
         </div>
         {user?.id == company?.owner.id ? (
-          <Dropdown placement='bottom-start' className='bg-c-card text-c-title'>
+          <Dropdown placement='bottom-start' className='text-c-title'>
             <DropdownTrigger>
               <div>
                 <SlOptions className='text-c-title w-4 h-4 cursor-pointer' />
               </div>
             </DropdownTrigger>
-            <DropdownMenu aria-label='Static Actions' className='text-c-title bg-c-bg-color'>
+            <DropdownMenu aria-label='Static Actions' className='text-c-title'>
               <DropdownItem key='Open' onClick={handleNavigate}>
                 Abrir
               </DropdownItem>
-
               <DropdownItem key='Edit'>
                 <Link to={`/settings/${company.id}`}>Configurar</Link>
               </DropdownItem>
-
               <DropdownItem
                 key='delete'
                 className='text-danger'

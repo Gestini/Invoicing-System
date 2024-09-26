@@ -2,6 +2,7 @@ import { Card } from '@nextui-org/react'
 import { RootState } from '@renderer/store'
 import { useSelector } from 'react-redux'
 import { IoIosArrowDown } from 'react-icons/io'
+import { ShortCellValue } from '../AppTable/TableComponents/ShortCellValue'
 import { getFormattedDate } from '@renderer/utils/getFormattedDate'
 
 export const DashboardHeaderInfo = () => {
@@ -40,7 +41,9 @@ export const DashboardHeaderInfo = () => {
             </div>
             <div className='midcardselect flex flex-col min-w-32'>
               <span className='text-c-title-opacity'>Estás en</span>
-              <span className='text-c-title text-[23px] font-semibold'>{unit.name}</span>
+              <span className='text-c-title text-[23px] font-semibold'>
+                <ShortCellValue cellValue={unit.name} maxLength={10} />
+              </span>
             </div>
             <IoIosArrowDown className='text-c-title text-[30px] cursor-pointer ' />
           </div>
