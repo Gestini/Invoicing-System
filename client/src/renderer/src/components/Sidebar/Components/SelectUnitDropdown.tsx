@@ -1,8 +1,10 @@
 import React from 'react'
+import { PlusIcon } from '@renderer/components/Icons/PlusIcon'
 import { RootState } from '@renderer/store'
 import { FaAngleDown } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import { CreateUnitModal } from '@renderer/components/CreateUnitModal'
 import { reqGetUnitsByCompanyId } from '@renderer/api/requests'
 import {
   Dropdown,
@@ -11,8 +13,6 @@ import {
   DropdownSection,
   DropdownTrigger,
 } from '@nextui-org/react'
-import { PlusIcon } from '@renderer/components/Icons/PlusIcon'
-import { CreateUnitModal } from '@renderer/components/CreateCompanyForm'
 
 export const SelectUnitDropdown = ({ activeSidebar }) => {
   const navigate = useNavigate()
