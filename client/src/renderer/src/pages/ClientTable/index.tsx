@@ -2,6 +2,7 @@ import React from 'react'
 import toast from 'react-hot-toast'
 import { AppTable } from '@renderer/components/AppTable'
 import { useParams } from 'react-router-dom'
+import { RootState } from '@renderer/store'
 import { AddItemModal } from '@renderer/components/AppTable/Modals/AddItem'
 import { EditItemModal } from '@renderer/components/AppTable/Modals/EditItem'
 import { useDispatch, useSelector } from 'react-redux'
@@ -15,7 +16,7 @@ import {
 } from '@renderer/api/requests'
 
 export const ClientTable = () => {
-  const table = useSelector((state: any) => state.unit.table)
+  const table = useSelector((state: RootState) => state.unit.table)
   const params = useParams()
   const dispatch = useDispatch()
 

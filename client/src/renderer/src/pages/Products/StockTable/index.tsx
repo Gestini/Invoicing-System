@@ -9,7 +9,6 @@ import {
 import { AppTable } from '@renderer/components/AppTable'
 import { AddProductModal } from '@renderer/components/AppTable/Modals/ProductAdd'
 import { EditProductModal } from '@renderer/components/AppTable/Modals/ProductEdit'
-import { wareHouseInterface } from '@renderer/features/warehouseSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { columnsData, modalInputs } from './data'
 import { addItem, deleteItem, editItem, setTableData } from '@renderer/features/tableSlice'
@@ -18,7 +17,7 @@ export const StockTable = () => {
   const dispatch = useDispatch()
   const table = useSelector((state: any) => state.unit.table)
 
-  const warehouse: wareHouseInterface = useSelector((state: any) => state.unit.warehouse)
+  const warehouse = useSelector((state: any) => state.unit.warehouse)
   const currentWarehouseId = warehouse.currentWarehouseId
 
   React.useEffect(() => {

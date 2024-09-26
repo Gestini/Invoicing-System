@@ -3,7 +3,6 @@ import {
   reqGetConfigIntegrationsByUnit,
   reqPatchConfigIntegrationsByUnit,
 } from '@renderer/api/requests'
-import ConnectAccount from './ConnectAccountAfip'
 import CloudinaryUploader from './CloudinaryUploader'
 import ConnectAccountAfip from './ConnectAccountAfip'
 

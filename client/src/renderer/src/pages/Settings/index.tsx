@@ -1,5 +1,6 @@
 import React from 'react'
 import toast from 'react-hot-toast'
+import { RootState } from '@renderer/store'
 import { uploadImage } from '@renderer/utils/DigitalOcean/uploadImage'
 import { editCurrentUnit } from '@renderer/features/currentUnitSlice'
 import { reqUpdateUnitById } from '@renderer/api/requests'
@@ -7,7 +8,7 @@ import { Button, Input, Switch } from '@nextui-org/react'
 import { useDispatch, useSelector } from 'react-redux'
 
 const Index = () => {
-  const unit = useSelector((state: any) => state.currentUnit)
+  const unit = useSelector((state: RootState) => state.currentUnit)
   const [file, setFile] = React.useState<File | null>(null)
   const [loading, setLoading] = React.useState(false)
   const dispatch = useDispatch()
@@ -65,7 +66,7 @@ const Index = () => {
   const handleSave = async () => {
     try {
       setLoading(true)
-      let imageUrl = data.image
+      let imageUrl: string | null = data.image
 
       if (file) {
         imageUrl = await uploadImage(file)

@@ -1,19 +1,20 @@
 import React from 'react'
 import { Input } from '@nextui-org/react'
 import { Checkbox } from '@nextui-org/react'
+import { RootState } from '@renderer/store'
 import { useDispatch, useSelector } from 'react-redux'
 import { editTotal, handleTotal, setTotal } from '@renderer/features/newInvoicing'
 
 export const TotalsInputs = () => {
   const dispatch = useDispatch()
-  const newInvoicing = useSelector((state: any) => state.unit.newInvoicing)
+  const newInvoicing = useSelector((state: RootState) => state.unit.newInvoicing)
   const currentTab = newInvoicing?.tabs?.find((item: any) => item.id == newInvoicing.currentTabId)
 
   React.useEffect(() => {
     dispatch(setTotal())
   }, [newInvoicing])
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let name = e.target.name
     let value = parseInt(e.target.value)
     dispatch(editTotal({ name, value }))

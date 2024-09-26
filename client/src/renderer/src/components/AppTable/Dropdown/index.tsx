@@ -6,12 +6,10 @@ import {
   DropdownItem,
   DropdownTrigger,
 } from '@nextui-org/react'
-import { FaShapes } from "react-icons/fa6";
-import { FaPen  } from "react-icons/fa";
-import { MdOutlineAttachMoney } from "react-icons/md";
+import { FaPen } from 'react-icons/fa'
+import { FaShapes } from 'react-icons/fa6'
+import { MdAttachMoney } from 'react-icons/md'
 import { VerticalDotsIcon } from '../../Icons/VerticalDotsIcon'
-import { EditDocumentIcon } from '../../Icons/EditDocumentIcon'
-import { MdAttachMoney } from "react-icons/md";
 import { DeleteDocumentIcon } from '../../Icons/DeleteDocumentIcon'
 
 export const ActionDropdown = ({ deleteAction, editAction }) => {

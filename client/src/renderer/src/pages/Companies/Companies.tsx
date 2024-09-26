@@ -8,23 +8,25 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from '@nextui-org/react'
-import { setUnits } from '@renderer/features/unitsSlice'
-import { CreateUnitModal } from '@renderer/components/CreateCompanyForm'
-import { reqGetUnitByOwner } from '@renderer/api/requests'
+import { Navbar } from '@renderer/components/Navbar'
+import { RootState } from '@renderer/store'
+import { setCompanies } from '@renderer/features/companiesSlice'
+import { CreateCompanyModal } from './Modals/CreateCompanyModal'
+import { reqGetCompanyByOwner } from '@renderer/api/requests'
 import { productStatusOptions } from '@renderer/components/Tables/ProductTable/data'
 import { useDispatch, useSelector } from 'react-redux'
 import { ChevronDownIcon, SearchIcon } from '@renderer/components/Icons'
-import { GestiniLogo } from '@renderer/assets/GestiniLogo'
 
 const Companies = () => {
-  const companies = useSelector((state: any) => state.units.data)
-  const user = useSelector((state: any) => state.user.user)
+  const companies = useSelector((state: RootState) => state.companies.data)
+  const user = useSelector((state: RootState) => state.user.user)
   const dispatch = useDispatch()
+
   React.useEffect(() => {
     const loadUserCompanies = async () => {
       try {
-        const response = await reqGetUnitByOwner()
-        dispatch(setUnits(response.data))
+        const response = await reqGetCompanyByOwner()
+        dispatch(setCompanies(response.data))
       } catch (error) {
         console.error('Error fetching business units:', error)
       }
@@ -34,13 +36,8 @@ const Companies = () => {
 
   return (
     <div className='flex flex-col'>
-
-      <div className='flex flex-col w-full mb-2 rounded-md bg-c-bg-color p-5 gap-4'>
-
-        <div className='flex gap-4 items-center'>
-          <GestiniLogo />
-          <span className='text-c-logo text-2xl font-bold'>Gestini</span>
-        </div>
+      <Navbar />
+      <div className='flex flex-col w-full rounded-md bg-c-bg-color p-3 gap-4'>
         <div className='flex justify-between gap-3 items-end'>
           <Input
             isClearable
@@ -78,20 +75,14 @@ const Companies = () => {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <CreateUnitModal />
+            <CreateCompanyModal />
           </div>
         </div>
-        {
-          companies.length == 0 && <div>No hay unidades de negocio creadas</div>
-        }
+        {companies.length == 0 && <div className='text-c-title'>No hay empresas creadas</div>}
       </div>
       <div className='rounded-md bg-c-bg-color'>
-
-        <div className='grid grid-cols-auto-fill-cards gap-5 p-5 w-[100%] h-full'>
-          {companies?.map((unit) => (
-            <Card key={unit.id} unit={unit} />
-          ))}
-
+        <div className='grid grid-cols-auto-fill-cards gap-5 p-3 w-[100%] h-full'>
+          {companies?.map((company) => <Card key={company.id} company={company} />)}
         </div>
       </div>
     </div>

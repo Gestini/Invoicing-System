@@ -11,7 +11,7 @@ const CloudinaryUploader: React.FC<CloudinaryUploaderProps> = ({
   existingFileUrl,
   onRemove,
 }) => {
-  const [fileData, setFileData] = useState<File | null>(null)
+  const [_, setFileData] = useState<File | null>(null)
   const [isFileUploaded, setIsFileUploaded] = useState(!!existingFileUrl) // Inicializa según la URL existente
 
   const uploadTextFileToCloudinary = async (file: File): Promise<string> => {

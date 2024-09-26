@@ -1,26 +1,41 @@
+import React from 'react'
 import {
-  Button,
   Input,
   Modal,
+  Button,
+  Tooltip,
+  Textarea,
   ModalBody,
-  ModalContent,
   ModalFooter,
   ModalHeader,
-  Textarea,
-  Tooltip,
+  ModalContent,
   useDisclosure,
 } from '@nextui-org/react'
-import { reqCreateUnit } from '@renderer/api/requests'
-import { PlusIcon } from '@renderer/components/Icons'
-import { addUnit } from '@renderer/features/unitsSlice'
-import { uploadImage } from '@renderer/utils/DigitalOcean/uploadImage'
-import React from 'react'
-import { useDispatch } from 'react-redux'
-import './createCompany.scss'
-import { fieldConfig } from './data'
 import { GoUpload } from 'react-icons/go'
+import { PlusIcon } from '@renderer/components/Icons'
+import { addCompany } from '@renderer/features/companiesSlice'
+import { uploadImage } from '@renderer/utils/DigitalOcean/uploadImage'
+import { useDispatch } from 'react-redux'
+import { reqCreateCompany } from '@renderer/api/requests'
 
-export const CreateUnitModal = () => {
+export const CreateCompanyModal = () => {
+  const fieldConfig = [
+    {
+      name: 'name',
+      label: 'Nombre',
+      placeholder: 'Nombre de la empresa',
+      type: 'text',
+      maxLength: 30,
+    },
+    {
+      name: 'description',
+      label: 'Descripcion',
+      placeholder: 'Descripcion de la empresa',
+      type: 'textarea',
+      maxLength: 200,
+    },
+  ]
+
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const dispatch = useDispatch()
   const [loading, setLoading] = React.useState(false)
@@ -84,8 +99,8 @@ export const CreateUnitModal = () => {
       const updatedData = { ...data, image: imageUrl }
 
       // Send the data to the backend
-      const res = await reqCreateUnit(updatedData)
-      dispatch(addUnit(res.data))
+      const res = await reqCreateCompany(updatedData)
+      dispatch(addCompany(res.data))
       setLoading(false)
       onClose()
     } catch (error) {
@@ -98,7 +113,7 @@ export const CreateUnitModal = () => {
     <div className='flex flex-col gap-2'>
       <Tooltip
         placement='right'
-        content={'Añadir unidad'}
+        content={'Crear empresa'}
         color='secondary'
         classNames={{
           content: 'bg-c-sidebar-bg-2 text-c-title',

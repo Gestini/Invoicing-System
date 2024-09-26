@@ -11,15 +11,7 @@ export const columnsData = {
     { name: 'Activo', uid: 'ACTIVE' },
     { name: 'Inactivo', uid: 'INACTIVE' },
   ],
-  InitialVisibleColumns: [
-    'name',
-    'description',
-    'website',
-    'address',
-    'phone',
-    'dni',
-    'actions',
-  ],
+  InitialVisibleColumns: ['name', 'description', 'website', 'address', 'phone', 'dni', 'actions'],
 }
 
 export const modalInputs = {
@@ -54,6 +46,5 @@ export const modalInputs = {
       name: 'dni',
       label: 'DNI',
     },
-
   ],
 }

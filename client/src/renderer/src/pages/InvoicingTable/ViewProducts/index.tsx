@@ -1,20 +1,19 @@
 import React from 'react'
 import { Tab } from '@renderer/features/newInvoicing'
 import { columns } from './data'
+import { RootState } from '@renderer/store'
 import { EditAmount } from './EditAmount'
 import { TopContent } from './TopContent'
 import { useSelector } from 'react-redux'
+import { ProductModel } from '@renderer/interfaces/product'
 import { DeleteProduct } from './DeleteProduct'
 import { Table, TableRow, TableBody, TableCell, TableColumn, TableHeader } from '@nextui-org/react'
 
 export default function ViewProducts() {
-  const newInvoicing = useSelector((state: any) => state.unit.newInvoicing)
+  const newInvoicing = useSelector((state: RootState) => state.unit.newInvoicing)
   const currentTab = newInvoicing?.tabs?.find((tab: Tab) => tab.id == newInvoicing.currentTabId)
 
-  const products = useSelector((state: any) => state.unit.invoicing)
-  type Product = (typeof products.data)[0]
-
-  const renderCell = React.useCallback((product: Product, columnKey: any) => {
+  const renderCell = React.useCallback((product: ProductModel, columnKey: string) => {
     const cellValue = product[columnKey]
 
     switch (columnKey) {
@@ -37,11 +36,11 @@ export default function ViewProducts() {
         )}
       </TableHeader>
       <TableBody items={currentTab?.products || []} emptyContent={'Tabla de productos vacía'}>
-        {(item: Product) => (
+        {(item) => (
           <TableRow key={item?.id}>
             {(columnKey) => (
               <TableCell className='border-b border-divider'>
-                {renderCell(item, columnKey)}
+                {renderCell(item, String(columnKey))}
               </TableCell>
             )}
           </TableRow>

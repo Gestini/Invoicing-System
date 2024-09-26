@@ -69,7 +69,6 @@ module.exports = {
         'c-sidebar-bg-2': 'var(--c-sidebar-bg-2)',
         'c-logo': 'var(--c-logo)',
 
-
         // TABS
         'c-tabs': 'var(--c-tabs)',
 
@@ -77,7 +76,7 @@ module.exports = {
         'c-card-variant-3': 'var(--c-card-variant-3)',
 
         // FILTERS
-        'c-filter': 'var(--c-filter)'
+        'c-filter': 'var(--c-filter)',
       },
     },
     screens: {

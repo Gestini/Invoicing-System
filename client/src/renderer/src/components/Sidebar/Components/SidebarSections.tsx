@@ -1,29 +1,34 @@
 import React from 'react'
-import { setUnits } from '@renderer/features/unitsSlice'
+import { RootState } from '@renderer/store'
 import { permissions } from '@renderer/pages/Roles/Permissions'
 import { useLocation } from 'react-router-dom'
+import { setCompanies } from '@renderer/features/companiesSlice'
+import { SidebarHeader } from './SidebarHeader'
 import { sidebarRoutes } from '@renderer/routes/routesData'
-import { sidebarStateType } from '@renderer/features/sidebarSlice'
 import { setSidebarState } from '@renderer/features/sidebarSlice'
+import { sidebarStateType } from '@renderer/features/sidebarSlice'
 import { SidebarSectionItem } from './SidebarSectionItem'
 import { SidebarSectionAcordion } from './SidebarSectionAcordion'
 import { FaArrowRightFromBracket } from 'react-icons/fa6'
 import { useDispatch, useSelector } from 'react-redux'
-import { reqGetUnitByOwner, reqUserHasPermissions } from '@renderer/api/requests'
+import { reqGetCompanyByOwner, reqUserHasPermissions } from '@renderer/api/requests'
 
 export const SidebarSections = () => {
-  const unit = useSelector((state: any) => state.currentUnit)
-  const user = useSelector((state: any) => state.user.user)
+  const unit = useSelector((state: RootState) => state.currentUnit)
+  const company = useSelector((state: RootState) => state.currentCompany)
+  const user = useSelector((state: RootState) => state.user.user)
   const location = useLocation()
   const dispatch = useDispatch()
 
-  const sidebarState: sidebarStateType = useSelector((state: any) => state.sidebar)
+  const sidebarState: sidebarStateType = useSelector((state: RootState) => state.sidebar)
   const [view, setView] = React.useState<Record<string, any>>({})
 
   const updatedRoutesConfig = sidebarRoutes.map((section) => {
     return {
       ...section,
-      path: section.path.replace(':unitId', unit.id),
+      path: section.path
+        .replace(':unitId', String(unit?.id))
+        .replace(':companyId', String(company.id)),
     }
   })
 
@@ -50,13 +55,13 @@ export const SidebarSections = () => {
     }
 
     loadPermissions()
-  }, [user.id, unit.id])
+  }, [user?.id, unit.id])
 
   React.useEffect(() => {
     const loadUserCompanies = async () => {
       try {
-        const response = await reqGetUnitByOwner()
-        dispatch(setUnits(response.data))
+        const response = await reqGetCompanyByOwner()
+        dispatch(setCompanies(response.data))
       } catch (error) {
         console.error('Error fetching business units:', error)
       }
@@ -77,6 +82,9 @@ export const SidebarSections = () => {
         className={`bg-c-sidebar-bg w-[300px] pt-5 pb-5 h-screen border-r-md rounded-r-2xl flex flex-col justify-between gap-[16px] relative ${sidebarState.isActive ? 'max-w-[225px]' : 'max-w-[50px]'} animation`}
       >
         <div className='flex flex-col max-h-[90%]'>
+          <div className='flex p-[6px] font-semibold text-[11px] text-gray-500  w-full'>
+            <SidebarHeader activeSidebar={sidebarState.isActive} />
+          </div>
           <span className='flex pl-[10px] font-semibold text-[11px] text-gray-500 mb-[17px]'>
             Menu
           </span>

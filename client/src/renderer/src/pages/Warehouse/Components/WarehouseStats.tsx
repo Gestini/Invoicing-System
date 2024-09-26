@@ -1,9 +1,9 @@
 import { ErrorIcon } from '@renderer/components/Icons/ErrorIcon'
-import { wareHouseInterface } from '@renderer/features/warehouseSlice'
+import { RootState } from '@renderer/store'
 import { useSelector } from 'react-redux'
 
 export const WarehouseStats = () => {
-  const warehouse: wareHouseInterface = useSelector((state: any) => state.unit.warehouse)
+  const warehouse = useSelector((state: RootState) => state.unit.warehouse)
   const currentWarehouseId = warehouse.currentWarehouseId
 
   const datita = [

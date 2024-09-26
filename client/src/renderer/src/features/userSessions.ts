@@ -7,7 +7,7 @@ export const manageUserSessionsSlice = createSlice({
       user: {
         username: '',
       },
-    }
+    },
   },
   reducers: {
     setSelectedUserToChange: (state, action) => {

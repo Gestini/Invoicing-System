@@ -1,5 +1,11 @@
 export const GestiniLogo = ({ color = '', height = '', width = '' }) => (
-  <svg width={width == '' ? '15' : width} height={height == '' ? '29' : height} viewBox='0 0 18 29' fill='none' xmlns='http://www.w3.org/2000/svg'>
+  <svg
+    width={width == '' ? '15' : width}
+    height={height == '' ? '29' : height}
+    viewBox='0 0 18 29'
+    fill='none'
+    xmlns='http://www.w3.org/2000/svg'
+  >
     <g clipPath='url(#clip0_741_5096)'>
       <path
         d='M0 13.0664V23.1103V26.0517C0 28.6711 3.30815 29.9825 5.24557 28.1323C5.24557 23.1239 5.24557 13.0495 5.24557 8.04443L0 13.0664Z'

@@ -2,6 +2,7 @@ import React from 'react'
 import toast from 'react-hot-toast'
 import { AppTable } from '@renderer/components/AppTable'
 import { useParams } from 'react-router-dom'
+import { RootState } from '@renderer/store'
 import { AddSupplierModal } from '@renderer/components/AppTable/Modals/SupplierAdd'
 import { EditSupplierModal } from '@renderer/components/AppTable/Modals/SupplierEdit'
 import { useDispatch, useSelector } from 'react-redux'
@@ -10,7 +11,7 @@ import { addItem, editItem, deleteItem, setTableData } from '@renderer/features/
 import { reqCreateSupplier, reqEditSupplier, reqGetSupplier } from '@renderer/api/requests'
 
 export const SupplierTable = () => {
-  const table = useSelector((state: any) => state.unit.table)
+  const table = useSelector((state: RootState) => state.unit.table)
   const params = useParams()
   const dispatch = useDispatch()
 

@@ -1,17 +1,19 @@
 import React from 'react'
+import { RootState } from '@renderer/store'
 import { useSelector } from 'react-redux'
 import { Input, Button } from '@nextui-org/react'
 import { reqUpdateUser } from '@renderer/api/requests'
 
 const Index = () => {
-  const user = useSelector((state: any) => state.user.user)
+  const user = useSelector((state: RootState) => state.user.user)
   const [loading, setLoading] = React.useState(false)
 
   const [data, setData] = React.useState({
     email: user?.email || '',
     username: user?.username || '',
+    firstname: user?.firstname || '',
     lastname: user?.lastname || '',
-    firtsname: user?.firtsname || '',
+    name: user?.firstname || '',
     country: user?.country || '',
     jobposition: user?.jobposition || '',
   })
@@ -45,14 +47,14 @@ const Index = () => {
         <div className='w-full md:w-1/2 flex flex-col gap-4'>
           <Input
             name='firtsname'
-            value={data.firtsname}
+            value={data.firstname}
             onChange={handleChange}
             type='text'
             label='Nombre'
             variant='bordered'
             labelPlacement='outside'
             className='rounded-none'
-            placeholder={data.firtsname || 'Incompleto'}
+            placeholder={data.firstname || 'Incompleto'}
           />
           <Input
             name='lastname'

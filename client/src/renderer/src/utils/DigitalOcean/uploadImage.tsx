@@ -2,7 +2,7 @@ import { s3Client } from './index'
 import { PutObjectCommand } from '@aws-sdk/client-s3'
 import { ObjectCannedACL } from '@aws-sdk/client-s3' // Importa el tipo necesario
 
-export const uploadImage = async (file:any) => {
+export const uploadImage = async (file: any) => {
   if (!file) {
     console.error('No hay archivo seleccionado')
     return null // Retorna null si no hay archivo

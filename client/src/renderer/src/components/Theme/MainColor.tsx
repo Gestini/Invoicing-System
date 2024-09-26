@@ -1,6 +1,7 @@
 import React from 'react'
 import { Tooltip } from '@nextui-org/react'
 import { FaCheck } from 'react-icons/fa'
+import { RootState } from '@renderer/store'
 import { setCurrentTheme } from '@renderer/features/currentTheme'
 import { useColorManagement } from './Themes'
 import { useDispatch, useSelector } from 'react-redux'
@@ -8,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux'
 const MainColor: React.FC = () => {
   const dispatch = useDispatch()
   const { colors } = useColorManagement()
-  const currentTheme = useSelector((state: any) => state.user.currentTheme)
+  const currentTheme = useSelector((state: RootState) => state.user.currentTheme)
 
   const handleChangeColor = (index: number) => {
     const selectedColor = colors[index]

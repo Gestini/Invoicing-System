@@ -12,6 +12,7 @@ import { CurrentSecctionMiddleware } from './middlewares/CurrentSecctionMiddlewa
 import { LoadCurrentUnitMiddleware } from './middlewares/LoadCurrentUnitMiddleware'
 import { NavbarAndSidebarMiddleware } from './middlewares/NavbarAndSidebarMiddleware'
 import { SectionPermissionMiddleware } from './middlewares/SectionPermissionMiddleware'
+import { LoadCurrentCompanyMiddleware } from './middlewares/LoadCurrentCompanyMiddleware'
 import PlanSettings from '@renderer/pages/UnitSettings/PlanSettings'
 import Integration from '@renderer/pages/UnitSettings/Integration'
 import UnitConfig from '@renderer/pages/UnitSettings/UnitConfig'
@@ -32,7 +33,7 @@ const Router = () => {
           <Route path={'/'} element={<Companies />} />
           <Route path='/account/edit' element={<User />} />
         </Route>
-        <Route element={<LoadCurrentUnitMiddleware />}>
+        <Route element={<LoadCurrentCompanyMiddleware />}>
           <Route element={<LoadCurrentUnitMiddleware />}>
             <Route
               path={'/payment/:planId/:unitId'}
@@ -42,27 +43,27 @@ const Router = () => {
                 </SectionPermissionMiddleware>
               }
             />
-          </Route>
-          <Route element={<ThemeMiddleware />}>
-            <Route element={<NavbarAndSidebarMiddleware />}>
-              {routes.map((route: any, index: number) => (
-                <Route
-                  key={index}
-                  path={route.path}
-                  element={
-                    <SectionPermissionMiddleware permission={route.permission}>
-                      <CurrentSecctionMiddleware
-                        icon={route.icon}
-                        title={route.title}
-                        section={route.section}
-                        routesLength={route.routesLength}
-                      >
-                        {route.element}
-                      </CurrentSecctionMiddleware>
-                    </SectionPermissionMiddleware>
-                  }
-                />
-              ))}
+            <Route element={<ThemeMiddleware />}>
+              <Route element={<NavbarAndSidebarMiddleware />}>
+                {routes.map((route: any, index: number) => (
+                  <Route
+                    key={index}
+                    path={route.path}
+                    element={
+                      <SectionPermissionMiddleware permission={route.permission}>
+                        <CurrentSecctionMiddleware
+                          icon={route.icon}
+                          title={route.title}
+                          section={route.section}
+                          routesLength={route.routesLength}
+                        >
+                          {route.element}
+                        </CurrentSecctionMiddleware>
+                      </SectionPermissionMiddleware>
+                    }
+                  />
+                ))}
+              </Route>
             </Route>
           </Route>
         </Route>

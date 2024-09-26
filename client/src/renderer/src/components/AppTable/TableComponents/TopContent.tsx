@@ -6,12 +6,13 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from '@nextui-org/react'
+/* import { RootState } from '@renderer/store' */
 import { SearchIcon } from '../../Icons/SearchIcon'
 import { capitalize } from './utils'
-import { useSelector } from 'react-redux'
-import { ChevronDownIcon } from '../../Icons/ChevronDownIcon'
-import { ExportTableDropdown } from '../Exports/ExportTableDropdown'
 import { FilterIcon } from '@renderer/components/Icons/FilterIcon'
+/* import { useSelector } from 'react-redux' */
+/* import { ChevronDownIcon } from '../../Icons/ChevronDownIcon'
+import { ExportTableDropdown } from '../Exports/ExportTableDropdown' */
 
 export const TopContent = ({
   setPage,
@@ -20,17 +21,17 @@ export const TopContent = ({
   statusFilter,
   addItemModal,
   editItemModal,
-  visibleColumns,
-  setRowsPerPage,
+  /* visibleColumns, */
+  /* setRowsPerPage, */
   setFilterValue,
   setStatusFilter,
-  setVisibleColumns,
+  /* setVisibleColumns, */
 }) => {
-  const users = useSelector((state: any) => state.unit.table.data)
-  const onRowsPerPageChange = (e: any) => {
+  /* const users = useSelector((state: RootState) => state.unit.table.data) */
+  /* const onRowsPerPageChange = (e: any) => {
     setRowsPerPage(parseInt(e.target.value))
     setPage(1)
-  }
+  } */
 
   const onSearchChange = (value) => {
     if (value) {
@@ -53,7 +54,7 @@ export const TopContent = ({
           <div className='flex gap-3'>
             <Input
               isClearable
-              radius="sm"
+              radius='sm'
               className='text-c-gray'
               placeholder='Buscar'
               startContent={<SearchIcon />}
@@ -66,7 +67,7 @@ export const TopContent = ({
                 <Dropdown className='bg-c-card text-c-title'>
                   <DropdownTrigger className='sm:flex'>
                     <Button
-                    className='bg-c-filter shadow-sm'
+                      className='bg-c-filter shadow-sm'
                       endContent={
                         <FilterIcon className='text-c-title  text-2xl mr-2 w-[20px] h-[20px]' />
                       }
@@ -99,7 +100,11 @@ export const TopContent = ({
             {/* {columnsData?.columns && (
               <Dropdown>
                 <DropdownTrigger className='sm:flex'>
-                  <Button endContent={<ChevronDownIcon className='text-small' />} variant='flat' radius="sm">
+                  <Button
+                    endContent={<ChevronDownIcon className='text-small' />}
+                    variant='flat'
+                    radius='sm'
+                  >
                     Columnas
                   </Button>
                 </DropdownTrigger>

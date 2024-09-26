@@ -1,11 +1,12 @@
 import React from 'react'
+import { RootState } from '@renderer/store'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { reqUserHasPermissions } from '@renderer/api/requests'
 
 export const SectionPermissionMiddleware = ({ permission, children }) => {
   const [hasPermissions, setHasPermissions] = React.useState(false)
-  const unit = useSelector((state: any) => state.currentUnit)
+  const unit = useSelector((state: RootState) => state.currentUnit)
   const navigate = useNavigate()
 
   React.useEffect(() => {

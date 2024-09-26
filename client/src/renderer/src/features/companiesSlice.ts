@@ -1,19 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { CompanyModel } from '@renderer/interfaces/company'
 
-export const manageUnits = createSlice({
-  name: 'units',
+export const manageCompanies = createSlice({
+  name: 'companies',
   initialState: {
-    data: <any[]>[],
+    data: <CompanyModel[]>[],
     currentUnitIdEdit: -1,
   },
   reducers: {
-    setUnits: (state, action) => {
+    setCompanies: (state, action) => {
       state.data = action.payload
     },
-    addUnit: (state, action) => {
+    addCompany: (state, action) => {
       state.data.push(action.payload)
     },
-    editUnit: (state, action) => {
+    editCompany: (state, action) => {
       const { data, id } = action.payload
       const itemIndex = state.data.findIndex((item) => item.id == id)
 
@@ -23,7 +24,7 @@ export const manageUnits = createSlice({
         })
       }
     },
-    deleteUnit: (state, action) => {
+    deleteCompany: (state, action) => {
       const id = action.payload
       const itemIndex = state.data.findIndex((item) => item.id == id)
 
@@ -31,10 +32,11 @@ export const manageUnits = createSlice({
         state.data.splice(itemIndex, 1)
       }
     },
-    setCurrentUnitId: (state, action) => {
+    setCurrentCompanyId: (state, action) => {
       state.currentUnitIdEdit = action.payload
     },
   },
 })
 
-export const { setUnits, addUnit, editUnit, deleteUnit, setCurrentUnitId } = manageUnits.actions
+export const { setCompanies, addCompany, deleteCompany, editCompany, setCurrentCompanyId } =
+  manageCompanies.actions

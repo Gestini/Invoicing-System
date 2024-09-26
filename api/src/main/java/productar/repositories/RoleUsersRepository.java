@@ -20,7 +20,7 @@ public interface RoleUsersRepository extends JpaRepository<RoleUsersModel, Long>
 
     @Query("SELECT EXISTS ("
             + "SELECT 1 FROM BusinessUnitModel b "
-            + "WHERE b.id = :unitId AND b.owner.id = :userId) "
+            + "WHERE b.id = :unitId AND b.company.owner.id = :userId) "
             + "OR ("
             + "EXISTS (SELECT 1 FROM EmployeeModel e "
             + "WHERE e.user.id = :userId AND e.businessUnit.id = :unitId) "

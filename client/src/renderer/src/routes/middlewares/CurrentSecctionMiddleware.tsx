@@ -1,9 +1,10 @@
-import { Navbar } from '../../components/navbar/index'
+import { Navbar } from '../../components/Navbar'
+import { RootState } from '@renderer/store'
 import { capitalize } from '@renderer/components/AppTable/TableComponents/utils'
 import { useSelector } from 'react-redux'
 
 export const CurrentSecctionMiddleware = ({ section, icon, title, children, routesLength }) => {
-  const unit = useSelector((state: any) => state.currentUnit)
+  const unit = useSelector((state: RootState) => state.currentUnit)
 
   return (
     <div className='w-full h-full'>

@@ -1,9 +1,5 @@
-
-
 const PlanSettings = () => {
-  return (
-    <div>PlanSettings</div>
-  )
+  return <div>PlanSettings</div>
 }
 
 export default PlanSettings

@@ -1,10 +1,9 @@
 import React from 'react'
+import { RootState } from '@renderer/store'
 import { useSelector } from 'react-redux'
-import { wareHouseInterface } from '@renderer/features/warehouseSlice'
 
 interface Tab {
   name: string
-
 }
 
 interface WarehouseTabsProps {
@@ -14,7 +13,7 @@ interface WarehouseTabsProps {
 export const Tabs: React.FC<WarehouseTabsProps> = ({ tabs }) => {
   const [activeTab, setActiveTab] = React.useState(0)
 
-  const warehouse: wareHouseInterface = useSelector((state: any) => state.unit.warehouse)
+  const warehouse = useSelector((state: RootState) => state.unit.warehouse)
   const currentWarehouseId = warehouse.currentWarehouseId
 
   if (currentWarehouseId === '' || warehouse.data.length === 0) return null

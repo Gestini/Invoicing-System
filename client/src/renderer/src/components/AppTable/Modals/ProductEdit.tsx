@@ -13,7 +13,9 @@ import {
   useDisclosure,
 } from '@nextui-org/react'
 import React from 'react'
+import { RootState } from '@renderer/store'
 import { useParams } from 'react-router-dom'
+import { UserModel } from '@renderer/interfaces/user'
 import { reqGetSupplier } from '@renderer/api/requests'
 import { setCurrentItemId } from '@renderer/features/tableSlice'
 import { useDispatch, useSelector } from 'react-redux'
@@ -21,13 +23,16 @@ import { useDispatch, useSelector } from 'react-redux'
 export const EditProductModal = ({ modal }) => {
   const params = useParams()
   const dispatch = useDispatch()
-  const users = useSelector((state: any) => state.unit.table.data)
-  const currentItemIdEdit = useSelector((state: any) => state.unit.table.currentItemIdEdit)
-  const currentUserEdit = users.find((item: { id: any }) => item.id == currentItemIdEdit)
+  const users = useSelector((state: RootState) => state.unit.table.data)
+  const currentItemIdEdit = useSelector((state: RootState) => state.unit.table.currentItemIdEdit)
+  const currentUserEdit = users.find((item: UserModel) => item.id == currentItemIdEdit)
   const [suppliers, setSuppliers] = React.useState([])
   const [data, setData] = React.useState({
     businessUnit: {
       id: params.unitId,
+    },
+    supplierUnit: {
+      id: '',
     },
   })
   const [errors, setErrors] = React.useState({
@@ -54,11 +59,11 @@ export const EditProductModal = ({ modal }) => {
     GetSupplier()
   }, [])
 
-  const handleChange = (e: any) => {
-    if (e.target.name == 'supplierUnit') {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    if (e.target.name === 'supplierUnit') {
       setData({
         ...data,
-        [e.target.name]: { id: e.target.value },
+        supplierUnit: { id: e.target.value }, // Asegúrate de actualizar correctamente supplierUnit
       })
     } else {
       setData({
@@ -108,6 +113,9 @@ export const EditProductModal = ({ modal }) => {
       setData({
         businessUnit: {
           id: params.unitId,
+        },
+        supplierUnit: {
+          id: '', // Agrega el supplierUnit en la estructura del estado
         },
       })
       onClose()

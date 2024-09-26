@@ -24,7 +24,7 @@ export const columnsData = {
     'supplier',
     'unitPrice',
     'category',
-    'actions'
+    'actions',
   ],
 }
 

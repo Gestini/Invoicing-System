@@ -1,5 +1,6 @@
 import React from 'react'
 import { AuthForm } from '../../../Auth/AuthInputForm'
+import { RootState } from '@renderer/store'
 import { toggleModal } from '@renderer/features/currentModal'
 import { loginInputs } from '@renderer/pages/Auth/AuthInputs'
 import { useDispatch, useSelector } from 'react-redux'
@@ -17,7 +18,7 @@ import {
 export const AddNewAccountModal = ({ errors }) => {
   const currentSessions = localStorage.getItem('sessions')
   const dispatch = useDispatch()
-  const modalStates = useSelector((state: any) => state.unit.modals)
+  const modalStates = useSelector((state: RootState) => state.unit.modals)
   const handleToggleModal = () => dispatch(toggleModal('AddNewAccountModal'))
 
   const [data, setData] = React.useState({

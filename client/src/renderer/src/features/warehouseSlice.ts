@@ -1,13 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { WarehouseModel } from '@renderer/interfaces/warehouse'
 
-export interface wareHouseInterface {
-  data: any
-  currentWarehouseId: string
-}
 export const manageWarehouse = createSlice({
   name: 'wareHouse',
-  initialState: <wareHouseInterface>{
-    data: [],
+  initialState: {
+    data: <WarehouseModel[]>[],
     currentWarehouseId: '',
   },
   reducers: {
@@ -46,5 +43,5 @@ export const {
   setWarehouses,
   editWarehouse,
   deleteWarehouse,
-  setCurrentWarehouseId
+  setCurrentWarehouseId,
 } = manageWarehouse.actions

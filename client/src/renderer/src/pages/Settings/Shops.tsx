@@ -1,10 +1,11 @@
 import React from 'react'
 import { Unit } from '@renderer/types/Unit'
+import { RootState } from '@renderer/store'
 import { useSelector } from 'react-redux'
 import { reqGetUnitsByEcommerce } from '@renderer/api/requests'
 
 const Shops = () => {
-  const user = useSelector((state: any) => state.user.user)
+  const user = useSelector((state: RootState) => state.user.user)
   const [companies, setCompanies] = React.useState<Unit[]>([])
 
   React.useEffect(() => {

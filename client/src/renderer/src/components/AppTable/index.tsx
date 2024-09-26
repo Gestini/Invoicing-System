@@ -1,4 +1,5 @@
 import React from 'react'
+import { RootState } from '@renderer/store'
 import { TopContent } from './TableComponents/TopContent'
 import { RenderCell } from './TableComponents/RenderCell'
 import { BottomContent } from './TableComponents/BottomContent'
@@ -18,16 +19,17 @@ import {
 export const AppTable = ({ columnsData, tableActions, addItemModal, editItemModal }) => {
   const dispatch = useDispatch()
   type User = (typeof users)[0]
-  const users = useSelector((state: any) => state.unit.table.data)
+  type Column = (typeof columnsData.columns)[0]
+  const users = useSelector((state: RootState) => state.unit.table.data)
 
   const [page, setPage] = React.useState(1)
   const [filterValue, setFilterValue] = React.useState('')
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]))
-  const [visibleColumns, setVisibleColumns] = React.useState<Selection>(
+  const [visibleColumns, /* setVisibleColumns */ _] = React.useState<Selection>(
     new Set(columnsData.InitialVisibleColumns),
   )
   const [statusFilter, setStatusFilter] = React.useState<Selection>('all')
-  const [rowsPerPage, setRowsPerPage] = React.useState(5)
+  const [rowsPerPage, /* setRowsPerPage */ __] = React.useState(5)
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
     column: 'age',
     direction: 'ascending',
@@ -36,7 +38,7 @@ export const AppTable = ({ columnsData, tableActions, addItemModal, editItemModa
   const headerColumns = React.useMemo(() => {
     if (visibleColumns === 'all') return columnsData.columns
 
-    return columnsData.columns.filter((column: any) =>
+    return columnsData.columns.filter((column: Column) =>
       Array.from(visibleColumns).includes(column.uid),
     )
   }, [visibleColumns])
@@ -90,8 +92,8 @@ export const AppTable = ({ columnsData, tableActions, addItemModal, editItemModa
     })
   }, [sortDescriptor, items])
 
-  const handleDeleteItem = async (id: any) => tableActions.delete(id)
-  const handleSetCurrentIdEdit = (id: any) => dispatch(setCurrentItemId(id))
+  const handleDeleteItem = async (id: number) => tableActions.delete(id)
+  const handleSetCurrentIdEdit = (id: number) => dispatch(setCurrentItemId(id))
 
   return (
     <div className='max-w-table'>
@@ -124,11 +126,11 @@ export const AppTable = ({ columnsData, tableActions, addItemModal, editItemModa
             columnsData={columnsData}
             filterValue={filterValue}
             statusFilter={statusFilter}
-            visibleColumns={visibleColumns}
-            setRowsPerPage={setRowsPerPage}
+            /* visibleColumns={visibleColumns} */
+            /* setRowsPerPage={setRowsPerPage} */
             setFilterValue={setFilterValue}
             setStatusFilter={setStatusFilter}
-            setVisibleColumns={setVisibleColumns}
+            /* setVisibleColumns={setVisibleColumns} */
             addItemModal={addItemModal}
             editItemModal={editItemModal}
           />
@@ -138,7 +140,7 @@ export const AppTable = ({ columnsData, tableActions, addItemModal, editItemModa
         onSortChange={setSortDescriptor}
       >
         <TableHeader columns={headerColumns}>
-          {(column: any) => (
+          {(column: Column) => (
             <TableColumn
               key={column.uid}
               align={column.uid === 'actions' ? 'center' : 'start'}
@@ -149,24 +151,24 @@ export const AppTable = ({ columnsData, tableActions, addItemModal, editItemModa
           )}
         </TableHeader>
         <TableBody emptyContent={'Sin resultados'} items={sortedItems}>
-          {item => {
+          {(item) => {
             return (
               <TableRow key={item.id}>
-                {columnKey => (
+                {(columnKey) => (
                   <TableCell className='default-text-color capitalize'>
                     {/* ESTILO DE CATEGORIAS */}
                     {columnKey === 'category' ? (
                       // Estilo especial para la celda de categoría
-                      <span className="bg-c-primary-variant-3 text-c-primary px-2 py-[2px] rounded-md text-[12px]">
+                      <span className='bg-c-primary-variant-3 text-c-primary px-2 py-[2px] rounded-md text-[12px]'>
                         {item[columnKey]}
-                      </span>  
+                      </span>
                     ) : (
                       RenderCell(item, columnKey, handleDeleteItem, handleSetCurrentIdEdit)
                     )}
                   </TableCell>
                 )}
               </TableRow>
-            );
+            )
           }}
         </TableBody>
       </Table>

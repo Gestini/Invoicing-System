@@ -9,6 +9,7 @@ import {
   ModalContent,
 } from '@nextui-org/react'
 import { AuthForm } from '../../../Auth/AuthInputForm'
+import { RootState } from '@renderer/store'
 import { loginInputs } from '@renderer/pages/Auth/AuthInputs'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
@@ -19,15 +20,15 @@ import { reqAuthLogin } from '@renderer/api/requests'
 export const LogInAsModal = ({ errors }) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const modalStates = useSelector((state: any) => state.unit.modals)
-  const userSession = useSelector((state: any) => state.user.userSession)
+  const modalStates = useSelector((state: RootState) => state.unit.modals)
+  const userSession = useSelector((state: RootState) => state.user.userSession)
 
   const [data, setData] = React.useState({
     username: '',
     password: '',
   })
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target
     setData({
       ...data,

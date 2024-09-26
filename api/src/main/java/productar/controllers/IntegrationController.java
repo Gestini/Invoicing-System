@@ -14,10 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import productar.dto.CreateIntegrationRequest;
 import productar.dto.IntegrationAssignmentRequest;
@@ -25,18 +22,12 @@ import productar.dto.IntegrationConfigRequest;
 import productar.dto.IntegrationConfigResponse;
 import productar.dto.IntegrationDTO;
 import productar.models.BusinessUnitIntegrationModel;
-
 import productar.models.IntegrationModel;
-import productar.models.TypeConfig;
-import productar.services.BusinessUnitService;
 import productar.services.IntegrationService;
 
 @RestController
 @RequestMapping("/integrations")
 public class IntegrationController {
-
-    @Autowired
-    private BusinessUnitService businessUnitService;
 
     @Autowired
     private IntegrationService integrationService;
@@ -161,21 +152,4 @@ public class IntegrationController {
         }
     }
 
-    @PostMapping("/configure")
-    public ResponseEntity<String> configureIntegration(
-            @RequestParam Long businessUnitId,
-            @RequestParam Long integrationId,
-            @RequestParam Boolean enabled,
-            @RequestParam String configData) {
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            Map<String, Object> configDataMap = objectMapper.readValue(configData, Map.class);
-
-            integrationService.configureIntegration(businessUnitId, integrationId, enabled, configDataMap);
-            return ResponseEntity.status(HttpStatus.OK).body("Integración configurada correctamente");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Error al configurar la integración: " + e.getMessage());
-        }
-    }
 }

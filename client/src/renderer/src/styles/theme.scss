@@ -45,8 +45,7 @@
   --c-title-opacity: #e4e4e481;
   --c-default: #62b167;
 
-
-  --c-card: #262626;
+  --c-card: #18181b;
   --c-card-2: #2f2f33;
   --c-card-3: #2b2b2e;
   --c-card-4: #1f2121;
@@ -70,9 +69,11 @@
 
   --c-arrow-stats: #34f59f;
 
-  --gradient-dashboard: linear-gradient(to right,
-      var(--c-primary-variant-4),
-      var(--c-primary-variant-2));
+  --gradient-dashboard: linear-gradient(
+    to right,
+    var(--c-primary-variant-4),
+    var(--c-primary-variant-2)
+  );
 
   // TABS COLOR
   --c-tabs: #7c7c7c;
