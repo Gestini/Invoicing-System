@@ -53,6 +53,21 @@ public class CompanyService {
 
     public ResponseEntity<?> deleteCompany(Long companyId) {
         try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User user = (User) authentication.getPrincipal();
+
+            Optional<CompanyModel> company = companyRespository.findById(companyId);
+
+            if (!company.isPresent()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Compañia no encontrada");
+            }
+
+            User owner = company.get().getOwner();
+
+            if (!owner.getId().equals(user.getId())) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Solo el dueño puede eliminar la compañía");
+            }
+
             companyRespository.deleteById(companyId);
             return ResponseEntity.ok("Compañia eliminada correctamente");
         } catch (Exception e) {
