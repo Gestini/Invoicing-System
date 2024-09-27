@@ -1,25 +1,25 @@
-import { useState, useEffect } from 'react';
-import { MdUpload, MdViewList, MdViewModule, MdFolder, MdInsertDriveFile } from 'react-icons/md';
+import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Modal, ModalBody, ModalContent, ModalHeader, Select, SelectItem, useDisclosure } from '@nextui-org/react';
+import { useEffect, useState } from 'react';
 import { FaTrash } from "react-icons/fa";
-import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem, useDisclosure } from '@nextui-org/react';
+import { MdArrowBackIos, MdFolder, MdInsertDriveFile, MdOpenInNew, MdUpload, MdViewList, MdViewModule } from 'react-icons/md';
 import { SlOptions, SlOptionsVertical } from 'react-icons/sl';
 import { Link } from 'react-router-dom';
-
-interface Node {
-    id: number;
-    name: string;
-    children?: Node[];
-}
+import { Node } from "@renderer/types/File"
 
 const DocumentManager = () => {
     const [nodes, setNodes] = useState<Node[]>([]); // Estructura raíz
-    const [currentFolder, setCurrentFolder] = useState<Node | null>(null); // Carpeta actual
-    const [folderHistory, setFolderHistory] = useState<Node[]>([]); // Historial de carpetas
+    const [currentFolder, setCurrentFolder] = useState<Node | null>(null);
+    const [folderHistory, setFolderHistory] = useState<Node[]>([]);
     const [currentPath, setCurrentPath] = useState<string[]>(["General"]);
     const [viewType, setViewType] = useState<'grid' | 'table'>('grid'); // Para controlar el tipo de vista
-    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+    const [formType, setFormType] = useState<string | null>(null);
+    const [cloudFile, setCloudFile] = useState({
+        name: '',
+        url: '',
+        type: -1,
+    });
 
-    // Función para encontrar y actualizar un nodo (carpeta) en el árbol
     const updateNodeById = (nodes: Node[], parentId: number, newNode: Node): Node[] => {
         return nodes.map(node => {
             if (node.id === parentId) {
@@ -32,6 +32,28 @@ const DocumentManager = () => {
         });
     };
 
+    const addFile = () => {
+        if (!cloudFile.name || !cloudFile.url || !cloudFile.type) {
+            return alert("Faltan detalles del archivo");
+        }
+        const newNode: Node = {
+            id: Date.now(),
+            name: cloudFile.name,
+            type: cloudFile.type,
+            url: cloudFile.url,
+        };
+        if (currentFolder) {
+            const updatedNodes = updateNodeById(nodes, currentFolder.id, newNode);
+            setNodes(updatedNodes);
+        } else {
+            setNodes([...nodes, newNode]);
+        }
+
+        // Limpiar estado
+        onClose()
+        setCloudFile({ name: '', url: '', type: -1 });
+    };
+
     const addFolder = () => {
         const newFolderName = prompt("Ingrese el nombre de la nueva carpeta:");
         if (!newFolderName) return;
@@ -40,6 +62,7 @@ const DocumentManager = () => {
             id: Date.now(),
             name: newFolderName,
             children: [],
+            type: 4
         };
 
         if (currentFolder) {
@@ -54,24 +77,6 @@ const DocumentManager = () => {
         const newData = nodes.filter((ele) => ele.id !== id)
         setNodes(newData)
     }
-
-    const addFile = () => {
-
-        // const newFileName = prompt("Ingrese el nombre del nuevo archivo:");
-        // if (!newFileName) return;
-
-        const newFile: Node = {
-            id: Date.now(),
-            name: newFileName,
-        };
-
-        if (currentFolder) {
-            const updatedNodes = updateNodeById(nodes, currentFolder.id, newFile);
-            setNodes(updatedNodes);
-        } else {
-            setNodes([...nodes, newFile]);
-        }
-    };
 
     const enterFolder = (node: Node) => {
         setFolderHistory([...folderHistory, currentFolder!]);
@@ -99,14 +104,14 @@ const DocumentManager = () => {
         }
     }, [nodes, currentFolder]);
 
-    const [formType, setFormType] = useState(null);
+
 
     const renderGrid = (folder: Node) => (
         <div className="grid grid-cols-4 gap-4">
             {folder.children?.length === 0 ? (
                 <div className="col-span-4 text-c-title">Carpeta vacía.</div>
             ) : (
-                folder.children.map((child) => (
+                folder.children?.map((child) => (
                     <div key={child.id} className="p-4 rounded-xl bg-c-card cursor-pointer">
                         {child.children ? (
                             <div className='relative' onClick={() => enterFolder(child)}>
@@ -142,7 +147,7 @@ const DocumentManager = () => {
                         <td colSpan={2} className="p-2 text-c-title">Carpeta vacía</td>
                     </tr>
                 ) : (
-                    folder.children.map((child) => (
+                    folder.children?.map((child) => (
                         <tr key={child.id} className="hover:bg-gray-800 transition-colors duration-200">
                             <td className="p-2 flex items-center">
                                 {child.children ? (
@@ -152,8 +157,22 @@ const DocumentManager = () => {
                                     </div>
                                 ) : (
                                     <div className="flex items-center">
-                                        <MdInsertDriveFile className="text-blue-500 text-xl mr-2" />
-                                        {child.name}
+                                        {(() => {
+                                            const colors = {
+                                                0: 'text-green-500',
+                                                1: 'text-red-500',
+                                                2: 'text-blue-500',
+                                                3: 'text-cyan-500',
+                                            };
+
+                                            const iconColor = colors[child.type || -1] || 'text-gray-500'; // Color por defecto si el tipo no es válido
+                                            return (
+                                                <>
+                                                    <MdInsertDriveFile className={`${iconColor} text-xl mr-2`} />
+                                                    {child.name}
+                                                </>
+                                            );
+                                        })()}
                                     </div>
                                 )}
                             </td>
@@ -260,12 +279,16 @@ const DocumentManager = () => {
                                 nodes.map((node) => (
                                     <div key={node.id} className="p-4 rounded-xl bg-c-card cursor-pointer">
                                         {node.children ? (
-                                            <div className='flex items-start justify-between' onClick={() => enterFolder(node)}>
+                                            <div className='flex justify-between h-20' >
                                                 <div>
                                                     <MdFolder className="text-yellow-500 text-4xl" />
                                                     <div className="text-c-title">{node.name}</div>
+                                                    <a className='text-gray-500 flex items-center gap-1' href={node.url}>
+                                                        <MdOpenInNew />
+                                                        <span className='underline' onClick={() => enterFolder(node)}>Abrir</span>
+                                                    </a>
                                                 </div>
-                                                <Dropdown placement='bottom-start' className='bg-c-card text-c-title'>
+                                                <Dropdown placement='right-start' className='bg-c-card text-c-title'>
                                                     <DropdownTrigger>
                                                         <div>
                                                             <SlOptions className='text-c-title w-4 h-4 cursor-pointer' />
@@ -291,35 +314,61 @@ const DocumentManager = () => {
                                                 </Dropdown>
                                             </div>
                                         ) : (
-                                            <div className='flex items-start justify-between'>
+                                            <div className='flex  justify-between h-full' >
                                                 <div>
-                                                    <MdInsertDriveFile className="text-blue-500 text-4xl" />
-                                                    <div className="text-c-title">{node.name}</div>
-                                                </div>
-                                                <Dropdown placement='bottom-start' className='bg-c-card text-c-title'>
-                                                    <DropdownTrigger>
-                                                        <div>
-                                                            <SlOptions className='text-c-title w-4 h-4 cursor-pointer' />
-                                                        </div>
-                                                    </DropdownTrigger>
-                                                    <DropdownMenu aria-label='Static Actions' className='text-c-title bg-c-bg-color'>
-                                                        <DropdownItem key='Open' >
-                                                            Abrir
-                                                        </DropdownItem>
-                                                        <DropdownItem key='Edit'>
-                                                            <Link to={'/'} >Configurar</Link>
-                                                        </DropdownItem>
+                                                    {/* Determinar el color del icono según el tipo de nodo */}
+                                                    {(() => {
+                                                        const colors = {
+                                                            0: 'text-green-500',
+                                                            1: 'text-red-500',
+                                                            2: 'text-blue-500',
+                                                            3: 'text-cyan-500',
+                                                        };
 
-                                                        <DropdownItem
-                                                            key='delete'
-                                                            className='text-danger'
-                                                            showDivider={false}
-                                                            color='danger'
-                                                        >
-                                                            Eliminar unidad
-                                                        </DropdownItem>
-                                                    </DropdownMenu>
-                                                </Dropdown>
+                                                        const iconColor = colors[node.type || -1] || 'text-gray-500'; // Color por defecto si el tipo no es válido
+
+                                                        return (
+                                                            <div className='flex flex-col w-full'>
+                                                                <MdInsertDriveFile className={`${iconColor} text-4xl`} />
+                                                                <div className="text-c-title">{node.name}</div>
+                                                                <a className='text-gray-500 flex items-center gap-1' href={node.url}>
+                                                                    <MdOpenInNew />
+                                                                    <span className='underline'>Abrir</span>
+                                                                </a>
+                                                            </div>
+                                                        );
+                                                    })()}
+                                                </div>
+                                                <div className='flex flex-col items-end justify-between h-full'>
+                                                    <Dropdown placement='right-start' className='bg-c-card text-c-title'>
+                                                        <DropdownTrigger>
+                                                            <div>
+                                                                <SlOptions className='text-c-title w-4 h-4 cursor-pointer' />
+                                                            </div>
+                                                        </DropdownTrigger>
+                                                        <DropdownMenu aria-label='Static Actions' className='text-c-title bg-c-bg-color'>
+                                                            <DropdownItem key='Open' >
+                                                                Abrir
+                                                            </DropdownItem>
+                                                            <DropdownItem key='Edit'>
+                                                                <Link to={'/'} >Configurar</Link>
+                                                            </DropdownItem>
+
+                                                            <DropdownItem
+                                                                key='delete'
+                                                                className='text-danger'
+                                                                showDivider={false}
+                                                                color='danger'
+                                                            >
+                                                                Eliminar unidad
+                                                            </DropdownItem>
+                                                        </DropdownMenu>
+                                                    </Dropdown>
+                                                    <span className='text-[12px] text-gray-600 font-bold'>
+                                                        {node.type == 0 ? 'XLSX' : node.type == 1 ? 'PDF' : node.type == 2 ? 'DOCX' : 'IMG'}
+                                                    </span>
+                                                </div>
+
                                             </div>
                                         )}
                                     </div>
@@ -327,57 +376,83 @@ const DocumentManager = () => {
                             )}
                         </div>
                     ) : (
-                        renderTable({ id: 0, name: 'Raíz', children: nodes })
+                        renderTable({ id: 0, name: 'Raíz', type: 0, children: nodes })
                     )}
                 </div>
             )}
             <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-                <ModalContent>
+                <ModalContent className="p-5 pb-10 text-c-light rounded-3xl ">
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">Modal Title</ModalHeader>
-                            <ModalBody className="flex flex-col gap-4">
-                                {/* Paso 1: Selección del tipo de archivo */}
-                                <div className="text-center">
-                                    <label className="block mb-2 text-c-title">¿Es un archivo en la nube o un archivo local?</label>
-                                    <div className="flex justify-center gap-4">
-                                        <button
-                                            className="p-3 bg-c-filter text-c-title rounded-xl hover:bg-c-primary-variant-2 duration-200 transition-all"
-                                            onClick={() => setFormType('cloud')} // Establecer el tipo de formulario
-                                        >
-                                            Archivo en la nube
-                                        </button>
-                                        <button
-                                            className="p-3 bg-c-filter text-c-title rounded-xl hover:bg-c-primary-variant-2 duration-200 transition-all"
-                                            onClick={() => setFormType('local')} // Establecer el tipo de formulario
-                                        >
-                                            Archivo local
-                                        </button>
+                            <ModalHeader className="flex justify-between items-center">
+                                {formType ? (
+                                    <button
+                                        className="absolute text-gray-50 left-14 top-11"
+                                        onClick={() => setFormType(null)}
+                                    >
+                                        <MdArrowBackIos className="h-4 w-4 mr-2" />
+                                    </button>
+                                ) : null}
+                                <h2 className="text-2xl font-bold text-c-title flex-1 text-center">
+                                    {formType ? 'Complete los detalles' : 'Subir archivo'}
+                                </h2>
+                            </ModalHeader>
+                            <ModalBody className="flex flex-col gap-8 mt-4">
+                                {!formType && (
+                                    <div className="text-center">
+                                        <label className="block mb-4 text-lg font-medium text-c-title">
+                                            ¿Dónde se encuentra su archivo?
+                                        </label>
+                                        <div className="flex justify-center gap-5">
+                                            <button
+                                                className="p-4 bg-c-filter text-c-title rounded-xl brightness-125 transition-transform duration-200 ease-in-out transform hover:scale-105 shadow-lg"
+                                                onClick={() => setFormType('cloud')}
+                                            >
+                                                Archivo en la nube
+                                            </button>
+                                            <button
+                                                className="p-4 bg-c-filter text-c-title rounded-xl brightness-125  transition-transform duration-200 ease-in-out transform hover:scale-105 shadow-lg"
+                                                onClick={() => setFormType('local')}
+                                            >
+                                                Archivo local
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
+                                )}
 
-                                {/* Paso 2: Formulario dinámico */}
                                 {formType === 'cloud' && (
-                                    <div id="cloudForm">
-                                        <Input type="text" placeholder='Nombre' required />
-                                        <Input type="text" placeholder='URL' required />
-                                        <Select label="Tipo de archivo">
+                                    <div id="cloudForm" className="animate-fadeIn">
+                                        <Input type="text" value={cloudFile.name} onChange={(e) => setCloudFile({ ...cloudFile, name: e.target.value })} placeholder="Nombre" className="mb-4" />
+                                        <Input type="text" placeholder="URL" value={cloudFile.url} onChange={(e) => setCloudFile({ ...cloudFile, url: e.target.value })} required className="mb-4" />
+                                        <Select label="Tipo de archivo" value={cloudFile.type} onChange={(e) => setCloudFile({ ...cloudFile, type: Number(e.target.value) })}>
                                             {filetype.map((ele, ind) => (
-                                                <SelectItem key={ind}>
-                                                    {ele}
-                                                </SelectItem>
+                                                <SelectItem key={ind} value={ind}>{ele}</SelectItem>
                                             ))}
                                         </Select>
+                                        <button
+                                            className="mt-4 p-3 w-full bg-c-primary text-white rounded-xl hover:brightness-110 transition-all duration-200 ease-in-out"
+                                            onClick={addFile}
+                                        >
+                                            Subir Archivo
+                                        </button>
                                     </div>
                                 )}
 
                                 {formType === 'local' && (
-                                    <div id="localForm">
-                                        <Input type="text" placeholder='Nombre' required />
-                                        <label className="cursor-pointer p-3 flex items-center justify-center bg-c-filter text-c-title rounded-xl h-[40px] hover:bg-c-primary-variant-2 duration-200 transition-all">
+                                    <div id="localForm" className="animate-fadeIn">
+                                        <Input type="text" placeholder="Nombre" required className="mb-4" />
+                                        <label className="cursor-pointer bg-c-filter  p-4 flex items-center justify-center  text-c-title rounded-xl h-[40px] brightness-125 transition-transform duration-200 ease-in-out transform  shadow-lg">
                                             <MdUpload className="inline mr-2" /> Subir Documento
                                             <input type="file" className="hidden" />
                                         </label>
+                                        <button
+                                            className="mt-4 p-3 w-full bg-c-primary text-white rounded-xl hover:brightness-110 transition-all duration-200 ease-in-out"
+                                            onClick={() => {
+                                                // Aquí iría la lógica para manejar la subida del archivo local
+                                            }}
+                                        >
+                                            Subir Archivo
+                                        </button>
                                     </div>
                                 )}
                             </ModalBody>
@@ -385,10 +460,8 @@ const DocumentManager = () => {
                     )}
                 </ModalContent>
             </Modal>
-
         </div>
     );
 };
 
 export default DocumentManager;
-
