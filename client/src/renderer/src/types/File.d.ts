@@ -3,5 +3,13 @@ export interface Node {
     name: string;
     children?: Node[];
     url?: string;
-    type: number | null;
+    file?: string | null
+    type: string | null;
+}
+
+export interface LocalFile {
+    name: string;
+    file: null | string;
+    url: string;
+    type: string | null;
 }
