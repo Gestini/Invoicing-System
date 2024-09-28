@@ -85,11 +85,11 @@ const warehouseRoutes: RouteSection = {
 
 const documentsRoutes: RouteSection = {
   icon: <MdFolder />,
-  path: '/documents/:unitId',
+  path: '/documents/:companyId/:unitId?',
   section: 'Documentos',
   permission: permissions.documents.permission,
   routes: [
-    { path: '/general', element: <Documents />, title: 'Documentos' },
+    { path: '', element: <Documents />, title: 'Documentos' },
   ],
 }
 

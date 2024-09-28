@@ -1,18 +1,116 @@
-import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, useDisclosure } from '@nextui-org/react';
-import { Node } from "@renderer/types/File";
+import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input, Modal, ModalBody, ModalContent, ModalHeader, Select, SelectItem, useDisclosure } from '@nextui-org/react';
 import { useEffect, useState } from 'react';
 import { FaTrash } from "react-icons/fa";
-import { MdFolder, MdInsertDriveFile, MdOpenInNew, MdViewList, MdViewModule } from 'react-icons/md';
+import { MdArrowBackIos, MdFolder, MdInsertDriveFile, MdOpenInNew, MdUpload, MdViewList, MdViewModule } from 'react-icons/md';
 import { SlOptions, SlOptionsVertical } from 'react-icons/sl';
 import { Link } from 'react-router-dom';
-import FileComponent from './localFile';
-import FileManager from './FileManager'
+import { Node } from "@renderer/types/File"
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@renderer/store';
+import { setData } from '@renderer/features/DocumentsSlice'
 
-const DocumentManager: React.FC = () => {
+interface LocalFile {
+    name: string;
+    file: null | string;
+    url: string;
+    type: string | null;
+}
+
+const DocumentManager = () => {
+    const data = useSelector((state: RootState) => state.documents.data)
+    const dispatch = useDispatch()
+    const [currentFolder, setCurrentFolder] = useState<Node | null>(null);
+    const [folderHistory, setFolderHistory] = useState<Node[]>([]);
     const [currentPath, setCurrentPath] = useState<string[]>(["General"]);
     const [viewType, setViewType] = useState<'grid' | 'table'>('grid');
+    const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+    const [formType, setFormType] = useState<string | null>(null);
+    const filetype = ['xlsx', 'pdf', 'docx', 'img']
+    const [cloudFile, setCloudFile] = useState({
+        name: '',
+        url: '',
+        type: '',
+    });
+    const [localFile, setLocalFile] = useState<LocalFile>({
+        name: '',
+        url: '',
+        type: '',
+        file: null,
+    });
 
-    const { currentFolder, setCurrentFolder, folderHistory, setFolderHistory, updateNodeById, nodes, setNodes, onOpen } = FileManager()
+    const updateNodeById = (data: Node[], parentId: number, newNode: Node): Node[] => {
+        return data.map(node => {
+            if (node.id === parentId) {
+                return { ...node, children: [...(node.children || []), newNode] };
+            }
+            if (node.children) {
+                return { ...node, children: updateNodeById(node.children, parentId, newNode) };
+            }
+            return node;
+        });
+    };
+
+    const addFile = () => {
+        if (!cloudFile.name || !cloudFile.url || !cloudFile.type) {
+            return alert("Faltan detalles del archivo");
+        }
+        const newNode: Node = {
+            id: Date.now(),
+            name: cloudFile.name,
+            type: cloudFile.type,
+            url: cloudFile.url,
+        };
+        if (currentFolder) {
+            const updateddata = updateNodeById(data, currentFolder.id, newNode);
+            dispatch(setData(updateddata))
+        } else {
+            dispatch(setData([...data, newNode]))
+        }
+
+        // Limpiar estado
+        onClose()
+        setCloudFile({ name: '', url: '', type: '' });
+    };
+
+    const addLocalFile = () => {
+        if (!localFile.name || !localFile.url || !localFile.type) {
+            return alert('Faltan detalles del archivo local');
+        }
+
+        const newNode: Node = {
+            id: Date.now(),
+            name: localFile.name,
+            file: localFile.file,
+            type: localFile.type,
+            url: localFile.url,
+        };
+
+        if (currentFolder) {
+            const updateddata = updateNodeById(data, currentFolder.id, newNode);
+            dispatch(setData(updateddata));
+        } else {
+            dispatch(setData([...data, newNode]));
+        }
+
+        // Limpiar estado
+        onClose();
+        setLocalFile({ name: '', url: '', type: '', file: '' });
+    };
+
+    const handleLocalFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const fileExtension = file.name.split('.').pop(); // Obtener la extensión del archivo
+
+            setLocalFile((prevLocalFile) => ({
+                ...prevLocalFile,
+                file: file.name,
+                url: URL.createObjectURL(file),
+                type: fileExtension || '',
+            }));
+        }
+    };
+
 
     const addFolder = () => {
         const newFolderName = prompt("Ingrese el nombre de la nueva carpeta:");
@@ -26,14 +124,16 @@ const DocumentManager: React.FC = () => {
         };
 
         if (currentFolder) {
-            const updatedNodes = updateNodeById(nodes, currentFolder.id, newNode);
-            setNodes(updatedNodes);
+            const updateddata = updateNodeById(data, currentFolder.id, newNode);
+            dispatch(setData(updateddata))
+        } else {
+            dispatch(setData([...data, newNode]))
         }
     };
 
     const deleteFile = (id) => {
-        const newData = nodes.filter((ele) => ele.id !== id)
-        setNodes(newData)
+        const newData = data.filter((ele) => ele.id !== id)
+        dispatch(setData(newData))
     }
 
     const enterFolder = (node: Node) => {
@@ -43,10 +143,26 @@ const DocumentManager: React.FC = () => {
     };
 
     useEffect(() => {
-        // Aquí puedes hacer algo cuando los nodos cambian
-        console.log("Nodos actualizados:", nodes);
-        // Por ejemplo, podrías realizar una llamada a una API o actualizar la UI de alguna manera
-    }, [nodes]);
+        if (currentFolder) {
+            const findFolderById = (data: Node[], id: number): Node | null => {
+                for (let node of data) {
+                    if (node.id === id) return node;
+                    if (node.children) {
+                        const found = findFolderById(node.children, id);
+                        if (found) return found;
+                    }
+                }
+                return null;
+            };
+
+            const updatedFolder = findFolderById(data, currentFolder.id);
+            if (updatedFolder) {
+                setCurrentFolder(updatedFolder);
+            }
+        }
+    }, [data, currentFolder]);
+
+
 
     const renderGrid = (folder: Node) => (
         <div className="grid grid-cols-4 gap-4">
@@ -162,18 +278,13 @@ const DocumentManager: React.FC = () => {
             setCurrentFolder(null);
         } else {
             const folderToEnter = newHistory[index];
-            const foundNode = nodes.find(node => node.name === folderToEnter);
+            const foundNode = data.find(node => node.name === folderToEnter);
             if (foundNode) {
                 setCurrentFolder(foundNode);
             }
         }
     };
 
-    useEffect(() => {
-        // Aquí puedes hacer algo cuando los nodos cambian
-        console.log("Nodos actualizados:", nodes);
-        // Por ejemplo, podrías realizar una llamada a una API o actualizar la UI de alguna manera
-    }, [nodes]);
 
     return (
         <div>
@@ -196,7 +307,10 @@ const DocumentManager: React.FC = () => {
                     <button onClick={addFolder} className="mr-2 p-3 flex items-center justify-center bg-c-filter text-white rounded-xl h-[40px] hover:bg-c-primary-variant-2 duration-200 transition-all">
                         Crear Carpeta
                     </button>
-                    <FileComponent />
+                    <button onClick={onOpen} className="mr-2 p-3 flex items-center justify-center bg-c-filter text-white rounded-xl h-[40px] hover:bg-c-primary-variant-2 duration-200 transition-all">
+                        Subir Archivo
+                    </button>
+
                 </div>
 
                 <div className="flex">
@@ -218,10 +332,10 @@ const DocumentManager: React.FC = () => {
                 <div>
                     {viewType === 'grid' ? (
                         <div className="grid grid-cols-4 gap-4">
-                            {nodes.length === 0 ? (
+                            {data.length === 0 ? (
                                 <div className="col-span-4 text-c-title">No hay documentos.</div>
                             ) : (
-                                nodes.map((node) => (
+                                data.map((node) => (
                                     <div key={node.id} className="p-4 rounded-xl bg-c-card cursor-pointer">
                                         {node.children ? (
                                             <div className='flex justify-between h-20' >
@@ -323,10 +437,104 @@ const DocumentManager: React.FC = () => {
                             )}
                         </div>
                     ) : (
-                        renderTable({ id: 0, name: 'Raíz', type: 'carpeta', children: nodes })
+                        renderTable({ id: 0, name: 'Raíz', type: 'carpeta', children: data })
                     )}
                 </div>
             )}
+            <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+                <ModalContent className="p-5 pb-10 text-c-light rounded-3xl ">
+                    {(onClose) => (
+                        <>
+                            <ModalHeader className="flex justify-between items-center">
+                                {formType ? (
+                                    <button
+                                        className="absolute text-gray-50 left-14 top-11"
+                                        onClick={() => setFormType(null)}
+                                    >
+                                        <MdArrowBackIos className="h-4 w-4 mr-2" />
+                                    </button>
+                                ) : null}
+                                <h2 className="text-2xl font-bold text-c-title flex-1 text-center">
+                                    {formType ? 'Complete los detalles' : 'Subir archivo'}
+                                </h2>
+                            </ModalHeader>
+                            <ModalBody className="flex flex-col gap-8 mt-4">
+                                {!formType && (
+                                    <div className="text-center">
+                                        <label className="block mb-4 text-lg font-medium text-c-title">
+                                            ¿Dónde se encuentra su archivo?
+                                        </label>
+                                        <div className="flex justify-center gap-5">
+                                            <button
+                                                className="p-4 bg-c-filter text-c-title rounded-xl brightness-125 transition-transform duration-200 ease-in-out transform hover:scale-105 shadow-lg"
+                                                onClick={() => setFormType('cloud')}
+                                            >
+                                                Archivo en la nube
+                                            </button>
+                                            <button
+                                                className="p-4 bg-c-filter text-c-title rounded-xl brightness-125  transition-transform duration-200 ease-in-out transform hover:scale-105 shadow-lg"
+                                                onClick={() => setFormType('local')}
+                                            >
+                                                Archivo local
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {formType === 'cloud' && (
+                                    <div id="cloudForm" className="animate-fadeIn">
+                                        <Input type="text" value={cloudFile.name} onChange={(e) => setCloudFile({ ...cloudFile, name: e.target.value })} placeholder="Nombre" className="mb-4" />
+                                        <Input type="text" placeholder="URL" value={cloudFile.url} onChange={(e) => setCloudFile({ ...cloudFile, url: e.target.value })} required className="mb-4" />
+                                        <Select label="Tipo de archivo" value={cloudFile.type} onChange={(e) => setCloudFile({ ...cloudFile, type: e.target.value })}>
+                                            {filetype.map((ele) => (
+                                                <SelectItem key={ele} value={ele}>{ele}</SelectItem>
+                                            ))}
+                                        </Select>
+                                        <button
+                                            className="mt-4 p-3 w-full bg-c-primary text-white rounded-xl hover:brightness-110 transition-all duration-200 ease-in-out"
+                                            onClick={addFile}
+                                        >
+                                            Subir Archivo
+                                        </button>
+                                    </div>
+                                )}
+
+                                {formType === 'local' && (
+                                    <div id="localForm" className="animate-fadeIn">
+                                        <Input
+                                            type="text"
+                                            placeholder="Nombre"
+                                            value={localFile.name}
+                                            onChange={(e) => setLocalFile({ ...localFile, name: e.target.value })}
+                                            required
+                                            className="mb-4"
+                                        />
+                                        <label className="cursor-pointer bg-c-filter p-4 flex items-center justify-center text-c-title rounded-xl h-[40px] brightness-125 transition-transform duration-200 ease-in-out transform shadow-lg">
+                                            <MdUpload className="inline mr-2" /> Subir Documento
+                                            <input
+                                                type="file"
+                                                className="hidden"
+                                                onChange={handleLocalFileChange}
+                                            />
+                                        </label>
+                                        {localFile.file ? ( // Mostrar el nombre del archivo si existe
+                                            <p className="mt-2 text-gray-500">{localFile.file}</p>
+                                        ) :
+                                            <p className="mt-2 text-gray-500">Seleccione un archivo</p>
+                                        }
+                                        <button
+                                            className="mt-4 p-3 w-full bg-c-primary text-white rounded-xl hover:brightness-110 transition-all duration-200 ease-in-out"
+                                            onClick={addLocalFile}
+                                        >
+                                            Subir Archivo
+                                        </button>
+                                    </div>
+                                )}
+                            </ModalBody>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
         </div>
     );
 };

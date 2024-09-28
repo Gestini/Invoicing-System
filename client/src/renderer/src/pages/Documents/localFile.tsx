@@ -2,14 +2,29 @@ import { Input, Modal, ModalBody, ModalContent, ModalHeader, Select, SelectItem 
 import { Node } from '@renderer/types/File';
 import { useEffect, useState } from 'react';
 import { MdArrowBackIos, MdUpload } from 'react-icons/md';
-import FileManager from './FileManager';
+import FileManager from './FileManager'; // Asegúrate de que FileManager está importado correctamente.
+import { useDispatch, useSelector } from 'react-redux'; // Importa useDispatch si lo necesitas.
+import { setData } from '@renderer/features/DocumentsSlice'; // Importa las acciones de redux correctamente.
 
 const FileComponent: React.FC = () => {
-    const { addFile, cloudFile, currentFolder, localFile, nodes, setCloudFile, setLocalFile, setNodes, updateNodeById, isOpen, onOpenChange, onOpen, onClose } = FileManager()
-
+    const fileManager = FileManager(); // Instanciar FileManager como una función normal.
+    const {
+        addFile,
+        cloudFile,
+        currentFolder,
+        localFile,
+        data,
+        setCloudFile,
+        setLocalFile,
+        updateNodeById,
+        isOpen,
+        onOpenChange,
+        onOpen,
+        onClose
+    } = fileManager; // Extraer los valores retornados por FileManager.
+    
     const [formType, setFormType] = useState<string | null>(null);
-    const filetype = ['xlsx', 'pdf', 'docx', 'img']
-
+    const filetype = ['xlsx', 'pdf', 'docx', 'img'];
 
     const addLocalFile = () => {
         if (!localFile.name || !localFile.url || !localFile.type) {
@@ -25,10 +40,10 @@ const FileComponent: React.FC = () => {
         };
 
         if (currentFolder) {
-            const updatedNodes = updateNodeById(nodes, currentFolder.id, newNode);
-            setNodes(updatedNodes);
+            const updateddata = updateNodeById(data, currentFolder.id, newNode);
+            setData(updateddata);
         } else {
-            setNodes([...nodes, newNode]);
+            setData([...data, newNode]);
         }
 
         // Limpiar estado
@@ -52,9 +67,9 @@ const FileComponent: React.FC = () => {
 
     useEffect(() => {
         // Aquí puedes hacer algo cuando los nodos cambian
-        console.log("Nodos actualizados:", nodes);
+        console.log("Nodos actualizados:", data);
         // Por ejemplo, podrías realizar una llamada a una API o actualizar la UI de alguna manera
-    }, [nodes]);
+    }, [data]);
 
     return (
         <>
@@ -156,8 +171,7 @@ const FileComponent: React.FC = () => {
                 </ModalContent>
             </Modal>
         </>
-    )
+    );
+};
 
-}
-
-export default FileComponent
+export default FileComponent;

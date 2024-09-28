@@ -3,6 +3,7 @@ import { newInvoicing } from '@renderer/features/newInvoicing'
 import { manageWarehouse } from '@renderer/features/warehouseSlice'
 import { manageUserSlice } from '@renderer/features/userSlice'
 import { manageCompanies } from '@renderer/features/companiesSlice'
+import { manageDocuments } from '@renderer/features/DocumentsSlice'
 import { manageTableSlice } from '@renderer/features/tableSlice'
 import { manageCurrentUnit } from '@renderer/features/currentUnitSlice'
 import { manageModalsSlice } from '@renderer/features/currentModal'
@@ -35,6 +36,7 @@ const appReducer = combineReducers({
   companies: manageCompanies.reducer,
   currentUnit: manageCurrentUnit.reducer,
   currentCompany: manageCurrentCompany.reducer,
+  documents: manageDocuments.reducer
 })
 
 const rootReducer = (state, action) => {

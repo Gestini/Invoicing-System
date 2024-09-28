@@ -1,11 +1,14 @@
 import { useDisclosure } from '@nextui-org/react';
+import { RootState } from '@renderer/store';
 import { LocalFile, Node } from '@renderer/types/File';
 import { useEffect, useState } from 'react'
+import { UseDispatch, useSelector } from 'react-redux';
+import { setData } from '@renderer/features/DocumentsSlice'
 
 const FileManager = () => {
+    const data = useSelector((state: RootState) => state.documents)
     const [currentFolder, setCurrentFolder] = useState<Node | null>(null);
     const [folderHistory, setFolderHistory] = useState<Node[]>([]);
-    const [nodes, setNodes] = useState<Node[]>([]);
     const { isOpen, onOpenChange, onClose, onOpen } = useDisclosure();
     const [localFile, setLocalFile] = useState<LocalFile>({
         name: '',
@@ -13,14 +16,15 @@ const FileManager = () => {
         type: '',
         file: null,
     });
+
     const [cloudFile, setCloudFile] = useState({
         name: '',
         url: '',
         type: '',
     });
 
-    const updateNodeById = (nodes: Node[], parentId: number, newNode: Node): Node[] => {
-        return nodes.map(node => {
+    const updateNodeById = (data: Node[], parentId: number, newNode: Node): Node[] => {
+        return data.map(node => {
             if (node.id === parentId) {
                 return { ...node, children: [...(node.children || []), newNode] };
             }
@@ -33,8 +37,8 @@ const FileManager = () => {
 
     useEffect(() => {
         if (currentFolder) {
-            const findFolderById = (nodes: Node[], id: number): Node | null => {
-                for (let node of nodes) {
+            const findFolderById = (data: Node[], id: number): Node | null => {
+                for (let node of data) {
                     if (node.id === id) return node;
                     if (node.children) {
                         const found = findFolderById(node.children, id);
@@ -44,18 +48,12 @@ const FileManager = () => {
                 return null;
             };
 
-            const updatedFolder = findFolderById(nodes, currentFolder.id);
+            const updatedFolder = findFolderById(data, currentFolder.id);
             if (updatedFolder) {
                 setCurrentFolder(updatedFolder);
             }
         }
-    }, [nodes, currentFolder]);
-
-    useEffect(() => {
-        // Aquí puedes hacer algo cuando los nodos cambian
-        console.log("Nodos actualizados:", nodes);
-        // Por ejemplo, podrías realizar una llamada a una API o actualizar la UI de alguna manera
-    }, [nodes]);
+    }, [data, currentFolder]);
 
     const addFile = () => {
         if (!cloudFile.name || !cloudFile.url || !cloudFile.type) {
@@ -67,23 +65,23 @@ const FileManager = () => {
             type: cloudFile.type,
             url: cloudFile.url,
         };
-        setNodes(prevNodes => {
+        setData(prevdata => {
             if (currentFolder) {
-                return updateNodeById(prevNodes, currentFolder.id, newNode);
+                return updateNodeById(prevdata, currentFolder.id, newNode);
             } else {
-                return [...prevNodes, newNode];
+                return [...prevdata, newNode];
             }
         });
-    
+
         onClose();
         setCloudFile({ name: '', url: '', type: '' });
     };
-    
+
     const addLocalFile = () => {
         if (!localFile.name || !localFile.url || !localFile.type) {
             return alert('Faltan detalles del archivo local');
         }
-    
+
         const newNode: Node = {
             id: Date.now(),
             name: localFile.name,
@@ -91,15 +89,15 @@ const FileManager = () => {
             type: localFile.type,
             url: localFile.url,
         };
-    
-        setNodes(prevNodes => {
+
+        setData(prevdata => {
             if (currentFolder) {
-                return updateNodeById(prevNodes, currentFolder.id, newNode);
+                return updateNodeById(prevdata, currentFolder.id, newNode);
             } else {
-                return [...prevNodes, newNode];
+                return [...prevdata, newNode];
             }
         });
-    
+
         // Limpiar estado
         onClose();
         setLocalFile({ name: '', url: '', type: '', file: null });
@@ -124,8 +122,8 @@ const FileManager = () => {
         setCurrentFolder,
         folderHistory,
         setFolderHistory,
-        nodes,
-        setNodes,
+        data,
+        setData,
         localFile,
         setLocalFile,
         cloudFile,
