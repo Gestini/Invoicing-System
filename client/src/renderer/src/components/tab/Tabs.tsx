@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 
 interface Tab {
   name: string
+  content: React.ReactNode // Asegúrate de que acepta cualquier contenido de React
 }
 
 interface WarehouseTabsProps {
@@ -21,9 +22,6 @@ export const Tabs: React.FC<WarehouseTabsProps> = ({ tabs }) => {
   return (
     <>
       <div className='sm:hidden'>
-        <label htmlFor='tabs' className='sr-only'>
-          Select your option
-        </label>
         <select
           id='tabs'
           className='text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500'
@@ -37,6 +35,7 @@ export const Tabs: React.FC<WarehouseTabsProps> = ({ tabs }) => {
           ))}
         </select>
       </div>
+
       <ul className='hidden border border-c-border text-sm font-medium text-center rounded-lg shadow sm:flex text-c-tabs w-fit'>
         {tabs.map((tab, index) => (
           <li key={index} className='cursor-pointer'>
@@ -52,6 +51,9 @@ export const Tabs: React.FC<WarehouseTabsProps> = ({ tabs }) => {
           </li>
         ))}
       </ul>
+
+      {/* Renderiza el contenido de la pestaña activa */}
+      <>{tabs[activeTab].content}</>
     </>
   )
 }
