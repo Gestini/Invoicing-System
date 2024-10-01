@@ -29,7 +29,7 @@ import {
   MdPointOfSale,
   MdShoppingCart,
   MdWarehouse,
-  MdFolder  
+  MdFolder,
 } from 'react-icons/md'
 
 interface Route {
@@ -68,9 +68,9 @@ const warehouseRoutes: RouteSection = {
   permission: permissions.warehouse.permission,
   routes: [
     { path: '/product-management', element: <Warehouse />, title: 'Depositos' },
+    { path: '/stock-management', element: <></>, title: 'inventario' },
     { path: '/brands', element: <Products />, title: 'productos' },
     { path: '/price-management', element: <></>, title: 'precios' },
-    { path: '/stock-management', element: <></>, title: 'inventario' },
     {
       path: '/stock-movements',
       element: <></>,
@@ -85,12 +85,10 @@ const warehouseRoutes: RouteSection = {
 
 const documentsRoutes: RouteSection = {
   icon: <MdFolder />,
-  path: '/documents/:unitId',
+  path: '/documents/:companyId/:unitId',
   section: 'Documentos',
   permission: permissions.documents.permission,
-  routes: [
-    { path: '/general', element: <Documents />, title: 'Documentos' },
-  ],
+  routes: [{ path: '/general', element: <Documents />, title: 'Documentos' }],
 }
 
 const posRoutes: RouteSection = {
@@ -195,7 +193,7 @@ export const routes = [
   warehouseRoutes,
   operationsRoutes,
   UnitInfo,
-  documentsRoutes
+  documentsRoutes,
 ].reduce(
   (acc: any, item: RouteSection) =>
     acc.concat(
