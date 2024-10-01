@@ -15,8 +15,10 @@ import { uploadImage } from '@renderer/utils/DigitalOcean/uploadImage'
 import { fieldConfig } from './data'
 import { useSelector } from 'react-redux'
 import { reqCreateUnit } from '@renderer/api/requests'
+import { modalTypes, useModal } from '@renderer/utils/useModal'
 
-export const CreateUnitModal = ({ isOpen, closeModal }) => {
+export const CreateUnitModal = () => {
+  const [isOpen, toggleModal] = useModal(modalTypes.createUnitModal)
   const currentCompany = useSelector((state: RootState) => state.currentCompany)
   const [file, setFile] = React.useState<File | null>(null)
   const [errors, setErrors] = React.useState({})
@@ -91,7 +93,7 @@ export const CreateUnitModal = ({ isOpen, closeModal }) => {
       // Send the data to the backend
       await reqCreateUnit(updatedData)
       setLoading(false)
-      closeModal()
+      toggleModal()
     } catch (error) {
       console.error('Error en la creación de la unidad:', error)
       setLoading(false)
@@ -102,7 +104,7 @@ export const CreateUnitModal = ({ isOpen, closeModal }) => {
     <Modal
       size='xl'
       isOpen={isOpen}
-      onOpenChange={closeModal}
+      onOpenChange={toggleModal}
       scrollBehavior={'inside'}
       backdrop='blur'
       placement='center'
@@ -184,7 +186,7 @@ export const CreateUnitModal = ({ isOpen, closeModal }) => {
           </form>
         </ModalBody>
         <ModalFooter>
-          <Button color='danger' variant='light' onPress={closeModal} radius='sm'>
+          <Button color='danger' variant='light' onPress={toggleModal} radius='sm'>
             Cerrar
           </Button>
           <Button

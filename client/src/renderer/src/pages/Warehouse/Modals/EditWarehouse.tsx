@@ -11,13 +11,18 @@ import {
 import { RootState } from '@renderer/store'
 import { editWarehouse } from '@renderer/features/warehouseSlice'
 import { reqEditDeposit } from '@renderer/api/requests'
+import { WarehouseModel } from '@renderer/interfaces/warehouse'
+import { useModal, modalTypes } from '@renderer/utils/useModal'
 import { useDispatch, useSelector } from 'react-redux'
 
-export const EditWarehouse = ({ isOpen, onOpenChange, onClose, id }) => {
+export const EditWarehouse = () => {
   const dispatch = useDispatch()
   const [data, setData] = React.useState<any>({})
+  const [isOpen, toggleModal] = useModal(modalTypes.editWarehouseModal)
   const warehouse = useSelector((state: RootState) => state.unit.warehouse)
-  const currentWarehouseEdit = warehouse.data.find((item: any) => item.id == id)
+  const currentWarehouseEdit = warehouse.data.find(
+    (item: WarehouseModel) => item.id == warehouse.currentEditWarehouseId,
+  )
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     let name = e.target.name
@@ -29,18 +34,18 @@ export const EditWarehouse = ({ isOpen, onOpenChange, onClose, id }) => {
   }
 
   const handleEditWarehouse = async () => {
-    dispatch(editWarehouse({ id, data }))
-    await reqEditDeposit(id, data)
-    onClose()
+    dispatch(editWarehouse({ id: warehouse.currentEditWarehouseId, data }))
+    await reqEditDeposit(warehouse.currentEditWarehouseId, data)
+    toggleModal()
   }
 
   return (
     <Modal
-      isOpen={isOpen && id !== -1}
-      onOpenChange={onOpenChange}
+      isOpen={isOpen}
       scrollBehavior={'inside'}
       backdrop='blur'
       placement='center'
+      onClose={toggleModal}
     >
       <ModalContent>
         <ModalHeader>
@@ -60,7 +65,7 @@ export const EditWarehouse = ({ isOpen, onOpenChange, onClose, id }) => {
           </div>
         </ModalBody>
         <ModalFooter>
-          <Button color='danger' variant='light' radius='sm' onPress={onClose}>
+          <Button color='danger' variant='light' radius='sm' onPress={toggleModal}>
             Cerrar
           </Button>
           <Button

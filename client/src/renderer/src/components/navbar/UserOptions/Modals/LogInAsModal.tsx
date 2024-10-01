@@ -12,16 +12,14 @@ import { AuthForm } from '../../../Auth/AuthInputForm'
 import { RootState } from '@renderer/store'
 import { loginInputs } from '@renderer/pages/Auth/AuthInputs'
 import { useSelector } from 'react-redux'
-import { useDispatch } from 'react-redux'
-import { toggleModal } from '@renderer/features/currentModal'
 import { useNavigate } from 'react-router-dom'
 import { reqAuthLogin } from '@renderer/api/requests'
+import { useModal, modalTypes } from '@renderer/utils/useModal'
 
 export const LogInAsModal = ({ errors }) => {
-  const dispatch = useDispatch()
   const navigate = useNavigate()
-  const modalStates = useSelector((state: RootState) => state.unit.modals)
   const userSession = useSelector((state: RootState) => state.user.userSession)
+  const [isOpen, toggleModal] = useModal(modalTypes.logInAsModal)
 
   const [data, setData] = React.useState({
     username: '',
@@ -36,8 +34,6 @@ export const LogInAsModal = ({ errors }) => {
     })
   }
 
-  const handleToggleModal = () => dispatch(toggleModal('LogInAsModal'))
-
   const loginAnExistAccount = async () => {
     const response = await reqAuthLogin({
       username: userSession.selectedUserToChange.user.username,
@@ -46,15 +42,15 @@ export const LogInAsModal = ({ errors }) => {
     if (!response) return
     localStorage.setItem('token', response.data)
     navigate('/')
-    handleToggleModal()
+    toggleModal()
   }
 
   return (
     <Modal
       scrollBehavior={'inside'}
       backdrop='blur'
-      isOpen={modalStates.modals.LogInAsModal}
-      onClose={() => handleToggleModal()}
+      isOpen={isOpen}
+      onClose={() => toggleModal()}
       placement='center'
     >
       <ModalContent>
@@ -70,7 +66,7 @@ export const LogInAsModal = ({ errors }) => {
           </div>
         </ModalBody>
         <ModalFooter>
-          <Button color='danger' variant='flat' radius='sm' onPress={() => handleToggleModal()}>
+          <Button color='danger' variant='flat' radius='sm' onPress={() => toggleModal()}>
             Cerrar
           </Button>
           <Button

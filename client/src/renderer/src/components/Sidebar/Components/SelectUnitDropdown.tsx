@@ -15,14 +15,16 @@ import { MdHomeFilled } from 'react-icons/md'
 import { FaCog, FaPlus } from 'react-icons/fa'
 import { ShortCellValue } from '@renderer/components/AppTable/TableComponents/ShortCellValue'
 import { IoIosArrowDown } from 'react-icons/io'
+import { modalTypes, useModal } from '@renderer/utils/useModal'
 
 export const SelectUnitDropdown = ({ activeSidebar }) => {
   const navigate = useNavigate()
-  const company = useSelector((state: RootState) => state.currentCompany)
-  const [sucursales, setSucursales] = React.useState([])
-  const [isOpen, setIsOpen] = React.useState(false)
-  const [modalIsOpen, setModalIsOpen] = React.useState(false)
   const unit = useSelector((state: RootState) => state.currentUnit)
+  const company = useSelector((state: RootState) => state.currentCompany)
+  const [isOpen, setIsOpen] = React.useState(false)
+  const [sucursales, setSucursales] = React.useState([])
+  const [__, toggleCreateUnitModal] = useModal(modalTypes.addNewAccountModal)
+  const [companySettingsModalIsOpen, _] = useModal(modalTypes.companySettingsModal)
 
   React.useEffect(() => {
     const loadData = async () => {
@@ -36,9 +38,9 @@ export const SelectUnitDropdown = ({ activeSidebar }) => {
 
   return (
     <>
-      <CreateUnitModal isOpen={modalIsOpen} closeModal={() => setModalIsOpen(false)} />
+      <CreateUnitModal />
       <Dropdown
-        isOpen={isOpen}
+        isOpen={isOpen && !companySettingsModalIsOpen}
         onOpenChange={setIsOpen}
         classNames={{
           content: 'bg-c-sidebar-bg-2 text-c-title',
@@ -104,7 +106,7 @@ export const SelectUnitDropdown = ({ activeSidebar }) => {
             color='default'
             key='key-crearSucursal'
             endContent={<FaPlus />}
-            onPress={() => setModalIsOpen(!modalIsOpen)}
+            onPress={toggleCreateUnitModal}
           >
             Crear sucursal
           </DropdownItem>

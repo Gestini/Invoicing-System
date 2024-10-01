@@ -8,22 +8,22 @@ import {
   ModalFooter,
   ModalHeader,
   ModalContent,
-  useDisclosure,
 } from '@nextui-org/react'
 import { PlusIcon } from '@renderer/components/Icons/PlusIcon'
-import { useParams } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { RootState } from '@renderer/store'
 import { addWarehouse } from '@renderer/features/warehouseSlice'
 import { reqCreateDeposit } from '@renderer/api/requests'
+import { modalTypes, useModal } from '@renderer/utils/useModal'
+import { useDispatch, useSelector } from 'react-redux'
 
 export const CreateWarehouse = () => {
   const dispatch = useDispatch()
-  const params = useParams()
-  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
   const [data, setData] = React.useState({})
+  const [isOpen, toggleModal] = useModal(modalTypes.createWarehouseModal)
   const [buttonDisabled, setButtonDisabled] = React.useState(false)
+  const company = useSelector((state: RootState) => state.currentCompany)
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     let name = e.target.name
     let value = e.target.value
     setData({
@@ -38,13 +38,13 @@ export const CreateWarehouse = () => {
 
       const response = await reqCreateDeposit({
         ...data,
-        businessUnit: {
-          id: params.unitId,
+        company: {
+          id: company.id,
         },
       })
 
       dispatch(addWarehouse(response.data))
-      onClose()
+      toggleModal()
     } catch (error) {
       console.log(error)
     } finally {
@@ -56,15 +56,15 @@ export const CreateWarehouse = () => {
     <>
       <Tooltip content='Crear depósito'>
         <div
-          onClick={onOpen}
-          className='h-[76px] rounded-[10px] px-[10px] py-[20px] bg-c-card text-c-text flex shadow-sm items-center justify-between cursor-pointer'
+          onClick={toggleModal}
+          className='h-[76px] w-fit rounded-[10px] px-[10px] py-[20px] bg-c-card text-c-text flex shadow-sm items-center justify-between cursor-pointer'
         >
           <PlusIcon />
         </div>
       </Tooltip>
       <Modal
         isOpen={isOpen}
-        onOpenChange={onOpenChange}
+        onOpenChange={toggleModal}
         scrollBehavior={'inside'}
         backdrop='blur'
         placement='center'
@@ -86,7 +86,7 @@ export const CreateWarehouse = () => {
             </div>
           </ModalBody>
           <ModalFooter>
-            <Button color='danger' variant='light' onPress={onClose} radius='sm'>
+            <Button color='danger' variant='light' onPress={toggleModal} radius='sm'>
               Cerrar
             </Button>
             <Button

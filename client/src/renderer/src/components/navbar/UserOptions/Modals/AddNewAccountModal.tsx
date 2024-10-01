@@ -1,9 +1,7 @@
 import React from 'react'
 import { AuthForm } from '../../../Auth/AuthInputForm'
-import { RootState } from '@renderer/store'
-import { toggleModal } from '@renderer/features/currentModal'
 import { loginInputs } from '@renderer/pages/Auth/AuthInputs'
-import { useDispatch, useSelector } from 'react-redux'
+import { useModal, modalTypes } from '@renderer/utils/useModal'
 import { reqAuthLogin, reqSearchUserByUsername } from '@renderer/api/requests'
 import {
   Link,
@@ -17,9 +15,7 @@ import {
 
 export const AddNewAccountModal = ({ errors }) => {
   const currentSessions = localStorage.getItem('sessions')
-  const dispatch = useDispatch()
-  const modalStates = useSelector((state: RootState) => state.unit.modals)
-  const handleToggleModal = () => dispatch(toggleModal('AddNewAccountModal'))
+  const [isOpen, toggleModal] = useModal(modalTypes.addNewAccountModal)
 
   const [data, setData] = React.useState({
     username: '',
@@ -58,15 +54,15 @@ export const AddNewAccountModal = ({ errors }) => {
     } catch (error) {
       console.log(error)
     }
-    handleToggleModal()
+    toggleModal()
   }
 
   return (
     <Modal
       scrollBehavior={'inside'}
       backdrop='blur'
-      isOpen={modalStates.modals.AddNewAccountModal}
-      onClose={handleToggleModal}
+      isOpen={isOpen}
+      onClose={toggleModal}
       placement='center'
     >
       <ModalContent>
@@ -81,7 +77,7 @@ export const AddNewAccountModal = ({ errors }) => {
             </div>
           </ModalBody>
           <ModalFooter>
-            <Button color='danger' variant='flat' radius='sm' onPress={handleToggleModal}>
+            <Button color='danger' variant='flat' radius='sm' onPress={toggleModal}>
               Cerrar
             </Button>
             <Button

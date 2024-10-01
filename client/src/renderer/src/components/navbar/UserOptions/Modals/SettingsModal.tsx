@@ -1,14 +1,10 @@
 import MainColor from '../../../Theme/MainColor'
-import { RootState } from '@renderer/store'
 import { ChangeTheme } from '../../../Theme'
-import { toggleModal } from '@renderer/features/currentModal'
-import { useDispatch, useSelector } from 'react-redux'
+import { useModal, modalTypes } from '@renderer/utils/useModal'
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@nextui-org/react'
 
 export const SettingsModal = () => {
-  const dispatch = useDispatch()
-  const modalStates = useSelector((state: RootState) => state.unit.modals)
-  const handleToggleModal = () => dispatch(toggleModal('SettingsModal'))
+  const [isOpen, toggleModal] = useModal(modalTypes.settingsModal)
 
   return (
     <Modal
@@ -16,12 +12,12 @@ export const SettingsModal = () => {
       backdrop='blur'
       size='sm'
       placement='center'
-      isOpen={modalStates.modals.SettingsModal}
-      onClose={handleToggleModal}
+      isOpen={isOpen}
+      onClose={toggleModal}
     >
       <ModalContent>
         <ModalHeader className='flex flex-col gap-1'>
-          <h3 className='default-text-color' onClick={handleToggleModal}>
+          <h3 className='default-text-color' onClick={toggleModal}>
             Ajustes
           </h3>
         </ModalHeader>

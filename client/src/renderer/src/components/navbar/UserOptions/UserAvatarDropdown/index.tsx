@@ -13,9 +13,9 @@ import {
   DropdownTrigger,
 } from '@nextui-org/react'
 import { RootState } from '@renderer/store'
-import { toggleModal } from '@renderer/features/currentModal'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { useModal, modalTypes } from '@renderer/utils/useModal'
 import { setSelectedUserToChange } from '@renderer/features/userSessions'
 
 export const UserAvatarDropdown = () => {
@@ -25,6 +25,8 @@ export const UserAvatarDropdown = () => {
   const user = useSelector((state: RootState) => state.user.user)
   const [sessions, setSessions] = React.useState<any>([])
   const currentSessions = localStorage.getItem('sessions')
+  const [_, toggleAddNewAccountModal] = useModal(modalTypes.addNewAccountModal)
+  const [__, toggleLogInAsModalModal] = useModal(modalTypes.logInAsModal)
 
   React.useEffect(() => {
     if (!currentSessions) return
@@ -38,8 +40,6 @@ export const UserAvatarDropdown = () => {
     }
     loadUsersSession()
   }, [])
-
-  const handleToggleModal = (modalName: string) => dispatch(toggleModal(modalName))
 
   const logOut = () => {
     if (!currentSessions) return
@@ -76,7 +76,7 @@ export const UserAvatarDropdown = () => {
 
     if (!userAccount.tokenValid) {
       dispatch(setSelectedUserToChange(userAccount))
-      return handleToggleModal('LogInAsModal')
+      return toggleLogInAsModalModal()
     }
 
     navigate('/')
@@ -163,11 +163,7 @@ export const UserAvatarDropdown = () => {
               </div>
             </DropdownItem>
           ))}
-          <DropdownItem
-            key='addAccount'
-            className='flex'
-            onClick={() => handleToggleModal('AddNewAccountModal')}
-          >
+          <DropdownItem key='addAccount' className='flex' onClick={toggleAddNewAccountModal}>
             <div className='itemprofile flex items-center gap-2'>
               <IoIosAddCircle className='text-[30px]' />
               <div className='infouserloged flex-grow flex justify-between items-center gap-2'>
