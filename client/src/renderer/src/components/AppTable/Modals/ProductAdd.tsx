@@ -15,16 +15,19 @@ import {
 import { PlusIcon } from '@renderer/components/Icons/PlusIcon'
 import { Checkbox } from '@nextui-org/react'
 import { useParams } from 'react-router-dom'
+import { RootState } from '@renderer/store'
+import { useSelector } from 'react-redux'
 import { reqGetSupplier } from '@renderer/api/requests'
 import './ProductAdd.scss'
 
 export const AddProductModal = ({ modal }) => {
   const params = useParams()
+  const unit = useSelector((state: RootState) => state.currentUnit)
   const [suppliers, setSuppliers] = React.useState([])
 
   React.useEffect(() => {
     const GetSupplier = async () => {
-      const response = await reqGetSupplier(params.unitId)
+      const response = await reqGetSupplier(unit.id)
       setSuppliers(response.data)
     }
     GetSupplier()

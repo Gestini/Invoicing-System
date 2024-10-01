@@ -24,6 +24,7 @@ export const EditProductModal = ({ modal }) => {
   const params = useParams()
   const dispatch = useDispatch()
   const users = useSelector((state: RootState) => state.unit.table.data)
+  const unit = useSelector((state: RootState) => state.currentUnit)
   const currentItemIdEdit = useSelector((state: RootState) => state.unit.table.currentItemIdEdit)
   const currentUserEdit = users.find((item: UserModel) => item.id == currentItemIdEdit)
   const [suppliers, setSuppliers] = React.useState([])
@@ -53,7 +54,7 @@ export const EditProductModal = ({ modal }) => {
 
   React.useEffect(() => {
     const GetSupplier = async () => {
-      const response = await reqGetSupplier(params.unitId)
+      const response = await reqGetSupplier(unit.id)
       setSuppliers(response.data)
     }
     GetSupplier()
