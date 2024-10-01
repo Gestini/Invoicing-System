@@ -14,13 +14,13 @@ import productar.models.BusinessUnitModel;
 import productar.models.CompanyModel;
 import productar.models.User;
 import productar.repositories.BusinessUnitsRepository;
-import productar.repositories.CompanyRespository;
+import productar.repositories.CompanyRepository;
 
 @Service
 public class CompanyService {
 
     @Autowired
-    private CompanyRespository companyRespository;
+    private CompanyRepository companyRespository;
 
     @Autowired
     private BusinessUnitsRepository businessUnitsRepository;
