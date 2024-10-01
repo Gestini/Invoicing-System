@@ -23,7 +23,7 @@ import {
 
 export const AssignWarehouseToDeposit = () => {
   const company = useSelector((state: RootState) => state.currentCompany)
-  const [isOpen, toggleModal] = useModal(modalTypes.createUnitModal)
+  const [isOpen, toggleModal] = useModal(modalTypes.assingDepositToUnitModal)
   const [sucursales, setSucursales] = React.useState<BusinessUnitModel[]>([])
   const warehouse = useSelector((state: RootState) => state.unit.warehouse)
   const [sucursalesAsignadas, setSucursalesAsignadas] = React.useState<BusinessUnitModel[]>([])
