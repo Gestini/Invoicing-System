@@ -10,7 +10,7 @@ import { reqAddPermissionRole, reqRemovePermissionRole } from '@renderer/api/req
 export const RolePerms = () => {
   const dispatch = useDispatch()
   const [searchTerm, setSearchTerm] = React.useState('')
-  const handleSearch = (e: any) => setSearchTerm(e.target.value)
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)
   const roles = useSelector((state: RootState) => state.unit.roles)
   const currentRole = roles.data.find((item) => item.id === roles.currentRoleIdEdit)
 

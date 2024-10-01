@@ -17,7 +17,7 @@ export const SearchProduct = () => {
     (product: any) => !currentTab?.products.some((item: any) => item.id == product.id),
   )
 
-  const handleChange = async (e: any) => setSearchValue(e)
+  const handleChange = async (e: string) => setSearchValue(e)
 
   React.useEffect(() => {
     const onSubmmit = async () => {

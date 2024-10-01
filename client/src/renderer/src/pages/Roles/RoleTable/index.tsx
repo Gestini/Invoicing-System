@@ -60,7 +60,7 @@ export const RoleTable = () => {
     dispatch(setInitialUsersRole({ users: res.data }))
   }
 
-  const handleSearch = (e: any) => setSearchTerm(e.target.value)
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)
 
   const renderCell = React.useCallback((item: any, columnKey: any) => {
     const cellValue = item[columnKey]
