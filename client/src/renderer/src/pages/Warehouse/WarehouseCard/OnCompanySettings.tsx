@@ -68,7 +68,7 @@ export const WarehouseCardCompany = () => {
 
   return (
     <>
-      <div className='flex w-full gap-2'>
+      <div className='flex w-full gap-2 mb-3'>
         {warehouse.data.length === 0 ? (
           <div className='flex items-center justify-between gap-4'>
             <p className='text-foreground-400 align-middle text-center'>

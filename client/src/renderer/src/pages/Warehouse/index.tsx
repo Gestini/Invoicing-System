@@ -5,19 +5,39 @@ import { WarehouseStats } from './Components/WarehouseStats'
 
 export const Warehouse = () => {
   const tabs = [
-    { name: 'Productos', content: 'Contenido de Productos' },
-    { name: 'Stock Pendiente', content: 'Contenido de Stock Pendiente' },
-    { name: 'Reposición', content: 'Contenido de Reposición' },
-    { name: 'Ventas', content: 'Contenido de Ventas' },
-    { name: 'Empleados', content: 'Contenido de Empleados' },
+    {
+      name: 'Productos',
+      content: <>
+        <WarehouseCard />
+        <WarehouseStats />
+        <StockTable />
+      </>
+
+    },
+    {
+      name: 'Stock Pendiente',
+      content: ''
+    },
+    {
+      name: 'Reposición',
+      content: ''
+
+    },
+    {
+      name: 'Ventas',
+      content: ''
+
+    },
+    {
+      name: 'Empleados',
+      content: ''
+
+    },
   ]
 
   return (
     <div className='flex gap-3 flex-col'>
       <Tabs tabs={tabs} />
-      <WarehouseCard />
-      <WarehouseStats />
-      <StockTable />
     </div>
   )
 }

@@ -4,7 +4,7 @@ import BulkUpload from "./BulkUpload"
 
 const index = () => {
   const tabs = [
-    { name: 'Listas', content: 'Contenido de Listas' },
+    { name: 'Listas', content: <StockTable /> },
     { name: 'Productos', content: 'Contenido de Productos' },
     { name: 'Carga de lista', content: 'Contenido de Carga de lista' },
   ]
@@ -12,7 +12,6 @@ const index = () => {
   return (
     <div className='flex gap-2 flex-col flex-grow '>
       <Tabs tabs={tabs} />
-      <StockTable />
     </div>
   )
 }

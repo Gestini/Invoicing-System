@@ -53,7 +53,7 @@ export const Tabs: React.FC<WarehouseTabsProps> = ({ tabs }) => {
       </ul>
 
       {/* Renderiza el contenido de la pestaña activa */}
-      <>{tabs[activeTab].content}</>
+      <div className='text-c-title'>{tabs[activeTab].content}</div>
     </>
   )
 }
