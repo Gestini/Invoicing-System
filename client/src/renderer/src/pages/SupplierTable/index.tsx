@@ -1,7 +1,6 @@
 import React from 'react'
 import toast from 'react-hot-toast'
 import { AppTable } from '@renderer/components/AppTable'
-import { useParams } from 'react-router-dom'
 import { RootState } from '@renderer/store'
 import { AddSupplierModal } from '@renderer/components/AppTable/Modals/SupplierAdd'
 import { EditSupplierModal } from '@renderer/components/AppTable/Modals/SupplierEdit'
@@ -12,12 +11,13 @@ import { reqCreateSupplier, reqEditSupplier, reqGetSupplier } from '@renderer/ap
 
 export const SupplierTable = () => {
   const table = useSelector((state: RootState) => state.unit.table)
-  const params = useParams()
+  const unit = useSelector((state: RootState) => state.currentUnit)
+
   const dispatch = useDispatch()
 
   React.useEffect(() => {
     const loadData = async () => {
-      const response = await reqGetSupplier(params.unitId)
+      const response = await reqGetSupplier(unit.id)
       dispatch(setTableData(response.data))
     }
     loadData()
