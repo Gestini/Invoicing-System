@@ -19,32 +19,43 @@ import productar.services.DepositService;
 public class DepositController {
 
     @Autowired
-    private DepositService depositUnitsService;
+    private DepositService depositService;
 
     @PostMapping("/create")
     public ResponseEntity<?> saveDepositUnit(@RequestBody DepositModel newDeposit) {
-        return depositUnitsService.saveDeposit(newDeposit);
+        return depositService.saveDeposit(newDeposit);
     }
 
     @PutMapping("/{depositId}")
     public ResponseEntity<?> updateDepositUnit(@PathVariable Long depositId, @RequestBody DepositModel data) {
-        return depositUnitsService.updateDeposit(depositId, data);
+        return depositService.updateDeposit(depositId, data);
     }
 
     @DeleteMapping("/{depositId}")
     public ResponseEntity<?> deleteDepositUnit(@PathVariable Long depositId) {
-        return depositUnitsService.deleteDeposit(depositId);
+        return depositService.deleteDeposit(depositId);
     }
 
     @PostMapping("/assign-deposit-to-unit/{depositId}/{unitId}")
     public ResponseEntity<?> assignDepositToUnit(@PathVariable("depositId") Long depositId,
             @PathVariable("unitId") Long unitId) {
-        return depositUnitsService.assignDepositToUnit(depositId, unitId);
+        return depositService.assignDepositToUnit(depositId, unitId);
     }
 
     @GetMapping("/get-by-unit-id/{unitId}")
     public ResponseEntity<?> getDepositsByUnitId(@PathVariable("unitId") Long unitId) {
-        return depositUnitsService.getDepositsByUnitId(unitId);
+        return depositService.getDepositsByUnitId(unitId);
+    }
+
+    @GetMapping("/get-by-company-id/{companyId}")
+    public ResponseEntity<?> getDepositsByCompanyId(@PathVariable("companyId") Long companyId) {
+        return depositService.getDepositsByCompanyId(companyId);
+    }
+
+    @DeleteMapping("/unlink-deposit-from-unit/{depositId}/{unitId}")
+    public ResponseEntity<?> unlinkDepositFromUnit(@PathVariable("depositId") Long depositId,
+            @PathVariable("unitId") Long unitId) {
+        return depositService.unlinkDepositFromUnit(depositId, unitId);
     }
 
 }

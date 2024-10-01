@@ -12,9 +12,11 @@ import org.springframework.web.server.ResponseStatusException;
 
 import productar.models.BusinessUnitDepositModel;
 import productar.models.BusinessUnitModel;
+import productar.models.CompanyModel;
 import productar.models.DepositModel;
 import productar.repositories.BusinessUnitsDepositRespository;
 import productar.repositories.BusinessUnitsRepository;
+import productar.repositories.CompanyRepository;
 import productar.repositories.DepositRepository;
 
 @Service
@@ -28,6 +30,9 @@ public class DepositService {
 
     @Autowired
     private BusinessUnitsDepositRespository businessUnitsDepositRespository;
+
+    @Autowired
+    private CompanyRepository companyRepository;
 
     public ResponseEntity<?> saveDeposit(DepositModel depositUnit) {
         try {
@@ -96,6 +101,31 @@ public class DepositService {
         }
     }
 
+    public ResponseEntity<?> unlinkDepositFromUnit(Long depositId, Long unitId) {
+        try {
+
+            Optional<DepositModel> optionalDeposit = depositRepository.findById(depositId);
+            if (!optionalDeposit.isPresent()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Depósito no encontrado");
+            }
+
+            Optional<BusinessUnitModel> optionalUnit = businessUnitsRepository.findById(unitId);
+            if (!optionalUnit.isPresent()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Unidad no encontrada");
+            }
+
+            if (!businessUnitsDepositRespository.isAssigned(unitId, depositId)) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El depósito no está asignado a la unidad");
+            }
+
+            businessUnitsDepositRespository.unlinkDepositFromUnit(unitId, depositId);
+
+            return ResponseEntity.ok("Depósito desvinculado correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error");
+        }
+    }
+
     public ResponseEntity<?> getDepositsByUnitId(Long unitId) {
         try {
             List<DepositModel> deposits = businessUnitsDepositRespository
@@ -106,7 +136,22 @@ public class DepositService {
 
             return ResponseEntity.ok(deposits);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error");
+        }
+    }
+
+    public ResponseEntity<?> getDepositsByCompanyId(Long companyId) {
+        try {
+            Optional<CompanyModel> company = companyRepository.findById(companyId);
+            if (!company.isPresent()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Compañía no encontrada");
+            }
+
+            List<DepositModel> depositos = depositRepository.findDepositsByCompanyId(companyId);
+
+            return ResponseEntity.ok(depositos);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error");
         }
     }
 }
