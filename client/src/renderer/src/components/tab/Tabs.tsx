@@ -16,7 +16,7 @@ export const Tabs: React.FC<WarehouseTabsProps> = ({ tabs }) => {
   const warehouse = useSelector((state: RootState) => state.unit.warehouse)
   const currentWarehouseId = warehouse.currentWarehouseId
 
-  if (currentWarehouseId === '' || warehouse.data.length === 0) return null
+  if (currentWarehouseId === '' || warehouse.dataWarehouse.length === 0) return
 
   return (
     <>
