@@ -113,7 +113,6 @@ public class FileEntityService {
             Optional<FileEntityModel> optionalFile = fileEntityRepository.findById(parentId);
             if (!optionalFile.isPresent()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Archivo no encontrado.");
-
             }
 
             FileEntityModel file = optionalFile.get();

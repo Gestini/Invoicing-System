@@ -1,16 +1,14 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Node } from '@renderer/types/File'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Node } from '@renderer/types/File';
 
 interface DocumentState {
   data: Node[];
-  currentFolder: Node | null;
-  folderHistory: Node[];
+  currentPath: string[]; // Cambia a un array de strings
 }
 
 const initialState: DocumentState = {
   data: [],
-  currentFolder: null,
-  folderHistory: [],
+  currentPath: ['General'],
 };
 
 export const manageDocuments = createSlice({
@@ -20,38 +18,24 @@ export const manageDocuments = createSlice({
     setData: (state, action: PayloadAction<Node[]>) => {
       state.data = action.payload;
     },
-    setCurrentFolder: (state, action: PayloadAction<Node | null>) => {
-      state.currentFolder = action.payload;
-    },
     addDocument: (state, action: PayloadAction<Node>) => {
-      if (state.currentFolder) {
-        state.data = updateNodeById(state.data, state.currentFolder.id, action.payload);
-      } else {
-        state.data.push(action.payload);
-      }
+      state.data.push(action.payload);
     },
-    setFolderHistory: (state, action: PayloadAction<Node[]>) => {
-      state.folderHistory = action.payload;
+    addFolder: (state, action: PayloadAction<string>) => {
+      const newFolder: Node = {
+        id: Date.now(),
+        name: action.payload,
+        path: `${state.currentPath.join('/')}/${action.payload}`, // Cambia para usar join
+        folder: true,
+      };
+      state.data.push(newFolder);
     },
-    updateNodeById: (state, action: PayloadAction<{ parentId: number; newNode: Node }>) => {
-      state.data = updateNodeById(state.data, action.payload.parentId, action.payload.newNode);
-    }
+    setCurrentPath: (state, action: PayloadAction<string[]>) => { // Cambia a un array de strings
+      state.currentPath = action.payload;
+    },
   },
 });
 
-export const { setData, setCurrentFolder, addDocument, setFolderHistory } = manageDocuments.actions;
+export const { setData, addDocument, addFolder, setCurrentPath } = manageDocuments.actions;
 
 export default manageDocuments.reducer;
-
-// Helper function to update a node
-function updateNodeById(data: Node[], parentId: number, newNode: Node): Node[] {
-  return data.map(node => {
-    if (node.id === parentId) {
-      return { ...node, children: [...(node.children || []), newNode] };
-    }
-    if (node.children) {
-      return { ...node, children: updateNodeById(node.children, parentId, newNode) };
-    }
-    return node;
-  });
-}

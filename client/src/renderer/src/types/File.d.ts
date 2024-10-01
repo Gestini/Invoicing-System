@@ -1,15 +1,24 @@
 export interface Node {
     id: number;
     name: string;
-    children?: Node[];
-    url?: string;
+    folder: boolean;
+    path?: string;
     file?: string | null
-    type: string | null;
+    type?: string | null;
 }
 
-export interface LocalFile {
+export type LocalFile = {
     name: string;
-    file: null | string;
-    url: string;
-    type: string | null;
+    path: string;
+    type: string;
+    file: any; // Cambia 'string' a 'File'
+    folder: boolean;
+};
+
+interface File {
+    name: string;
+    path: string; // Debe ser siempre un string, no undefined
+    type: string;
+    file: any; // Considera ser más específico aquí
+    folder: boolean;
 }

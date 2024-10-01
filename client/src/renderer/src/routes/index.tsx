@@ -16,6 +16,7 @@ import { LoadCurrentCompanyMiddleware } from './middlewares/LoadCurrentCompanyMi
 import PlanSettings from '@renderer/pages/UnitSettings/PlanSettings'
 import Integration from '@renderer/pages/UnitSettings/Integration'
 import UnitConfig from '@renderer/pages/UnitSettings/UnitConfig'
+import Documents from '@renderer/pages/Documents'
 
 const Router = () => {
   return (
@@ -32,6 +33,7 @@ const Router = () => {
         <Route element={<ThemeMiddleware />}>
           <Route path={'/'} element={<Companies />} />
           <Route path='/account/edit' element={<User />} />
+          <Route path='/document/file/:fileId' element={<Documents />} />
         </Route>
         <Route element={<LoadCurrentCompanyMiddleware />}>
           <Route element={<LoadCurrentUnitMiddleware />}>
