@@ -1,6 +1,7 @@
 import { Tabs } from '../../components/tab/Tabs'
 import { StockTable } from './StockTable'
 import { WarehouseCard } from './WarehouseCard'
+import { WarehouseStats } from './Components/WarehouseStats'
 
 export const Warehouse = () => {
   const tabs = [
@@ -12,10 +13,10 @@ export const Warehouse = () => {
   ]
 
   return (
-    <div className='flex gap-2 flex-col'>
+    <div className='flex gap-3 flex-col'>
       <Tabs tabs={tabs} />
       <WarehouseCard />
-      {/* <WarehouseStats /> */}
+      <WarehouseStats />
       <StockTable />
     </div>
   )
