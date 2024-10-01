@@ -11,19 +11,31 @@ import productar.models.BusinessUnitModel;
 
 @Repository
 public interface BusinessUnitsRepository extends JpaRepository<BusinessUnitModel, Long> {
-    @Query("SELECT unit FROM BusinessUnitModel unit WHERE unit.company.owner.username = :username")
-    List<BusinessUnitModel> findByOwnerUsername(@PathVariable("username") String username);
+        @Query("SELECT unit FROM BusinessUnitModel unit WHERE unit.company.owner.username = :username")
+        List<BusinessUnitModel> findByOwnerUsername(@PathVariable("username") String username);
 
-    @Query("SELECT unit FROM BusinessUnitModel unit WHERE unit.company.id = :companyId")
-    List<BusinessUnitModel> findUnitsByCompanyId(@PathVariable("companyId") Long companyId);
+        @Query("SELECT unit FROM BusinessUnitModel unit WHERE unit.company.id = :companyId")
+        List<BusinessUnitModel> findUnitsByCompanyId(@PathVariable("companyId") Long companyId);
 
-    @Query("SELECT unit FROM BusinessUnitModel unit WHERE unit.ecommerce = true")
-    List<BusinessUnitModel> findAllUnitsWithEcommerce();
+        @Query("SELECT unit FROM BusinessUnitModel unit WHERE unit.ecommerce = true")
+        List<BusinessUnitModel> findAllUnitsWithEcommerce();
 
-    @Query("SELECT unit FROM BusinessUnitModel unit WHERE unit.id = :unitId AND unit.ecommerce = true")
-    BusinessUnitModel findByUnitIdAndEcommerce(@PathVariable("unitId") Long unitId);
+        @Query("SELECT unit FROM BusinessUnitModel unit WHERE unit.id = :unitId AND unit.ecommerce = true")
+        BusinessUnitModel findByUnitIdAndEcommerce(@PathVariable("unitId") Long unitId);
 
-    @Query(value = "SELECT * FROM business_unit WHERE company_id = :companyId LIMIT 1", nativeQuery = true)
-    BusinessUnitModel findFirstByCompanyId(@PathVariable("companyId") Long companyId);
+        @Query(value = "SELECT * FROM business_unit WHERE company_id = :companyId LIMIT 1", nativeQuery = true)
+        BusinessUnitModel findFirstByCompanyId(@PathVariable("companyId") Long companyId);
+
+        @Query("SELECT bu FROM BusinessUnitModel bu WHERE bu.company.id = :companyId AND bu.id NOT IN (SELECT bud.businessUnit.id FROM BusinessUnitDepositModel bud WHERE bud.deposit.id = :depositId)")
+        List<BusinessUnitModel> getUnitsMissingDeposit(@PathVariable("companyId") Long companyId,
+                        @PathVariable("depositId") Long depositId);
+
+        @Query("SELECT bud.businessUnit FROM BusinessUnitDepositModel bud WHERE bud.businessUnit.company.id = :companyId AND bud.deposit.id = :depositId")
+        List<BusinessUnitModel> getUnitsWithDeposit(@PathVariable("companyId") Long companyId,
+                        @PathVariable("depositId") Long depositId);
+
+        @Query("SELECT bu FROM BusinessUnitModel bu WHERE bu.company.id = :companyId AND bu.id NOT IN (SELECT bud.businessUnit.id FROM BusinessUnitDepositModel bud WHERE bud.deposit.id = :depositId) AND LOWER(bu.name) LIKE LOWER(CONCAT('%', :searchValue, '%'))")
+        List<BusinessUnitModel> searchUnitsMissingDeposit(@PathVariable("companyId") Long companyId,
+                        @PathVariable("depositId") Long depositId, @PathVariable("searchValue") String searchValue);
 
 }

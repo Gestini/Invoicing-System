@@ -75,4 +75,22 @@ public class BusinessUnitController {
         return this.businessUnitsService.updateBusinessUnit(id, data);
     }
 
+    @GetMapping("/get-units-missing-deposit/{companyId}/{depositId}")
+    public ResponseEntity<?> getUnitsMissingDeposit(@PathVariable("companyId") Long companyId,
+            @PathVariable("depositId") Long depositId) {
+        return this.businessUnitsService.getUnitsMissingDeposit(companyId, depositId);
+    }
+
+    @GetMapping("/get-units-with-deposit/{companyId}/{depositId}")
+    public ResponseEntity<?> getUnitsWithDeposit(@PathVariable("companyId") Long companyId,
+            @PathVariable("depositId") Long depositId) {
+        return this.businessUnitsService.getUnitsWithDeposit(companyId, depositId);
+    }
+
+    @GetMapping("/search-units-missing-deposit/{companyId}/{depositId}/{searchValue}")
+    public ResponseEntity<?> searchUnitsMissingDeposit(@PathVariable("companyId") Long companyId,
+            @PathVariable("depositId") Long depositId, @PathVariable("searchValue") String searchValue) {
+        return this.businessUnitsService.searchUnitsMissingDeposit(companyId, depositId, searchValue);
+    }
+
 }

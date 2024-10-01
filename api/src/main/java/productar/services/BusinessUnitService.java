@@ -67,6 +67,39 @@ public class BusinessUnitService {
         return businessUnitsRepository.findByUnitIdAndEcommerce(unitId);
     }
 
+    public ResponseEntity<?> getUnitsMissingDeposit(Long companyId, Long depositId) {
+        try {
+            List<BusinessUnitModel> result = businessUnitsRepository.getUnitsMissingDeposit(companyId,
+                    depositId);
+
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("Ocurrió un error inesperado");
+        }
+    }
+
+    public ResponseEntity<?> getUnitsWithDeposit(Long companyId, Long depositId) {
+        try {
+            List<BusinessUnitModel> result = businessUnitsRepository.getUnitsWithDeposit(companyId,
+                    depositId);
+
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("Ocurrió un error inesperado");
+        }
+    }
+
+    public ResponseEntity<?> searchUnitsMissingDeposit(Long companyId, Long depositId, String searchValue) {
+        try {
+            List<BusinessUnitModel> result = businessUnitsRepository.searchUnitsMissingDeposit(companyId,
+                    depositId, searchValue);
+
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("Ocurrió un error inesperado");
+        }
+    }
+
     public List<BusinessUnitModel> findUnitsByCompanyId(Long companyId) {
         return businessUnitsRepository.findUnitsByCompanyId(companyId);
     }
