@@ -16,6 +16,7 @@ export const LoadCurrentUnitMiddleware = () => {
   React.useEffect(() => {
     const loadUserCompanies = async () => {
       try {
+        dispatch({ type: 'RESET_UNIT_STATE' })
         if (params.unitId) {
           const response = await reqGetUnitById(params.unitId)
           dispatch(setUnit(response.data))
