@@ -16,6 +16,7 @@ import Settings from '@renderer/pages/Settings'
 import { SupplierTable } from '@renderer/pages/SupplierTable'
 import { Warehouse } from '@renderer/pages/Warehouse'
 import Products from '@renderer/pages/Products'
+import ProductsPrices from '@renderer/pages/ProductsPrices'
 import Documents from '@renderer/pages/Documents'
 import { ReactElement } from 'react'
 import Shops from '@renderer/pages/Settings/Shops'
@@ -29,7 +30,7 @@ import {
   MdPointOfSale,
   MdShoppingCart,
   MdWarehouse,
-  MdFolder  
+  MdFolder
 } from 'react-icons/md'
 
 interface Route {
@@ -68,9 +69,8 @@ const warehouseRoutes: RouteSection = {
   permission: permissions.warehouse.permission,
   routes: [
     { path: '/product-management', element: <Warehouse />, title: 'Depositos' },
-    { path: '/brands', element: <Products />, title: 'productos' },
-    { path: '/price-management', element: <></>, title: 'precios' },
-    { path: '/stock-management', element: <></>, title: 'inventario' },
+    { path: '/brands', element: <Products />, title: 'inventario' },
+    { path: '/price-management', element: <ProductsPrices />, title: 'gestion de precios' },
     {
       path: '/stock-movements',
       element: <></>,
