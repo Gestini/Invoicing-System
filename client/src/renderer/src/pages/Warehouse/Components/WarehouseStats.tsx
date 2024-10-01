@@ -37,20 +37,18 @@ export const WarehouseStats = () => {
     },
   ]
 
-  if (currentWarehouseId == '' || warehouse.data.length === 0) return
+  if (currentWarehouseId == '' || warehouse.dataWarehouse.length === 0) return
 
   return (
-    <div className='w-full overflow-x-auto'>
-      <div className='flex gap-[40px] mb-4 w-[1100px]'>
-        {datita.map((ele, ind) => (
-          <div key={ind}>
-            <p className='flex gap-1 items-center text-c-gray text-[16px]'>
-              {ele.text} <ErrorIcon />
-            </p>
-            <span className='font-semibold text-c-title text-[24px]'>{ele.amount}</span>
-          </div>
-        ))}
-      </div>
+    <div className='flex gap-[40px]'>
+      {datita.map((ele, ind) => (
+        <div key={ind}>
+          <p className='flex gap-1 items-center text-c-gray text-[14px]'>
+            {ele.text} <ErrorIcon />
+          </p>
+          <span className='font-semibold text-c-title text-[24px]'>{ele.amount}</span>
+        </div>
+      ))}
     </div>
   )
 }

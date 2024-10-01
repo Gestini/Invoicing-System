@@ -78,7 +78,7 @@ export const StockTable = () => {
     action: tableActions.edit,
   }
 
-  if (currentWarehouseId == '' || warehouse.data.length === 0) return
+  if (currentWarehouseId == '' || warehouse.dataWarehouse.length === 0) return
 
   return (
     <AppTable
