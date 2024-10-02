@@ -4,6 +4,7 @@ import { TeamDashboard } from '@renderer/components/Dashbord/TeamMember'
 import { SalesDashboard } from '@renderer/components/Dashbord/SalesItem'
 import { DashboardHeaderInfo } from '@renderer/components/Dashbord/HeaderInfo'
 import './Home.scss'
+import InvitationCard from '@renderer/components/InvitationCard'
 
 const Home = () => {
   return (
@@ -16,6 +17,7 @@ const Home = () => {
       <div className='columnderdashboard flex flex-col w-[350px] gap-4'>
         <TeamDashboard />
         <SalesDashboard />
+        <InvitationCard />
       </div>
     </div>
   )
