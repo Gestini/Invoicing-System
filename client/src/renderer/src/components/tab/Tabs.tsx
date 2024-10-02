@@ -1,6 +1,4 @@
 import React from 'react'
-import { RootState } from '@renderer/store'
-import { useSelector } from 'react-redux'
 
 interface Tab {
   name: string
@@ -13,11 +11,6 @@ interface WarehouseTabsProps {
 
 export const Tabs: React.FC<WarehouseTabsProps> = ({ tabs }) => {
   const [activeTab, setActiveTab] = React.useState(0)
-
-  const warehouse = useSelector((state: RootState) => state.unit.warehouse)
-  const currentWarehouseId = warehouse.currentWarehouseId
-
-  if (currentWarehouseId === '' || warehouse.dataWarehouse.length === 0) return
 
   return (
     <>
@@ -35,7 +28,6 @@ export const Tabs: React.FC<WarehouseTabsProps> = ({ tabs }) => {
           ))}
         </select>
       </div>
-
       <ul className='hidden border border-c-border text-sm font-medium text-center rounded-lg shadow sm:flex text-c-tabs w-fit'>
         {tabs.map((tab, index) => (
           <li key={index} className='cursor-pointer'>

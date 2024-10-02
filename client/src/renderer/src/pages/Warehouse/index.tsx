@@ -7,31 +7,29 @@ export const Warehouse = () => {
   const tabs = [
     {
       name: 'Productos',
-      content: <>
-        <WarehouseCard />
-        <WarehouseStats />
-        <StockTable />
-      </>
-
+      content: (
+        <div className='flex gap-3 flex-col'>
+          <WarehouseCard />
+          <WarehouseStats />
+          <StockTable />
+        </div>
+      ),
     },
     {
       name: 'Stock Pendiente',
-      content: ''
+      content: '',
     },
     {
       name: 'Reposición',
-      content: ''
-
+      content: '',
     },
     {
       name: 'Ventas',
-      content: ''
-
+      content: '',
     },
     {
       name: 'Empleados',
-      content: ''
-
+      content: '',
     },
   ]
 
