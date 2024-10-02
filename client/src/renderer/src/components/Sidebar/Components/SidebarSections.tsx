@@ -20,6 +20,7 @@ export const SidebarSections = () => {
   const location = useLocation()
   const dispatch = useDispatch()
 
+  const { currentPath } = useSelector((state: RootState) => state.documents)
   const sidebarState: sidebarStateType = useSelector((state: RootState) => state.sidebar)
   const [view, setView] = React.useState<Record<string, any>>({})
 
@@ -27,8 +28,9 @@ export const SidebarSections = () => {
     return {
       ...section,
       path: section.path
-        .replace(':unitId', String(unit?.id))
-        .replace(':companyId', String(company.id)),
+        .replace(':unitId', unit?.id ? String(unit.id) : '')
+        .replace(':companyId', company?.id ? String(company.id) : '')
+        .replace(':fileId', currentPath?.id ? String(currentPath.id) : ''),
     }
   })
 

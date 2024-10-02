@@ -104,11 +104,12 @@ export const reqGetIntegrationsByUnit = async (id: any) => api.get(`/integration
 export const reqGetConfigIntegrationsByUnit = async (id: any, idintegration: any) => api.get(`/integrations/${id}/config/${idintegration}`)
 export const reqPatchConfigIntegrationsByUnit = async (id: any, payload: any) => api.patch(`/integrations/${id}/configure`, payload)
 
-
-export const reqCreateFile = async (data: any) => api.post('/files/create', data)
+/* Rutas archivos */
+export const reqCreateFile = async (data: any, initalPath: string) => api.post(`/files/create?initalPath=${initalPath}`, data)
 export const reqRenameFile = async (id: number, data: any) => api.put(`/files/rename/${id}`, data)
 export const reqDeleteFile = async (id: number) => api.delete(`/files/delete/${id}`)
-export const reqGetFileById = async (id: any) => api.get(`/files/get-by-id/${id}`)
+export const reqGetFileById = async (id: any) => api.get(`/files/find-by-id/${id}`)
 export const reqGetFilesByParentId = async (id: any) => api.get(`/files/find-files-by-parent-id/${id}`)
 export const reqGetFiles = async () => api.get('/files/find-all')
 export const reqGetFileByPath = async (path: any) => api.get(`/files/find-by-path?path=${path}`)
+export const reqGetFilesByParentPath = async (path: any) => api.get(`/files/find-files-by-parent-path?path=${path}`)

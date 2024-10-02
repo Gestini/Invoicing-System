@@ -28,7 +28,7 @@ export const permissions = Object.freeze({
   documents: {
     title: 'Gestionar documentos',
     permission: 'MANAGE_DOCUMENTS',
-    description: 'Permite gestionar la sección de puntos de venta.',
+    description: 'Permite gestionar la sección de documentos.',
   },
   admin: {
     title: 'Admin',

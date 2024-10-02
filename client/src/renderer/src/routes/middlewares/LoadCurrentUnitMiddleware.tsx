@@ -17,6 +17,7 @@ export const LoadCurrentUnitMiddleware = () => {
     const loadUserCompanies = async () => {
       try {
         dispatch({ type: 'RESET_UNIT_STATE' })
+        dispatch({ type: 'RESET_DOCUMENTS_STATE' })
         if (params.unitId) {
           const response = await reqGetUnitById(params.unitId)
           dispatch(setUnit(response.data))

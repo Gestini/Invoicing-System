@@ -4,34 +4,35 @@ import RecoverPasswordCode from '@renderer/pages/Auth/RecoverPasswordCode'
 import RecoverPasswordEmail from '@renderer/pages/Auth/RecoverPasswordEmail'
 import Register from '@renderer/pages/Auth/Register'
 import { ClientTable } from '@renderer/pages/ClientTable'
+import { DocumentManager } from '@renderer/pages/Documents'
 import { EmployeeTable } from '@renderer/pages/EmployeeTable'
-import Facturation from '../pages/Facturation/index'
 import Home from '@renderer/pages/Home'
 import { InvoicingTable } from '@renderer/pages/InvoicingTable'
 import Plans from '@renderer/pages/PaymentGateway/Plans'
+import Products from '@renderer/pages/Products'
+import ProductsPrices from '@renderer/pages/ProductsPrices'
 import { Roles } from '@renderer/pages/Roles'
 import { permissions } from '@renderer/pages/Roles/Permissions'
 import { SalesTable } from '@renderer/pages/SalesTable'
 import Settings from '@renderer/pages/Settings'
+import Shops from '@renderer/pages/Settings/Shops'
 import { SupplierTable } from '@renderer/pages/SupplierTable'
 import { Warehouse } from '@renderer/pages/Warehouse'
-import Products from '@renderer/pages/Products'
-import ProductsPrices from '@renderer/pages/ProductsPrices'
-import Documents from '@renderer/pages/Documents'
 import { ReactElement } from 'react'
-import Shops from '@renderer/pages/Settings/Shops'
+import Facturation from '../pages/Facturation/index'
 
 import {
   MdAdminPanelSettings,
   MdAssessment,
   MdAttachMoney,
   MdDashboard,
+  MdFolder,
   MdPeople,
   MdPointOfSale,
   MdShoppingCart,
   MdWarehouse,
-  MdFolder,
 } from 'react-icons/md'
+import { LoadCurrentFilesMiddleware } from './middlewares/LoadCurrentFilesMiddleware'
 
 interface Route {
   path: string
@@ -85,10 +86,20 @@ const warehouseRoutes: RouteSection = {
 
 const documentsRoutes: RouteSection = {
   icon: <MdFolder />,
-  path: '/documents/:companyId/:unitId',
+  path: '/documents/:companyId/:unitId/:fileId?',
   section: 'Documentos',
   permission: permissions.documents.permission,
-  routes: [{ path: '', element: <Documents />, title: 'Documentos' }],
+  routes: [
+    {
+      path: '',
+      element: (
+        <LoadCurrentFilesMiddleware>
+          <DocumentManager />
+        </LoadCurrentFilesMiddleware>
+      ),
+      title: 'Documentos',
+    },
+  ],
 }
 
 const posRoutes: RouteSection = {
@@ -212,11 +223,11 @@ export const routes = [
 export const sidebarRoutes: RouteSection[] = [
   generalRoutes,
   plansRoutes,
+  documentsRoutes,
   warehouseRoutes,
   hrRoutes,
   operationsRoutes,
   posRoutes,
   adminRoutes,
   UnitInfo,
-  documentsRoutes,
 ]
