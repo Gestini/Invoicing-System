@@ -14,7 +14,7 @@ export const PathDirection = () => {
   if (!documents.currentPath?.path) {
     return (
       <Breadcrumbs>
-        <BreadcrumbItem>{unit.name}</BreadcrumbItem>
+        <BreadcrumbItem>Mis archivos</BreadcrumbItem>
       </Breadcrumbs>
     )
   }
