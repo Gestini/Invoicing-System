@@ -23,8 +23,8 @@ public class FileEntityController {
     private FileEntityService fileSystemEntityService;
 
     @PostMapping("/create")
-    public ResponseEntity<?> createFile(@RequestBody FileEntityModel file) {
-        return fileSystemEntityService.createFile(file);
+    public ResponseEntity<?> createFile(@RequestParam String initalPath, @RequestBody FileEntityModel file) {
+        return fileSystemEntityService.createFile(file, initalPath);
     }
 
     @PutMapping("/rename/{id}")
@@ -47,8 +47,18 @@ public class FileEntityController {
         return fileSystemEntityService.findFilesByParentId(parentId);
     }
 
+    @GetMapping("/find-files-by-parent-path")
+    public ResponseEntity<?> findFilesByParentPath(@RequestParam String path) {
+        return fileSystemEntityService.findFilesByParentPath(path);
+    }
+
     @GetMapping("/find-by-path")
     public ResponseEntity<?> findFileByPath(@RequestParam String path) {
         return fileSystemEntityService.findFileByPath(path);
+    }
+
+    @GetMapping("/find-by-id/{fileId}")
+    public ResponseEntity<?> findFileById(@PathVariable Long fileId) {
+        return fileSystemEntityService.findFileId(fileId);
     }
 }

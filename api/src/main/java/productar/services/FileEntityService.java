@@ -19,8 +19,20 @@ public class FileEntityService {
     @Autowired
     private FileEntityRepository fileEntityRepository;
 
-    public ResponseEntity<?> createFile(FileEntityModel newFile) {
+    public ResponseEntity<?> createFile(FileEntityModel newFile, String initalPath) {
         try {
+            Optional<FileEntityModel> initialFileOptional = fileEntityRepository.findByPath(initalPath);
+
+            if (!initialFileOptional.isPresent()) {
+                FileEntityModel newInitialFile = new FileEntityModel();
+                newInitialFile.setFolder(true);
+                newInitialFile.setName(initalPath);
+                newInitialFile.setPath(initalPath);
+                newInitialFile.setBusinessUnit(newFile.getBusinessUnit());
+                newInitialFile.setCompany(newFile.getCompany());
+                fileEntityRepository.save(newInitialFile);
+            }
+
             Optional<FileEntityModel> file = fileEntityRepository.findByPath(newFile.getPath());
             if (file.isPresent()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ese path ya está en uso.");
@@ -116,15 +128,36 @@ public class FileEntityService {
             }
 
             FileEntityModel file = optionalFile.get();
-
-            String filePath = file.getPath();
+            String parentPath = file.getPath();
 
             if (!file.isFolder()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El padre debe ser una carpeta");
             }
 
-            List<FileEntityModel> childFiles = fileEntityRepository.findByPathStartingWith(filePath + "/");
-            return ResponseEntity.ok(childFiles);
+            List<FileEntityModel> directChildFiles = fileEntityRepository.findDirectChildren(parentPath);
+
+            return ResponseEntity.ok(directChildFiles);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error.");
+        }
+    }
+
+    public ResponseEntity<?> findFilesByParentPath(String path) {
+        try {
+            Optional<FileEntityModel> optionalFile = fileEntityRepository.findByPath(path);
+            if (!optionalFile.isPresent()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Archivo no encontrado.");
+            }
+
+            FileEntityModel file = optionalFile.get();
+
+            if (!file.isFolder()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El padre debe ser una carpeta");
+            }
+
+            List<FileEntityModel> directChildFiles = fileEntityRepository.findDirectChildren(path);
+
+            return ResponseEntity.ok(directChildFiles);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error.");
         }
@@ -133,6 +166,19 @@ public class FileEntityService {
     public ResponseEntity<?> findFileByPath(String path) {
         try {
             Optional<FileEntityModel> file = fileEntityRepository.findByPath(path);
+            if (!file.isPresent()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Archivo no encontrado.");
+            }
+
+            return ResponseEntity.ok(file);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error.");
+        }
+    }
+
+    public ResponseEntity<?> findFileId(Long fileId) {
+        try {
+            Optional<FileEntityModel> file = fileEntityRepository.findById(fileId);
             if (!file.isPresent()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Archivo no encontrado.");
             }
