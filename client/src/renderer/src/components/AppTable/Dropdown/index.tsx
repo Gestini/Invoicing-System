@@ -6,14 +6,12 @@ import {
   DropdownItem,
   DropdownTrigger,
 } from '@nextui-org/react'
-import { FaPen } from 'react-icons/fa'
-import { FaShapes } from 'react-icons/fa6'
-import { MdAttachMoney } from 'react-icons/md'
 import { VerticalDotsIcon } from '../../Icons/VerticalDotsIcon'
+import { EditDocumentIcon } from '@renderer/components/Icons/EditDocumentIcon'
 import { DeleteDocumentIcon } from '../../Icons/DeleteDocumentIcon'
 
 export const ActionDropdown = ({ deleteAction, editAction }) => {
-  const iconClasses = 'text-sm text-default-500 pointer-events-none flex-shrink-0'
+  const iconClasses = 'text-xl text-default-500 pointer-events-none flex-shrink-0'
 
   return (
     <Dropdown className='text-c-title bg-c-card'>
@@ -27,25 +25,9 @@ export const ActionDropdown = ({ deleteAction, editAction }) => {
           key='edit'
           className='default-text-color'
           onPress={editAction}
-          startContent={<FaPen className={iconClasses} />}
+          startContent={<EditDocumentIcon className={iconClasses} />}
         >
-          Actualizar
-        </DropdownItem>
-        <DropdownItem
-          key='edit'
-          className='default-text-color'
-          onPress={editAction}
-          startContent={<FaShapes className={iconClasses} />}
-        >
-          Variante
-        </DropdownItem>
-        <DropdownItem
-          key='edit'
-          className='default-text-color'
-          onPress={editAction}
-          startContent={<MdAttachMoney className={iconClasses} />}
-        >
-          Precios
+          Editar
         </DropdownItem>
         <DropdownItem
           key='delete'
