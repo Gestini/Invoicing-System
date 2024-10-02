@@ -27,18 +27,14 @@ export const PathDirection = () => {
   const getPathUntilFolder = async (targetFolder: string) => {
     if (!documents.currentPath?.path) return
 
-    // Dividimos el path en partes eliminando los vacíos
+    // Se divide el path en partes
     const pathParts = documents.currentPath.path.split('/').filter(Boolean)
 
-    // Buscamos el índice de la carpeta que queremos
+    // Se busca el índice de la carpeta
     const targetIndex = pathParts.findIndex((part) => part === targetFolder)
+    if (targetIndex === -1) return navigate(`/documents/${company.id}/${unit.id}`)
 
-    // Si no encontramos la carpeta, retornamos null
-    if (targetIndex === -1) {
-      return navigate(`/documents/${company.id}/${unit.id}`)
-    }
-
-    // Construimos el nuevo path hasta la carpeta encontrada
+    // Se crea un nuevo path con la carpeta encontrada
     const newPath = '/' + pathParts.slice(0, targetIndex + 1).join('/')
 
     const file = await reqGetFileByPath(newPath)
