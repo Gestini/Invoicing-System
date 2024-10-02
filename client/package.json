@@ -34,7 +34,6 @@
     "echarts": "^5.5.0",
     "electron-updater": "^6.1.7",
     "framer-motion": "^11.2.10",
-    "gestini": "file:",
     "lightweight-charts": "^4.1.6",
     "lucide-react": "^0.395.0",
     "react-confetti": "^6.1.0",
