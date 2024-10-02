@@ -7,30 +7,32 @@ export const CurrentSecctionMiddleware = ({ section, icon, title, children, rout
   const unit = useSelector((state: RootState) => state.currentUnit)
 
   return (
-    <div className='w-full h-screen flex flex-col '>
-      <Navbar />
-      {unit.id && (
-        <div className='w-full flex  flex-col gap-4 flex-grow pr-3 pb-3 pl-3'>
-          {routesLength === 1 ? (
-            <div>
-              <h6 className='font-semibold flex items-center text-[#4f4d4d]'>
-                {icon}
-                <span className='ml-1'>{section}</span>
-              </h6>
-            </div>
-          ) : (
-            <div>
-              <h6 className='font-semibold flex items-center text-[#4f4d4d]'>
-                {icon}
-                <span className='ml-1'>{section} /</span>
-                <span className='ml-1 text-c-title'>{capitalize(title)}</span>
-              </h6>
-              <h5 className='text-[24px] font-semibold text-c-title'>Gestión de {title}</h5>
-            </div>
-          )}
-          {children}
-        </div>
-      )}
+    <div className=' h-screen w-full flex-col flex pl-[100px]     '>
+ 
+        <Navbar />
+        {unit.id && (
+          <div className='flex  flex-col gap-4 h-full pr-3 pb-3 pl-3'>
+            {routesLength === 1 ? (
+              <div>
+                <h6 className='font-semibold flex items-center text-[#4f4d4d]'>
+                  {icon}
+                  <span className='ml-1'>{section}</span>
+                </h6>
+              </div>
+            ) : (
+              <div>
+                <h6 className='font-semibold flex items-center text-[#4f4d4d]'>
+                  {icon}
+                  <span className='ml-1'>{section} /</span>
+                  <span className='ml-1 text-c-title'>{capitalize(title)}</span>
+                </h6>
+                <h5 className='text-[24px] font-semibold text-c-title'>Gestión de {title}</h5>
+              </div>
+            )}
+            {children}
+          </div>
+        )}
+ 
     </div>
   )
 }

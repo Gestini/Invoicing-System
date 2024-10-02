@@ -10,6 +10,7 @@ import Home from '@renderer/pages/Home'
 import { InvoicingTable } from '@renderer/pages/InvoicingTable'
 import Plans from '@renderer/pages/PaymentGateway/Plans'
 import Products from '@renderer/pages/Products'
+import Users from '@renderer/pages/Users'
 import ProductsPrices from '@renderer/pages/ProductsPrices'
 import { Roles } from '@renderer/pages/Roles'
 import { permissions } from '@renderer/pages/Roles/Permissions'
@@ -127,6 +128,7 @@ const hrRoutes: RouteSection = {
   section: 'Recursos Humanos',
   permission: permissions.hr.permission,
   routes: [
+    { path: '/users', element: <Users />, title: 'Usuarios' },
     { path: '/employees', element: <EmployeeTable />, title: 'empleados' },
     { path: '/roles', element: <Roles />, title: 'roles' },
     { path: '/contacts', element: <></>, title: 'contactos' },

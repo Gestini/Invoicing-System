@@ -14,7 +14,7 @@ export const Tabs: React.FC<WarehouseTabsProps> = ({ tabs }) => {
 
   return (
     <>
-      <div className='sm:hidden'>
+      <div className='sm:hidden w-full  '>
         <select
           id='tabs'
           className='text-gray-900 text-sm rounded-lg focus:ring-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500'
@@ -45,7 +45,7 @@ export const Tabs: React.FC<WarehouseTabsProps> = ({ tabs }) => {
       </ul>
 
       {/* Renderiza el contenido de la pestaña activa */}
-      <div className='text-c-title'>{tabs[activeTab].content}</div>
+      <div className='text-c-title h-full  w-full bg-red-50    '>{tabs[activeTab].content}</div>
     </>
   )
 }
