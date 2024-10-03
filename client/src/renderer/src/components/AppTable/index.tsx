@@ -96,7 +96,7 @@ export const AppTable = ({ columnsData, tableActions, addItemModal, editItemModa
   const handleSetCurrentIdEdit = (id: number) => dispatch(setCurrentItemId(id))
 
   return (
-    <div className='max-w-table'>
+    <div className=' h-full'>
       <Table
         aria-label='Example table with custom cells, pagination and sorting'
         isHeaderSticky
@@ -113,7 +113,7 @@ export const AppTable = ({ columnsData, tableActions, addItemModal, editItemModa
         }
         checkboxesProps={{
           classNames: {
-            wrapper: 'after:bg-c-primary',
+            wrapper: 'after:bg-c-primary h-full',
           },
         }}
         bottomContentPlacement='outside'
@@ -150,7 +150,8 @@ export const AppTable = ({ columnsData, tableActions, addItemModal, editItemModa
             </TableColumn>
           )}
         </TableHeader>
-        <TableBody emptyContent={'Sin resultados'} items={sortedItems}>
+       
+        <TableBody emptyContent={'Sin resultados'} className=' ' items={sortedItems}>
           {(item) => {
             return (
               <TableRow key={item.id}>

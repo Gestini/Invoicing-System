@@ -13,7 +13,7 @@ export const Tabs: React.FC<WarehouseTabsProps> = ({ tabs }) => {
   const [activeTab, setActiveTab] = React.useState(0)
 
   return (
-    <div className='flex-col flex h-full w-full  gap-2' >
+    <div className='flex-col flex h-full w-full overflow-y-auto  gap-2' >
       <div className='sm:hidden w-full  '>
         <select
           id='tabs'
@@ -45,7 +45,7 @@ export const Tabs: React.FC<WarehouseTabsProps> = ({ tabs }) => {
       </ul>
 
       {/* Renderiza el contenido de la pestaña activa */}
-      <div className='text-c-title h-full  w-full bg-red-50    '>{tabs[activeTab].content}</div>
+      <div className='text-c-title h-full  w-full bg-red-50  overflow-y-auto   '>{tabs[activeTab].content}</div>
     </div>
   )
 }

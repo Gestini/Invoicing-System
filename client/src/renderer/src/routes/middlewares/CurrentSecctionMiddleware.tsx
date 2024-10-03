@@ -7,13 +7,13 @@ export const CurrentSecctionMiddleware = ({ section, icon, title, children, rout
   const unit = useSelector((state: RootState) => state.currentUnit)
 
   return (
-    <div className=' h-screen w-full flex-col flex pl-[100px]     '>
+    <div className=' h-screen w-full flex-col flex  pl-[100px]     '>
  
         <Navbar />
         {unit.id && (
-          <div className='flex  flex-col gap-4 h-full pr-3 pb-3 pl-3'>
+          <div className='flex  flex-col overflow-y-auto gap-4 flex-grow pr-3 pb-3 pl-3'>
             {routesLength === 1 ? (
-              <div>
+              <div className=''>
                 <h6 className='font-semibold flex items-center text-[#4f4d4d]'>
                   {icon}
                   <span className='ml-1'>{section}</span>
