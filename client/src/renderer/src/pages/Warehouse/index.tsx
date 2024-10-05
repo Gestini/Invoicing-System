@@ -23,19 +23,7 @@ export const Warehouse = () => {
       name: 'Reposición',
       content: '',
     },
-    {
-      name: 'Ventas',
-      content: '',
-    },
-    {
-      name: 'Empleados',
-      content: '',
-    },
   ]
 
-  return (
-    <div className='flex gap-3 flex-col'>
-      <Tabs tabs={tabs} />
-    </div>
-  )
+  return <Tabs tabs={tabs} />
 }
