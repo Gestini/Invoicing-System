@@ -51,6 +51,7 @@ module.exports = {
         'c-secondary': 'var(--c-secondary)',
         'c-bg-color': 'var(--c-bg-color)',
         'c-bg-color-2': 'var(--c-bg-color-2)',
+        'c-bg-color-transparent': 'var(--c-bg-color-transparent)',
         'c-primary-sidebar': 'var(--c-primary-sidebar)',
         'c-card': 'var(--c-card)',
         'c-card-4': 'var(--c-card-4)',
