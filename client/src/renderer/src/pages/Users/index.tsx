@@ -8,7 +8,7 @@ const index = () => {
     { name: 'Invitaciones', content: '<BulkUpload />' },
   ]
   return (
-    <div className='flex gap-2 w-full   flex-col h-full  '>
+    <div className='flex gap-2 w-full flex-col h-full'>
       <Tabs tabs={tabs} />
     </div>
   )

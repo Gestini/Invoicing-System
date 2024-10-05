@@ -98,11 +98,11 @@ export const UserAvatarDropdown = () => {
             }}
             className='h-[50px] w-[50px]'
           />
-          <div className='ml-[10px] hidden md:flex flex-col'>
-            <p className='text-c-title text-[14px] font-semibold'>
+          <div className='ml-[10px] hidden lg:flex flex-col'>
+            <p className='text-c-title text-[14px] font-semibold whitespace-nowrap'>
               <ShortCellValue cellValue={user?.username || ''} maxLength={12} />
             </p>
-            <p className='w-fit px-[10px] py-[2px] mt-1 bg-c-primary-variant-3 rounded-md text-c-primary text-[12px]'>
+            <p className='whitespace-nowrap w-fit px-[10px] py-[2px] mt-1 bg-c-primary-variant-3 rounded-md text-c-primary text-[12px]'>
               {user?.jobposition || 'Sin asignar'}
             </p>
           </div>

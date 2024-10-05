@@ -13,6 +13,7 @@
 
 * {
   box-sizing: border-box;
+  user-select: none;
 }
 
 body {
@@ -42,7 +43,7 @@ input[type='color'] {
   transition-duration: 300ms;
 }
 
-.sidebarthumb {
+.hoverScrollbar {
   &::-webkit-scrollbar-thumb {
     background: transparent;
   }
@@ -57,12 +58,12 @@ input[type='color'] {
     }
 
     &::-webkit-scrollbar-thumb {
-      background: var(--c-card-2);
+      background: var(--scrollbar-bg);
       border-radius: 10px;
     }
 
     &::-webkit-scrollbar-thumb:hover {
-      background: var(--c-card-3);
+      background: var(--scrollbar-bg-hover);
     }
   }
 }

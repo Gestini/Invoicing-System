@@ -13,7 +13,7 @@ export const DocumentManager = () => {
   const { viewType } = useSelector((state: RootState) => state.documents)
 
   return (
-    <>
+    <div className='flex flex-col gap-4'>
       <div className='text-c-primary rounded-md'>{<PathDirection />}</div>
       <div className='flex justify-between items-center'>
         <AddNewFileDropdown />
@@ -22,6 +22,6 @@ export const DocumentManager = () => {
       </div>
       <div>{viewType === viewTypes.squere ? <DocumentsGrid /> : <DocumentsTable />}</div>
       <EditDocumentModal />
-    </>
+    </div>
   )
 }

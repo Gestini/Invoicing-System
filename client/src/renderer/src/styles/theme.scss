@@ -1,7 +1,10 @@
 .light {
   --c-title: #71717a;
-  --c-title-opacity: #979797c2;
   --c-default: #62b167;
+  --c-title-opacity: #979797c2;
+
+  --scrollbar-bg: #e1e1e4;
+  --scrollbar-bg-hover: #ceced1;
 
   --c-card: #fefeff;
   --c-card-2: #2f2f33;
@@ -14,6 +17,7 @@
 
   --c-bg-color: #f4f7fe;
   --c-bg-color-2: #ececec;
+  --c-bg-color-transparent: #f4f7fec5;
   --c-bg-selected: #e9e9e9;
 
   --c-border: rgba(0, 0, 0, 0.1);
@@ -42,8 +46,11 @@
 
 .dark {
   --c-title: #e4e4e4;
-  --c-title-opacity: #e4e4e481;
   --c-default: #62b167;
+  --c-title-opacity: #e4e4e481;
+
+  --scrollbar-bg: #2f2f33;
+  --scrollbar-bg-hover: #2b2b2e;
 
   --c-card: #18181b;
   --c-card-2: #2f2f33;
@@ -56,6 +63,7 @@
 
   --c-bg-color: #141414;
   --c-bg-color-2: #212124;
+  --c-bg-color-transparent: #141414c9;
 
   --c-primary-sidebar: #18181b;
   --c-sidebar-text: #8e8e93;

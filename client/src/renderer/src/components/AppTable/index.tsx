@@ -16,7 +16,13 @@ import {
   SortDescriptor,
 } from '@nextui-org/react'
 
-export const AppTable = ({ columnsData, tableActions, addItemModal, editItemModal }) => {
+export const AppTable = ({
+  columnsData,
+  tableActions,
+  addItemModal,
+  editItemModal,
+  inputCell = false,
+}) => {
   const dispatch = useDispatch()
   type User = (typeof users)[0]
   type Column = (typeof columnsData.columns)[0]
@@ -48,15 +54,13 @@ export const AppTable = ({ columnsData, tableActions, addItemModal, editItemModa
   const filteredItems = React.useMemo(() => {
     let filteredUsers = [...users]
 
-    const filtroPersonalizado = (item: any, valorBusqueda: string) => {
-      for (const campo in item) {
-        if (typeof item[campo] == 'string') {
-          if (item[campo].toLowerCase().includes(valorBusqueda.toLowerCase())) {
-            return true
-          }
-        }
-      }
-      return false
+    type Item = { [key: string]: string }
+
+    const filtroPersonalizado = (item: Item, valorBusqueda: string): boolean => {
+      return Object.values(item).some(
+        (value) =>
+          typeof value === 'string' && value.toLowerCase().includes(valorBusqueda.toLowerCase()),
+      )
     }
 
     if (hasSearchFilter) {
@@ -96,82 +100,81 @@ export const AppTable = ({ columnsData, tableActions, addItemModal, editItemModa
   const handleSetCurrentIdEdit = (id: number) => dispatch(setCurrentItemId(id))
 
   return (
-    <div className='max-w-table'>
-      <Table
-        aria-label='Example table with custom cells, pagination and sorting'
-        isHeaderSticky
-        removeWrapper
-        isCompact
-        bottomContent={
-          <BottomContent
-            page={page}
-            pages={pages}
-            setPage={setPage}
-            selectedKeys={selectedKeys}
-            filteredItems={filteredItems}
-          />
-        }
-        checkboxesProps={{
-          classNames: {
-            wrapper: 'after:bg-c-primary',
-          },
+    <Table
+      aria-label='Example table with custom cells, pagination and sorting'
+      shadow='none'
+      isCompact
+      selectionMode='multiple'
+      classNames={{
+        wrapper: ['bg-transparent', 'p-0', 'hoverScrollbar'],
+        th: ['bg-transparent', 'text-default-500', 'border-b', 'border-divider'],
+      }}
+      bottomContent={
+        <BottomContent
+          page={page}
+          pages={pages}
+          setPage={setPage}
+          selectedKeys={selectedKeys}
+          filteredItems={filteredItems}
+        />
+      }
+      checkboxesProps={{
+        classNames: {
+          wrapper: 'after:bg-c-primary',
+        },
+      }}
+      bottomContentPlacement='outside'
+      selectedKeys={selectedKeys}
+      sortDescriptor={sortDescriptor}
+      topContent={
+        <TopContent
+          setPage={setPage}
+          columnsData={columnsData}
+          filterValue={filterValue}
+          statusFilter={statusFilter}
+          /* visibleColumns={visibleColumns} */
+          /* setRowsPerPage={setRowsPerPage} */
+          setFilterValue={setFilterValue}
+          setStatusFilter={setStatusFilter}
+          /* setVisibleColumns={setVisibleColumns} */
+          addItemModal={addItemModal}
+          editItemModal={editItemModal}
+        />
+      }
+      topContentPlacement='outside'
+      onSelectionChange={setSelectedKeys}
+      onSortChange={setSortDescriptor}
+    >
+      <TableHeader columns={headerColumns}>
+        {(column: Column) => (
+          <TableColumn
+            key={column.uid}
+            align={column.uid === 'actions' ? 'center' : 'start'}
+            allowsSorting={column.sortable}
+          >
+            {column.name}
+          </TableColumn>
+        )}
+      </TableHeader>
+      <TableBody emptyContent={'Sin resultados'} items={sortedItems}>
+        {(item) => {
+          return (
+            <TableRow key={item.id}>
+              {(columnKey) => (
+                <TableCell className='default-text-color capitalize'>
+                  <RenderCell
+                    item={item}
+                    columnKey={columnKey}
+                    inputCell={inputCell}
+                    handleDeleteItem={handleDeleteItem}
+                    handleSetCurrentIdEdit={handleSetCurrentIdEdit}
+                  />
+                </TableCell>
+              )}
+            </TableRow>
+          )
         }}
-        bottomContentPlacement='outside'
-        selectedKeys={selectedKeys}
-        sortDescriptor={sortDescriptor}
-        selectionMode='multiple'
-        topContent={
-          <TopContent
-            setPage={setPage}
-            columnsData={columnsData}
-            filterValue={filterValue}
-            statusFilter={statusFilter}
-            /* visibleColumns={visibleColumns} */
-            /* setRowsPerPage={setRowsPerPage} */
-            setFilterValue={setFilterValue}
-            setStatusFilter={setStatusFilter}
-            /* setVisibleColumns={setVisibleColumns} */
-            addItemModal={addItemModal}
-            editItemModal={editItemModal}
-          />
-        }
-        topContentPlacement='outside'
-        onSelectionChange={setSelectedKeys}
-        onSortChange={setSortDescriptor}
-      >
-        <TableHeader columns={headerColumns}>
-          {(column: Column) => (
-            <TableColumn
-              key={column.uid}
-              align={column.uid === 'actions' ? 'center' : 'start'}
-              allowsSorting={column.sortable}
-            >
-              {column.name}
-            </TableColumn>
-          )}
-        </TableHeader>
-        <TableBody emptyContent={'Sin resultados'} items={sortedItems}>
-          {(item) => {
-            return (
-              <TableRow key={item.id}>
-                {(columnKey) => (
-                  <TableCell className='default-text-color capitalize'>
-                    {/* ESTILO DE CATEGORIAS */}
-                    {columnKey === 'category' ? (
-                      // Estilo especial para la celda de categoría
-                      <span className='bg-c-primary-variant-3 text-c-primary px-2 py-[2px] rounded-md text-[12px]'>
-                        {item[columnKey]}
-                      </span>
-                    ) : (
-                      RenderCell(item, columnKey, handleDeleteItem, handleSetCurrentIdEdit)
-                    )}
-                  </TableCell>
-                )}
-              </TableRow>
-            )
-          }}
-        </TableBody>
-      </Table>
-    </div>
+      </TableBody>
+    </Table>
   )
 }

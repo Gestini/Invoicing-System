@@ -81,7 +81,7 @@ export const SidebarSections = () => {
   return (
     <>
       <div
-        className={`bg-c-sidebar-bg w-[300px] pt-5 pb-5 h-screen border-r-md rounded-r-2xl flex flex-col justify-between gap-[16px] relative ${sidebarState.isActive ? 'max-w-[225px]' : 'max-w-[50px]'} animation`}
+        className={`bg-c-sidebar-bg w-[300px] pt-2 pb-5 h-screen border-r-md rounded-r-2xl flex flex-col justify-between gap-[16px] relative ${sidebarState.isActive ? 'max-w-[225px]' : 'max-w-[50px]'} animation`}
       >
         <div className='flex flex-col max-h-[90%]'>
           <div className='flex p-[6px] font-semibold text-[11px] text-gray-500  w-full'>
@@ -90,7 +90,7 @@ export const SidebarSections = () => {
           <span className='flex pl-[10px] font-semibold text-[11px] text-gray-500 mb-[17px]'>
             Menu
           </span>
-          <div className='px-[6px] pr-[6px] overflow-y-auto overflow-x-hidden sidebarthumb flex flex-col gap-[11px] '>
+          <div className='px-[6px] pr-[6px] overflow-y-auto overflow-x-hidden hoverScrollbar flex flex-col gap-[11px] '>
             {updatedRoutesConfig.map((item: any, index: number) => {
               const baseLocationPath = getBasePath(location.pathname)
               const baseItemPath = getBasePath(item.path)

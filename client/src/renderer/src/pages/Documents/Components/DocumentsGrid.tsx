@@ -13,9 +13,9 @@ export const DocumentsGrid = () => {
   const fileNavigate = (file: any) => navigate(`/documents/${company.id}/${unit.id}/${file.id}`)
 
   return (
-    <div className='grid grid-cols-4 gap-4'>
+    <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
       {data.length === 0 && (
-        <div className='col-span-4 text-c-title'>No hay documentos en esta carpeta.</div>
+        <div className='col-span-full text-c-title'>No hay documentos en esta carpeta.</div>
       )}
       {data.map((node, ind) => (
         <div
@@ -36,7 +36,6 @@ export const DocumentsGrid = () => {
           ) : (
             <div className='flex justify-between h-full'>
               <div>
-                {/* Determinar el color del icono según el tipo de nodo */}
                 {(() => {
                   const colors = {
                     xlsx: 'text-green-500',
@@ -47,7 +46,7 @@ export const DocumentsGrid = () => {
                     jpeg: 'text-cyan-500',
                   }
 
-                  const iconColor = colors[`${node.type}`] || 'text-gray-500' // Color por defecto si el tipo no es válido
+                  const iconColor = colors[`${node.type}`] || 'text-gray-500'
 
                   return (
                     <div className='flex flex-col w-full'>

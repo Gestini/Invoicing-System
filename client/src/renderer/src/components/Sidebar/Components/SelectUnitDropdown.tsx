@@ -48,9 +48,9 @@ export const SelectUnitDropdown = ({ activeSidebar }) => {
       >
         <DropdownTrigger>
           <div className='cursor-pointer hover:opacity-75 duration-200 ease-in-out transition-all w-full rounded-md font-medium flex p-[4px] text-c-title bg-c-primary-variant-4'>
-            <div className='flex items-center w-full h-[40px] gap-3'>
+            <div className='flex items-center w-full h-[40px] gap-4'>
               <span className='text-c-primary flex items-center text-[20px] h-full'>
-                <span className='flex justify-center pl-[6px]'>
+                <span className='flex justify-center pl-[5px]'>
                   <MdHomeFilled />
                 </span>
               </span>

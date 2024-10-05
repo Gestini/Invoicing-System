@@ -17,7 +17,7 @@ export const Totals = () => {
   }, [currentTab])
 
   return (
-    <Card className='max-w-[400px]'>
+    <Card className='lg:max-w-[400px]'>
       <CardHeader className='flex gap-3'>
         <span className='dashboardIcon text-c-primary-variant-1 w-fit p-2.5 bg-c-bg-color-2 rounded text-xl'>
           <BiDollar />

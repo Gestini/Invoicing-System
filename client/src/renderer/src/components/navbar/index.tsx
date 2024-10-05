@@ -28,7 +28,7 @@ export const Navbar = () => {
   }, [unit])
 
   return (
-    <nav className='flex items-center sticky top-0 z-40 p-3 pl-3 bg-c-bg-color'>
+    <nav className='flex items-center sticky top-0 z-40 p-3 pl-3 bg-c-bg-color-transparent backdrop-blur-md'>
       <div className='w-full'>
         <div className='relative flex items-center gap-4 justify-between w-full'>
           <div className='w-[384px]'>
@@ -42,6 +42,7 @@ export const Navbar = () => {
                 name='search'
                 type='text'
                 isClearable
+                radius='sm'
                 className='w-full text-c-gray'
                 placeholder='Buscar'
                 startContent={<SearchIcon />}
