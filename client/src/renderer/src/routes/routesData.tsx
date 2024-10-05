@@ -1,51 +1,66 @@
+import React from 'react'
+
+import Plans from '@renderer/pages/PaymentGateway/Plans'
+import Users from '@renderer/pages/Users'
+import Shops from '@renderer/pages/Settings/Shops'
+import Products from '@renderer/pages/Products'
+import Settings from '@renderer/pages/Settings'
+import { Roles } from '@renderer/pages/Roles'
+import { Warehouse } from '@renderer/pages/Warehouse'
+import Facturation from '../pages/Facturation/index'
+import { Dashboard } from '@renderer/pages/Dashboard'
+import { SalesTable } from '@renderer/pages/SalesTable'
+import ProductsPrices from '@renderer/pages/ProductsPrices'
+import { ClientTable } from '@renderer/pages/ClientTable'
+import { EmployeeTable } from '@renderer/pages/EmployeeTable'
+import { SupplierTable } from '@renderer/pages/SupplierTable'
+import { InvoicingTable } from '@renderer/pages/InvoicingTable'
+import { DocumentManager } from '@renderer/pages/Documents'
+
 import Login from '@renderer/pages/Auth/Login'
+import Register from '@renderer/pages/Auth/Register'
 import RecoverPasswordChange from '@renderer/pages/Auth/RecoverPasswordChange'
 import RecoverPasswordCode from '@renderer/pages/Auth/RecoverPasswordCode'
 import RecoverPasswordEmail from '@renderer/pages/Auth/RecoverPasswordEmail'
-import Register from '@renderer/pages/Auth/Register'
-import { ClientTable } from '@renderer/pages/ClientTable'
-import { DocumentManager } from '@renderer/pages/Documents'
-import { EmployeeTable } from '@renderer/pages/EmployeeTable'
-import Home from '@renderer/pages/Home'
-import { InvoicingTable } from '@renderer/pages/InvoicingTable'
-import Plans from '@renderer/pages/PaymentGateway/Plans'
-import Products from '@renderer/pages/Products'
-import Users from '@renderer/pages/Users'
-import ProductsPrices from '@renderer/pages/ProductsPrices'
-import { Roles } from '@renderer/pages/Roles'
+
 import { permissions } from '@renderer/pages/Roles/Permissions'
-import { SalesTable } from '@renderer/pages/SalesTable'
-import Settings from '@renderer/pages/Settings'
-import Shops from '@renderer/pages/Settings/Shops'
-import { SupplierTable } from '@renderer/pages/SupplierTable'
-import { Warehouse } from '@renderer/pages/Warehouse'
-import { ReactElement } from 'react'
-import Facturation from '../pages/Facturation/index'
 
 import {
-  MdAdminPanelSettings,
-  MdAssessment,
-  MdAttachMoney,
-  MdDashboard,
   MdFolder,
   MdPeople,
+  MdDashboard,
+  MdWarehouse,
+  MdAssessment,
+  MdAttachMoney,
   MdPointOfSale,
   MdShoppingCart,
-  MdWarehouse,
+  MdAdminPanelSettings,
 } from 'react-icons/md'
+
 import { LoadCurrentFilesMiddleware } from './middlewares/LoadCurrentFilesMiddleware'
+
+export interface RouteData {
+  path: string
+  icon?: string
+  title?: string
+  element: JSX.Element
+  section?: string
+  children?: any
+  permission?: string
+  routesLength?: number
+}
 
 interface Route {
   path: string
-  element: ReactElement
   title: string
+  element: React.ReactElement
 }
 
 interface RouteSection {
-  icon: ReactElement | null
+  icon: React.ReactElement | null
   path: string
-  section: string
   routes: Route[]
+  section: string
   permission?: string | undefined
 }
 
@@ -53,14 +68,14 @@ const generalRoutes: RouteSection = {
   icon: <MdDashboard />,
   path: '/dashboard/:companyId/:unitId?',
   section: 'Dashboard',
-  routes: [{ path: '', element: <Home />, title: 'tablero' }],
+  routes: [{ path: '', element: <Dashboard />, title: 'tablero' }],
 }
 
 const plansRoutes: RouteSection = {
   icon: <MdAssessment />,
   path: '/plans/:companyId/:unitId',
   section: 'Planes',
-  routes: [{ path: '', element: <Plans />, title: 'tablero' }],
+  routes: [{ path: '', element: <Plans />, title: 'planes' }],
   permission: permissions.admin.permission,
 }
 
@@ -186,13 +201,13 @@ export const authRoutes: RouteSection = {
   ],
 }
 
-const UnitInfo: RouteSection = {
+const ecommerceRoutes: RouteSection = {
   icon: <MdShoppingCart />,
-  path: '/settings/:companyId/:unitId',
+  path: '/ecommerce/:companyId/:unitId',
   section: 'Tienda',
   routes: [
-    { path: '/tienda/general', element: <Settings />, title: 'General' },
-    { path: '/tienda/shops', element: <Shops />, title: 'Metricas' },
+    { path: '/general', element: <Settings />, title: 'General' },
+    { path: '/shops', element: <Shops />, title: 'Metricas' },
   ],
   permission: permissions.admin.permission,
 }
@@ -204,9 +219,9 @@ export const routes = [
   adminRoutes,
   generalRoutes,
   warehouseRoutes,
-  operationsRoutes,
-  UnitInfo,
+  ecommerceRoutes,
   documentsRoutes,
+  operationsRoutes,
 ].reduce(
   (acc: any, item: RouteSection) =>
     acc.concat(
@@ -231,5 +246,5 @@ export const sidebarRoutes: RouteSection[] = [
   operationsRoutes,
   posRoutes,
   adminRoutes,
-  UnitInfo,
+  ecommerceRoutes,
 ]
