@@ -1,16 +1,18 @@
 import { Tabs } from '@renderer/components/tab/Tabs'
 import { StockTable } from './StockTable'
-import BulkUpload from "./BulkUpload"
+import BulkUpload from './views/BulkUpload'
+import BulkUploadVanilla from './views/BulkUploadVanilla'
 
 const index = () => {
   const tabs = [
-    { name: 'Productos', content: <StockTable/> },
-    { name: 'Carga masiva de productos', content: <BulkUpload/>},
+    { name: 'Productos', content: <StockTable /> },
+    { name: 'Carga masiva de productos', content: <BulkUploadVanilla /> },
+    { name: 'Carga masiva de productos IA', content: <BulkUpload /> },
   ]
   return (
-    <div className='flex gap-2 flex-col flex-grow '>
+    <>
       <Tabs tabs={tabs} />
-    </div>
+    </>
   )
 }
 

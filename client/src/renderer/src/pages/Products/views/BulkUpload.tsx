@@ -110,7 +110,7 @@ const BulkUpload: React.FC = () => {
     <>
       <div
         ref={dropAreaRef}
-        className='bg-c-sidebar-bg w-full flex-grow  h-[440px] rounded-3xl shadow-lg flex items-center justify-center flex-col gap-[28px]'
+        className='bg-c-sidebar-bg w-full  h-full h-[440px] rounded-3xl shadow-lg flex items-center justify-center flex-col gap-[28px]'
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
