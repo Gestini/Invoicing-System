@@ -76,46 +76,46 @@ const BulkUpload: React.FC = () => {
   }
 
   const ProductsTable: React.FC<{ products: any[] }> = ({ products }) => {
-    if (products.length === 0) return null; // No renderizar si no hay productos
+    if (products.length === 0) return null // No renderizar si no hay productos
 
-    const keys = Object.keys(products[0]); // Obtener las claves del primer producto
+    const keys = Object.keys(products[0]) // Obtener las claves del primer producto
 
     return (
-        <table className='min-w-full border-collapse border border-gray-300'>
-            <thead>
-                <tr>
-                    {keys.map((key) => (
-                        <th key={key} className='border border-gray-300 p-4'>
-                            {key.charAt(0).toUpperCase() + key.slice(1)} {/* Capitalizar la primera letra */}
-                        </th>
-                    ))}
-                </tr>
-            </thead>
-            <tbody>
-                {products.map((product, index) => (
-                    <tr key={index}>
-                        {keys.map((key) => (
-                            <td key={key} className='border border-gray-300 p-4'>
-                                {product[key]} {/* Mostrar el valor correspondiente */}
-                            </td>
-                        ))}
-                    </tr>
-                ))}
-            </tbody>
-        </table>
-    );
-};
+      <table className='min-w-full border-collapse border border-gray-300'>
+        <thead>
+          <tr>
+            {keys.map((key) => (
+              <th key={key} className='border border-gray-300 p-4'>
+                {key.charAt(0).toUpperCase() + key.slice(1)} {/* Capitalizar la primera letra */}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {products.map((product, index) => (
+            <tr key={index}>
+              {keys.map((key) => (
+                <td key={key} className='border border-gray-300 p-4'>
+                  {product[key]} {/* Mostrar el valor correspondiente */}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    )
+  }
 
   return (
     <>
       <div
         ref={dropAreaRef}
-        className='bg-c-sidebar-bg w-full  h-full h-[440px] rounded-3xl shadow-lg flex items-center justify-center flex-col gap-[28px]'
+        className='bg-c-sidebar-bg w-full h-full rounded-3xl flex items-center justify-center flex-col gap-[28px]'
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
       >
-        <div className='flex flex-col items-center'>
+        <div className='flex flex-col items-center p-4'>
           {isDragging ? (
             <div className='text-gray-500 text-sm font-semibold'>¡Suelta el archivo aquí!</div>
           ) : (

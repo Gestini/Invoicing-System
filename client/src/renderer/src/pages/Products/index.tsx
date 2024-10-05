@@ -9,11 +9,8 @@ const index = () => {
     { name: 'Carga masiva de productos', content: <BulkUploadVanilla /> },
     { name: 'Carga masiva de productos IA', content: <BulkUpload /> },
   ]
-  return (
-    <>
-      <Tabs tabs={tabs} />
-    </>
-  )
+
+  return <Tabs tabs={tabs} />
 }
 
 export default index

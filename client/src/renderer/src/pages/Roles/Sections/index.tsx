@@ -13,7 +13,7 @@ export const RoleSections = () => {
   return (
     <React.Fragment>
       {currentRole ? (
-        <Card className='h-full flex flex-col w-[50%]'>
+        <Card className='h-fit flex flex-col w-[50%]'>
           <CardHeader>
             <h3 className='text-3xl font-semibold text-c-title'>{currentRole.name}</h3>
           </CardHeader>

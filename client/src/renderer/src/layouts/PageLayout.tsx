@@ -7,10 +7,10 @@ export const PageLayout = ({ icon, title, section, children, routesLength }) => 
   const unit = useSelector((state: RootState) => state.currentUnit)
 
   return (
-    <div className='w-full flex-col flex pl-[100px] md:pl-0'>
+    <div className='w-full h-full flex-col flex pl-[100px] md:pl-0'>
       <Navbar />
       {unit.id && (
-        <div className='flex flex-col gap-4 pr-3 pl-3 pb-3'>
+        <div className='flex  h-full flex-col gap-4 pr-3 pl-3 pb-3 overflow-y-auto'>
           {routesLength === 1 ? (
             <div>
               <h6 className='font-semibold flex items-center text-[#4f4d4d]'>
@@ -28,7 +28,7 @@ export const PageLayout = ({ icon, title, section, children, routesLength }) => 
               <h5 className='text-[24px] font-semibold text-c-title'>Gestión de {title}</h5>
             </div>
           )}
-          <div>{children}</div>
+          {children}
         </div>
       )}
     </div>
