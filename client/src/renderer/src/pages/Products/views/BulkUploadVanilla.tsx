@@ -1,5 +1,4 @@
 import React, { useRef, useState } from 'react'
-import { BsThreeDots } from 'react-icons/bs'
 import { FaPlus, FaTimes } from 'react-icons/fa'
 import * as XLSX from 'xlsx'
 
@@ -9,8 +8,8 @@ interface Product {
 
 const BulkUploadVanilla = () => {
   const [isDragging, setIsDragging] = useState(false)
-  const [droppedFile, setDroppedFile] = useState<File | null>(null)
-  const [uploadStatus, setUploadStatus] = useState<string | null>(null)
+  const [/* droppedFile */_, setDroppedFile] = useState<File | null>(null)
+  const [/* uploadStatus */__, setUploadStatus] = useState<string | null>(null)
   const [products, setProducts] = useState<Product[]>([]) // Cambié 'never[]' a 'Product[]'
   const [errorMessage, setErrorMessage] = useState<string | null>(null) // Añadido para mostrar errores
 

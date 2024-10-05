@@ -1,6 +1,5 @@
 import { Tabs } from '@renderer/components/tab/Tabs'
 import { StockTable } from './StockTable'
-import BulkUpload from "./BulkUpload"
 
 const index = () => {
   const tabs = [
