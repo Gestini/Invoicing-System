@@ -1,5 +1,4 @@
 import { ChildrenSlider } from '@renderer/components/ChildrenSlider'
-import './SummaryCardList.scss'
 
 const SummaryCardList = () => {
   const sections = [

@@ -2,6 +2,7 @@ import React from 'react'
 import { LocalIcon } from '@renderer/components/Icons/LocalIcon'
 import { RootState } from '@renderer/store'
 import { WarehouseModel } from '@renderer/interfaces/warehouse'
+import { ChildrenSlider } from '@renderer/components/ChildrenSlider'
 import { ShortCellValue } from '@renderer/components/AppTable/TableComponents/ShortCellValue'
 import { reqGetDepositByUnit } from '@renderer/api/requests'
 import { modalTypes, useModal } from '@renderer/utils/useModal'
@@ -34,16 +35,16 @@ export const WarehouseCard = () => {
   const openWarehouse = (depositId: number) => dispatch(setCurrentWarehouseId(depositId))
 
   return (
-    <>
-      <div className='flex w-full gap-2'>
-        {warehouse.dataWarehouse.length === 0 ? (
-          <div className='flex items-center justify-between gap-4'>
-            <p className='text-foreground-400 align-middle text-center'>
-              No tienes depósitos asignados.
-            </p>
-          </div>
-        ) : (
-          warehouse.dataWarehouse.map((ele, ind: number) => (
+    <div>
+      {warehouse.dataWarehouse.length === 0 ? (
+        <div className='flex items-center justify-between gap-4'>
+          <p className='text-foreground-400 align-middle text-center'>
+            No tienes depósitos asignados.
+          </p>
+        </div>
+      ) : (
+        <ChildrenSlider spaceBetween={15}>
+          {warehouse.dataWarehouse.map((ele, ind: number) => (
             <div
               key={ind}
               onClick={() => openWarehouse(ele.id)}
@@ -69,9 +70,9 @@ export const WarehouseCard = () => {
                 </div>
               </div>
             </div>
-          ))
-        )}
-      </div>
-    </>
+          ))}
+        </ChildrenSlider>
+      )}
+    </div>
   )
 }
