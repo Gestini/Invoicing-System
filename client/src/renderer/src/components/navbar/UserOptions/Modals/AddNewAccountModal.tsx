@@ -12,8 +12,11 @@ import {
   ModalHeader,
   ModalContent,
 } from '@nextui-org/react'
+import { addSession } from '@renderer/features/userSessions'
+import { useDispatch } from 'react-redux'
 
 export const AddNewAccountModal = ({ errors }) => {
+  const dispatch = useDispatch()
   const currentSessions = localStorage.getItem('sessions')
   const [isOpen, toggleModal] = useModal(modalTypes.addNewAccountModal)
 
@@ -40,10 +43,19 @@ export const AddNewAccountModal = ({ errors }) => {
 
       if (!currentSessions) return
 
+      /* Guardamos la session en el localStorage */
       const partseSessions = JSON.parse(currentSessions)
-      const userFound = partseSessions.find((item: any) => item.userId == user.id)
+      const userFound = partseSessions.find((item: any) => item.userId == user.data[0].id)
 
       if (!userFound) {
+        /* Agregamos la session al estado */
+        dispatch(
+          addSession({
+            userId: user.data[0].id,
+            token: response.data,
+          }),
+        )
+
         const AuxSessions = [...partseSessions]
         AuxSessions.push({
           userId: user.data[0].id,

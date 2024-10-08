@@ -23,6 +23,7 @@ export const UserAvatarDropdown = () => {
   const navigate = useNavigate()
   const token = localStorage.getItem('token')
   const user = useSelector((state: RootState) => state.user.user)
+  const localSessions = useSelector((state: RootState) => state.user.userSession)
   const [sessions, setSessions] = React.useState<any>([])
   const currentSessions = localStorage.getItem('sessions')
   const [_, toggleAddNewAccountModal] = useModal(modalTypes.addNewAccountModal)
@@ -39,7 +40,7 @@ export const UserAvatarDropdown = () => {
       setSessions(response.data)
     }
     loadUsersSession()
-  }, [])
+  }, [localSessions.list])
 
   const logOut = () => {
     if (!currentSessions) return
@@ -87,7 +88,7 @@ export const UserAvatarDropdown = () => {
   }
 
   return (
-    <Dropdown className='text-c-title w-[400px] bg-c-card'>
+    <Dropdown className='text-c-title w-[300px] md:w-[400px] bg-c-card'>
       <DropdownTrigger>
         <div className='flex items-center cursor-pointer transition-transform'>
           <Avatar
@@ -132,7 +133,7 @@ export const UserAvatarDropdown = () => {
             Ajustes
           </DropdownItem>
         </DropdownSection>
-        <DropdownSection>
+        <DropdownSection className='max-h-[130px] overflow-y-auto hoverScrollbar pr-1'>
           {sessions?.map((item, _) => (
             <DropdownItem key={item.user.username} onPress={() => changeAccount(item.user.id)}>
               <div className='itemprofile flex items-center gap-2'>
@@ -163,6 +164,8 @@ export const UserAvatarDropdown = () => {
               </div>
             </DropdownItem>
           ))}
+        </DropdownSection>
+        <DropdownSection>
           <DropdownItem key='addAccount' className='flex' onClick={toggleAddNewAccountModal}>
             <div className='itemprofile flex items-center gap-2'>
               <IoIosAddCircle className='text-[30px]' />
@@ -173,8 +176,6 @@ export const UserAvatarDropdown = () => {
               </div>
             </div>
           </DropdownItem>
-        </DropdownSection>
-        <DropdownSection>
           <DropdownItem
             key='logout'
             className='text-danger'
