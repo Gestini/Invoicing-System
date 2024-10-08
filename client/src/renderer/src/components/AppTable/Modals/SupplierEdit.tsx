@@ -10,16 +10,21 @@ import {
   ModalFooter,
   ModalHeader,
   ModalContent,
-  useDisclosure,
 } from '@nextui-org/react'
 import { RootState } from '@renderer/store'
 import { useParams } from 'react-router-dom'
-import { setCurrentItemId } from '@renderer/features/tableSlice'
+import { reqEditSupplier } from '@renderer/api/requests'
+import { useModal, modalTypes } from '@renderer/utils/useModal'
 import { useDispatch, useSelector } from 'react-redux'
+import { editItem, setCurrentItemId } from '@renderer/features/tableSlice'
 
-export const EditSupplierModal = ({ modal }) => {
+export const EditSupplierModal = () => {
   const dispatch = useDispatch()
   const params = useParams()
+  const table = useSelector((state: RootState) => state.unit.table)
+  const currentItemEdit = table.data.find((item) => item.id == table.currentItemIdEdit)
+
+  const [isOpen, toggleModal] = useModal(modalTypes.editSupplierModal)
 
   const [data, setData] = React.useState({
     businessUnit: {
@@ -30,14 +35,6 @@ export const EditSupplierModal = ({ modal }) => {
   const [errors, setErrors] = React.useState({
     name: '',
   })
-  const users = useSelector((state: RootState) => state.unit.table.data)
-  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
-  const currentItemIdEdit = useSelector((state: RootState) => state.unit.table.currentItemIdEdit)
-  const currentUserEdit = users.find((item: { id: any }) => item.id == currentItemIdEdit)
-
-  React.useEffect(() => {
-    if (currentItemIdEdit !== -1) onOpen()
-  }, [currentItemIdEdit])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     let name = e.target.name
@@ -79,15 +76,17 @@ export const EditSupplierModal = ({ modal }) => {
 
   const handleResetCurrentIdEdit = () => dispatch(setCurrentItemId(-1))
 
-  const handleAddNewUser = async () => {
-    modal.action(currentUserEdit.id, data)
+  const onSubmit = async () => {
+    reqEditSupplier(currentItemEdit.id, data)
+    dispatch(editItem({ data, id: currentItemEdit.id }))
+
     handleResetCurrentIdEdit()
     setData({
       businessUnit: {
         id: params.unitId,
       },
     })
-    onClose()
+    toggleModal()
   }
 
   return (
@@ -96,14 +95,14 @@ export const EditSupplierModal = ({ modal }) => {
         isOpen={isOpen}
         onClose={handleResetCurrentIdEdit}
         backdrop='blur'
-        onOpenChange={onOpenChange}
+        onOpenChange={toggleModal}
         scrollBehavior={'inside'}
         size='5xl'
         placement='center'
       >
         <ModalContent>
           <ModalHeader className='flex flex-col gap-1'>
-            <h3 className='default-text-color'>{modal?.title}</h3>
+            <h3 className='default-text-color'>Editar proveedor</h3>
           </ModalHeader>
           <ModalBody>
             <div className='productsmodaladd w-full flex flex-col gap-3  '>
@@ -116,7 +115,7 @@ export const EditSupplierModal = ({ modal }) => {
                   labelPlacement='outside'
                   placeholder='Nombre del proveedor'
                   variant='bordered'
-                  defaultValue={currentUserEdit ? currentUserEdit.name : ''}
+                  defaultValue={currentItemEdit ? currentItemEdit.name : ''}
                   onChange={handleChange}
                   isInvalid={!!errors.name}
                 />
@@ -129,7 +128,7 @@ export const EditSupplierModal = ({ modal }) => {
                   onChange={handleChange}
                   size='sm'
                   defaultSelectedKeys={[
-                    currentUserEdit ? String(currentUserEdit.supplierType) : '',
+                    currentItemEdit ? String(currentItemEdit.supplierType) : '',
                   ]}
                   className='text-c-title'
                 >
@@ -146,7 +145,7 @@ export const EditSupplierModal = ({ modal }) => {
                   size='sm'
                   className='text-c-title'
                   defaultSelectedKeys={[
-                    currentUserEdit ? String(currentUserEdit.saleCondition) : '',
+                    currentItemEdit ? String(currentItemEdit.saleCondition) : '',
                   ]}
                 >
                   <SelectItem key={'contado'}>contado</SelectItem>
@@ -160,7 +159,7 @@ export const EditSupplierModal = ({ modal }) => {
                   name='description'
                   onChange={handleChange}
                   labelPlacement='outside'
-                  defaultValue={currentUserEdit ? currentUserEdit.description : ''}
+                  defaultValue={currentItemEdit ? currentItemEdit.description : ''}
                   placeholder='Enter your description'
                 />
               </div>
@@ -172,7 +171,7 @@ export const EditSupplierModal = ({ modal }) => {
                   labelPlacement='outside'
                   placeholder='Numero del proveedor'
                   variant='bordered'
-                  defaultValue={currentUserEdit ? currentUserEdit.phone : ''}
+                  defaultValue={currentItemEdit ? currentItemEdit.phone : ''}
                   onChange={handleChange}
                 />
                 <Input
@@ -181,7 +180,7 @@ export const EditSupplierModal = ({ modal }) => {
                   name='email'
                   labelPlacement='outside'
                   placeholder='Email del proveedor'
-                  defaultValue={currentUserEdit ? currentUserEdit.email : ''}
+                  defaultValue={currentItemEdit ? currentItemEdit.email : ''}
                   variant='bordered'
                   onChange={handleChange}
                 />
@@ -191,7 +190,7 @@ export const EditSupplierModal = ({ modal }) => {
                   name='website'
                   labelPlacement='outside'
                   placeholder='www.url.com'
-                  defaultValue={currentUserEdit ? currentUserEdit.website : ''}
+                  defaultValue={currentItemEdit ? currentItemEdit.website : ''}
                   variant='bordered'
                   onChange={handleChange}
                 />
@@ -201,7 +200,7 @@ export const EditSupplierModal = ({ modal }) => {
                   label='DNI/CUIL'
                   size='sm'
                   name='dni'
-                  defaultValue={currentUserEdit ? currentUserEdit.dni : ''}
+                  defaultValue={currentItemEdit ? currentItemEdit.dni : ''}
                   labelPlacement='outside'
                   placeholder='Ingresa el dni'
                   variant='bordered'
@@ -212,7 +211,7 @@ export const EditSupplierModal = ({ modal }) => {
                   size='sm'
                   name='address'
                   labelPlacement='outside'
-                  defaultValue={currentUserEdit ? currentUserEdit.address : ''}
+                  defaultValue={currentItemEdit ? currentItemEdit.address : ''}
                   placeholder='Ingresa la direccion'
                   variant='bordered'
                   onChange={handleChange}
@@ -227,17 +226,12 @@ export const EditSupplierModal = ({ modal }) => {
               variant='light'
               onPress={() => {
                 handleResetCurrentIdEdit()
-                onClose()
+                toggleModal()
               }}
             >
               Cerrar
             </Button>
-            <Button
-              color='primary'
-              className='bg-c-primary'
-              onPress={() => handleAddNewUser()}
-              radius='sm'
-            >
+            <Button color='primary' className='bg-c-primary' onPress={() => onSubmit()} radius='sm'>
               Guardar
             </Button>
           </ModalFooter>
