@@ -12,13 +12,13 @@ export const TabProduct = () => {
   const newInvoicing = useSelector((state: RootState) => state.unit.newInvoicing)
 
   return (
-    <div className='flex flex-wrap gap-4 items-center select-none'>
+    <div className='flex gap-4 items-center select-none overflow-x-auto hoverScrollbar'>
       <Tabs
         variant={'underlined'}
         color='default'
         className='flex gap-4'
         classNames={{
-          tabList: 'gap-6 w-full relative rounded-none p-0',
+          tabList: 'gap-6 w-full relative rounded-none p-0 ',
           cursor: 'w-full bg-[var(--c-primary-variant-1)]',
           tabContent: 'group-data-[selected=true]:text-[var(--c-primary-variant-1)]',
         }}

@@ -19,7 +19,7 @@ export const Tabs = ({ tabs }: { tabs: Tab[] }) => {
         panel: 'px-0 h-full py-0',
         cursor: 'w-full bg-[var(--c-primary-variant-3)] data-[selected=true]:text-c-primary',
         tabList: 'w-full relative rounded-lg p-0 border border-c-border',
-        tabContent: 'group-data-[selected=true]:text-[var(--c-primary)] ',
+        tabContent: 'group-data-[selected=true]:text-[var(--c-primary)]',
       }}
     >
       {(item) => (

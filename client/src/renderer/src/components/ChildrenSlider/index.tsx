@@ -6,11 +6,11 @@ import './styles.scss'
 
 export const ChildrenSlider = ({ children, spaceBetween = 15 }) => {
   return (
-    <div className='relative'>
+    <div className='relative overflow-x-hidden'>
       <Swiper
         slidesPerView='auto'
         spaceBetween={spaceBetween}
-        className='flex gap-4'
+        className='flex gap-4 '
         scrollbar={{
           hide: true,
         }}

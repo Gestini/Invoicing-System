@@ -1,11 +1,11 @@
 import { Tabs } from '@renderer/components/tab/Tabs'
-import { StockTable } from './StockTable'
+import { UniInventory } from './views/UnitInventory'
 import BulkUpload from './views/BulkUpload'
 import BulkUploadVanilla from './views/BulkUploadVanilla'
 
 const index = () => {
   const tabs = [
-    { name: 'Productos', content: <StockTable /> },
+    { name: 'Inventario', content: <UniInventory /> },
     { name: 'Carga masiva de productos', content: <BulkUploadVanilla /> },
     { name: 'Carga masiva de productos IA', content: <BulkUpload /> },
   ]

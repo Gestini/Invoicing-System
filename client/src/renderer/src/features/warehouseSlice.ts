@@ -6,7 +6,7 @@ export const manageWarehouse = createSlice({
   initialState: {
     data: <WarehouseModel[]>[],
     dataWarehouse: <WarehouseModel[]>[],
-    currentWarehouseId: '',
+    currentWarehouseId: -1,
     currentEditWarehouseId: -1,
   },
   reducers: {
@@ -38,7 +38,7 @@ export const manageWarehouse = createSlice({
       }
     },
     setCurrentWarehouseId: (state, action) => {
-      state.currentWarehouseId = String(action.payload)
+      state.currentWarehouseId = action.payload
     },
     setCurrentEditWarehouseId: (state, action) => {
       state.currentEditWarehouseId = action.payload

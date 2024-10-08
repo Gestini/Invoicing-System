@@ -2,21 +2,19 @@ import React from 'react'
 import toast from 'react-hot-toast'
 import { AppTable } from '@renderer/components/AppTable'
 import { useParams } from 'react-router-dom'
-import { RootState } from '@renderer/store'
+import { useDispatch } from 'react-redux'
 import { AddItemModal } from '@renderer/components/AppTable/Modals/AddItem'
 import { EditItemModal } from '@renderer/components/AppTable/Modals/EditItem'
-import { useDispatch, useSelector } from 'react-redux'
 import { columnsData, modalInputs } from './data'
 import { addItem, editItem, deleteItem, setTableData } from '@renderer/features/tableSlice'
 import {
-  reqCreateClient,
   reqEditClient,
-  reqGetClientByUnit,
   reqDeleteClient,
+  reqCreateClient,
+  reqGetClientByUnit,
 } from '@renderer/api/requests'
 
 export const ClientTable = () => {
-  const table = useSelector((state: RootState) => state.unit.table)
   const params = useParams()
   const dispatch = useDispatch()
 
@@ -40,13 +38,13 @@ export const ClientTable = () => {
     },
     create: async (data: any) => {
       try {
-        reqCreateClient({
+        const response = await reqCreateClient({
           ...data,
           businessUnit: {
             id: params.unitId,
           },
         })
-        dispatch(addItem({ ...data, id: table.data.length }))
+        dispatch(addItem(response.data))
         toast.success('Cliente guardado correctamente')
       } catch (error: any) {
         toast.error(error.response.data.message)

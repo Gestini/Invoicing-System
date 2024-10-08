@@ -7,8 +7,8 @@ import { AddItemModal } from '@renderer/components/AppTable/Modals/AddItem'
 import { EditItemModal } from '@renderer/components/AppTable/Modals/EditItem'
 import { useDispatch, useSelector } from 'react-redux'
 import { columnsData, modalInputs } from './data'
-import { addItem, editItem, deleteItem, setTableData } from '@renderer/features/tableSlice'
 import { reqGetAllInvoicesByUnit, reqDeleteInvoice } from '@renderer/api/requests'
+import { addItem, editItem, deleteItem, setTableData } from '@renderer/features/tableSlice'
 
 export const SalesTable = () => {
   const dispatch = useDispatch()
@@ -28,7 +28,7 @@ export const SalesTable = () => {
       try {
         dispatch(deleteItem(id))
         toast.success('Venta eliminada correctamente')
-        await reqDeleteInvoice(id)
+        reqDeleteInvoice(id)
       } catch (error: any) {
         toast.error(error.response.data.message)
       }

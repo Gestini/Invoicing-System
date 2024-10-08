@@ -6,7 +6,7 @@ import { WarehouseStats } from './Components/WarehouseStats'
 export const Warehouse = () => {
   const tabs = [
     {
-      name: 'Productos',
+      name: 'Depósitos',
       content: (
         <div className='flex gap-3 flex-col h-full'>
           <WarehouseCard />

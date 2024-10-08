@@ -23,7 +23,9 @@ export const WarehouseCard = () => {
         const deposits: WarehouseModel[] = response.data
 
         dispatch(setDataWarehouses(response.data))
+
         if (deposits.length === 0) return
+
         openWarehouse(deposits[0].id)
       } catch (error) {
         console.log(error)
@@ -47,16 +49,14 @@ export const WarehouseCard = () => {
           {warehouse.dataWarehouse.map((ele, ind: number) => (
             <div
               key={ind}
-              onClick={() => openWarehouse(ele.id)}
+              onClick={() => openWarehouse(Number(ele.id))}
               className={`${
-                currentWarehouseId === String(ele.id) ? 'bg-c-primary-variant-3' : 'bg-c-card'
+                currentWarehouseId === ele.id ? 'bg-c-primary-variant-3' : 'bg-c-card'
               } gap-4 w-[285px] h-[76px] rounded-[10px] flex-shrink-0 shadow-sm px-[19px] py-[21px] flex items-center cursor-pointer`}
             >
               <div
                 className={`${
-                  currentWarehouseId === String(ele.id)
-                    ? 'bg-c-primary-variant-3'
-                    : 'bg-c-card-variant-3'
+                  currentWarehouseId === ele.id ? 'bg-c-primary-variant-3' : 'bg-c-card-variant-3'
                 } p-2 rounded-lg`}
               >
                 <LocalIcon color='var(--c-primary)' />

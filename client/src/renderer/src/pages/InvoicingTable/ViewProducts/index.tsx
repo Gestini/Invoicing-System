@@ -27,7 +27,19 @@ export default function ViewProducts() {
   }, [])
 
   return (
-    <Table aria-label='Example table with custom cells' topContent={<TopContent />}>
+    <Table
+      shadow='none'
+      radius='none'
+      isCompact
+      aria-label='Example table with custom cells'
+      topContent={<TopContent />}
+      topContentPlacement='outside'
+      bottomContentPlacement='outside'
+      classNames={{
+        wrapper: ['bg-transparent', 'p-0', 'hoverScrollbar'],
+        th: ['bg-transparent', 'text-default-500', 'border-b', 'border-divider'],
+      }}
+    >
       <TableHeader columns={columns}>
         {(column) => (
           <TableColumn key={column.uid} align={column.uid === 'actions' ? 'center' : 'start'}>

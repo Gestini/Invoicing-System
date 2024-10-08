@@ -1,9 +1,17 @@
-import { WarehouseCardCompany } from '@renderer/pages/Warehouse/WarehouseCard/OnCompanySettings'
+import { Tabs } from '@renderer/components/tab/Tabs'
 import { useModal, modalTypes } from '@renderer/utils/useModal'
-import { Tab, Tabs, Modal, ModalBody, ModalHeader, ModalContent } from '@nextui-org/react'
+import { WarehouseCardCompany } from '@renderer/pages/Warehouse/WarehouseCard/OnCompanySettings'
+import { Modal, ModalBody, ModalContent, ModalHeader } from '@nextui-org/react'
 
 export const CompanySettings = () => {
   const [isOpen, toggleModal] = useModal(modalTypes.companySettingsModal)
+
+  const tabs = [
+    { name: 'General', content: <></> },
+    { name: 'Depósitos', content: <WarehouseCardCompany /> },
+    { name: 'Integraciones', content: <></> },
+    { name: 'Plan', content: <></> },
+  ]
 
   return (
     <Modal
@@ -17,16 +25,7 @@ export const CompanySettings = () => {
       <ModalContent>
         <ModalHeader className='flex flex-col gap-1'>Configuración</ModalHeader>
         <ModalBody>
-          <div className=''>
-            <Tabs key={'mis tabs'} variant={'underlined'} aria-label='Tabs variants'>
-              <Tab key='general' title='General' />
-              <Tab key='depositos' title='Depósitos'>
-                <WarehouseCardCompany />
-              </Tab>
-              <Tab key='integraciones' title='Integraciones' />
-              <Tab key='plan' title='Plan' />
-            </Tabs>
-          </div>
+          <Tabs tabs={tabs} />
         </ModalBody>
       </ModalContent>
     </Modal>

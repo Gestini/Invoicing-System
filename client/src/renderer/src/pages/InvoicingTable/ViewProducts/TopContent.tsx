@@ -11,13 +11,11 @@ export const TopContent = () => {
 
   const onSubmmit = async () => {
     try {
-      await reqCreateInvoice({
+      reqCreateInvoice({
         ...currentTab?.formData,
-        products: currentTab?.products,
-        businessUnit: {
-          id: unit?.id,
-        },
         total: currentTab?.total,
+        products: currentTab?.products,
+        businessUnitId: unit?.id,
       })
     } catch (error) {
       console.log(error)
