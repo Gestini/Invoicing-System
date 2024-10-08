@@ -2,11 +2,13 @@ import { Input } from '@nextui-org/react'
 import { ActionDropdown } from '../Dropdown'
 import { ShortCellValue } from './ShortCellValue'
 import { Chip, ChipProps } from '@nextui-org/react'
+import { DropdownAction } from '../Dropdown/DropdownAction'
 
 interface RenderCellInterface {
   item: any
   columnKey: any
-  inputCell: boolean
+  inputCell: boolean | undefined
+  dropdownAction: any
   handleDeleteItem: any
   handleSetCurrentIdEdit: any
 }
@@ -15,6 +17,7 @@ export const RenderCell = ({
   item,
   columnKey,
   inputCell,
+  dropdownAction,
   handleDeleteItem,
   handleSetCurrentIdEdit,
 }: RenderCellInterface) => {
@@ -27,6 +30,14 @@ export const RenderCell = ({
   const cellValue = item[columnKey]
 
   if (inputCell) return <Input type='email' size='sm' defaultValue={item[columnKey]} />
+
+  if (columnKey === 'actions' && dropdownAction) {
+    return (
+      <div className='relative flex justify-end items-center gap-2'>
+        <DropdownAction dropdownItems={dropdownAction} tableItemId={item.id} />
+      </div>
+    )
+  }
 
   switch (columnKey) {
     case 'category':
@@ -43,6 +54,7 @@ export const RenderCell = ({
           {cellValue}
         </Chip>
       )
+
     case 'actions':
       return (
         <div className='relative flex justify-end items-center gap-2'>
@@ -52,6 +64,7 @@ export const RenderCell = ({
           />
         </div>
       )
+
     default:
       return <ShortCellValue cellValue={cellValue} maxLength={20} />
   }
