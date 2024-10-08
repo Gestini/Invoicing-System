@@ -10,7 +10,6 @@ import { Warehouse } from '@renderer/pages/Warehouse'
 import Facturation from '../pages/Facturation/index'
 import { Dashboard } from '@renderer/pages/Dashboard'
 import { SalesTable } from '@renderer/pages/SalesTable'
-import ProductsPrices from '@renderer/pages/ProductsPrices'
 import { ClientTable } from '@renderer/pages/ClientTable'
 import { EmployeeTable } from '@renderer/pages/EmployeeTable'
 import { SupplierTable } from '@renderer/pages/SupplierTable'
@@ -85,9 +84,9 @@ const warehouseRoutes: RouteSection = {
   section: 'Depósitos',
   permission: permissions.warehouse.permission,
   routes: [
-    { path: '/product-management', element: <Warehouse />, title: 'Depositos' },
+    { path: '/product-management', element: <Warehouse />, title: 'Depósitos' },
     { path: '/brands', element: <Products />, title: 'inventario' },
-    { path: '/price-management', element: <ProductsPrices />, title: 'gestion de precios' },
+    { path: '/price-management', element: <></>, title: 'gestion de precios' },
     {
       path: '/stock-movements',
       element: <></>,
