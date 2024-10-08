@@ -8,8 +8,6 @@ export const columnsData = {
     { name: 'PRECIO AMIGO', uid: 'friendPrice', sortable: true },
     { name: 'PRECIO FINANCIADO', uid: 'financedPrice', sortable: true },
     { name: 'CANTIDAD', uid: 'quantity', sortable: true },
-    //{ name: 'PROVEEDOR', uid: 'supplier' },
-    //{ name: 'ESTADO', uid: 'status' },
     { name: 'ACCIÓN', uid: 'actions' },
   ],
   statusOptions: [
