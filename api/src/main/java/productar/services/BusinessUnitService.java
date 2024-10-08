@@ -3,7 +3,6 @@ package productar.services;
 import java.lang.reflect.Field;
 import java.security.Key;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -55,8 +54,8 @@ public class BusinessUnitService {
         return businessUnit.isPresent();
     }
 
-    public ArrayList<BusinessUnitModel> getAllBusinessUnit() {
-        return (ArrayList<BusinessUnitModel>) businessUnitsRepository.findAll();
+    public List<BusinessUnitModel> getAllBusinessUnit() {
+        return businessUnitsRepository.findAll();
     }
 
     public List<BusinessUnitModel> findAllUnitsWithEcommerce() {

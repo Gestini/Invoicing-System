@@ -51,13 +51,9 @@ public class ProductController {
         return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ProductModel> updateProduct(@PathVariable("id") Long id, @RequestBody ProductModel product) {
-        // Asignar el ID recibido en la URL al objeto product
-        product.setId(id);
-
-        ProductModel updatedProduct = productService.updateProduct(product);
-        return ResponseEntity.ok(updatedProduct);
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<?> updateProduct(@PathVariable("id") Long id, @RequestBody ProductModel newProductData) {
+        return productService.updateProduct(id, newProductData);
     }
 
     @DeleteMapping("/{id}")

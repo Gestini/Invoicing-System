@@ -1,6 +1,5 @@
 package productar.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +29,7 @@ public class BusinessUnitController {
     }
 
     @GetMapping("/get-all")
-    public ArrayList<BusinessUnitModel> getAllBusinessUnit() {
+    public List<BusinessUnitModel> getAllBusinessUnit() {
         return this.businessUnitsService.getAllBusinessUnit();
     }
 

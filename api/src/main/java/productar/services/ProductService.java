@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import jakarta.persistence.EntityNotFoundException;
 import productar.dto.ProductResponseDTO;
 import productar.models.ProductModel;
 import productar.repositories.ProductRepository;
@@ -25,20 +24,21 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public ProductModel updateProduct(ProductModel updatedProduct) {
-        // Buscar el producto existente por su ID
-        Optional<ProductModel> existingProductOptional = productRepository.findById(updatedProduct.getId());
+    public ResponseEntity<?> updateProduct(Long id, ProductModel updatedProduct) {
+        try {
+            Optional<ProductModel> productOptional = productRepository.findById(id);
 
-        if (existingProductOptional.isPresent()) {
-            ProductModel existingProduct = existingProductOptional.get();
+            if (!productOptional.isPresent()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Producto no encontrado");
+            }
 
-            // Copiar los campos no nulos de updatedProduct a existingProduct
+            ProductModel existingProduct = productOptional.get();
             copyNonNullProperties(updatedProduct, existingProduct);
+            productRepository.save(existingProduct);
 
-            // Guardar el producto actualizado
-            return productRepository.save(existingProduct);
-        } else {
-            throw new EntityNotFoundException("No se encontró el producto con ID: " + updatedProduct.getId());
+            return ResponseEntity.ok("Producto actualizado correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("Ocurrió un error: " + e.getMessage());
         }
     }
 
