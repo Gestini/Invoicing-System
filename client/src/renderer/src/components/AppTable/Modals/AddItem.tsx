@@ -10,12 +10,12 @@ import {
   ModalFooter,
   ModalHeader,
   ModalContent,
-  useDisclosure,
 } from '@nextui-org/react'
+import { modalTypes, useModal } from '@renderer/utils/useModal'
 
 export const AddItemModal = ({ modal }) => {
   const [data, setData] = React.useState<any>({})
-  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
+  const [isOpen, toggleModal] = useModal(modalTypes.addItemToTableModal)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setData({
@@ -24,15 +24,15 @@ export const AddItemModal = ({ modal }) => {
     })
   }
 
-  const handleAddNewUser = () => {
+  const addNewItem = () => {
     modal.action(data)
-    onClose()
+    toggleModal()
   }
 
   return (
     <div className='flex flex-col gap-2'>
       <Button
-        onPress={onOpen}
+        onPress={toggleModal}
         className='bg-c-primary'
         color='secondary'
         endContent={<PlusIcon />}
@@ -42,7 +42,7 @@ export const AddItemModal = ({ modal }) => {
       </Button>
       <Modal
         isOpen={isOpen}
-        onOpenChange={onOpenChange}
+        onOpenChange={toggleModal}
         scrollBehavior={'inside'}
         backdrop='blur'
         placement='center'
@@ -90,14 +90,14 @@ export const AddItemModal = ({ modal }) => {
             )}
           </ModalBody>
           <ModalFooter>
-            <Button color='danger' variant='light' onPress={onClose} radius='sm'>
+            <Button color='danger' variant='light' onPress={toggleModal} radius='sm'>
               Cerrar
             </Button>
             <Button
               className='bg-c-primary'
               color='secondary'
               radius='sm'
-              onPress={() => handleAddNewUser()}
+              onPress={() => addNewItem()}
             >
               Agregar
             </Button>

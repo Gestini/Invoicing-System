@@ -9,23 +9,19 @@ import {
   ModalFooter,
   ModalHeader,
   ModalContent,
-  useDisclosure,
 } from '@nextui-org/react'
 import { RootState } from '@renderer/store'
 import { setCurrentItemId } from '@renderer/features/tableSlice'
+import { useModal, modalTypes } from '@renderer/utils/useModal'
 import { useDispatch, useSelector } from 'react-redux'
 
 export const EditItemModal = ({ modal }) => {
   const dispatch = useDispatch()
   const [data, setData] = React.useState({})
-  const users = useSelector((state: RootState) => state.unit.table.data)
-  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
-  const currentItemIdEdit = useSelector((state: RootState) => state.unit.table.currentItemIdEdit)
-  const currentUserEdit = users.find((item) => item.id == currentItemIdEdit)
+  const [isOpen, toggleModal] = useModal(modalTypes.editItemTableModal)
 
-  React.useEffect(() => {
-    if (currentItemIdEdit !== -1) onOpen()
-  }, [currentItemIdEdit])
+  const table = useSelector((state: RootState) => state.unit.table)
+  const currentItemEdit = table.data.find((item) => item.id == table.currentItemIdEdit)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     let name = e.target.name
@@ -40,10 +36,10 @@ export const EditItemModal = ({ modal }) => {
 
   const handleResetCurrentIdEdit = () => dispatch(setCurrentItemId(-1))
 
-  const handleAddNewUser = async () => {
-    modal.action(data, currentUserEdit)
+  const onSubmit = async () => {
+    modal.action(data, currentItemEdit)
     handleResetCurrentIdEdit()
-    onClose()
+    toggleModal()
   }
 
   return (
@@ -52,7 +48,7 @@ export const EditItemModal = ({ modal }) => {
         isOpen={isOpen}
         onClose={handleResetCurrentIdEdit}
         backdrop='blur'
-        onOpenChange={onOpenChange}
+        onOpenChange={toggleModal}
         scrollBehavior={'inside'}
         placement='center'
       >
@@ -71,7 +67,7 @@ export const EditItemModal = ({ modal }) => {
                     label={input.label}
                     required={true}
                     onChange={(e) => handleChange(e)}
-                    defaultValue={currentUserEdit && currentUserEdit[input.name]}
+                    defaultValue={currentItemEdit && currentItemEdit[input.name]}
                   />
                 ))}
               </div>
@@ -85,7 +81,7 @@ export const EditItemModal = ({ modal }) => {
                     label={item.label}
                     onChange={handleChange}
                     className='max-w-x default-text-color'
-                    defaultSelectedKeys={[currentUserEdit && currentUserEdit[item.name]]}
+                    defaultSelectedKeys={[currentItemEdit && currentItemEdit[item.name]]}
                   >
                     {item.options.map((state) => (
                       <SelectItem
@@ -108,14 +104,14 @@ export const EditItemModal = ({ modal }) => {
               radius='sm'
               onPress={() => {
                 handleResetCurrentIdEdit()
-                onClose()
+                toggleModal()
               }}
             >
               Cerrar
             </Button>
             <Button
               color='primary'
-              onPress={() => handleAddNewUser()}
+              onPress={() => onSubmit()}
               className='bg-c-primary'
               radius='sm'
             >
