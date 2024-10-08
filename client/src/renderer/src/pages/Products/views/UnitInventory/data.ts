@@ -1,0 +1,32 @@
+export const columnsData = {
+  columns: [
+    { name: 'ID', uid: 'id' },
+    { name: 'NOMBRE DEL PRODUCTO', uid: 'name' },
+    { name: 'CÓDIGO', uid: 'codigo1' },
+    { name: 'CATEGORÍA', uid: 'category' },
+    { name: 'PRECIO TARJETA', uid: 'cardPrice', sortable: true },
+    { name: 'PRECIO AMIGO', uid: 'friendPrice', sortable: true },
+    { name: 'PRECIO FINANCIADO', uid: 'financedPrice', sortable: true },
+    { name: 'CANTIDAD', uid: 'quantity', sortable: true },
+    //{ name: 'PROVEEDOR', uid: 'supplier' },
+    //{ name: 'ESTADO', uid: 'status' },
+    { name: 'ACCIÓN', uid: 'actions' },
+  ],
+  statusOptions: [
+    { name: 'Disponible', uid: '0' },
+    { name: 'Agotado', uid: '1' },
+  ],
+  InitialVisibleColumns: [
+    'codigo1',
+    'cardPrice',
+    'friendPrice',
+    'financedPrice',
+    'category',
+    'id',
+    'name',
+    'quantity',
+    'status',
+    'actions',
+    'supplier',
+  ],
+}
