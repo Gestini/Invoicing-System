@@ -3,8 +3,10 @@ import { RootState } from '@renderer/store'
 import { TopContent } from './TableComponents/TopContent'
 import { RenderCell } from './TableComponents/RenderCell'
 import { BottomContent } from './TableComponents/BottomContent'
-import { setCurrentItemId } from '@renderer/features/tableSlice'
+import { AppTableInterface } from './Interfaces/TableProps'
+import { useModal, modalTypes } from '@renderer/utils/useModal'
 import { useDispatch, useSelector } from 'react-redux'
+import { setCurrentItemId, setTableData } from '@renderer/features/tableSlice'
 import {
   Table,
   TableRow,
@@ -17,16 +19,22 @@ import {
 } from '@nextui-org/react'
 
 export const AppTable = ({
+  inputCell,
   columnsData,
   tableActions,
   addItemModal,
   editItemModal,
-  inputCell = false,
-}) => {
+  dropdownAction,
+}: AppTableInterface) => {
   const dispatch = useDispatch()
-  type User = (typeof users)[0]
+  type TableItem = (typeof table.data)[0]
   type Column = (typeof columnsData.columns)[0]
-  const users = useSelector((state: RootState) => state.unit.table.data)
+  const table = useSelector((state: RootState) => state.unit.table)
+  const [___, toggleModal] = useModal(modalTypes.editItemTableModal)
+
+  React.useEffect(() => {
+    dispatch(setTableData([]))
+  }, [])
 
   const [page, setPage] = React.useState(1)
   const [filterValue, setFilterValue] = React.useState('')
@@ -35,7 +43,7 @@ export const AppTable = ({
     new Set(columnsData.InitialVisibleColumns),
   )
   const [statusFilter, setStatusFilter] = React.useState<Selection>('all')
-  const [rowsPerPage, /* setRowsPerPage */ __] = React.useState(5)
+  const [rowsPerPage, /* setRowsPerPage */ __] = React.useState(10)
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
     column: 'age',
     direction: 'ascending',
@@ -52,30 +60,30 @@ export const AppTable = ({
   const hasSearchFilter = Boolean(filterValue)
 
   const filteredItems = React.useMemo(() => {
-    let filteredUsers = [...users]
+    let filteredItems = [...table.data]
 
     type Item = { [key: string]: string }
 
-    const filtroPersonalizado = (item: Item, valorBusqueda: string): boolean => {
+    const filterBySearchValue = (item: Item, searchValue: string): boolean => {
       return Object.values(item).some(
         (value) =>
-          typeof value === 'string' && value.toLowerCase().includes(valorBusqueda.toLowerCase()),
+          typeof value === 'string' && value.toLowerCase().includes(searchValue.toLowerCase()),
       )
     }
 
     if (hasSearchFilter) {
-      filteredUsers = filteredUsers.filter((item) => filtroPersonalizado(item, filterValue))
+      filteredItems = filteredItems.filter((item) => filterBySearchValue(item, filterValue))
     }
 
     if (
       statusFilter !== 'all' &&
       Array.from(statusFilter).length !== columnsData.statusOptions.length
     ) {
-      filteredUsers = filteredUsers.filter((user) => Array.from(statusFilter).includes(user.status))
+      filteredItems = filteredItems.filter((item) => Array.from(statusFilter).includes(item.status))
     }
 
-    return filteredUsers
-  }, [users, filterValue, statusFilter])
+    return filteredItems
+  }, [table.data, filterValue, statusFilter])
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage)
 
@@ -87,17 +95,20 @@ export const AppTable = ({
   }, [page, filteredItems, rowsPerPage])
 
   const sortedItems = React.useMemo(() => {
-    return [...items].sort((a: User, b: User) => {
-      const first = a[sortDescriptor.column as keyof User] as number
-      const second = b[sortDescriptor.column as keyof User] as number
+    return [...items].sort((a: TableItem, b: TableItem) => {
+      const first = a[sortDescriptor.column as keyof TableItem] as number
+      const second = b[sortDescriptor.column as keyof TableItem] as number
       const cmp = first < second ? -1 : first > second ? 1 : 0
 
       return sortDescriptor.direction === 'descending' ? -cmp : cmp
     })
   }, [sortDescriptor, items])
 
-  const handleDeleteItem = async (id: number) => tableActions.delete(id)
-  const handleSetCurrentIdEdit = (id: number) => dispatch(setCurrentItemId(id))
+  const handleDeleteItem = async (id: number) => tableActions?.delete(id)
+  const handleSetCurrentIdEdit = (id: number) => {
+    dispatch(setCurrentItemId(id))
+    toggleModal()
+  }
 
   return (
     <Table
@@ -132,11 +143,8 @@ export const AppTable = ({
           columnsData={columnsData}
           filterValue={filterValue}
           statusFilter={statusFilter}
-          /* visibleColumns={visibleColumns} */
-          /* setRowsPerPage={setRowsPerPage} */
           setFilterValue={setFilterValue}
           setStatusFilter={setStatusFilter}
-          /* setVisibleColumns={setVisibleColumns} */
           addItemModal={addItemModal}
           editItemModal={editItemModal}
         />
@@ -156,7 +164,7 @@ export const AppTable = ({
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={'Sin resultados'} items={sortedItems}>
+      <TableBody emptyContent='Sin resultados' items={sortedItems}>
         {(item) => {
           return (
             <TableRow key={item.id}>
@@ -166,6 +174,7 @@ export const AppTable = ({
                     item={item}
                     columnKey={columnKey}
                     inputCell={inputCell}
+                    dropdownAction={dropdownAction}
                     handleDeleteItem={handleDeleteItem}
                     handleSetCurrentIdEdit={handleSetCurrentIdEdit}
                   />
