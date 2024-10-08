@@ -33,8 +33,14 @@ export const reqGetUnitsWithDeposit = async (companyId: any, depositId: any) => 
 export const reqGetUnitsMissingDeposit = async (companyId: any, depositId: any) => api.get(`/business-unit/get-units-missing-deposit/${companyId}/${depositId}`)
 export const reqSearchUnitsMissingDeposit = async (companyId: any, depositId: any, searchValue: any) => api.get(`/business-unit/search-units-missing-deposit/${companyId}/${depositId}/${searchValue}`)
 
+/* Rutas inventario */
+export const reqRemoveInventoryById = async (inventoryId: any) => api.delete(`/inventory/remove-inventory-by-id/${inventoryId}`)
+export const reqGetUnitInventoryById = async (unitId: any) => api.get(`/inventory/find-by-unit-id/${unitId}`)
+export const reqSearchInventoryProduct = async (name: string, unitId: number) => api.get(`/inventory/search-product-by-name-and-unit/${unitId}?name=${name}`)
+export const reqAsingProductsToInventory = async (data: any) => api.post('/inventory/asing-product-to-inventory', data)
+
 /* Rutas productos */
-export const reqEditProduct = async (id: any, data: any) => api.put(`/products/${id}`, data)
+export const reqEditProduct = async (id: any, data: any) => api.put(`/products/edit/${id}`, data)
 export const reqCreateProduct = async (data: any) => api.post('/products', data)
 export const reqDeleteProduct = async (id: any) => api.delete(`/products/${id}`)
 export const reqSearchProduct = async (name: string) => api.get(`/products/by-name/${name}`)
@@ -105,11 +111,11 @@ export const reqGetConfigIntegrationsByUnit = async (id: any, idintegration: any
 export const reqPatchConfigIntegrationsByUnit = async (id: any, payload: any) => api.patch(`/integrations/${id}/configure`, payload)
 
 /* Rutas archivos */
+export const reqGetFiles = async () => api.get('/files/find-all')
 export const reqCreateFile = async (data: any, initalPath: string) => api.post(`/files/create?initalPath=${initalPath}`, data)
 export const reqRenameFile = async (id: number, data: any) => api.put(`/files/rename/${id}`, data)
 export const reqDeleteFile = async (id: number) => api.delete(`/files/delete/${id}`)
 export const reqGetFileById = async (id: any) => api.get(`/files/find-by-id/${id}`)
-export const reqGetFilesByParentId = async (id: any) => api.get(`/files/find-files-by-parent-id/${id}`)
-export const reqGetFiles = async () => api.get('/files/find-all')
 export const reqGetFileByPath = async (path: any) => api.get(`/files/find-by-path?path=${path}`)
+export const reqGetFilesByParentId = async (id: any) => api.get(`/files/find-files-by-parent-id/${id}`)
 export const reqGetFilesByParentPath = async (path: any) => api.get(`/files/find-files-by-parent-path?path=${path}`)
