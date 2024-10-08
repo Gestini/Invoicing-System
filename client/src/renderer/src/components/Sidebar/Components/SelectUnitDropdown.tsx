@@ -23,7 +23,7 @@ export const SelectUnitDropdown = ({ activeSidebar }) => {
   const company = useSelector((state: RootState) => state.currentCompany)
   const [isOpen, setIsOpen] = React.useState(false)
   const [sucursales, setSucursales] = React.useState([])
-  const [__, toggleCreateUnitModal] = useModal(modalTypes.addNewAccountModal)
+  const [__, toggleCreateUnitModal] = useModal(modalTypes.createUnitModal)
   const [companySettingsModalIsOpen, _] = useModal(modalTypes.companySettingsModal)
 
   React.useEffect(() => {
@@ -75,14 +75,14 @@ export const SelectUnitDropdown = ({ activeSidebar }) => {
         </DropdownTrigger>
         <DropdownMenu
           aria-label='Dynamic Actions'
-          selectionMode='multiple'
+          selectionMode='single'
           itemClasses={{
             base: [
               'rounded-md',
               'text-default-500',
               'transition-opacity',
               'data-[hover=true]:text-foreground',
-              'data-[hover=true]:bg-c-primary-variant-2',
+              'data-[hover=true]:bg-[#ffffff]',
               'dark:data-[hover=true]:bg-c-primary-variant-2',
               'data-[selectable=true]:focus:bg-default-50',
             ],
