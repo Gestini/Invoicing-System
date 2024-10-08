@@ -44,7 +44,7 @@ export const AssignWarehouseToDeposit = () => {
       }
     }
     loadData()
-  }, [isOpen])
+  }, [isOpen, sucursalesAsignadas])
 
   React.useEffect(() => {
     const searchUnits = async () => {
@@ -97,7 +97,7 @@ export const AssignWarehouseToDeposit = () => {
       >
         <ModalContent>
           <ModalHeader>
-            <h4 className='text-c-title font-semibold text-2xl'>Asignar depósito a sucursal</h4>
+            <h4 className='text-c-title font-semibold text-2xl'>Asignar sucursal</h4>
           </ModalHeader>
           <ModalBody>
             <Autocomplete
@@ -128,7 +128,7 @@ export const AssignWarehouseToDeposit = () => {
                 },
               }}
               aria-label='Selecciona las sucursales'
-              placeholder='Selecciona las sucursales'
+              placeholder='Buscar por nombre'
               popoverProps={{
                 offset: 10,
                 classNames: {
