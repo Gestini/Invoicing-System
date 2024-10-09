@@ -7,7 +7,7 @@ import {
   DropdownTrigger,
 } from '@nextui-org/react'
 import { VerticalDotsIcon } from '../../Icons/VerticalDotsIcon'
-import { EditDocumentIcon } from '../../Icons/EditDocumentIcon'
+import { EditDocumentIcon } from '@renderer/components/Icons/EditDocumentIcon'
 import { DeleteDocumentIcon } from '../../Icons/DeleteDocumentIcon'
 
 export const ActionDropdown = ({ deleteAction, editAction }) => {

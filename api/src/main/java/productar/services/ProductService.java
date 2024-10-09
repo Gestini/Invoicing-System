@@ -1,9 +1,5 @@
 package productar.services;
 
-import productar.dto.ProductResponseDTO;
-import productar.models.ProductModel;
-import productar.repositories.ProductRepository;
-
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import jakarta.persistence.EntityNotFoundException;
+import productar.dto.ProductResponseDTO;
+import productar.models.ProductModel;
+import productar.repositories.ProductRepository;
 
 @Service
 public class ProductService {
@@ -26,20 +24,21 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public ProductModel updateProduct(ProductModel updatedProduct) {
-        // Buscar el producto existente por su ID
-        Optional<ProductModel> existingProductOptional = productRepository.findById(updatedProduct.getId());
+    public ResponseEntity<?> updateProduct(Long id, ProductModel updatedProduct) {
+        try {
+            Optional<ProductModel> productOptional = productRepository.findById(id);
 
-        if (existingProductOptional.isPresent()) {
-            ProductModel existingProduct = existingProductOptional.get();
+            if (!productOptional.isPresent()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Producto no encontrado");
+            }
 
-            // Copiar los campos no nulos de updatedProduct a existingProduct
+            ProductModel existingProduct = productOptional.get();
             copyNonNullProperties(updatedProduct, existingProduct);
+            productRepository.save(existingProduct);
 
-            // Guardar el producto actualizado
-            return productRepository.save(existingProduct);
-        } else {
-            throw new EntityNotFoundException("No se encontró el producto con ID: " + updatedProduct.getId());
+            return ResponseEntity.ok("Producto actualizado correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("Ocurrió un error: " + e.getMessage());
         }
     }
 
@@ -83,8 +82,8 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public List<ProductResponseDTO> getProductsByBusinessUnit(Long businessUnitId) {
-        List<ProductModel> products = productRepository.findByBusinessUnitId(businessUnitId);
+    public List<ProductResponseDTO> findProductsByDepositId(Long depositId) {
+        List<ProductModel> products = productRepository.findProductsByDepositId(depositId);
         return products.stream()
                 .map(this::convertToResponseDTO)
                 .collect(Collectors.toList());
@@ -121,7 +120,6 @@ public class ProductService {
         dto.setReferenceCode(product.getReferenceCode());
         dto.setPackageProduct(product.getPackageProduct());
         dto.setQuantityPerPackage(product.getQuantityPerPackage());
-        dto.setBusinessUnitId(product.getBusinessUnit().getId());
         dto.setDepositUnitId(product.getDepositUnit().getId());
         dto.setSupplierUnitId(product.getSupplierUnit().getId());
 
@@ -139,8 +137,8 @@ public class ProductService {
     }
 
     // Método para obtener productos por nombre
-    public List<ProductModel> findByNameAndBusinessUnitId(String name, Long id) {
-        return productRepository.findByNameAndBusinessUnitId(name, id);
+    public List<ProductModel> findByNameAndDepositId(String name, Long id) {
+        return productRepository.findByNameAndDepositId(name, id);
     }
 
     // Método para obtener productos por código de referencia

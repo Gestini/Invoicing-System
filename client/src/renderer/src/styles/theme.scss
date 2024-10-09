@@ -1,6 +1,10 @@
 .light {
   --c-title: #71717a;
+  --c-default: #62b167;
   --c-title-opacity: #979797c2;
+
+  --scrollbar-bg: #e1e1e4;
+  --scrollbar-bg-hover: #ceced1;
 
   --c-card: #fefeff;
   --c-card-2: #2f2f33;
@@ -13,9 +17,10 @@
 
   --c-bg-color: #f4f7fe;
   --c-bg-color-2: #ececec;
+  --c-bg-color-transparent: #f4f7fec5;
   --c-bg-selected: #e9e9e9;
 
-  --c-border: rgba(255, 255, 255, 0.1);
+  --c-border: rgba(0, 0, 0, 0.1);
   --c-input-color: #151615;
 
   --c-sidebar-text: #8e8e93;
@@ -26,13 +31,26 @@
   --c-top-3: #9b734b;
 
   --c-arrow-stats: #25a86d;
-
   --gradient-dashboard: #ffffff;
+
+  // TABS COLOR
+  --c-tabs: #131313;
+  --c-text: #000000;
+
+  // GESTION DE PRODUCTOS
+  --c-card-variant-3: #eeeeee9c;
+
+  // FILTERS
+  --c-filter: #f4f4f5;
 }
 
 .dark {
   --c-title: #e4e4e4;
+  --c-default: #62b167;
   --c-title-opacity: #e4e4e481;
+
+  --scrollbar-bg: #2f2f33;
+  --scrollbar-bg-hover: #2b2b2e;
 
   --c-card: #18181b;
   --c-card-2: #2f2f33;
@@ -45,6 +63,7 @@
 
   --c-bg-color: #141414;
   --c-bg-color-2: #212124;
+  --c-bg-color-transparent: #141414c9;
 
   --c-primary-sidebar: #18181b;
   --c-sidebar-text: #8e8e93;
@@ -63,9 +82,20 @@
     var(--c-primary-variant-4),
     var(--c-primary-variant-2)
   );
+
+  // TABS COLOR
+  --c-tabs: #7c7c7c;
+  --c-text: #e9e9e9;
+
+  // GESTION DE PRODUCTOS
+  --c-card-variant-3: #323535;
+
+  // FILTERS
+  --c-filter: #27272a;
 }
 
 #variantOne {
+  --c-logo: #71717a;
   --c-primary: #3b82f6;
   --c-secondary: #f56565;
   --c-sidebar-bg: #1c1c20;
@@ -79,6 +109,7 @@
   --c-primary-route-hover: rgb(79, 86, 213);
   --c-primary-route-active: rgb(59, 65, 179);
   --dashboard-gradiant-c-1: #dfe6fc;
+  --c-default: #62b167;
 
   &.light {
     --c-sidebar-bg: #fcfcff;
@@ -87,6 +118,7 @@
 }
 
 #variantTwo {
+  --c-logo: #71717a;
   --c-primary: #ef4444;
   --c-secondary: #33bbcf;
   --c-sidebar-bg: #201c1c;
@@ -100,6 +132,7 @@
   --c-primary-route-hover: #ef4444;
   --c-primary-route-active: #ce2323;
   --dashboard-gradiant-c-1: #fcdfdf;
+  --c-default: #62b167;
 
   &.light {
     --c-sidebar-bg: #fcfcff;
@@ -108,6 +141,7 @@
 }
 
 #variantThree {
+  --c-logo: #71717a;
   --c-primary: #8b5cf6;
   --c-secondary: #33bbcf;
   --c-sidebar-bg: #1e1c20;
@@ -121,6 +155,7 @@
   --c-primary-route-hover: #8132ff;
   --c-primary-route-active: #5c1bc4;
   --dashboard-gradiant-c-1: #f0dffc;
+  --c-default: #62b167;
 
   &.light {
     --c-sidebar-bg: #fcfcff;
@@ -129,6 +164,7 @@
 }
 
 #variantFour {
+  --c-logo: #71717a;
   --c-primary: #ec4899;
   --c-secondary: #33bbcf;
   --c-sidebar-bg: #201c1f;
@@ -142,6 +178,7 @@
   --c-primary-route-hover: #ec4899;
   --c-primary-route-active: #c62072;
   --dashboard-gradiant-c-1: #fad2f5;
+  --c-default: #62b167;
 
   &.light {
     --c-sidebar-bg: #fcfcff;
@@ -150,6 +187,7 @@
 }
 
 #variantFive {
+  --c-logo: #71717a;
   --c-primary: #dd872c;
   --c-secondary: #33bbcf;
   --c-sidebar-bg: #201e1c;
@@ -163,6 +201,7 @@
   --c-primary-route-hover: #ff9900;
   --c-primary-route-active: #c2792a;
   --dashboard-gradiant-c-1: #faddd2;
+  --c-default: #62b167;
 
   &.light {
     --c-sidebar-bg: #fcfcff;
@@ -171,6 +210,7 @@
 }
 
 #variantSix {
+  --c-logo: #62b167;
   --c-primary: #62b167;
   --c-secondary: #f56565;
   --c-sidebar-bg: #1c201d;
@@ -184,6 +224,7 @@
   --c-primary-route-hover: rgb(68, 99, 59);
   --c-primary-route-active: rgb(87, 179, 59);
   --dashboard-gradiant-c-1: #ebfcdf;
+  --c-default: #62b167;
 
   &.light {
     --c-sidebar-bg: #fcfcff;

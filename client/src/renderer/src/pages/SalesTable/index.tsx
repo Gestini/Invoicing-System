@@ -2,17 +2,18 @@ import React from 'react'
 import toast from 'react-hot-toast'
 import { AppTable } from '@renderer/components/AppTable'
 import { useParams } from 'react-router-dom'
+import { RootState } from '@renderer/store'
 import { AddItemModal } from '@renderer/components/AppTable/Modals/AddItem'
 import { EditItemModal } from '@renderer/components/AppTable/Modals/EditItem'
 import { useDispatch, useSelector } from 'react-redux'
 import { columnsData, modalInputs } from './data'
-import { addItem, editItem, deleteItem, setTableData } from '@renderer/features/tableSlice'
 import { reqGetAllInvoicesByUnit, reqDeleteInvoice } from '@renderer/api/requests'
+import { addItem, editItem, deleteItem, setTableData } from '@renderer/features/tableSlice'
 
 export const SalesTable = () => {
   const dispatch = useDispatch()
   const params = useParams()
-  const table = useSelector((state: any) => state.unit.table)
+  const table = useSelector((state: RootState) => state.unit.table)
 
   React.useEffect(() => {
     const loadData = async () => {
@@ -27,7 +28,7 @@ export const SalesTable = () => {
       try {
         dispatch(deleteItem(id))
         toast.success('Venta eliminada correctamente')
-        await reqDeleteInvoice(id)
+        reqDeleteInvoice(id)
       } catch (error: any) {
         toast.error(error.response.data.message)
       }

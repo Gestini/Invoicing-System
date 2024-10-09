@@ -1,3 +1,4 @@
+import { RootState } from '@renderer/store'
 import { useSelector } from 'react-redux'
 import { ChevronDownIcon } from '@renderer/components/Icons'
 import { ExportTableToExcel } from './Excel'
@@ -5,7 +6,7 @@ import { PdfIcon, DocIcon, ExcelIcon } from '@renderer/components/Icons/ExportTa
 import { Button, Dropdown, DropdownMenu, DropdownItem, DropdownTrigger } from '@nextui-org/react'
 
 export const ExportTableDropdown = () => {
-  const data = useSelector((state: any) => state.unit.table.data)
+  const data = useSelector((state: RootState) => state.unit.table.data)
 
   return (
     <Dropdown className='bg-c-card text-c-title'>

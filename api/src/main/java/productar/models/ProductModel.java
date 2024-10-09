@@ -100,14 +100,9 @@ public class ProductModel {
     private SupplierModel supplierUnit;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "business_unit_id", nullable = false)
-    @NotNull(message = "La unidad de negocio no puede ser nula")
-    private BusinessUnitsModel businessUnit;
-
-    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "deposit_unit_id", nullable = true)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private DepositUnitsModel depositUnit;
+    private DepositModel depositUnit;
 
     @Column(name = "price_policy")
     private String pricePolicy;
@@ -136,11 +131,11 @@ public class ProductModel {
     @Column(name = "quantity_per_package")
     private Integer quantityPerPackage;
 
-    public DepositUnitsModel getDepositUnit() {
+    public DepositModel getDepositUnit() {
         return depositUnit;
     }
 
-    public void setDepositUnit(DepositUnitsModel depositUnit) {
+    public void setDepositUnit(DepositModel depositUnit) {
         this.depositUnit = depositUnit;
     }
 
@@ -367,16 +362,6 @@ public class ProductModel {
     public void setStatus(Boolean status) {
         this.status = status;
     }
-
-    public BusinessUnitsModel getBusinessUnit() {
-        return businessUnit;
-    }
-
-    public void setBusinessUnit(BusinessUnitsModel businessUnit) {
-        this.businessUnit = businessUnit;
-    }
-
-    // Lifecycle Callbacks
 
     @PrePersist
     protected void onCreate() {

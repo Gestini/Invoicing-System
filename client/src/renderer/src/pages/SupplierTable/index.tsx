@@ -1,75 +1,57 @@
 import React from 'react'
-import toast from 'react-hot-toast'
 import { AppTable } from '@renderer/components/AppTable'
-import { useParams } from 'react-router-dom'
+import { RootState } from '@renderer/store'
+import { columnsData } from './data'
+import { reqGetSupplier } from '@renderer/api/requests'
 import { AddSupplierModal } from '@renderer/components/AppTable/Modals/SupplierAdd'
 import { EditSupplierModal } from '@renderer/components/AppTable/Modals/SupplierEdit'
+import { DropdownItemInteface } from '@renderer/components/AppTable/Interfaces/ActionDropdown'
+import { modalTypes, useModal } from '@renderer/utils/useModal'
 import { useDispatch, useSelector } from 'react-redux'
-import { columnsData, modalInputs } from './data'
-import { addItem, editItem, deleteItem, setTableData } from '@renderer/features/tableSlice'
-import { reqCreateSupplier, reqEditSupplier, reqGetSupplier } from '@renderer/api/requests'
+import { deleteItem, setCurrentItemId, setTableData } from '@renderer/features/tableSlice'
 
 export const SupplierTable = () => {
-  const table = useSelector((state: any) => state.unit.table)
-  const params = useParams()
   const dispatch = useDispatch()
+  const unit = useSelector((state: RootState) => state.currentUnit)
+  const [_, toggleModal] = useModal(modalTypes.editSupplierModal)
+  const handleSetCurrentIdEdit = (id: number) => dispatch(setCurrentItemId(id))
 
   React.useEffect(() => {
     const loadData = async () => {
-      const response = await reqGetSupplier(params.unitId)
+      const response = await reqGetSupplier(unit.id)
       dispatch(setTableData(response.data))
     }
     loadData()
   }, [])
 
-  const tableActions = {
-    delete: async (id: any) => {
-      try {
-        dispatch(deleteItem(id))
-        toast.success('Proveedor eliminado correctamente')
-      } catch (error: any) {
-        toast.error(error.response.data.message)
-      }
+  const dropdownAction: DropdownItemInteface[] = [
+    {
+      key: 'edit',
+      title: 'Editar',
+      onPress: (id) => {
+        handleSetCurrentIdEdit(id)
+        toggleModal()
+      },
     },
-    create: async (data: any) => {
-      try {
-        reqCreateSupplier(data)
-        dispatch(addItem({ ...data, id: table.data.length }))
-        toast.success('Proveedor guardado correctamente')
-      } catch (error: any) {
-        toast.error(error.response.data.message)
-      }
+    {
+      key: 'delete',
+      title: 'Borrar',
+      onPress: async (id) => {
+        try {
+          dispatch(deleteItem(id))
+        } catch (error: any) {
+          console.log(error)
+        }
+      },
     },
-    edit: async (id: any, data: any) => {
-      try {
-        reqEditSupplier(id, data)
-        dispatch(editItem({ data, id: id }))
-        toast.success('Proveedor editado correctamente')
-      } catch (error) {
-        console.log(error)
-      }
-    },
-  }
-
-  const newUserModal = {
-    title: 'Agrega un nuevo proveedor',
-    buttonTitle: 'Agregar',
-    ...modalInputs,
-    action: tableActions.create,
-  }
-
-  const editUserModal = {
-    title: 'Editar proveedor',
-    ...modalInputs,
-    action: tableActions.edit,
-  }
+  ]
 
   return (
     <AppTable
       columnsData={columnsData}
-      tableActions={tableActions}
-      addItemModal={<AddSupplierModal modal={newUserModal} />}
-      editItemModal={<EditSupplierModal modal={editUserModal} />}
+      addItemModal={<AddSupplierModal />}
+      editItemModal={<EditSupplierModal />}
+      dropdownAction={dropdownAction}
     />
   )
 }

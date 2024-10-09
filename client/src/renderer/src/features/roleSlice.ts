@@ -1,21 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
-
-export interface Role {
-  id: number
-  name: string
-  users: any[]
-  permissions: Permission[]
-}
-
-export interface Permission {
-  id: number
-  name: string
-}
+import { RoleModel } from '@renderer/interfaces/role'
 
 export const manageRoles = createSlice({
   name: 'roles',
   initialState: {
-    data: <Role[]>[],
+    data: <RoleModel[]>[],
     currentRoleIdEdit: -1,
   },
   reducers: {

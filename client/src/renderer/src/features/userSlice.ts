@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { UserModel } from '@renderer/interfaces/user'
 
 export const manageUserSlice = createSlice({
   name: 'user',
-  initialState: null,
+  initialState: null as UserModel | null,
   reducers: {
     setMyUser: (_, action) => action.payload,
   },

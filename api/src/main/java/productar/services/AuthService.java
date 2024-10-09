@@ -1,16 +1,15 @@
 package productar.services;
 
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import java.util.regex.Pattern;
 
 import lombok.RequiredArgsConstructor;
 import productar.dto.LoginRequest;
@@ -31,24 +30,34 @@ public class AuthService {
     private final PasswordResetService passwordResetService;
 
     public ResponseEntity<String> login(LoginRequest request) {
-        String password = request.getPassword();
-        String username = request.getUsername();
+        try {
+            String password = request.getPassword();
+            String username = request.getUsername();
 
-        String fields[] = { password, username };
+            String fields[] = { password, username };
 
-        if (!validateFields.Validate(fields)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Entrada de datos no válida");
+            if (!validateFields.Validate(fields)) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Entrada de datos no válida");
+            }
+
+            Optional<User> userOptional = userRepository.findByUsername(username);
+            if (!userOptional.isPresent()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
+            }
+
+            User user = userOptional.get();
+
+            if (!passwordEncoder.matches(password, user.getPassword())) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Contraseña incorrecta");
+            }
+
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+
+            String token = jwtService.getToken(user);
+            return ResponseEntity.status(HttpStatus.OK).body(token);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error: " + e.getMessage());
         }
-
-        authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(),
-                        request.getPassword()));
-
-        UserDetails user = userRepository.findByUsername(request.getUsername()).orElseThrow();
-
-        String token = jwtService.getToken(user);
-        return ResponseEntity.status(HttpStatus.OK).body(token);
-
     }
 
     public ResponseEntity<String> register(RegisterRequest request) {
@@ -102,7 +111,6 @@ public class AuthService {
             return ResponseEntity.status(HttpStatus.OK).body("Usuario registrado correctamente");
 
         } catch (Exception e) {
-            System.out.println(e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Ocurrió un error al registrar el usuario");
         }
@@ -133,6 +141,7 @@ public class AuthService {
         if (password.length() < 8) {
             return "La contraseña debe tener al menos 8 caracteres.";
         }
+        
         if (password.length() > 20) {
             return "La contraseña no puede tener más de 20 caracteres.";
         }

@@ -26,7 +26,7 @@ export const CreateRoleModal = () => {
     permissions: [],
   })
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     let name = e.target.name
     let value = e.target.value
     setData({
@@ -61,7 +61,13 @@ export const CreateRoleModal = () => {
       >
         Nuevo
       </Button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} scrollBehavior={'inside'} backdrop='blur'>
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        scrollBehavior={'inside'}
+        backdrop='blur'
+        placement='center'
+      >
         <ModalContent>
           <ModalHeader>
             <h4 className='text-c-title font-semibold text-2xl'>Crear un nuevo rol</h4>

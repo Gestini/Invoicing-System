@@ -1,9 +1,12 @@
 import React from 'react'
 import { BiX } from 'react-icons/bi'
 import { useParams } from 'react-router-dom'
+import { RoleModel } from '@renderer/interfaces/role'
+import { RootState } from '@renderer/store'
+import { UserModel } from '@renderer/interfaces/user'
 import { SearchIcon } from '@renderer/components/Icons/SearchIcon'
 import { useDispatch, useSelector } from 'react-redux'
-import { addRoleUser, removeRoleUser, Role } from '@renderer/features/roleSlice'
+import { addRoleUser, removeRoleUser } from '@renderer/features/roleSlice'
 import { Autocomplete, AutocompleteItem, Avatar } from '@nextui-org/react'
 import { reqSearchEmployeeByName, reqAddRoleUser, reqRemoveRoleUser } from '@renderer/api/requests'
 
@@ -12,12 +15,11 @@ export const RoleUsers = () => {
   const params = useParams()
   const [result, setResult] = React.useState([])
   const [searchValue, setSearchValue] = React.useState('')
-  const handleChange = async (e: any) => setSearchValue(e)
-  const roles = useSelector((state: any) => state.unit.roles)
-  const currentRole: Role = roles.data.find((item: Role) => item.id === roles.currentRoleIdEdit)
-
+  const handleChange = async (e: string) => setSearchValue(e)
+  const roles = useSelector((state: RootState) => state.unit.roles)
+  const currentRole = roles.data.find((item: RoleModel) => item.id === roles.currentRoleIdEdit)
   const filteredData = result.filter(
-    (user: any) => !currentRole?.users.some((item: any) => item.id == user.id),
+    (user: UserModel) => !currentRole?.users.some((item) => item.id == user.id),
   )
 
   React.useEffect(() => {
@@ -27,6 +29,7 @@ export const RoleUsers = () => {
 
       const response = await reqSearchEmployeeByName(params.unitId, searchValue)
       if (response.data.length == 0) return
+
       setResult(response.data)
     }
     onSubmmit()
@@ -37,7 +40,7 @@ export const RoleUsers = () => {
       dispatch(addRoleUser(user))
       await reqAddRoleUser({
         role: {
-          id: currentRole.id,
+          id: currentRole?.id,
         },
         employee: {
           id: user.id,
@@ -50,7 +53,7 @@ export const RoleUsers = () => {
 
   const handleRemoveRoleUser = async (userId: number) => {
     try {
-      await reqRemoveRoleUser(currentRole.id, userId)
+      await reqRemoveRoleUser(currentRole?.id, userId)
       dispatch(removeRoleUser(userId))
     } catch (error) {
       console.log(error)
@@ -124,9 +127,7 @@ export const RoleUsers = () => {
       </Autocomplete>
       <div className='flex flex-col gap-3'>
         {currentRole?.users
-          ?.filter((item: any) =>
-            String(item.name).toLowerCase().includes(searchValue.toLowerCase()),
-          )
+          ?.filter((item) => String(item.name).toLowerCase().includes(searchValue.toLowerCase()))
           .map((item, index) => (
             <div className='flex gap-2 justify-between items-center' key={index}>
               <div className='flex items-center gap-2'>

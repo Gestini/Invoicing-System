@@ -1,68 +1,92 @@
-import Home from '@renderer/pages/Home'
-import Login from '@renderer/pages/Auth/Login'
-import Register from '@renderer/pages/Auth/Register'
+import React from 'react'
+
+import Plans from '@renderer/pages/PaymentGateway/Plans'
+import Users from '@renderer/pages/Users'
+import Shops from '@renderer/pages/Settings/Shops'
+import Products from '@renderer/pages/Products'
+import Settings from '@renderer/pages/Settings'
 import { Roles } from '@renderer/pages/Roles'
 import { Warehouse } from '@renderer/pages/Warehouse'
+import Facturation from '../pages/Facturation/index'
+import { Dashboard } from '@renderer/pages/Dashboard'
 import { SalesTable } from '@renderer/pages/SalesTable'
 import { ClientTable } from '@renderer/pages/ClientTable'
-import { permissions } from '@renderer/pages/Roles/Permissions'
-import { ReactElement } from 'react'
-import { SupplierTable } from '@renderer/pages/SupplierTable'
 import { EmployeeTable } from '@renderer/pages/EmployeeTable'
+import { SupplierTable } from '@renderer/pages/SupplierTable'
 import { InvoicingTable } from '@renderer/pages/InvoicingTable'
-import Facturation from '@renderer/pages/Facturation'
+import { DocumentManager } from '@renderer/pages/Documents'
+
+import Login from '@renderer/pages/Auth/Login'
+import Register from '@renderer/pages/Auth/Register'
 import RecoverPasswordChange from '@renderer/pages/Auth/RecoverPasswordChange'
 import RecoverPasswordCode from '@renderer/pages/Auth/RecoverPasswordCode'
 import RecoverPasswordEmail from '@renderer/pages/Auth/RecoverPasswordEmail'
+
+import { permissions } from '@renderer/pages/Roles/Permissions'
+
 import {
-  BiBox,
-  BiUser,
-  BiLeaf,
-  BiGroup,
-  BiCalculator,
-  BiSolidDashboard,
-  BiBadgeCheck,
-} from 'react-icons/bi'
-import Plans from '@renderer/pages/PaymentGateway/Plans'
+  MdFolder,
+  MdPeople,
+  MdDashboard,
+  MdWarehouse,
+  MdAssessment,
+  MdAttachMoney,
+  MdPointOfSale,
+  MdShoppingCart,
+  MdAdminPanelSettings,
+} from 'react-icons/md'
+
+import { LoadCurrentFilesMiddleware } from './middlewares/LoadCurrentFilesMiddleware'
+
+export interface RouteData {
+  path: string
+  icon?: string
+  title?: string
+  element: JSX.Element
+  section?: string
+  children?: any
+  permission?: string
+  routesLength?: number
+}
 
 interface Route {
   path: string
-  element: ReactElement
   title: string
+  element: React.ReactElement
 }
 
 interface RouteSection {
-  icon: ReactElement | null
+  icon: React.ReactElement | null
   path: string
-  section: string
   routes: Route[]
+  section: string
   permission?: string | undefined
 }
 
 const generalRoutes: RouteSection = {
-  icon: <BiSolidDashboard />,
-  path: '/dashboard/:unitId',
+  icon: <MdDashboard />,
+  path: '/dashboard/:companyId/:unitId?',
   section: 'Dashboard',
-  routes: [{ path: '', element: <Home />, title: 'tablero' }],
+  routes: [{ path: '', element: <Dashboard />, title: 'tablero' }],
 }
 
 const plansRoutes: RouteSection = {
-  icon: <BiBadgeCheck />,
-  path: '/plans/:unitId',
+  icon: <MdAssessment />,
+  path: '/plans/:companyId/:unitId',
   section: 'Planes',
-  routes: [{ path: '', element: <Plans />, title: 'tablero' }],
+  routes: [{ path: '', element: <Plans />, title: 'planes' }],
   permission: permissions.admin.permission,
 }
 
 const warehouseRoutes: RouteSection = {
-  icon: <BiBox />,
-  path: '/warehouse/:unitId',
+  icon: <MdWarehouse />,
+  path: '/warehouse/:companyId/:unitId',
   section: 'Depósitos',
   permission: permissions.warehouse.permission,
   routes: [
-    { path: '/product-management', element: <Warehouse />, title: 'productos' },
-    { path: '/price-management', element: <></>, title: 'precios' },
-    { path: '/stock-management', element: <></>, title: 'inventario' },
+    { path: '/product-management', element: <Warehouse />, title: 'Depósitos' },
+    { path: '/brands', element: <Products />, title: 'inventario' },
+    { path: '/price-management', element: <></>, title: 'gestion de precios' },
     {
       path: '/stock-movements',
       element: <></>,
@@ -71,14 +95,31 @@ const warehouseRoutes: RouteSection = {
     { path: '/inventory-list', element: <></>, title: 'lista de inventario' },
     { path: '/reception-management', element: <></>, title: 'recepción' },
     { path: '/categories', element: <></>, title: 'categorías' },
-    { path: '/brands', element: <></>, title: 'marcas' },
     { path: '/consumptions', element: <></>, title: 'consumos' },
   ],
 }
 
+const documentsRoutes: RouteSection = {
+  icon: <MdFolder />,
+  path: '/documents/:companyId/:unitId/:fileId?',
+  section: 'Documentos',
+  permission: permissions.documents.permission,
+  routes: [
+    {
+      path: '',
+      element: (
+        <LoadCurrentFilesMiddleware>
+          <DocumentManager />
+        </LoadCurrentFilesMiddleware>
+      ),
+      title: 'Documentos',
+    },
+  ],
+}
+
 const posRoutes: RouteSection = {
-  icon: <BiLeaf />,
-  path: '/pos/:unitId',
+  icon: <MdPointOfSale />,
+  path: '/pos/:companyId/:unitId',
   section: 'Punto de Venta',
   permission: permissions.pos.permission,
   routes: [
@@ -96,11 +137,12 @@ const posRoutes: RouteSection = {
 }
 
 const hrRoutes: RouteSection = {
-  icon: <BiGroup />,
-  path: '/hr/:unitId',
+  icon: <MdPeople />,
+  path: '/hr/:companyId/:unitId',
   section: 'Recursos Humanos',
   permission: permissions.hr.permission,
   routes: [
+    { path: '/users', element: <Users />, title: 'Usuarios' },
     { path: '/employees', element: <EmployeeTable />, title: 'empleados' },
     { path: '/roles', element: <Roles />, title: 'roles' },
     { path: '/contacts', element: <></>, title: 'contactos' },
@@ -108,8 +150,8 @@ const hrRoutes: RouteSection = {
 }
 
 const adminRoutes: RouteSection = {
-  icon: <BiCalculator />,
-  path: '/admin/:unitId',
+  icon: <MdAdminPanelSettings />,
+  path: '/admin/:companyId/:unitId',
   section: 'Admin',
   permission: permissions.admin.permission,
   routes: [
@@ -119,8 +161,8 @@ const adminRoutes: RouteSection = {
 }
 
 const operationsRoutes: RouteSection = {
-  icon: <BiUser />,
-  path: '/operations/:unitId',
+  icon: <MdAttachMoney />,
+  path: '/operations/:companyId/:unitId',
   section: 'Operaciones',
   permission: permissions.operations.permission,
   routes: [
@@ -158,6 +200,17 @@ export const authRoutes: RouteSection = {
   ],
 }
 
+const ecommerceRoutes: RouteSection = {
+  icon: <MdShoppingCart />,
+  path: '/ecommerce/:companyId/:unitId',
+  section: 'Tienda',
+  routes: [
+    { path: '/general', element: <Settings />, title: 'General' },
+    { path: '/shops', element: <Shops />, title: 'Metricas' },
+  ],
+  permission: permissions.ecommerce.permission,
+}
+
 export const routes = [
   hrRoutes,
   posRoutes,
@@ -165,6 +218,8 @@ export const routes = [
   adminRoutes,
   generalRoutes,
   warehouseRoutes,
+  ecommerceRoutes,
+  documentsRoutes,
   operationsRoutes,
 ].reduce(
   (acc: any, item: RouteSection) =>
@@ -184,9 +239,11 @@ export const routes = [
 export const sidebarRoutes: RouteSection[] = [
   generalRoutes,
   plansRoutes,
+  documentsRoutes,
   warehouseRoutes,
   hrRoutes,
   operationsRoutes,
   posRoutes,
   adminRoutes,
+  ecommerceRoutes,
 ]

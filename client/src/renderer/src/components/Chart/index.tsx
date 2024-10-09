@@ -1,5 +1,6 @@
 import React from 'react'
 import { PieChart } from 'react-minimal-pie-chart'
+import { RootState } from '@renderer/store'
 import { useSelector } from 'react-redux'
 import { ChartComponent } from './ChartComponent'
 import { Card, CardBody, CardHeader } from '@nextui-org/react'
@@ -57,7 +58,8 @@ const generateColorVariants = (mainColor: string, count: number): string[] => {
 export const GraphView = () => {
   const [mainColor, setMainColor] = React.useState('transparent')
   const [parsedMainColor, setParsedMainColor] = React.useState('transparent')
-  const currentTheme = useSelector((state: any) => state.user.currentTheme)
+  const currentTheme = useSelector((state: RootState) => state.user.currentTheme)
+  const sidebarState = useSelector((state: RootState) => state.sidebar)
 
   React.useEffect(() => {
     const style = getComputedStyle(document.body)
@@ -115,7 +117,11 @@ export const GraphView = () => {
             <h3 className='font-medium'>{item.title}</h3>
           </CardHeader>
           <CardBody>
-            <ChartComponent data={item.initialData} colors={item.colors} />
+            <ChartComponent
+              data={item.initialData}
+              colors={item.colors}
+              sidebarState={sidebarState.isActive}
+            />
           </CardBody>
         </Card>
       ))}

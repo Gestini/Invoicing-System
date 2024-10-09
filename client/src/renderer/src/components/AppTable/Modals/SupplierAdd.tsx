@@ -1,23 +1,28 @@
 import React from 'react'
-import { PlusIcon } from '@renderer/components/Icons/PlusIcon'
 import {
-  Modal,
   Input,
-  Button,
+  Modal,
   Select,
+  Button,
+  Textarea,
   ModalBody,
   SelectItem,
   ModalFooter,
   ModalHeader,
   ModalContent,
-  useDisclosure,
-  Textarea,
 } from '@nextui-org/react'
-import './ProductAdd.scss'
+import { addItem } from '@renderer/features/tableSlice'
+import { PlusIcon } from '@renderer/components/Icons/PlusIcon'
 import { useParams } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { reqCreateSupplier } from '@renderer/api/requests'
+import { modalTypes, useModal } from '@renderer/utils/useModal'
+import './ProductAdd.scss'
 
-export const AddSupplierModal = ({ modal }) => {
+export const AddSupplierModal = () => {
+  const dispatch = useDispatch()
   const params = useParams()
+  const [isOpen, toggleModal] = useModal(modalTypes.createSupplierModal)
   const [data, setData] = React.useState<any>({
     name: '',
     description: null,
@@ -38,9 +43,8 @@ export const AddSupplierModal = ({ modal }) => {
   const [errors, setErrors] = React.useState({
     name: '',
   })
-  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setData({
       ...data,
       [e.target.name]: e.target.value,
@@ -67,7 +71,7 @@ export const AddSupplierModal = ({ modal }) => {
     setErrors(newErrors)
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     let valid = true
     const newErrors = {
       name: '',
@@ -82,7 +86,9 @@ export const AddSupplierModal = ({ modal }) => {
     if (!valid) {
       return
     }
-    modal.action(data)
+
+    const response = await reqCreateSupplier(data)
+    dispatch(addItem(response.data))
     setData({
       name: '',
       description: null,
@@ -99,7 +105,7 @@ export const AddSupplierModal = ({ modal }) => {
         name: 'Main Unit',
       },
     })
-    onClose()
+    toggleModal()
   }
 
   const validateName = (name) => {
@@ -112,25 +118,26 @@ export const AddSupplierModal = ({ modal }) => {
   return (
     <div className='flex flex-col gap-2'>
       <Button
-        onPress={onOpen}
+        onPress={toggleModal}
         className='bg-c-primary'
         color='secondary'
         endContent={<PlusIcon />}
         radius='sm'
       >
-        {modal?.buttonTitle}
+        Agregar
       </Button>
       <Modal
         isOpen={isOpen}
-        onOpenChange={onOpenChange}
+        onOpenChange={toggleModal}
         size='5xl'
         scrollBehavior={'inside'}
         backdrop='blur'
         className='bg-c-card'
+        placement='center'
       >
         <ModalContent>
           <ModalHeader className='flex flex-col gap-1'>
-            <h3 className='text-c-title'>{modal?.title}</h3>
+            <h3 className='text-c-title'>Agrega un nuevo proveedor</h3>
           </ModalHeader>
           <ModalBody>
             <div className='productsmodaladd w-full flex flex-col gap-3  '>
@@ -236,7 +243,7 @@ export const AddSupplierModal = ({ modal }) => {
             </div>
           </ModalBody>
           <ModalFooter>
-            <Button color='danger' variant='light' onPress={onClose} radius='sm'>
+            <Button color='danger' variant='light' onPress={toggleModal} radius='sm'>
               Cerrar
             </Button>
             <Button color='primary' className='bg-c-primary' onPress={handleSubmit} radius='sm'>

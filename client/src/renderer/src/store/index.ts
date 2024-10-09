@@ -1,12 +1,15 @@
-import { manageUnits } from '@renderer/features/unitsSlice'
 import { manageRoles } from '@renderer/features/roleSlice'
 import { newInvoicing } from '@renderer/features/newInvoicing'
 import { manageWarehouse } from '@renderer/features/warehouseSlice'
 import { manageUserSlice } from '@renderer/features/userSlice'
+import { manageCompanies } from '@renderer/features/companiesSlice'
+import { manageDocuments } from '@renderer/features/fileSlice'
 import { manageTableSlice } from '@renderer/features/tableSlice'
 import { manageCurrentUnit } from '@renderer/features/currentUnitSlice'
 import { manageModalsSlice } from '@renderer/features/currentModal'
+import { manageSidebarSlice } from '@renderer/features/sidebarSlice'
 import { manageCurrentTheme } from '@renderer/features/currentTheme'
+import { manageCurrentCompany } from '@renderer/features/currentCompany'
 import { manageUserSessionsSlice } from '@renderer/features/userSessions'
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
 
@@ -29,8 +32,11 @@ const unitReducers = combineReducers({
 const appReducer = combineReducers({
   user: userReducers,
   unit: unitReducers,
-  units: manageUnits.reducer,
+  sidebar: manageSidebarSlice.reducer,
+  companies: manageCompanies.reducer,
+  documents: manageDocuments.reducer,
   currentUnit: manageCurrentUnit.reducer,
+  currentCompany: manageCurrentCompany.reducer,
 })
 
 const rootReducer = (state, action) => {
@@ -44,6 +50,9 @@ const rootReducer = (state, action) => {
     case 'RESET_UNIT_STATE':
       return appReducer({ ...state, unit: undefined }, action)
 
+    case 'RESET_DOCUMENTS_STATE':
+      return appReducer({ ...state, documents: undefined }, action)
+
     default:
       return appReducer(state, action)
   }
@@ -52,5 +61,7 @@ const rootReducer = (state, action) => {
 const store: any = configureStore({
   reducer: rootReducer,
 })
+
+export type RootState = ReturnType<typeof appReducer>
 
 export default store

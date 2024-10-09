@@ -22,7 +22,7 @@ public class RoleModel {
     @JoinColumn(name = "business_unit_id", nullable = false)
     @NotNull(message = "Business unit cannot be null")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private BusinessUnitsModel businessUnit;
+    private BusinessUnitModel businessUnit;
 
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference("permRef")
@@ -48,11 +48,11 @@ public class RoleModel {
         this.name = name;
     }
 
-    public BusinessUnitsModel getBusinessUnit() {
+    public BusinessUnitModel getBusinessUnit() {
         return businessUnit;
     }
 
-    public void setBusinessUnit(BusinessUnitsModel businessUnit) {
+    public void setBusinessUnit(BusinessUnitModel businessUnit) {
         this.businessUnit = businessUnit;
     }
 

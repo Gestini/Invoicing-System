@@ -1,6 +1,7 @@
 package productar.controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -44,6 +45,14 @@ public class RoleController {
     @GetMapping("/has-permissions/{unitId}/{permissionName}")
     public Boolean hasPermissions(@PathVariable Long unitId, @PathVariable String permissionName) {
         return roleService.hasPermissions(unitId, permissionName);
+    }
+
+    @PostMapping("/has-permissions/{unitId}")
+    public ResponseEntity<Map<String, Boolean>> checkMultiplePermissions(
+            @PathVariable("unitId") Long unitId,
+            @RequestBody List<String> permissions) {
+        Map<String, Boolean> results = roleService.hasMultiplePermissions(unitId, permissions);
+        return ResponseEntity.ok(results);
     }
 
     @PutMapping("/{id}")

@@ -1,91 +1,78 @@
 import React from 'react'
-import toast from 'react-hot-toast'
-import {
-  reqEditProduct,
-  reqCreateProduct,
-  reqDeleteProduct,
-  reqGetProductByDeposit,
-} from '@renderer/api/requests'
+import { IoPush } from 'react-icons/io5'
 import { AppTable } from '@renderer/components/AppTable'
+import { RootState } from '@renderer/store'
+import { columnsData } from './data'
 import { AddProductModal } from '@renderer/components/AppTable/Modals/ProductAdd'
 import { EditProductModal } from '@renderer/components/AppTable/Modals/ProductEdit'
-import { wareHouseInterface } from '@renderer/features/warehouseSlice'
+import { DropdownItemInteface } from '@renderer/components/AppTable/Interfaces/ActionDropdown'
+import { modalTypes, useModal } from '@renderer/utils/useModal'
+import { MoveProductToInventory } from '../Modals/MoveProductToInventory'
 import { useDispatch, useSelector } from 'react-redux'
-import { columnsData, modalInputs } from './data'
-import { addItem, deleteItem, editItem, setTableData } from '@renderer/features/tableSlice'
+import { reqDeleteProduct, reqGetProductByDeposit } from '@renderer/api/requests'
+import { deleteItem, setCurrentItemId, setTableData } from '@renderer/features/tableSlice'
 
 export const StockTable = () => {
   const dispatch = useDispatch()
-  const table = useSelector((state: any) => state.table)
-
-  const warehouse: wareHouseInterface = useSelector((state: any) => state.unit.warehouse)
+  const [_, toggleEditProductModal] = useModal(modalTypes.editProductModal)
+  const [__, toggleMoveProductToInventoryModal] = useModal(modalTypes.moveProductToInventoryModal)
+  const warehouse = useSelector((state: RootState) => state.unit.warehouse)
   const currentWarehouseId = warehouse.currentWarehouseId
 
   React.useEffect(() => {
+    if (currentWarehouseId === -1) return
     const loadData = async () => {
       const response = await reqGetProductByDeposit(currentWarehouseId)
       dispatch(setTableData(response.data))
     }
-    if (currentWarehouseId == '') return
     loadData()
   }, [currentWarehouseId])
 
-  const tableActions = {
-    delete: async (id: any) => {
-      try {
-        dispatch(deleteItem(id))
-        toast.success('Producto eliminado correctamente')
-        await reqDeleteProduct(id)
-      } catch (error: any) {
-        toast.error(error.response.data.message)
-      }
-    },
-    create: async (data: any) => {
-      try {
-        dispatch(addItem({ ...data, id: table.data.length }))
-        toast.success('Producto guardado correctamente')
-        await reqCreateProduct({
-          ...data,
-          depositUnit: {
-            id: warehouse.currentWarehouseId,
-          },
-        })
-      } catch (error: any) {
-        toast.error(error.response.data.message)
-      }
-    },
-    edit: async (id: any, data: any) => {
-      try {
-        dispatch(editItem({ data, id: id }))
-        toast.success('Producto editado correctamente')
-        await reqEditProduct(id, data)
-      } catch (error: any) {
-        toast.error(error.response.data.message)
-      }
-    },
-  }
+  const handleSetCurrentIdEdit = (id: number) => dispatch(setCurrentItemId(id))
 
-  const newProductModal = {
-    title: 'Agrega un nuevo producto',
-    buttonTitle: 'Agregar',
-    ...modalInputs,
-    action: tableActions.create,
-  }
+  const dropdownAction: DropdownItemInteface[] = [
+    {
+      key: 'edit',
+      title: 'Editar',
+      onPress: (id) => {
+        handleSetCurrentIdEdit(id)
+        toggleEditProductModal()
+      },
+    },
+    {
+      key: 'move',
+      title: 'Mover a inventario',
+      onPress: async (id) => {
+        handleSetCurrentIdEdit(id)
+        toggleMoveProductToInventoryModal()
+      },
+      startContent: <IoPush />,
+    },
+    {
+      key: 'delete',
+      title: 'Borrar',
+      onPress: async (id) => {
+        try {
+          dispatch(deleteItem(id))
+          await reqDeleteProduct(id)
+        } catch (error: any) {
+          console.log(error)
+        }
+      },
+    },
+  ]
 
-  const editProductModal = {
-    title: 'Editar producto',
-    ...modalInputs,
-    action: tableActions.edit,
-  }
-
-  if (currentWarehouseId == '' || warehouse.data.length === 0) return
+  if (currentWarehouseId === -1 || warehouse.dataWarehouse.length === 0) return
 
   return (
-    <AppTable
-      columnsData={columnsData}
-      tableActions={tableActions}
-      addItemModal={<AddProductModal modal={newProductModal} />}
-      editItemModal={<EditProductModal modal={editProductModal} />}
-    />
+    <>
+      <MoveProductToInventory />
+      <AppTable
+        columnsData={columnsData}
+        addItemModal={<AddProductModal />}
+        editItemModal={<EditProductModal />}
+        dropdownAction={dropdownAction}
+      />
+    </>
   )
 }

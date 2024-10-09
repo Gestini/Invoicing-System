@@ -1,9 +1,12 @@
 import React from 'react'
+import { RootState } from '@renderer/store'
 import { TopContent } from './TableComponents/TopContent'
 import { RenderCell } from './TableComponents/RenderCell'
 import { BottomContent } from './TableComponents/BottomContent'
-import { setCurrentItemId } from '@renderer/features/tableSlice'
+import { AppTableInterface } from './Interfaces/TableProps'
+import { useModal, modalTypes } from '@renderer/utils/useModal'
 import { useDispatch, useSelector } from 'react-redux'
+import { setCurrentItemId, setTableData } from '@renderer/features/tableSlice'
 import {
   Table,
   TableRow,
@@ -15,19 +18,32 @@ import {
   SortDescriptor,
 } from '@nextui-org/react'
 
-export const AppTable = ({ columnsData, tableActions, addItemModal, editItemModal }) => {
+export const AppTable = ({
+  inputCell,
+  columnsData,
+  tableActions,
+  addItemModal,
+  editItemModal,
+  dropdownAction,
+}: AppTableInterface) => {
   const dispatch = useDispatch()
-  type User = (typeof users)[0]
-  const users = useSelector((state: any) => state.unit.table.data)
+  type TableItem = (typeof table.data)[0]
+  type Column = (typeof columnsData.columns)[0]
+  const table = useSelector((state: RootState) => state.unit.table)
+  const [___, toggleModal] = useModal(modalTypes.editItemTableModal)
+
+  React.useEffect(() => {
+    dispatch(setTableData([]))
+  }, [])
 
   const [page, setPage] = React.useState(1)
   const [filterValue, setFilterValue] = React.useState('')
   const [selectedKeys, setSelectedKeys] = React.useState<Selection>(new Set([]))
-  const [visibleColumns, setVisibleColumns] = React.useState<Selection>(
+  const [visibleColumns, /* setVisibleColumns */ _] = React.useState<Selection>(
     new Set(columnsData.InitialVisibleColumns),
   )
   const [statusFilter, setStatusFilter] = React.useState<Selection>('all')
-  const [rowsPerPage, setRowsPerPage] = React.useState(5)
+  const [rowsPerPage, /* setRowsPerPage */ __] = React.useState(10)
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
     column: 'age',
     direction: 'ascending',
@@ -36,7 +52,7 @@ export const AppTable = ({ columnsData, tableActions, addItemModal, editItemModa
   const headerColumns = React.useMemo(() => {
     if (visibleColumns === 'all') return columnsData.columns
 
-    return columnsData.columns.filter((column: any) =>
+    return columnsData.columns.filter((column: Column) =>
       Array.from(visibleColumns).includes(column.uid),
     )
   }, [visibleColumns])
@@ -44,32 +60,30 @@ export const AppTable = ({ columnsData, tableActions, addItemModal, editItemModa
   const hasSearchFilter = Boolean(filterValue)
 
   const filteredItems = React.useMemo(() => {
-    let filteredUsers = [...users]
+    let filteredItems = [...table.data]
 
-    const filtroPersonalizado = (item: any, valorBusqueda: string) => {
-      for (const campo in item) {
-        if (typeof item[campo] == 'string') {
-          if (item[campo].toLowerCase().includes(valorBusqueda.toLowerCase())) {
-            return true
-          }
-        }
-      }
-      return false
+    type Item = { [key: string]: string }
+
+    const filterBySearchValue = (item: Item, searchValue: string): boolean => {
+      return Object.values(item).some(
+        (value) =>
+          typeof value === 'string' && value.toLowerCase().includes(searchValue.toLowerCase()),
+      )
     }
 
     if (hasSearchFilter) {
-      filteredUsers = filteredUsers.filter((item) => filtroPersonalizado(item, filterValue))
+      filteredItems = filteredItems.filter((item) => filterBySearchValue(item, filterValue))
     }
 
     if (
       statusFilter !== 'all' &&
       Array.from(statusFilter).length !== columnsData.statusOptions.length
     ) {
-      filteredUsers = filteredUsers.filter((user) => Array.from(statusFilter).includes(user.status))
+      filteredItems = filteredItems.filter((item) => Array.from(statusFilter).includes(item.status))
     }
 
-    return filteredUsers
-  }, [users, filterValue, statusFilter])
+    return filteredItems
+  }, [table.data, filterValue, statusFilter])
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage)
 
@@ -81,85 +95,95 @@ export const AppTable = ({ columnsData, tableActions, addItemModal, editItemModa
   }, [page, filteredItems, rowsPerPage])
 
   const sortedItems = React.useMemo(() => {
-    return [...items].sort((a: User, b: User) => {
-      const first = a[sortDescriptor.column as keyof User] as number
-      const second = b[sortDescriptor.column as keyof User] as number
+    return [...items].sort((a: TableItem, b: TableItem) => {
+      const first = a[sortDescriptor.column as keyof TableItem] as number
+      const second = b[sortDescriptor.column as keyof TableItem] as number
       const cmp = first < second ? -1 : first > second ? 1 : 0
 
       return sortDescriptor.direction === 'descending' ? -cmp : cmp
     })
   }, [sortDescriptor, items])
 
-  const handleDeleteItem = async (id: any) => tableActions.delete(id)
-  const handleSetCurrentIdEdit = (id: any) => dispatch(setCurrentItemId(id))
+  const handleDeleteItem = async (id: number) => tableActions?.delete(id)
+  const handleSetCurrentIdEdit = (id: number) => {
+    dispatch(setCurrentItemId(id))
+    toggleModal()
+  }
 
   return (
-    <div className='max-w-table'>
-      <Table
-        aria-label='Example table with custom cells, pagination and sorting'
-        isHeaderSticky
-        removeWrapper
-        isCompact
-        bottomContent={
-          <BottomContent
-            page={page}
-            pages={pages}
-            setPage={setPage}
-            selectedKeys={selectedKeys}
-            filteredItems={filteredItems}
-          />
-        }
-        checkboxesProps={{
-          classNames: {
-            wrapper: 'after:bg-c-primary',
-          },
-        }}
-        bottomContentPlacement='outside'
-        selectedKeys={selectedKeys}
-        sortDescriptor={sortDescriptor}
-        selectionMode='multiple'
-        topContent={
-          <TopContent
-            setPage={setPage}
-            columnsData={columnsData}
-            filterValue={filterValue}
-            statusFilter={statusFilter}
-            visibleColumns={visibleColumns}
-            setRowsPerPage={setRowsPerPage}
-            setFilterValue={setFilterValue}
-            setStatusFilter={setStatusFilter}
-            setVisibleColumns={setVisibleColumns}
-            addItemModal={addItemModal}
-            editItemModal={editItemModal}
-          />
-        }
-        topContentPlacement='outside'
-        onSelectionChange={setSelectedKeys}
-        onSortChange={setSortDescriptor}
-      >
-        <TableHeader columns={headerColumns}>
-          {(column: any) => (
-            <TableColumn
-              key={column.uid}
-              align={column.uid === 'actions' ? 'center' : 'start'}
-              allowsSorting={column.sortable}
-            >
-              {column.name}
-            </TableColumn>
-          )}
-        </TableHeader>
-        <TableBody emptyContent={'Sin resultados'} items={sortedItems}>
-          {(item) => (
+    <Table
+      aria-label='Example table with custom cells, pagination and sorting'
+      shadow='none'
+      isCompact
+      selectionMode='multiple'
+      classNames={{
+        wrapper: ['bg-transparent', 'p-0', 'hoverScrollbar'],
+        th: ['bg-transparent', 'text-default-500', 'border-b', 'border-divider'],
+      }}
+      bottomContent={
+        <BottomContent
+          page={page}
+          pages={pages}
+          setPage={setPage}
+          selectedKeys={selectedKeys}
+          filteredItems={filteredItems}
+        />
+      }
+      checkboxesProps={{
+        classNames: {
+          wrapper: 'after:bg-c-primary',
+        },
+      }}
+      bottomContentPlacement='outside'
+      selectedKeys={selectedKeys}
+      sortDescriptor={sortDescriptor}
+      topContent={
+        <TopContent
+          setPage={setPage}
+          columnsData={columnsData}
+          filterValue={filterValue}
+          statusFilter={statusFilter}
+          setFilterValue={setFilterValue}
+          setStatusFilter={setStatusFilter}
+          addItemModal={addItemModal}
+          editItemModal={editItemModal}
+        />
+      }
+      topContentPlacement='outside'
+      onSelectionChange={setSelectedKeys}
+      onSortChange={setSortDescriptor}
+    >
+      <TableHeader columns={headerColumns}>
+        {(column: Column) => (
+          <TableColumn
+            key={column.uid}
+            align={column.uid === 'actions' ? 'center' : 'start'}
+            allowsSorting={column.sortable}
+          >
+            {column.name}
+          </TableColumn>
+        )}
+      </TableHeader>
+      <TableBody emptyContent='Sin resultados' items={sortedItems}>
+        {(item) => {
+          return (
             <TableRow key={item.id}>
               {(columnKey) => (
-                <TableCell className='default-text-color'>
-                  {RenderCell(item, columnKey, handleDeleteItem, handleSetCurrentIdEdit)}
+                <TableCell className='default-text-color capitalize'>
+                  <RenderCell
+                    item={item}
+                    columnKey={columnKey}
+                    inputCell={inputCell}
+                    dropdownAction={dropdownAction}
+                    handleDeleteItem={handleDeleteItem}
+                    handleSetCurrentIdEdit={handleSetCurrentIdEdit}
+                  />
                 </TableCell>
               )}
             </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </div>
+          )
+        }}
+      </TableBody>
+    </Table>
   )
 }

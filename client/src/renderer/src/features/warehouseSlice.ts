@@ -1,16 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { WarehouseModel } from '@renderer/interfaces/warehouse'
 
-export interface wareHouseInterface {
-  data: any
-  currentWarehouseId: string
-}
 export const manageWarehouse = createSlice({
   name: 'wareHouse',
-  initialState: <wareHouseInterface>{
-    data: [],
-    currentWarehouseId: '',
+  initialState: {
+    data: <WarehouseModel[]>[],
+    dataWarehouse: <WarehouseModel[]>[],
+    currentWarehouseId: -1,
+    currentEditWarehouseId: -1,
   },
   reducers: {
+    setDataWarehouses: (state, action) => {
+      state.dataWarehouse = action.payload
+    },
     setWarehouses: (state, action) => {
       state.data = action.payload
     },
@@ -36,7 +38,10 @@ export const manageWarehouse = createSlice({
       }
     },
     setCurrentWarehouseId: (state, action) => {
-      state.currentWarehouseId = String(action.payload)
+      state.currentWarehouseId = action.payload
+    },
+    setCurrentEditWarehouseId: (state, action) => {
+      state.currentEditWarehouseId = action.payload
     },
   },
 })
@@ -46,5 +51,7 @@ export const {
   setWarehouses,
   editWarehouse,
   deleteWarehouse,
-  setCurrentWarehouseId
+  setDataWarehouses,
+  setCurrentWarehouseId,
+  setCurrentEditWarehouseId,
 } = manageWarehouse.actions

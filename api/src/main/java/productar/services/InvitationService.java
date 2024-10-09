@@ -6,9 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import productar.models.EmployeeModel;
-import productar.models.InvitationModel;
-import productar.models.User;
 import productar.models.EmployeeModel.EmployeeStatus;
+import productar.models.BusinessUnitInvitationModel;
+import productar.models.User;
 import productar.repositories.EmployeeRepository;
 import productar.repositories.InvitationRepository;
 import productar.repositories.UserRepository;
@@ -31,7 +31,7 @@ public class InvitationService {
     public ResponseEntity<String> acceptInvite(String token) {
         try {
             // Obtener la invitación
-            InvitationModel invitation = invitationRepository.findByToken(token)
+            BusinessUnitInvitationModel invitation = invitationRepository.findByToken(token)
                     .orElseThrow(() -> new RuntimeException("Invitación no válida"));
 
             // Obtener al usuario empleado
@@ -69,8 +69,8 @@ public class InvitationService {
 
     public ResponseEntity<String> rejectInvite(String token) {
         try {
-            InvitationModel invitation = invitationRepository.findByToken(token)
-                    .orElseThrow(() -> new RuntimeException("Invitación no válida"));
+            BusinessUnitInvitationModel invitation = invitationRepository.findByToken(token)
+                    .orElseThrow(() -> new RuntimeException("Invitación no encontrada"));
 
             userRepository.findByEmail(invitation.getEmployee().getEmail())
                     .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
@@ -86,7 +86,26 @@ public class InvitationService {
             invitationRepository.delete(invitation);
             return ResponseEntity.ok("Invitación rechazada");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ocurrió un error: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ocurrió un error");
+        }
+    }
+
+    public ResponseEntity<?> getInviteByToken(String token) {
+        try {
+            BusinessUnitInvitationModel invitation = invitationRepository.findByToken(token)
+                    .orElseThrow(() -> new RuntimeException("Invitación no encontrada"));
+
+            String invitationEmail = invitation.getEmployee().getEmail();
+            String currentUserEmail = userService.getCurrentUser().getEmail();
+
+            // Verificar si el email del usuario actual coincide con el de la invitación
+            if (!invitationEmail.equals(currentUserEmail)) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Esta invitación es para otro usuario.");
+            }
+
+            return ResponseEntity.ok(invitation);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ocurrió un error");
         }
     }
 }

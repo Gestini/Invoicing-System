@@ -2,7 +2,9 @@ package productar.services;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +68,18 @@ public class RoleService {
     public Boolean hasPermissions(Long unitId, String permissionName) {
         User currentUser = userService.getCurrentUser();
         return roleUsersRepository.hasPermissions(currentUser.getId(), unitId, permissionName);
+    }
+
+    public Map<String, Boolean> hasMultiplePermissions(Long unitId, List<String> permissionNames) {
+        User currentUser = userService.getCurrentUser();
+        Map<String, Boolean> results = new HashMap<>();
+
+        for (String permission : permissionNames) {
+            boolean hasPermission = roleUsersRepository.hasPermissions(currentUser.getId(), unitId, permission);
+            results.put(permission, hasPermission);
+        }
+
+        return results;
     }
 
     public ResponseEntity<String> updateRole(Long id, RoleModel updatedRole) {

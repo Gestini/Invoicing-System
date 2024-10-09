@@ -1,15 +1,22 @@
 package productar.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import productar.dto.ProductResponseDTO;
 import productar.models.ProductModel;
 import productar.services.ProductService;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/products")
@@ -44,13 +51,9 @@ public class ProductController {
         return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ProductModel> updateProduct(@PathVariable("id") Long id, @RequestBody ProductModel product) {
-        // Asignar el ID recibido en la URL al objeto product
-        product.setId(id);
-
-        ProductModel updatedProduct = productService.updateProduct(product);
-        return ResponseEntity.ok(updatedProduct);
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<?> updateProduct(@PathVariable("id") Long id, @RequestBody ProductModel newProductData) {
+        return productService.updateProduct(id, newProductData);
     }
 
     @DeleteMapping("/{id}")
@@ -58,10 +61,10 @@ public class ProductController {
         return productService.deleteProduct(id);
     }
 
-    @GetMapping("/by-business-unit/{businessUnitId}")
-    public ResponseEntity<List<ProductResponseDTO>> getProductsByBusinessUnit(
-            @PathVariable("businessUnitId") Long businessUnitId) {
-        List<ProductResponseDTO> products = productService.getProductsByBusinessUnit(businessUnitId);
+    @GetMapping("/by-business-unit/{depositId}")
+    public ResponseEntity<List<ProductResponseDTO>> findProductsByDepositId(
+            @PathVariable("depositId") Long depositId) {
+        List<ProductResponseDTO> products = productService.findProductsByDepositId(depositId);
         return ResponseEntity.ok(products);
     }
 
@@ -78,9 +81,9 @@ public class ProductController {
     }
 
     @GetMapping("/search/{name}/{id}")
-    public ResponseEntity<List<ProductModel>> findByNameAndBusinessUnitId(@PathVariable("name") String name,
+    public ResponseEntity<List<ProductModel>> findByNameAndDepositId(@PathVariable("name") String name,
             @PathVariable("id") Long id) {
-        List<ProductModel> products = productService.findByNameAndBusinessUnitId(name, id);
+        List<ProductModel> products = productService.findByNameAndDepositId(name, id);
         return ResponseEntity.ok(products);
     }
 

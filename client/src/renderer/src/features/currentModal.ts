@@ -1,20 +1,30 @@
+import { RootState } from '@renderer/store'
 import { createSlice } from '@reduxjs/toolkit'
+import { createSelector } from '@reduxjs/toolkit'
+
+export const selectModalsState = (state: RootState) => state.unit.modals
+export const isModalOpen = (modalName: string) => createSelector(selectModalsState, (state) => state.currentModals.includes(modalName))
+
+interface initialStateInterface {
+  currentModals: string[]
+}
 
 export const manageModalsSlice = createSlice({
   name: 'currentModal',
   initialState: {
-    modals: {
-      LogInAsModal: false,
-      SettingsModal: false,
-      AddNewAccountModal: false,
-    }
-  },
+    currentModals: []
+  } as initialStateInterface,
   reducers: {
-    toggleModal: (state, action) => {
+    handleShowModal: (state, action) => {
       const modalName = action.payload
-      state.modals[modalName] = !state.modals[modalName]
-    }
+      const isOpen = state.currentModals.includes(modalName)
+      if (!isOpen) {
+        state.currentModals.push(modalName)
+      } else {
+        state.currentModals = state.currentModals.filter(name => name !== modalName)
+      }
+    },
   },
 })
 
-export const { toggleModal } = manageModalsSlice.actions
+export const { handleShowModal } = manageModalsSlice.actions

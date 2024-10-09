@@ -28,7 +28,7 @@ public class EmployeeModel {
     @JoinColumn(name = "business_unit_id", nullable = false)
     @NotNull(message = "La unidad de negocio no puede ser nula")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private BusinessUnitsModel businessUnit;
+    private BusinessUnitModel businessUnit;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = true)
@@ -51,6 +51,7 @@ public class EmployeeModel {
     private String pin;
 
     public enum EmployeeStatus {
+        INACTIVE,
         PENDING,
         ACTIVE
     }
@@ -63,11 +64,11 @@ public class EmployeeModel {
         this.id = id;
     }
 
-    public BusinessUnitsModel getBusinessUnit() {
+    public BusinessUnitModel getBusinessUnit() {
         return businessUnit;
     }
 
-    public void setBusinessUnit(BusinessUnitsModel businessUnit) {
+    public void setBusinessUnit(BusinessUnitModel businessUnit) {
         this.businessUnit = businessUnit;
     }
 

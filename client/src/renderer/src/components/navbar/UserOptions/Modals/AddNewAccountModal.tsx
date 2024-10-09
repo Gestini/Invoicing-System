@@ -1,8 +1,7 @@
 import React from 'react'
 import { AuthForm } from '../../../Auth/AuthInputForm'
-import { toggleModal } from '@renderer/features/currentModal'
 import { loginInputs } from '@renderer/pages/Auth/AuthInputs'
-import { useDispatch, useSelector } from 'react-redux'
+import { useModal, modalTypes } from '@renderer/utils/useModal'
 import { reqAuthLogin, reqSearchUserByUsername } from '@renderer/api/requests'
 import {
   Link,
@@ -13,12 +12,13 @@ import {
   ModalHeader,
   ModalContent,
 } from '@nextui-org/react'
+import { addSession } from '@renderer/features/userSessions'
+import { useDispatch } from 'react-redux'
 
 export const AddNewAccountModal = ({ errors }) => {
-  const currentSessions = localStorage.getItem('sessions')
   const dispatch = useDispatch()
-  const modalStates = useSelector((state: any) => state.unit.modals)
-  const handleToggleModal = () => dispatch(toggleModal('AddNewAccountModal'))
+  const currentSessions = localStorage.getItem('sessions')
+  const [isOpen, toggleModal] = useModal(modalTypes.addNewAccountModal)
 
   const [data, setData] = React.useState({
     username: '',
@@ -43,10 +43,19 @@ export const AddNewAccountModal = ({ errors }) => {
 
       if (!currentSessions) return
 
+      /* Guardamos la session en el localStorage */
       const partseSessions = JSON.parse(currentSessions)
-      const userFound = partseSessions.find((item: any) => item.userId == user.id)
+      const userFound = partseSessions.find((item: any) => item.userId == user.data[0].id)
 
       if (!userFound) {
+        /* Agregamos la session al estado */
+        dispatch(
+          addSession({
+            userId: user.data[0].id,
+            token: response.data,
+          }),
+        )
+
         const AuxSessions = [...partseSessions]
         AuxSessions.push({
           userId: user.data[0].id,
@@ -57,16 +66,16 @@ export const AddNewAccountModal = ({ errors }) => {
     } catch (error) {
       console.log(error)
     }
-    handleToggleModal()
+    toggleModal()
   }
 
   return (
     <Modal
-      placement='top-center'
       scrollBehavior={'inside'}
       backdrop='blur'
-      isOpen={modalStates.modals.AddNewAccountModal}
-      onClose={handleToggleModal}
+      isOpen={isOpen}
+      onClose={toggleModal}
+      placement='center'
     >
       <ModalContent>
         <>
@@ -80,7 +89,7 @@ export const AddNewAccountModal = ({ errors }) => {
             </div>
           </ModalBody>
           <ModalFooter>
-            <Button color='danger' variant='flat' radius='sm' onPress={handleToggleModal}>
+            <Button color='danger' variant='flat' radius='sm' onPress={toggleModal}>
               Cerrar
             </Button>
             <Button

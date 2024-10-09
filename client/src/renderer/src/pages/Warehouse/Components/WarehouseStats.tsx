@@ -1,9 +1,10 @@
 import { ErrorIcon } from '@renderer/components/Icons/ErrorIcon'
-import { wareHouseInterface } from '@renderer/features/warehouseSlice'
+import { RootState } from '@renderer/store'
 import { useSelector } from 'react-redux'
+import { ChildrenSlider } from '@renderer/components/ChildrenSlider'
 
 export const WarehouseStats = () => {
-  const warehouse: wareHouseInterface = useSelector((state: any) => state.unit.warehouse)
+  const warehouse = useSelector((state: RootState) => state.unit.warehouse)
   const currentWarehouseId = warehouse.currentWarehouseId
 
   const datita = [
@@ -28,7 +29,7 @@ export const WarehouseStats = () => {
       amount: '1.232',
     },
     {
-      text: 'Productos pendientes',
+      text: 'Pendientes',
       amount: '1.232',
     },
     {
@@ -37,18 +38,20 @@ export const WarehouseStats = () => {
     },
   ]
 
-  if (currentWarehouseId == '' || warehouse.data.length === 0) return
+  if (currentWarehouseId === -1 || warehouse.dataWarehouse.length === 0) return
 
   return (
-    <div className='flex flex-wrap gap-[33px] mb-4'>
-      {datita.map((ele, ind) => (
-        <div key={ind}>
-          <p className='flex gap-1 items-center text-c-gray text-[16px]'>
-            {ele.text} <ErrorIcon />
-          </p>
-          <span className='font-semibold text-white text-[24px]'>{ele.amount}</span>
-        </div>
-      ))}
+    <div>
+      <ChildrenSlider>
+        {datita.map((ele, ind) => (
+          <div key={ind}>
+            <p className='flex gap-1 items-center text-[14px] text-c-title-opacity'>
+              {ele.text} <ErrorIcon />
+            </p>
+            <span className='font-semibold text-c-title text-[24px]'>{ele.amount}</span>
+          </div>
+        ))}
+      </ChildrenSlider>
     </div>
   )
 }

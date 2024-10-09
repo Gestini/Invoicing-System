@@ -1,4 +1,5 @@
 import React from 'react'
+import { RootState } from '@renderer/store'
 import { selectInputs, inputs } from './data'
 import { useDispatch, useSelector } from 'react-redux'
 import { Input, Select, SelectItem } from '@nextui-org/react'
@@ -6,9 +7,9 @@ import { setFormData, setInvoiceData, clearInvoiceData } from '@renderer/feature
 
 export const InvoiceForm = () => {
   const dispatch = useDispatch()
-  const unit = useSelector((state: any) => state.currentUnit)
+  const unit = useSelector((state: RootState) => state.currentUnit)
   const [isInitialized, setIsInitialized] = React.useState(false)
-  const newInvoicing = useSelector((state: any) => state.unit.newInvoicing)
+  const newInvoicing = useSelector((state: RootState) => state.unit.newInvoicing)
   const currentTab = newInvoicing?.tabs?.find((item: any) => item.id === newInvoicing.currentTabId)
 
   React.useEffect(() => {
@@ -37,8 +38,8 @@ export const InvoiceForm = () => {
   return (
     <div className='flex flex-col gap-2'>
       <div className='flex w-full flex-wrap md:flex-nowrap mb-6 md:mb-0 gap-2'>
-        {selectInputs.map((item: any, index: number) => {
-          const selectedKey = currentTab.formData[item.name] || ''
+        {selectInputs.map((item, index: number) => {
+          const selectedKey = currentTab?.formData[item.name] || ''
           return (
             <Select
               size='sm'
@@ -49,7 +50,7 @@ export const InvoiceForm = () => {
               selectedKeys={[selectedKey]}
               onChange={(e) => handleChange(item.name, e.target.value)}
             >
-              {item.options.map((state: any) => (
+              {item.options.map((state) => (
                 <SelectItem key={state.value} value={state.value} className='default-text-color'>
                   {state.label}
                 </SelectItem>
@@ -66,7 +67,7 @@ export const InvoiceForm = () => {
             name={input.name}
             type={input.type}
             label={input.label}
-            value={currentTab.formData[input.name] || ''}
+            value={currentTab?.formData[input.name] || ''}
             className='bg-c-card text-c-title'
             onChange={(e) => handleChange(input.name, e.target.value)}
           />

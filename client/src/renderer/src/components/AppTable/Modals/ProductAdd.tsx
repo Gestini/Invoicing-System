@@ -12,19 +12,25 @@ import {
   ModalContent,
   useDisclosure,
 } from '@nextui-org/react'
+import { addItem } from '@renderer/features/tableSlice'
 import { PlusIcon } from '@renderer/components/Icons/PlusIcon'
 import { Checkbox } from '@nextui-org/react'
 import { useParams } from 'react-router-dom'
-import { reqGetSupplier } from '@renderer/api/requests'
+import { RootState } from '@renderer/store'
+import { useDispatch, useSelector } from 'react-redux'
+import { reqCreateProduct, reqGetSupplier } from '@renderer/api/requests'
 import './ProductAdd.scss'
 
-export const AddProductModal = ({ modal }) => {
+export const AddProductModal = () => {
   const params = useParams()
+  const dispatch = useDispatch()
+  const unit = useSelector((state: RootState) => state.currentUnit)
   const [suppliers, setSuppliers] = React.useState([])
-
+  const warehouse = useSelector((state: RootState) => state.unit.warehouse)
+  
   React.useEffect(() => {
     const GetSupplier = async () => {
-      const response = await reqGetSupplier(params.unitId)
+      const response = await reqGetSupplier(unit.id)
       setSuppliers(response.data)
     }
     GetSupplier()
@@ -69,7 +75,7 @@ export const AddProductModal = ({ modal }) => {
   })
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     if (e.target.name == 'supplierUnit') {
       setInfo({
         ...info,
@@ -114,7 +120,7 @@ export const AddProductModal = ({ modal }) => {
     setErrors(newErrors)
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     let valid = true
     const newErrors = {
       name: '',
@@ -166,7 +172,19 @@ export const AddProductModal = ({ modal }) => {
       return
     }
 
-    modal.action(info)
+    try {
+      const response = await reqCreateProduct({
+        ...info,
+        depositUnit: {
+          id: warehouse.currentWarehouseId,
+        },
+      })
+
+      dispatch(addItem(response.data))
+    } catch (error: any) {
+      console.log(error)
+    }
+
     setInfo({
       name: '',
       category: null,
@@ -210,12 +228,12 @@ export const AddProductModal = ({ modal }) => {
     <div className='flex flex-col gap-2'>
       <Button
         onPress={onOpen}
-        className='bg-c-primary'
+        className='bg-c-filter shadow-sm text-c-text'
         color='secondary'
-        endContent={<PlusIcon />}
+        startContent={<PlusIcon className='text-c-primary-variant-1 w-[15px] h-[15px]' />}
         radius='sm'
       >
-        {modal?.buttonTitle}
+        Crear orden
       </Button>
       <Modal
         isOpen={isOpen}
@@ -224,10 +242,11 @@ export const AddProductModal = ({ modal }) => {
         scrollBehavior={'inside'}
         backdrop='blur'
         className='bg-c-card'
+        placement='center'
       >
         <ModalContent>
           <ModalHeader className='flex flex-col gap-1'>
-            <h3 className='text-c-title'>{modal?.title}</h3>
+            <h3 className='text-c-title'>Agrega un nuevo producto</h3>
           </ModalHeader>
           <ModalBody>
             <div className='productsmodaladd w-full flex flex-col gap-3  '>

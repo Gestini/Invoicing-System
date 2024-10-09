@@ -12,14 +12,7 @@ export const columnsData = {
     { name: 'Pendiente', uid: 'PENDING' },
     { name: 'Activo', uid: 'ACTIVE' },
   ],
-  InitialVisibleColumns: [
-    'name',
-    'lastname',
-    'email',
-    'status',
-    'id',
-    'actions',
-  ],
+  InitialVisibleColumns: ['name', 'lastname', 'email', 'status', 'id', 'actions'],
 }
 
 export const modalInputs = {

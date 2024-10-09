@@ -8,10 +8,8 @@ import {
 } from '@nextui-org/react'
 import { SearchIcon } from '../../Icons/SearchIcon'
 import { capitalize } from './utils'
-import { useSelector } from 'react-redux'
-import { ChevronDownIcon } from '../../Icons/ChevronDownIcon'
-import { ExportTableDropdown } from '../Exports/ExportTableDropdown'
 import { FilterIcon } from '@renderer/components/Icons/FilterIcon'
+import { ExportTableDropdown } from '../Exports/ExportTableDropdown'
 
 export const TopContent = ({
   setPage,
@@ -20,18 +18,9 @@ export const TopContent = ({
   statusFilter,
   addItemModal,
   editItemModal,
-  visibleColumns,
-  setRowsPerPage,
   setFilterValue,
   setStatusFilter,
-  setVisibleColumns,
 }) => {
-  const users = useSelector((state: any) => state.unit.table.data)
-  const onRowsPerPageChange = (e: any) => {
-    setRowsPerPage(parseInt(e.target.value))
-    setPage(1)
-  }
-
   const onSearchChange = (value) => {
     if (value) {
       setFilterValue(value)
@@ -48,26 +37,29 @@ export const TopContent = ({
 
   return (
     <>
-      <div className='flex flex-col gap-4'>
-        <div className='flex justify-between gap-3 items-end'>
-          <div className='flex gap-3'>
+      <div className='flex flex-col'>
+        {/* Ajustamos la distribución en pantallas pequeñas y grandes */}
+        <div className='flex flex-col md:flex-row justify-between gap-3 items-start md:items-end'>
+          {/* Input de búsqueda y filtro */} 
+          <div className='flex sm:flex-row gap-3 w-full'>
             <Input
               isClearable
-              radius="sm"
-              className='text-c-gray'
+              radius='sm'
+              className='text-c-gray w-full md:w-auto'
               placeholder='Buscar'
               startContent={<SearchIcon />}
               value={filterValue}
-              onClear={() => onClear()}
+              onClear={onClear}
               onValueChange={onSearchChange}
             />
             <div>
               {columnsData?.statusOptions && (
                 <Dropdown className='bg-c-card text-c-title'>
-                  <DropdownTrigger className='sm:flex'>
+                  <DropdownTrigger>
                     <Button
+                      className='bg-c-filter shadow-sm'
                       endContent={
-                        <FilterIcon className='text-red text-2xl mr-2 w-[20px] h-[20px]' />
+                        <FilterIcon className='text-c-title text-2xl mr-2 w-[20px] h-[20px]' />
                       }
                       variant='flat'
                       radius='sm'
@@ -83,7 +75,7 @@ export const TopContent = ({
                     selectionMode='multiple'
                     onSelectionChange={setStatusFilter}
                   >
-                    {columnsData.statusOptions.map((status: any) => (
+                    {columnsData.statusOptions.map((status) => (
                       <DropdownItem key={status.uid} className='capitalize dropdownCheckboxIcon'>
                         <h3 className='default-text-color'>{capitalize(status.name)}</h3>
                       </DropdownItem>
@@ -93,50 +85,17 @@ export const TopContent = ({
               )}
             </div>
           </div>
-          <div className='flex gap-3'>
+
+          {/* Exportar y agregar item modal */}
+          <div className='flex flex-col sm:flex-row gap-3 w-full md:w-auto'>
             <ExportTableDropdown />
-            {columnsData?.columns && (
-              <Dropdown>
-                <DropdownTrigger className='sm:flex'>
-                  <Button endContent={<ChevronDownIcon className='text-small' />} variant='flat' radius="sm">
-                    Columnas
-                  </Button>
-                </DropdownTrigger>
-                <DropdownMenu
-                  disallowEmptySelection
-                  aria-label='Table Columns'
-                  closeOnSelect={false}
-                  selectedKeys={visibleColumns}
-                  selectionMode='multiple'
-                  onSelectionChange={setVisibleColumns}
-                >
-                  {columnsData.columns.map((column: any) => (
-                    <DropdownItem key={column.uid} className='capitalize dropdownCheckboxIcon'>
-                      <h3 className='default-text-color'>{capitalize(column.name)}</h3>
-                    </DropdownItem>
-                  ))}
-                </DropdownMenu>
-              </Dropdown>
-            )}
             {addItemModal}
           </div>
         </div>
-        <div className='flex justify-between items-center'>
-          <span className='text-default-400 text-small'>{users.length} Resultados en total</span>
-          <label className='flex items-center text-default-400 text-small'>
-            Resultados por página:
-            <select
-              className='bg-transparent outline-none text-default-400 text-small'
-              onChange={onRowsPerPageChange}
-            >
-              <option value='5'>5</option>
-              <option value='10'>10</option>
-              <option value='15'>15</option>
-            </select>
-          </label>
-        </div>
+
+        {/* Opcional: Elementos adicionales como editar */}
+        {editItemModal}
       </div>
-      {editItemModal}
     </>
   )
 }

@@ -1,5 +1,8 @@
 package productar.models;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -46,13 +49,14 @@ public class ClientModel {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "business_unit_id", nullable = false)
     @NotNull(message = "Business unit cannot be null")
-    private BusinessUnitsModel businessUnit;
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private BusinessUnitModel businessUnit;
 
-    public BusinessUnitsModel getBusinessUnit() {
+    public BusinessUnitModel getBusinessUnit() {
         return businessUnit;
     }
 
-    public void setBusinessUnit(BusinessUnitsModel businessUnit) {
+    public void setBusinessUnit(BusinessUnitModel businessUnit) {
         this.businessUnit = businessUnit;
     }
 

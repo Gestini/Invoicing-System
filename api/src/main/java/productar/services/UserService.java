@@ -1,10 +1,14 @@
 package productar.services;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -82,4 +86,39 @@ public class UserService {
         return (User) authentication.getPrincipal();
     }
 
+    public ResponseEntity<?> updateUser(User data) {
+        try {
+            User currentUser = getCurrentUser();
+            Optional<User> existingUserOptional = userRepository.findByUsername(currentUser.getUsername());
+
+            if (!existingUserOptional.isPresent()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
+            }
+
+            User existingUser = existingUserOptional.get();
+
+            copyNonNullProperties(data, existingUser);
+
+            userRepository.save(existingUser);
+
+            return ResponseEntity.ok("Usuario actualizado correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error inesperado");
+        }
+    }
+
+    private void copyNonNullProperties(User source, User existingUser) {
+        Field[] fields = User.class.getDeclaredFields();
+        for (Field field : fields) {
+            try {
+                field.setAccessible(true);
+                Object value = field.get(source);
+                if (value != null) {
+                    field.set(existingUser, value);
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

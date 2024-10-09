@@ -12,18 +12,22 @@ import {
   DropdownSection,
   DropdownTrigger,
 } from '@nextui-org/react'
-import { useNavigate } from 'react-router-dom'
-import { toggleModal } from '@renderer/features/currentModal'
+import { RootState } from '@renderer/store'
 import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { useModal, modalTypes } from '@renderer/utils/useModal'
 import { setSelectedUserToChange } from '@renderer/features/userSessions'
 
 export const UserAvatarDropdown = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const token = localStorage.getItem('token')
-  const user = useSelector((state: any) => state.user.user)
+  const user = useSelector((state: RootState) => state.user.user)
+  const localSessions = useSelector((state: RootState) => state.user.userSession)
   const [sessions, setSessions] = React.useState<any>([])
   const currentSessions = localStorage.getItem('sessions')
+  const [_, toggleAddNewAccountModal] = useModal(modalTypes.addNewAccountModal)
+  const [__, toggleLogInAsModalModal] = useModal(modalTypes.logInAsModal)
 
   React.useEffect(() => {
     if (!currentSessions) return
@@ -36,9 +40,7 @@ export const UserAvatarDropdown = () => {
       setSessions(response.data)
     }
     loadUsersSession()
-  }, [])
-
-  const handleToggleModal = (modalName: string) => dispatch(toggleModal(modalName))
+  }, [localSessions.list])
 
   const logOut = () => {
     if (!currentSessions) return
@@ -64,7 +66,7 @@ export const UserAvatarDropdown = () => {
   }
 
   const changeAccount = (id: number) => {
-    if (id == user.id) return
+    if (id == user?.id) return
     if (!currentSessions) return
 
     const partseSessions = JSON.parse(currentSessions)
@@ -75,7 +77,7 @@ export const UserAvatarDropdown = () => {
 
     if (!userAccount.tokenValid) {
       dispatch(setSelectedUserToChange(userAccount))
-      return handleToggleModal('LogInAsModal')
+      return toggleLogInAsModalModal()
     }
 
     navigate('/')
@@ -86,9 +88,9 @@ export const UserAvatarDropdown = () => {
   }
 
   return (
-    <Dropdown className='text-c-title w-[400px] bg-c-card'>
+    <Dropdown className='text-c-title w-[300px] md:w-[400px] bg-c-card'>
       <DropdownTrigger>
-        <div className='flex'>
+        <div className='flex items-center cursor-pointer transition-transform'>
           <Avatar
             as='button'
             classNames={{
@@ -97,12 +99,12 @@ export const UserAvatarDropdown = () => {
             }}
             className='h-[50px] w-[50px]'
           />
-          <div className='ml-[10px] text-center'>
-            <p className='text-c-title text-[14px] font-semibold'>
-              <ShortCellValue cellValue={user?.username} maxLength={12} />
+          <div className='ml-[10px] hidden lg:flex flex-col'>
+            <p className='text-c-title text-[14px] font-semibold whitespace-nowrap'>
+              <ShortCellValue cellValue={user?.username || ''} maxLength={12} />
             </p>
-            <p className='w-fit px-[10px] py-[2px] mt-1 bg-[rgb(160,219,142)]/20 rounded-md text-[#A0DB8E] text-[12px]'>
-              CEO
+            <p className='whitespace-nowrap w-fit px-[10px] py-[2px] mt-1 bg-c-primary-variant-3 rounded-md text-c-primary text-[12px]'>
+              {user?.jobposition || 'Sin asignar'}
             </p>
           </div>
         </div>
@@ -111,30 +113,27 @@ export const UserAvatarDropdown = () => {
         <DropdownSection className='flex flex-col items-center content-center'>
           <DropdownItem key='profile' isReadOnly>
             <div className='infouserhere flex flex-col items-center gap-4 '>
-              {user.email}
+              {user?.email}
               <Avatar
                 as='button'
                 classNames={{
                   icon: 'text-[#ffffff]',
                   base: 'bg-[--c-primary]',
                 }}
-                className='h-[100px] w-[100px]'
+                className='h-[80px] w-[80px]'
               />
-              <span className='text-[20px]'>¡Hola, {user.username}!</span>
+              <span className='text-[20px]'>¡Hola, {user?.username}!</span>
             </div>
           </DropdownItem>
           <DropdownItem
             key='settings'
-            className='flex'
-            onClick={() => handleToggleModal('SettingsModal')}
-            classNames={{
-              base: 'mt-2 text-center p-2 w-[200px] h-[30px] rounded-full justify-center flex border-1',
-            }}
+            onClick={() => navigate('/account/edit')}
+            className='mt-4 text-center rounded-3xl justify-center border-1 block border-gray-300 hover:border-gray-500 duration-300'
           >
             Ajustes
           </DropdownItem>
         </DropdownSection>
-        <DropdownSection>
+        <DropdownSection className='max-h-[140px] overflow-y-auto hoverScrollbar pr-1'>
           {sessions?.map((item, _) => (
             <DropdownItem key={item.user.username} onPress={() => changeAccount(item.user.id)}>
               <div className='itemprofile flex items-center gap-2'>
@@ -151,8 +150,8 @@ export const UserAvatarDropdown = () => {
                     <span>{item.user.username}</span>
                     <span className='text-[10px]'>{item.user.email}</span>
                   </div>
-                  {user.id == item.user.id && (
-                    <span className='px-[4px] py-[2px] bg-[rgb(160,219,142)]/20 rounded-md text-[#A0DB8E] text-[18px]'>
+                  {user?.id == item.user.id && (
+                    <span className='px-[4px] py-[2px] bg-[rgb(160,219,142)]/20 rounded-md text-[rgb(160,219,142)] text-[18px]'>
                       <BiCheck />
                     </span>
                   )}
@@ -165,11 +164,9 @@ export const UserAvatarDropdown = () => {
               </div>
             </DropdownItem>
           ))}
-          <DropdownItem
-            key='addAccount'
-            className='flex'
-            onClick={() => handleToggleModal('AddNewAccountModal')}
-          >
+        </DropdownSection>
+        <DropdownSection>
+          <DropdownItem key='addAccount' className='flex' onClick={toggleAddNewAccountModal}>
             <div className='itemprofile flex items-center gap-2'>
               <IoIosAddCircle className='text-[30px]' />
               <div className='infouserloged flex-grow flex justify-between items-center gap-2'>
@@ -179,8 +176,6 @@ export const UserAvatarDropdown = () => {
               </div>
             </div>
           </DropdownItem>
-        </DropdownSection>
-        <DropdownSection>
           <DropdownItem
             key='logout'
             className='text-danger'

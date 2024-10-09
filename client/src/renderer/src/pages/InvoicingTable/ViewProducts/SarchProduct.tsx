@@ -1,14 +1,15 @@
 import React from 'react'
+import { RootState } from '@renderer/store'
 import { SearchIcon } from '@renderer/components/Icons/SearchIcon'
 import { addProduct } from '@renderer/features/newInvoicing'
 import { useDispatch, useSelector } from 'react-redux'
-import { reqSearchProductByNameAndUnit } from '@renderer/api/requests'
+import { reqSearchInventoryProduct } from '@renderer/api/requests'
 import { Autocomplete, AutocompleteItem } from '@nextui-org/react'
 
 export const SearchProduct = () => {
   const dispatch = useDispatch()
-  const unit = useSelector((state: any) => state.currentUnit)
-  const newInvoicing = useSelector((state: any) => state.unit.newInvoicing)
+  const unit = useSelector((state: RootState) => state.currentUnit)
+  const newInvoicing = useSelector((state: RootState) => state.unit.newInvoicing)
   const [result, setResult] = React.useState([])
   const [searchValue, setSearchValue] = React.useState('')
   const currentTab = newInvoicing?.tabs?.find((item: any) => item.id == newInvoicing.currentTabId)
@@ -16,16 +17,22 @@ export const SearchProduct = () => {
     (product: any) => !currentTab?.products.some((item: any) => item.id == product.id),
   )
 
-  const handleChange = async (e: any) => setSearchValue(e)
+  const handleChange = async (e: string) => setSearchValue(e)
 
   React.useEffect(() => {
     const onSubmmit = async () => {
       if (searchValue.trim() == '') return
       if (searchValue.length < 3) return
 
-      const response = await reqSearchProductByNameAndUnit(searchValue, unit.id)
+      const response = await reqSearchInventoryProduct(searchValue, unit.id)
       if (response.data.length == 0) return
-      setResult(response.data)
+      setResult(
+        response.data.map((item: any) => {
+          return {
+            ...item.product,
+          }
+        }),
+      )
     }
     onSubmmit()
   }, [searchValue])

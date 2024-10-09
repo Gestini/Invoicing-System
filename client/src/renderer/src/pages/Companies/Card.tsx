@@ -1,44 +1,23 @@
-import React from 'react'
 import Logo from '@renderer/assets/image/google.svg'
-import { setUnit } from '@renderer/features/currentUnitSlice'
 import { SlOptions } from 'react-icons/sl'
-import { deleteUnit } from '@renderer/features/unitsSlice'
-import { useNavigate } from 'react-router-dom'
-import { FaExternalLinkAlt } from 'react-icons/fa'
-import { reqDeleteUnitById } from '@renderer/api/requests'
+import { RootState } from '@renderer/store'
+import { deleteCompany } from '@renderer/features/companiesSlice'
+import { reqDeleteCompany } from '@renderer/api/requests'
+import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from '@nextui-org/react'
 
-interface Owner {
-  id: number
-}
-
-interface BusinessUnit {
-  id: number
-  link: string
-  name: string
-  owner: Owner
-  description: string
-}
-
-interface CardProps {
-  unit: BusinessUnit
-}
-
-const Card: React.FC<CardProps> = ({ unit }) => {
+const Card = ({ company }) => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const user = useSelector((state: any) => state.user.user)
+  const user = useSelector((state: RootState) => state.user.user)
 
-  const handleNavigate = () => {
-    dispatch(setUnit(unit))
-    navigate(`/dashboard/${unit?.id}`)
-  }
+  const handleNavigate = () => navigate(`/dashboard/${company?.id}`)
 
   const handleDeleteUnit = () => {
     try {
-      dispatch(deleteUnit(unit.id))
-      reqDeleteUnitById(unit.id)
+      dispatch(deleteCompany(company.id))
+      reqDeleteCompany(company.id)
     } catch (error) {
       console.error('Error al eliminar la unidad:', error)
     }
@@ -50,21 +29,34 @@ const Card: React.FC<CardProps> = ({ unit }) => {
       className='cursor-pointer w-full h-[200px] rounded-lg bg-c-card shadow-md p-3'
     >
       <div className='flex justify-between items-center mb-3'>
-        <div className='w-10 bg-[#f7f7f7] p-1 rounded-lg flex'>
-          <img src={Logo} className='w-full' alt='' />
+        <div className='w-12 h-12 overflow-hidden bg-[#f7f7f7] rounded-lg flex'>
+          {company?.image ? (
+            <img
+              src={company.image || Logo}
+              className='w-full h-full object-contain'
+              alt='Imagen de unidad'
+              onError={(e) => (e.currentTarget.src = Logo)}
+            />
+          ) : (
+            <div className='w-full flex justify-center items-center font-bold text-xl'>
+              {company.name.slice(0, 2)}
+            </div>
+          )}
         </div>
-        {user.id == unit.owner.id ? (
-          <Dropdown placement='bottom-start' className='bg-c-card text-c-title'>
+        {user?.id == company?.owner.id ? (
+          <Dropdown placement='bottom-start' className='text-c-title'>
             <DropdownTrigger>
               <div>
                 <SlOptions className='text-c-title w-4 h-4 cursor-pointer' />
               </div>
             </DropdownTrigger>
-            <DropdownMenu aria-label='Static Actions' className='text-c-title bg-c-bg-color'>
+            <DropdownMenu aria-label='Static Actions' className='text-c-title'>
               <DropdownItem key='Open' onClick={handleNavigate}>
                 Abrir
               </DropdownItem>
-              <DropdownItem key='Edit'>Editar unidad</DropdownItem>
+              <DropdownItem key='Edit'>
+                <Link to={`/settings/${company.id}`}>Configurar</Link>
+              </DropdownItem>
               <DropdownItem
                 key='delete'
                 className='text-danger'
@@ -72,7 +64,7 @@ const Card: React.FC<CardProps> = ({ unit }) => {
                 color='danger'
                 onClick={handleDeleteUnit}
               >
-                Eliminar unidad
+                Eliminar empresa
               </DropdownItem>
             </DropdownMenu>
           </Dropdown>
@@ -91,12 +83,8 @@ const Card: React.FC<CardProps> = ({ unit }) => {
           </Dropdown>
         )}
       </div>
-      <div className='text-[16px] text-c-title font-semibold mb-[1px]'>{unit.name}</div>
-      <div className='text-[12px] text-gray-400 flex items-center gap-1 mb-2'>
-        <FaExternalLinkAlt />
-        {unit.link}
-      </div>
-      <div className='text-[14px] text-gray-500 line-clamp-3'>{unit.description}</div>
+      <div className='text-[16px] text-c-title font-semibold mb-[10px]'>{company.name}</div>
+      <div className='text-[14px] text-gray-500 line-clamp-3'>{company.description}</div>
     </div>
   )
 }

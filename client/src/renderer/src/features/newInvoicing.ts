@@ -1,5 +1,6 @@
 import { totalApply } from '@renderer/pages/InvoicingTable/ViewProducts/data'
 import { createSlice } from '@reduxjs/toolkit'
+import { ProductModel } from '@renderer/interfaces/product'
 
 interface TotalApplyItem {
   label: string
@@ -14,16 +15,16 @@ export interface Tab {
   total: number
   title: string
   formData: Record<string, any>
-  products: { id: number, productName: string, category: string, price: number, quantity: number }[]
+  products: ProductModel[]
   totalApply: TotalApplyItem[]
 }
 
-interface NewInvoicingState {
+export interface NewInvoicingState {
   tabs: Tab[]
   currentTabId: string
 }
 
-const initialState: NewInvoicingState = {
+const initialState = {
   tabs: [
     {
       id: '1',
@@ -55,7 +56,7 @@ const initialState: NewInvoicingState = {
 
 export const newInvoicing = createSlice({
   name: 'newInvoicing',
-  initialState,
+  initialState: initialState as NewInvoicingState,
   reducers: {
     setInvoiceData: (state, action) => {
       return { ...state, ...action.payload }
@@ -99,7 +100,10 @@ export const newInvoicing = createSlice({
       if (tabIndex === -1) return
 
       const tab = state.tabs[tabIndex]
-      let subtotal = tab.products.reduce((sum, product) => sum + product.price * product.quantity, 0)
+      let subtotal = tab.products.reduce(
+        (sum, product) => sum + product.price * product.quantity,
+        0,
+      )
       let applyAmount = 0.0
 
       tab.totalApply.forEach((item) => {

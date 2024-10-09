@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,7 +17,7 @@ public class InvitationController {
     @Autowired
     private InvitationService invitationService;
 
-    @GetMapping("/accept/{token}")
+    @PostMapping("/accept/{token}")
     public ResponseEntity<String> acceptInvitation(@PathVariable("token") String token) {
         return invitationService.acceptInvite(token);
     }
@@ -24,6 +25,11 @@ public class InvitationController {
     @GetMapping("/reject/{token}")
     public ResponseEntity<String> rejectInvitation(@PathVariable("token") String token) {
         return invitationService.rejectInvite(token);
+    }
+
+    @GetMapping("/get-by-token/{token}")
+    public ResponseEntity<?> getInviteByToken(@PathVariable("token") String token) {
+        return invitationService.getInviteByToken(token);
     }
 
 }

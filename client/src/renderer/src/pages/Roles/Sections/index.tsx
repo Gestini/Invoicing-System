@@ -1,19 +1,19 @@
 import React from 'react'
-import { Role } from '@renderer/features/roleSlice'
 import { RoleInfo } from './RoleInfo'
+import { RootState } from '@renderer/store'
 import { RolePerms } from './RolePerms'
 import { RoleUsers } from './RoleUsers'
 import { useSelector } from 'react-redux'
 import { Card, CardBody, CardHeader, Tab, Tabs } from '@nextui-org/react'
 
 export const RoleSections = () => {
-  const roles = useSelector((state: any) => state.unit.roles)
-  const currentRole = roles.data.find((item: Role) => item.id === roles.currentRoleIdEdit)
+  const roles = useSelector((state: RootState) => state.unit.roles)
+  const currentRole = roles.data.find((item) => item.id === roles.currentRoleIdEdit)
 
   return (
     <React.Fragment>
       {currentRole ? (
-        <Card className='h-full flex flex-col w-[50%]'>
+        <Card className='h-fit flex flex-col w-[50%]'>
           <CardHeader>
             <h3 className='text-3xl font-semibold text-c-title'>{currentRole.name}</h3>
           </CardHeader>

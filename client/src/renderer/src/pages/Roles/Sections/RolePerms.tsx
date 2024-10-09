@@ -1,7 +1,7 @@
 import React from 'react'
+import { RootState } from '@renderer/store'
 import { SearchIcon } from '@renderer/components/Icons/SearchIcon'
 import { Input, Switch } from '@nextui-org/react'
-import { Role, Permission } from '@renderer/features/roleSlice'
 import { permissions, permsMap } from '../Permissions'
 import { useDispatch, useSelector } from 'react-redux'
 import { removePermission, addPermissions } from '@renderer/features/roleSlice'
@@ -10,26 +10,25 @@ import { reqAddPermissionRole, reqRemovePermissionRole } from '@renderer/api/req
 export const RolePerms = () => {
   const dispatch = useDispatch()
   const [searchTerm, setSearchTerm] = React.useState('')
-  const handleSearch = (e: any) => setSearchTerm(e.target.value)
-
-  const roles = useSelector((state: any) => state.unit.roles)
-  const currentRole = roles.data.find((item: Role) => item.id === roles.currentRoleIdEdit)
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)
+  const roles = useSelector((state: RootState) => state.unit.roles)
+  const currentRole = roles.data.find((item) => item.id === roles.currentRoleIdEdit)
 
   const changePermissions = async (
-    hasPermissions: boolean,
-    permissionId: number,
+    hasPermissions: boolean | undefined,
+    permissionId: number | undefined,
     permission: string,
   ) => {
     try {
       if (!hasPermissions && !permissionId) {
         const res = await reqAddPermissionRole({
-          role: { id: currentRole.id },
+          role: { id: currentRole?.id },
           name: permission,
         })
         dispatch(addPermissions(res.data))
       } else {
         dispatch(removePermission(permissionId))
-        await reqRemovePermissionRole(currentRole.id, permissionId)
+        await reqRemovePermissionRole(currentRole?.id, permissionId)
       }
     } catch (error) {
       console.log(error)
@@ -52,10 +51,10 @@ export const RolePerms = () => {
           .filter((item: permsMap) => item.title.toLowerCase().includes(searchTerm.toLowerCase()))
           .map((item, index) => {
             const hasPermissions = currentRole?.permissions?.some(
-              (perm: Permission) => perm.name === item.permission,
+              (perm) => perm.name === item.permission,
             )
             const permission = currentRole?.permissions?.find(
-              (perm: Permission) => perm.name === item.permission,
+              (perm) => perm.name === item.permission,
             )
             return (
               <div key={index} className='flex items-center gap-4 justify-between w-full'>

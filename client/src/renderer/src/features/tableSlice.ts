@@ -37,4 +37,5 @@ export const manageTableSlice = createSlice({
   },
 })
 
-export const { setTableData, addItem, editItem, deleteItem, setCurrentItemId } = manageTableSlice.actions
+export const { setTableData, addItem, editItem, deleteItem, setCurrentItemId } =
+  manageTableSlice.actions

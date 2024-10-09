@@ -10,29 +10,29 @@ import {
   ModalFooter,
   ModalHeader,
   ModalContent,
-  useDisclosure,
 } from '@nextui-org/react'
+import { modalTypes, useModal } from '@renderer/utils/useModal'
 
 export const AddItemModal = ({ modal }) => {
   const [data, setData] = React.useState<any>({})
-  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
+  const [isOpen, toggleModal] = useModal(modalTypes.addItemToTableModal)
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setData({
       ...data,
       [e.target.name]: e.target.value,
     })
   }
 
-  const handleAddNewUser = () => {
+  const addNewItem = () => {
     modal.action(data)
-    onClose()
+    toggleModal()
   }
 
   return (
     <div className='flex flex-col gap-2'>
       <Button
-        onPress={onOpen}
+        onPress={toggleModal}
         className='bg-c-primary'
         color='secondary'
         endContent={<PlusIcon />}
@@ -40,7 +40,13 @@ export const AddItemModal = ({ modal }) => {
       >
         {modal?.buttonTitle}
       </Button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} scrollBehavior={'inside'} backdrop='blur'>
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={toggleModal}
+        scrollBehavior={'inside'}
+        backdrop='blur'
+        placement='center'
+      >
         <ModalContent>
           <ModalHeader className='flex flex-col gap-1'>
             <h3 className='default-text-color'>{modal?.title}</h3>
@@ -84,14 +90,14 @@ export const AddItemModal = ({ modal }) => {
             )}
           </ModalBody>
           <ModalFooter>
-            <Button color='danger' variant='light' onPress={onClose} radius='sm'>
+            <Button color='danger' variant='light' onPress={toggleModal} radius='sm'>
               Cerrar
             </Button>
             <Button
               className='bg-c-primary'
               color='secondary'
               radius='sm'
-              onPress={() => handleAddNewUser()}
+              onPress={() => addNewItem()}
             >
               Agregar
             </Button>

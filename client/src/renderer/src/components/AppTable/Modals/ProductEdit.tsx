@@ -10,26 +10,30 @@ import {
   ModalFooter,
   ModalHeader,
   ModalContent,
-  useDisclosure,
 } from '@nextui-org/react'
 import React from 'react'
+import { RootState } from '@renderer/store'
 import { useParams } from 'react-router-dom'
-import { reqGetSupplier } from '@renderer/api/requests'
-import { setCurrentItemId } from '@renderer/features/tableSlice'
+import { modalTypes, useModal } from '@renderer/utils/useModal'
 import { useDispatch, useSelector } from 'react-redux'
+import { editItem, setCurrentItemId } from '@renderer/features/tableSlice'
+import { reqEditProduct, reqGetSupplier } from '@renderer/api/requests'
 
-export const EditProductModal = ({ modal }) => {
+export const EditProductModal = () => {
   const params = useParams()
   const dispatch = useDispatch()
-  const users = useSelector((state: any) => state.unit.table.data)
-  const currentItemIdEdit = useSelector((state: any) => state.unit.table.currentItemIdEdit)
-  const currentUserEdit = users.find((item: { id: any }) => item.id == currentItemIdEdit)
+  const [isOpen, toggleModal] = useModal(modalTypes.editProductModal)
+  const table = useSelector((state: RootState) => state.unit.table)
+  const unit = useSelector((state: RootState) => state.currentUnit)
+  const currentItemIdEdit = useSelector((state: RootState) => state.unit.table.currentItemIdEdit)
+  const currentProductEdit = table.data.find((item) => item.id == currentItemIdEdit)
   const [suppliers, setSuppliers] = React.useState([])
-  const [data, setData] = React.useState({
+  const [data, setData] = React.useState<any>({
     businessUnit: {
       id: params.unitId,
     },
   })
+
   const [errors, setErrors] = React.useState({
     name: '',
     quantity: '',
@@ -40,25 +44,19 @@ export const EditProductModal = ({ modal }) => {
     purchasePrice: '',
   })
 
-  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
-
-  React.useEffect(() => {
-    if (currentItemIdEdit !== -1) onOpen()
-  }, [currentItemIdEdit])
-
   React.useEffect(() => {
     const GetSupplier = async () => {
-      const response = await reqGetSupplier(params.unitId)
+      const response = await reqGetSupplier(unit.id)
       setSuppliers(response.data)
     }
     GetSupplier()
   }, [])
 
-  const handleChange = (e: any) => {
-    if (e.target.name == 'supplierUnit') {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    if (e.target.name === 'supplierUnit') {
       setData({
         ...data,
-        [e.target.name]: { id: e.target.value },
+        supplierUnit: { id: e.target.value },
       })
     } else {
       setData({
@@ -100,17 +98,23 @@ export const EditProductModal = ({ modal }) => {
 
   const handleResetCurrentIdEdit = () => dispatch(setCurrentItemId(-1))
 
-  const handleAddNewUser = async () => {
+  const addNewProduct = async () => {
     const isValid = Object.values(errors).every((error) => error === '')
     if (isValid) {
-      modal.action(currentUserEdit.id, data)
+      try {
+        dispatch(editItem({ data, id: currentItemIdEdit }))
+        await reqEditProduct(currentProductEdit.id, data)
+      } catch (error: any) {
+        console.log(error)
+      }
+
       handleResetCurrentIdEdit()
       setData({
         businessUnit: {
           id: params.unitId,
         },
       })
-      onClose()
+      toggleModal()
     } else {
       console.log('Hay errores de validación en el formulario.')
     }
@@ -122,13 +126,14 @@ export const EditProductModal = ({ modal }) => {
         isOpen={isOpen}
         onClose={handleResetCurrentIdEdit}
         backdrop='blur'
-        onOpenChange={onOpenChange}
+        onOpenChange={toggleModal}
         scrollBehavior={'inside'}
         size='5xl'
+        placement='center'
       >
         <ModalContent>
           <ModalHeader className='flex flex-col gap-1'>
-            <h3 className='default-text-color'>{modal?.title}</h3>
+            <h3 className='default-text-color'>Editar producto</h3>
           </ModalHeader>
           <ModalBody>
             <div className='productsmodaladd w-full flex flex-col gap-3  '>
@@ -143,7 +148,7 @@ export const EditProductModal = ({ modal }) => {
                   variant='bordered'
                   onChange={handleChange}
                   isInvalid={!!errors.name}
-                  defaultValue={currentUserEdit?.name}
+                  defaultValue={currentProductEdit?.name}
                 ></Input>
                 <Select
                   label='Categoria'
@@ -154,7 +159,7 @@ export const EditProductModal = ({ modal }) => {
                   onChange={handleChange}
                   size='sm'
                   className='text-c-title'
-                  defaultSelectedKeys={[currentUserEdit?.category]}
+                  defaultSelectedKeys={[currentProductEdit?.category]}
                 >
                   <SelectItem key={'electricidad'}>Proveedor</SelectItem>
                   <SelectItem key={'materiales'}>materiales</SelectItem>
@@ -169,7 +174,7 @@ export const EditProductModal = ({ modal }) => {
                   isInvalid={!!errors.quantity}
                   variant='bordered'
                   onChange={handleChange}
-                  defaultValue={currentUserEdit?.quantity}
+                  defaultValue={currentProductEdit?.quantity}
                 ></Input>
               </div>
               <div className='rowmodaladdproduct flex gap-3'>
@@ -179,7 +184,7 @@ export const EditProductModal = ({ modal }) => {
                   name='codigo1'
                   labelPlacement='outside'
                   placeholder='Codigo #1'
-                  defaultValue={currentUserEdit?.codigo1}
+                  defaultValue={currentProductEdit?.codigo1}
                   variant='bordered'
                   onChange={handleChange}
                 ></Input>
@@ -187,7 +192,7 @@ export const EditProductModal = ({ modal }) => {
                   label='Codigo'
                   size='sm'
                   name='codigo2'
-                  defaultValue={currentUserEdit?.codigo2}
+                  defaultValue={currentProductEdit?.codigo2}
                   labelPlacement='outside'
                   placeholder='Codigo #2'
                   variant='bordered'
@@ -197,7 +202,7 @@ export const EditProductModal = ({ modal }) => {
                   label='Codigo de barras'
                   size='sm'
                   name='barcode'
-                  defaultValue={currentUserEdit?.barcode}
+                  defaultValue={currentProductEdit?.barcode}
                   labelPlacement='outside'
                   placeholder='Codigo de barras'
                   variant='bordered'
@@ -214,7 +219,7 @@ export const EditProductModal = ({ modal }) => {
                   onChange={handleChange}
                   size='sm'
                   className='text-c-title'
-                  defaultSelectedKeys={[String(currentUserEdit?.supplierUnitId)]}
+                  defaultSelectedKeys={[String(currentProductEdit?.supplierUnitId)]}
                 >
                   {suppliers.map((item: any) => (
                     <SelectItem key={item.id}>{item.name}</SelectItem>
@@ -229,7 +234,9 @@ export const EditProductModal = ({ modal }) => {
                   onChange={handleChange}
                   size='sm'
                   className='text-c-title'
-                  defaultSelectedKeys={[currentUserEdit ? String(currentUserEdit.status) : '']}
+                  defaultSelectedKeys={[
+                    currentProductEdit ? String(currentProductEdit.status) : '',
+                  ]}
                 >
                   <SelectItem value={'true'} key={'true'}>
                     Disponible
@@ -249,7 +256,7 @@ export const EditProductModal = ({ modal }) => {
                   size='sm'
                   name='purchasePrice'
                   isInvalid={!!errors.purchasePrice}
-                  defaultValue={currentUserEdit ? currentUserEdit.purchasePrice : ''}
+                  defaultValue={currentProductEdit ? currentProductEdit.purchasePrice : ''}
                   onChange={handleChange}
                   endContent={
                     <div className='pointer-events-none flex items-center'>
@@ -263,7 +270,7 @@ export const EditProductModal = ({ modal }) => {
                   labelPlacement='outside'
                   placeholder='0.00'
                   variant='bordered'
-                  defaultValue={currentUserEdit?.costPrice}
+                  defaultValue={currentProductEdit?.costPrice}
                   size='sm'
                   name='costPrice'
                   isInvalid={!!errors.costPrice}
@@ -281,7 +288,7 @@ export const EditProductModal = ({ modal }) => {
                   variant='bordered'
                   name='priceCalculation'
                   onChange={handleChange}
-                  defaultSelectedKeys={[currentUserEdit?.priceCalculation]}
+                  defaultSelectedKeys={[currentProductEdit?.priceCalculation]}
                   size='sm'
                   className='text-c-title'
                 >
@@ -301,7 +308,7 @@ export const EditProductModal = ({ modal }) => {
                   variant='bordered'
                   name='pricePolicy'
                   onChange={handleChange}
-                  defaultSelectedKeys={[currentUserEdit?.pricePolicy]}
+                  defaultSelectedKeys={[currentProductEdit?.pricePolicy]}
                   size='sm'
                   className='text-c-title'
                 >
@@ -323,7 +330,7 @@ export const EditProductModal = ({ modal }) => {
                   variant='bordered'
                   name='net1'
                   onChange={handleChange}
-                  defaultValue={currentUserEdit?.net1}
+                  defaultValue={currentProductEdit?.net1}
                   size='sm'
                   endContent={
                     <div className='pointer-events-none flex items-center'>
@@ -338,7 +345,7 @@ export const EditProductModal = ({ modal }) => {
                   isDisabled
                   placeholder='0.00'
                   variant='bordered'
-                  defaultValue={currentUserEdit?.net2}
+                  defaultValue={currentProductEdit?.net2}
                   name='net2'
                   onChange={handleChange}
                   size='sm'
@@ -355,7 +362,7 @@ export const EditProductModal = ({ modal }) => {
                   placeholder='0.00'
                   isDisabled
                   variant='bordered'
-                  defaultValue={currentUserEdit?.net3}
+                  defaultValue={currentProductEdit?.net3}
                   name='net3'
                   onChange={handleChange}
                   size='sm'
@@ -371,7 +378,7 @@ export const EditProductModal = ({ modal }) => {
                   label='Neto 4'
                   placeholder='0.00'
                   isDisabled
-                  defaultValue={currentUserEdit?.net4}
+                  defaultValue={currentProductEdit?.net4}
                   variant='bordered'
                   name='net4'
                   onChange={handleChange}
@@ -390,7 +397,7 @@ export const EditProductModal = ({ modal }) => {
                   placeholder='Selecciona un tipo'
                   variant='bordered'
                   name='taxType'
-                  defaultSelectedKeys={[currentUserEdit?.taxType]}
+                  defaultSelectedKeys={[currentProductEdit?.taxType]}
                   onChange={handleChange}
                   size='sm'
                   className='text-c-title'
@@ -405,7 +412,7 @@ export const EditProductModal = ({ modal }) => {
                   placeholder='0.00'
                   variant='bordered'
                   name='financedPrice'
-                  defaultValue={currentUserEdit?.financedPrice}
+                  defaultValue={currentProductEdit?.financedPrice}
                   isInvalid={!!errors.financedPrice}
                   onChange={handleChange}
                   size='sm'
@@ -422,7 +429,7 @@ export const EditProductModal = ({ modal }) => {
                   placeholder='0.00'
                   variant='bordered'
                   name='friendPrice'
-                  defaultValue={currentUserEdit?.friendPrice}
+                  defaultValue={currentProductEdit?.friendPrice}
                   onChange={handleChange}
                   isInvalid={!!errors.friendPrice}
                   size='sm'
@@ -441,7 +448,7 @@ export const EditProductModal = ({ modal }) => {
                   onChange={handleChange}
                   isInvalid={!!errors.cardPrice}
                   variant='bordered'
-                  defaultValue={currentUserEdit?.cardPrice}
+                  defaultValue={currentProductEdit?.cardPrice}
                   size='sm'
                   endContent={
                     <div className='pointer-events-none flex items-center'>
@@ -469,7 +476,7 @@ export const EditProductModal = ({ modal }) => {
                 name='quantityPerPackage'
                 onChange={handleChange}
                 variant='bordered'
-                defaultValue={currentUserEdit?.quantityPerPackage}
+                defaultValue={currentProductEdit?.quantityPerPackage}
                 isDisabled
                 size='sm'
                 endContent={
@@ -483,7 +490,7 @@ export const EditProductModal = ({ modal }) => {
                 variant='bordered'
                 name='description'
                 onChange={handleChange}
-                defaultValue={currentUserEdit?.description}
+                defaultValue={currentProductEdit?.description}
                 labelPlacement='outside'
                 placeholder='Enter your description'
               ></Textarea>
@@ -496,14 +503,14 @@ export const EditProductModal = ({ modal }) => {
               radius='sm'
               onPress={() => {
                 handleResetCurrentIdEdit()
-                onClose()
+                toggleModal()
               }}
             >
               Cerrar
             </Button>
             <Button
               color='primary'
-              onPress={() => handleAddNewUser()}
+              onPress={() => addNewProduct()}
               radius='sm'
               className='bg-c-primary'
             >

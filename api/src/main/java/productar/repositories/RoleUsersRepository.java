@@ -19,11 +19,11 @@ public interface RoleUsersRepository extends JpaRepository<RoleUsersModel, Long>
     Optional<RoleUsersModel> userHasRole(@Param("roleId") Long roleId, @Param("userId") Long userId);
 
     @Query("SELECT EXISTS ("
-            + "SELECT 1 FROM BusinessUnitsModel b "
-            + "WHERE b.id = :unitId AND b.owner.id = :userId) "
+            + "SELECT 1 FROM BusinessUnitModel b "
+            + "WHERE b.id = :unitId AND b.company.owner.id = :userId) "
             + "OR ("
             + "EXISTS (SELECT 1 FROM EmployeeModel e "
-            + "WHERE e.user.id = :userId AND e.businessUnit.id = :unitId) "
+            + "WHERE e.user.id = :userId AND e.businessUnit.id = :unitId AND e.status = ACTIVE) "
             + "AND (:permissionName = 'none' OR EXISTS ("
             + "SELECT 1 FROM RoleUsersModel ru "
             + "JOIN RoleModel r ON ru.role.id = r.id "
