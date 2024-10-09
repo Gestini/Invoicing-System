@@ -6,18 +6,20 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import productar.models.BusinessUnitModel;
 import productar.models.EmployeeModel;
-import productar.models.InvitationModel;
+import productar.models.BusinessUnitInvitationModel;
 import productar.models.User;
 import productar.repositories.BusinessUnitsRepository;
 import productar.repositories.EmployeeRepository;
 import productar.repositories.InvitationRepository;
 import productar.repositories.RoleUsersRepository;
+import productar.utils.EmailSender;
 import productar.utils.Permissions;
 
 @Service
@@ -30,9 +32,6 @@ public class EmployeeService {
     private InvitationRepository invitationRepository;
 
     @Autowired
-    private EmailSenderService emailSenderService;
-
-    @Autowired
     private BusinessUnitsRepository businessUnitsRepository;
 
     @Autowired
@@ -40,6 +39,12 @@ public class EmployeeService {
 
     @Autowired
     private RoleUsersRepository roleUsersRepository;
+
+    @Autowired
+    private EmailSender emailSender;
+
+    @Value("${clientServerURL}")
+    private String CLIENT_SERVER_URL;
 
     public EmployeeModel createEmployee(EmployeeModel employee) {
         // Guarda al nuevo empleado
@@ -49,7 +54,7 @@ public class EmployeeService {
         String token = UUID.randomUUID().toString();
 
         // Crea e inicializa el objeto de invitación
-        InvitationModel invitation = new InvitationModel();
+        BusinessUnitInvitationModel invitation = new BusinessUnitInvitationModel();
         invitation.setBusinessUnit(employee.getBusinessUnit());
         invitation.setInviter(userService.getCurrentUser());
         invitation.setToken(token);
@@ -64,7 +69,7 @@ public class EmployeeService {
         invitationRepository.save(invitation);
 
         // Construye el enlace de invitación
-        String invitationLink = "http://localhost:5173/invite?token=" + token;
+        String invitationLink = CLIENT_SERVER_URL + "/invite/" + token;
 
         // Establece el asunto y el mensaje del correo electrónico
         String subject = "Invitación para unirte a la Unidad de Negocio";
@@ -84,7 +89,7 @@ public class EmployeeService {
                 businessUnitName);
 
         // Envía el correo electrónico
-        emailSenderService.sendSimpleEmail(employee.getEmail(), subject, message);
+        emailSender.sendEmail(employee.getEmail(), subject, message);
 
         // Retorna el nuevo empleado creado
         return newEmployee;
