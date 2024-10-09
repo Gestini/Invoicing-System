@@ -29,6 +29,7 @@ export const RoleUsers = () => {
 
       const response = await reqSearchEmployeeByName(params.unitId, searchValue)
       if (response.data.length == 0) return
+
       setResult(response.data)
     }
     onSubmmit()
@@ -126,14 +127,12 @@ export const RoleUsers = () => {
       </Autocomplete>
       <div className='flex flex-col gap-3'>
         {currentRole?.users
-          ?.filter((item: any) =>
-            String(item.name).toLowerCase().includes(searchValue.toLowerCase()),
-          )
+          ?.filter((item) => String(item.name).toLowerCase().includes(searchValue.toLowerCase()))
           .map((item, index) => (
             <div className='flex gap-2 justify-between items-center' key={index}>
               <div className='flex items-center gap-2'>
                 <Avatar />
-                <h4 className='text-medium text-c-title'>{item.username}</h4>
+                <h4 className='text-medium text-c-title'>{item.name}</h4>
               </div>
               <BiX onClick={() => handleRemoveRoleUser(item.id)} className='cursor-pointer' />
             </div>

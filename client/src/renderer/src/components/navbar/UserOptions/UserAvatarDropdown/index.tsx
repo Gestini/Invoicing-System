@@ -120,7 +120,7 @@ export const UserAvatarDropdown = () => {
                   icon: 'text-[#ffffff]',
                   base: 'bg-[--c-primary]',
                 }}
-                className='h-[100px] w-[100px]'
+                className='h-[80px] w-[80px]'
               />
               <span className='text-[20px]'>¡Hola, {user?.username}!</span>
             </div>
@@ -133,7 +133,7 @@ export const UserAvatarDropdown = () => {
             Ajustes
           </DropdownItem>
         </DropdownSection>
-        <DropdownSection className='max-h-[130px] overflow-y-auto hoverScrollbar pr-1'>
+        <DropdownSection className='max-h-[140px] overflow-y-auto hoverScrollbar pr-1'>
           {sessions?.map((item, _) => (
             <DropdownItem key={item.user.username} onPress={() => changeAccount(item.user.id)}>
               <div className='itemprofile flex items-center gap-2'>
