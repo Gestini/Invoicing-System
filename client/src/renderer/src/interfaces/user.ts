@@ -1,12 +1,13 @@
 export interface UserModel {
   id: number
+  role: Role
   email: string
+  name?: string
+  country?: string
   username?: string
   lastname?: string
   firstname?: string
-  country?: string
   jobposition?: string
-  role: Role
 }
 
 export enum Role {
