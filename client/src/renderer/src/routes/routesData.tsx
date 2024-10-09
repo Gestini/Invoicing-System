@@ -208,7 +208,7 @@ const ecommerceRoutes: RouteSection = {
     { path: '/general', element: <Settings />, title: 'General' },
     { path: '/shops', element: <Shops />, title: 'Metricas' },
   ],
-  permission: permissions.admin.permission,
+  permission: permissions.ecommerce.permission,
 }
 
 export const routes = [

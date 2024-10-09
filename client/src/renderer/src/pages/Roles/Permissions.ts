@@ -30,6 +30,11 @@ export const permissions = Object.freeze({
     permission: 'MANAGE_DOCUMENTS',
     description: 'Permite gestionar la sección de documentos.',
   },
+  ecommerce: {
+    title: 'Gestionar tienda',
+    permission: 'MANAGE_ECOMMERCE',
+    description: 'Permite gestionar la sección de la tienda.',
+  },
   admin: {
     title: 'Admin',
     permission: '*',
