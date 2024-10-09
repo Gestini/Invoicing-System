@@ -101,7 +101,6 @@ public class IntegrationController {
 
     @PostMapping("/assign")
     public ResponseEntity<String> assignIntegrationToBusinessUnit(@RequestBody IntegrationAssignmentRequest request) {
-        System.out.println("Request received: " + request);
         try {
             integrationService.assignIntegrationToBusinessUnit(
                     request.getIntegrationId(),

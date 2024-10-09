@@ -112,7 +112,6 @@ public class IntegrationService {
 
         try {
             if (jsonData != null) {
-                System.out.println("JSON Data: " + jsonData); // Imprime el JSON para depuración
                 configData = objectMapper.readValue(jsonData, configType);
             }
         } catch (Exception e) {
@@ -127,9 +126,6 @@ public class IntegrationService {
         BusinessUnitIntegrationModel integrationModel = businessUnitIntegrationRepository
                 .findByBusinessUnitIdAndIntegrationId(businessUnitId, configRequest.getIntegrationId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Integración no encontrada"));
-
-        // Imprime el estado del objeto antes de la actualización
-        System.out.println("Integration Model Before Update: " + integrationModel);
 
         if (configRequest.getEnabled() != null) {
             integrationModel.setEnabled(configRequest.getEnabled());
@@ -158,9 +154,6 @@ public class IntegrationService {
 
                 String updatedConfigData = objectMapper.writeValueAsString(existingConfigMap);
                 integrationModel.setConfigData(updatedConfigData);
-
-                // Imprime la configuración actualizada
-                System.out.println("Updated Config Data: " + updatedConfigData);
             } catch (Exception e) {
                 throw new RuntimeException("Error al actualizar la configuración", e);
             }
@@ -219,9 +212,6 @@ public class IntegrationService {
     }
 
     public void assignIntegrationToBusinessUnit(Long integrationId, Long businessUnitId) {
-        System.out.println("ID de Integración: " + integrationId);
-        System.out.println("ID de Unidad de Negocio: " + businessUnitId);
-
         // Verificar si la integración ya está asignada a la unidad de negocio
         boolean alreadyAssigned = businessUnitIntegrationRepository
                 .findByBusinessUnitIdAndIntegrationId(businessUnitId, integrationId)
@@ -236,9 +226,6 @@ public class IntegrationService {
 
         BusinessUnitModel businessUnit = businessUnitsRepository.findById(businessUnitId)
                 .orElseThrow(() -> new RuntimeException("Unidad de negocio no encontrada: " + businessUnitId));
-
-        System.out.println("Integración encontrada: " + integration);
-        System.out.println("Unidad de negocio encontrada: " + businessUnit);
 
         BusinessUnitIntegrationModel businessUnitIntegration = new BusinessUnitIntegrationModel();
         businessUnitIntegration.setIntegration(integration);

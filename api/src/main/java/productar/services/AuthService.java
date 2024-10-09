@@ -111,7 +111,6 @@ public class AuthService {
             return ResponseEntity.status(HttpStatus.OK).body("Usuario registrado correctamente");
 
         } catch (Exception e) {
-            System.out.println(e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Ocurrió un error al registrar el usuario");
         }
