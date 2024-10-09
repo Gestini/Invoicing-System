@@ -5,24 +5,25 @@ import { useLocation } from 'react-router-dom'
 import { setCompanies } from '@renderer/features/companiesSlice'
 import { SidebarHeader } from './SidebarHeader'
 import { sidebarRoutes } from '@renderer/routes/routesData'
-import { setSidebarState } from '@renderer/features/sidebarSlice'
-import { sidebarStateType } from '@renderer/features/sidebarSlice'
 import { SidebarSectionItem } from './SidebarSectionItem'
 import { SidebarSectionAcordion } from './SidebarSectionAcordion'
 import { FaArrowRightFromBracket } from 'react-icons/fa6'
 import { useDispatch, useSelector } from 'react-redux'
-import { reqGetCompanyByOwner, reqUserHasPermissions } from '@renderer/api/requests'
+import { setSidebarState, setViews } from '@renderer/features/sidebarSlice'
+import {
+  reqUserHasPermissionsMap,
+  findCompaniesWithUserAsOwnerOrEmployee,
+} from '@renderer/api/requests'
 
 export const SidebarSections = () => {
-  const unit = useSelector((state: RootState) => state.currentUnit)
-  const company = useSelector((state: RootState) => state.currentCompany)
-  const user = useSelector((state: RootState) => state.user.user)
   const location = useLocation()
   const dispatch = useDispatch()
 
-  const { currentPath } = useSelector((state: RootState) => state.documents)
-  const sidebarState: sidebarStateType = useSelector((state: RootState) => state.sidebar)
-  const [view, setView] = React.useState<Record<string, any>>({})
+  const user = useSelector((state: RootState) => state.user.user)
+  const unit = useSelector((state: RootState) => state.currentUnit)
+  const company = useSelector((state: RootState) => state.currentCompany)
+  const documents = useSelector((state: RootState) => state.documents)
+  const sidebarState = useSelector((state: RootState) => state.sidebar)
 
   const updatedRoutesConfig = sidebarRoutes.map((section) => {
     return {
@@ -30,39 +31,25 @@ export const SidebarSections = () => {
       path: section.path
         .replace(':unitId', unit?.id ? String(unit.id) : '')
         .replace(':companyId', company?.id ? String(company.id) : '')
-        .replace(':fileId', currentPath?.id ? String(currentPath.id) : ''),
+        .replace(':fileId', documents.currentPath?.id ? String(documents.currentPath.id) : ''),
     }
   })
 
   React.useEffect(() => {
-    const loadPermissions = async () => {
-      const permissionsList = Object.values(permissions).map((item) => item.permission)
-      const results: Record<string, any> = {}
-
-      await Promise.all(
-        permissionsList.map(async (permission) => {
-          try {
-            const response = await reqUserHasPermissions({
-              unitId: unit.id,
-              permissionName: permission,
-            })
-            results[permission] = response.data
-          } catch (error) {
-            results[permission] = null
-          }
-        }),
-      )
-
-      setView(results)
-    }
-
-    loadPermissions()
+    const permissionsList = Object.values(permissions).map((item) => item.permission)
+    reqUserHasPermissionsMap({
+      unitId: unit.id,
+      data: permissionsList,
+    })
+      .then((res) => dispatch(setViews(res.data)))
+      .catch(console.log)
+      .finally()
   }, [user?.id, unit.id])
 
   React.useEffect(() => {
     const loadUserCompanies = async () => {
       try {
-        const response = await reqGetCompanyByOwner()
+        const response = await findCompaniesWithUserAsOwnerOrEmployee()
         dispatch(setCompanies(response.data))
       } catch (error) {
         console.error('Error fetching business units:', error)
@@ -94,7 +81,9 @@ export const SidebarSections = () => {
             {updatedRoutesConfig.map((item: any, index: number) => {
               const baseLocationPath = getBasePath(location.pathname)
               const baseItemPath = getBasePath(item.path)
-              const hasPermissions = view[item.permission] !== undefined && !view[item.permission]
+              const hasPermissions =
+                sidebarState.views[item.permission] !== undefined &&
+                !sidebarState.views[item.permission]
 
               if (item.routes.length == 1) {
                 return (
