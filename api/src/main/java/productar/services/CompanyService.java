@@ -89,12 +89,12 @@ public class CompanyService {
         }
     }
 
-    public ResponseEntity<?> findCompanyByOwnerId() {
+    public ResponseEntity<?> findCompaniesByOwnerId() {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User user = (User) authentication.getPrincipal();
 
-            List<CompanyModel> companies = companyRespository.findCompanyByOwnerId(user.getId());
+            List<CompanyModel> companies = companyRespository.findCompaniesByOwnerId(user.getId());
 
             if (companies.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontraron compañías");
@@ -106,13 +106,19 @@ public class CompanyService {
         }
     }
 
-    public ResponseEntity<?> findUnitByCompany(Long companyId) {
+    public ResponseEntity<?> findCompaniesWithUserAsOwnerOrEmployee() {
         try {
-            BusinessUnitModel unit = businessUnitsRepository.findFirstByCompanyId(companyId);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User user = (User) authentication.getPrincipal();
 
-            return ResponseEntity.ok(unit);
+            List<CompanyModel> companies = companyRespository.findCompaniesWithUserAsOwnerOrEmployee(user.getId());
+
+            if (companies.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontraron compañías");
+            }
+
+            return ResponseEntity.ok(companies);
         } catch (Exception e) {
-            System.out.println(e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error");
         }
     }
