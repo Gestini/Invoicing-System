@@ -51,6 +51,7 @@ public class EmployeeModel {
     private String pin;
 
     public enum EmployeeStatus {
+        INACTIVE,
         PENDING,
         ACTIVE
     }
