@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  demo:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    mem_limit: 512m
+    ports:
+      - "8080:8080"
+    environment:
+      SERVER_PORT: 8080
+      SERVER_MODE: true
+      CLIENT_SERVER_URL: https://app.gestini.com/#
+      SPRING_APPLICATION_NAME: demo
+      SECRET_KEY: arviixzuh123123123123123123123123123123123123123123123
+      SECRET_KEY_PLAN: GESTINIPAYMENTYzEyMzRCZkZ4YJkI1mL91laAzRlWmNkZmF1bDF2azJ3cA
+      SPRING_DATASOURCE_URL: jdbc:mysql://gestini_db:3306/gestini?createDatabaseIfNotExist=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: arviixzuh
+      PASSWORD_RESET_TOKEN_EXPIRY_MINUTES: 60
+      SPRING_MAIL_HOST: smtp.gmail.com
+      SPRING_MAIL_PORT: 587
+      SPRING_MAIL_USERNAME: josesoriap21@gmail.com
+      SPRING_MAIL_PASSWORD: zbetszxrmqjidajl
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH: true
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE: true
+    restart: always
+    depends_on:
+      gestini_db:
+        condition: service_healthy
+
+  gestini_db:
+    image: mysql:8.0.33
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: arviixzuh
+      MYSQL_DATABASE: gestini
+    restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 10
