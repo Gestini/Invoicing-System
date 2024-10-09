@@ -1,9 +1,9 @@
 import { RootState } from '@renderer/store'
-import { BiDoorOpen } from 'react-icons/bi'
 import { useNavigate } from 'react-router-dom'
-import { reqLeaveUnit } from '@renderer/api/requests'
+/* import { reqLeaveUnit } from '@renderer/api/requests' */
 import { deleteCompany } from '@renderer/features/companiesSlice'
 import { CompanySettings } from '@renderer/pages/Companies/Modals/CompanySettings'
+import { FaCog, FaDoorOpen } from 'react-icons/fa'
 import { modalTypes, useModal } from '@renderer/utils/useModal'
 import { useDispatch, useSelector } from 'react-redux'
 import { Tooltip, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/react'
@@ -23,9 +23,9 @@ export const UnitDropdown = ({ company, openDropdownId, setOpenDropdownId }) => 
   const leaveUnit = async () => {
     try {
       dispatch(deleteCompany(company.id))
-      await reqLeaveUnit(company.id)
+      /* await reqLeaveUnit(company.id) */
 
-      if (company.id == unit.id) {
+      if (company.id == currentCompany.id) {
         navigate('/')
       }
     } catch (error) {
@@ -44,7 +44,7 @@ export const UnitDropdown = ({ company, openDropdownId, setOpenDropdownId }) => 
         isOpen={openDropdownId == company.id}
         onClose={() => setOpenDropdownId(null)}
         classNames={{
-          content: 'bg-c-sidebar-bg-2',
+          content: 'bg-c-sidebar-bg-2 text-c-title',
         }}
       >
         <DropdownTrigger>
@@ -82,8 +82,26 @@ export const UnitDropdown = ({ company, openDropdownId, setOpenDropdownId }) => 
             </Tooltip>
           </div>
         </DropdownTrigger>
-        <DropdownMenu aria-label={`Dropdown menu for ${unit.name}`} variant='flat'>
-          <DropdownItem key='ajustes' className='text-c-title' onPress={toggleModal}>
+        <DropdownMenu
+          aria-label={`Dropdown menu for ${unit.name}`}
+          itemClasses={{
+            base: [
+              'rounded-md',
+              'text-default-500',
+              'transition-opacity',
+              'data-[hover=true]:text-foreground',
+              'data-[hover=true]:bg-[#ffffff]',
+              'dark:data-[hover=true]:bg-c-primary-variant-2',
+              'data-[selectable=true]:focus:bg-default-50',
+            ],
+          }}
+        >
+          <DropdownItem
+            key='ajustes'
+            color='default'
+            onPress={toggleModal}
+            startContent={<FaCog />}
+          >
             Ajustes
           </DropdownItem>
           <DropdownItem
@@ -91,9 +109,9 @@ export const UnitDropdown = ({ company, openDropdownId, setOpenDropdownId }) => 
             className='text-danger'
             color='danger'
             onPress={() => leaveUnit()}
-            startContent={<BiDoorOpen className='text-[20px]' />}
+            startContent={<FaDoorOpen />}
           >
-            Abandonar unidad
+            Abandonar empresa
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>
