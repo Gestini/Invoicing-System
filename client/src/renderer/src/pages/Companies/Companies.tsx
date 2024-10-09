@@ -12,10 +12,10 @@ import { Navbar } from '@renderer/components/Navbar'
 import { RootState } from '@renderer/store'
 import { setCompanies } from '@renderer/features/companiesSlice'
 import { CreateCompanyModal } from './Modals/CreateCompanyModal'
-import { reqGetCompanyByOwner } from '@renderer/api/requests'
 import { productStatusOptions } from '@renderer/components/Tables/ProductTable/data'
 import { useDispatch, useSelector } from 'react-redux'
 import { ChevronDownIcon, SearchIcon } from '@renderer/components/Icons'
+import { findCompaniesWithUserAsOwnerOrEmployee } from '@renderer/api/requests'
 
 const Companies = () => {
   const companies = useSelector((state: RootState) => state.companies.data)
@@ -25,7 +25,7 @@ const Companies = () => {
   React.useEffect(() => {
     const loadUserCompanies = async () => {
       try {
-        const response = await reqGetCompanyByOwner()
+        const response = await findCompaniesWithUserAsOwnerOrEmployee()
         dispatch(setCompanies(response.data))
       } catch (error) {
         console.error('Error fetching business units:', error)
@@ -33,7 +33,7 @@ const Companies = () => {
     }
     loadUserCompanies()
   }, [user])
-
+  
   return (
     <div className='flex flex-col'>
       <Navbar />

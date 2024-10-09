@@ -3,7 +3,6 @@ import { RootState } from '@renderer/store'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { CreateUnitModal } from '@renderer/components/CreateUnitModal'
-import { reqGetUnitsByCompanyId } from '@renderer/api/requests'
 import {
   Dropdown,
   DropdownItem,
@@ -16,6 +15,7 @@ import { FaCog, FaPlus } from 'react-icons/fa'
 import { ShortCellValue } from '@renderer/components/AppTable/TableComponents/ShortCellValue'
 import { IoIosArrowDown } from 'react-icons/io'
 import { modalTypes, useModal } from '@renderer/utils/useModal'
+import { reqGetBusinessUnitsByCompanyIdAndWithUserAsOwnerOrEmployee } from '@renderer/api/requests'
 
 export const SelectUnitDropdown = ({ activeSidebar }) => {
   const navigate = useNavigate()
@@ -29,7 +29,9 @@ export const SelectUnitDropdown = ({ activeSidebar }) => {
   React.useEffect(() => {
     const loadData = async () => {
       if (isOpen) {
-        const response = await reqGetUnitsByCompanyId(company.id)
+        const response = await reqGetBusinessUnitsByCompanyIdAndWithUserAsOwnerOrEmployee(
+          company.id,
+        )
         setSucursales(response.data)
       }
     }

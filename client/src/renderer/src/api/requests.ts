@@ -18,7 +18,7 @@ export const reqCreateCompany = async (data: any) => api.post('/company/create',
 export const reqDeleteCompany = async (id: number) => api.delete(`/company/delete/${id}`)
 export const reqGetCompanyById = async (id: any) => api.get(`/company/get-by-id/${id}`)
 export const reqGetCompanyByOwner = async () => api.get('/company/get-by-owner')
-export const reqGetUnitByCompanyId = async (id: any) => api.get(`/company/get-unit-by-company/${id}`)
+export const findCompaniesWithUserAsOwnerOrEmployee = async () => api.get('/company/find-companies-with-user-as-owner-or-employee')
 
 /* Rutas unidades */
 export const reqGetUnits = async () => api.get('/business-unit/get-all')
@@ -32,6 +32,7 @@ export const reqGetUnitsByCompanyId = async (id: any) => api.get(`/business-unit
 export const reqGetUnitsWithDeposit = async (companyId: any, depositId: any) => api.get(`/business-unit/get-units-with-deposit/${companyId}/${depositId}`)
 export const reqGetUnitsMissingDeposit = async (companyId: any, depositId: any) => api.get(`/business-unit/get-units-missing-deposit/${companyId}/${depositId}`)
 export const reqSearchUnitsMissingDeposit = async (companyId: any, depositId: any, searchValue: any) => api.get(`/business-unit/search-units-missing-deposit/${companyId}/${depositId}/${searchValue}`)
+export const reqGetBusinessUnitsByCompanyIdAndWithUserAsOwnerOrEmployee = async (companyId: any) => api.get(`/business-unit/find-business-units-by-company-id-and-with-user-as-owner-or-employee/${companyId}`)
 
 /* Rutas invitaciones */
 export const reqAcceptInviteUnit = async (token: string) => api.post(`/invitations/accept/${token}`)

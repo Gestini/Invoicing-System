@@ -2,10 +2,12 @@ import React from 'react'
 import { setUnit } from '@renderer/features/currentUnitSlice'
 import { RootState } from '@renderer/store'
 import { useParams } from 'react-router-dom'
-import { reqGetUnitById } from '@renderer/api/requests'
 import { Outlet, useNavigate } from 'react-router-dom'
-import { reqGetUnitByCompanyId } from '@renderer/api/requests'
 import { useDispatch, useSelector } from 'react-redux'
+import {
+  reqGetUnitById,
+  reqGetBusinessUnitsByCompanyIdAndWithUserAsOwnerOrEmployee,
+} from '@renderer/api/requests'
 
 export const LoadCurrentUnitMiddleware = () => {
   const params = useParams()
@@ -22,8 +24,10 @@ export const LoadCurrentUnitMiddleware = () => {
           const response = await reqGetUnitById(params.unitId)
           dispatch(setUnit(response.data))
         } else {
-          const response = await reqGetUnitByCompanyId(params.companyId)
-          dispatch(setUnit(response.data))
+          const response = await reqGetBusinessUnitsByCompanyIdAndWithUserAsOwnerOrEmployee(
+            params.companyId,
+          )
+          dispatch(setUnit(response.data[0]))
         }
       } catch (error) {
         return navigate('/')
