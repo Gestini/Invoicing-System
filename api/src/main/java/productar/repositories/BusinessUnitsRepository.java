@@ -14,6 +14,13 @@ public interface BusinessUnitsRepository extends JpaRepository<BusinessUnitModel
         @Query("SELECT unit FROM BusinessUnitModel unit WHERE unit.company.owner.username = :username")
         List<BusinessUnitModel> findByOwnerUsername(@PathVariable("username") String username);
 
+        @Query("SELECT unit FROM BusinessUnitModel unit " +
+                        "LEFT JOIN EmployeeModel e ON e.businessUnit = unit " +
+                        "WHERE unit.company.id = :companyId AND " +
+                        "(unit.company.owner.id = :userId) OR (e.user.id = :userId AND e.status = ACTIVE)")
+        List<BusinessUnitModel> findBusinessUnitsByCompanyIdAndWithUserAsOwnerOrEmployee(@PathVariable("companyId") Long companyId,
+                        @PathVariable("userId") Long userId);
+
         @Query("SELECT unit FROM BusinessUnitModel unit WHERE unit.company.id = :companyId")
         List<BusinessUnitModel> findUnitsByCompanyId(@PathVariable("companyId") Long companyId);
 
@@ -22,9 +29,6 @@ public interface BusinessUnitsRepository extends JpaRepository<BusinessUnitModel
 
         @Query("SELECT unit FROM BusinessUnitModel unit WHERE unit.id = :unitId AND unit.ecommerce = true")
         BusinessUnitModel findByUnitIdAndEcommerce(@PathVariable("unitId") Long unitId);
-
-        @Query(value = "SELECT * FROM business_unit WHERE company_id = :companyId LIMIT 1", nativeQuery = true)
-        BusinessUnitModel findFirstByCompanyId(@PathVariable("companyId") Long companyId);
 
         @Query("SELECT bu FROM BusinessUnitModel bu WHERE bu.company.id = :companyId AND bu.id NOT IN (SELECT bud.businessUnit.id FROM BusinessUnitDepositModel bud WHERE bud.deposit.id = :depositId)")
         List<BusinessUnitModel> getUnitsMissingDeposit(@PathVariable("companyId") Long companyId,

@@ -103,6 +103,14 @@ public class BusinessUnitService {
         return businessUnitsRepository.findUnitsByCompanyId(companyId);
     }
 
+    public List<BusinessUnitModel> findBusinessUnitsByCompanyIdAndWithUserAsOwnerOrEmployee(Long companyId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+
+        return businessUnitsRepository.findBusinessUnitsByCompanyIdAndWithUserAsOwnerOrEmployee(companyId,
+                user.getId());
+    }
+
     public List<BusinessUnitModel> getBusinessUnitsByToken() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = ((UserDetails) authentication.getPrincipal()).getUsername();
