@@ -35,13 +35,13 @@ public class CompanyController {
         return this.companyService.findCompanyById(companyId);
     }
 
-    @GetMapping("/get-by-owner")
+    @GetMapping("/get-companies-by-owner")
     public ResponseEntity<?> findByOwnerId() {
-        return this.companyService.findCompanyByOwnerId();
+        return this.companyService.findCompaniesByOwnerId();
     }
 
-    @GetMapping("/get-unit-by-company/{companyId}")
-    public ResponseEntity<?> findUnitByCompany(@PathVariable Long companyId) {
-        return this.companyService.findUnitByCompany(companyId);
+    @GetMapping("/find-companies-with-user-as-owner-or-employee")
+    public ResponseEntity<?> findCompaniesWithUserAsOwnerOrEmployee() {
+        return this.companyService.findCompaniesWithUserAsOwnerOrEmployee();
     }
 }
