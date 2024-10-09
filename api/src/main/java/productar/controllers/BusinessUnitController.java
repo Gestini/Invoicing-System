@@ -63,6 +63,11 @@ public class BusinessUnitController {
         return this.businessUnitsService.findUnitsByCompanyId(companyId);
     }
 
+    @GetMapping("/find-business-units-by-company-id-and-with-user-as-owner-or-employee/{companyId}")
+    public List<BusinessUnitModel> findBusinessUnitsByCompanyIdAndWithUserAsOwnerOrEmployee(@PathVariable Long companyId) {
+        return this.businessUnitsService.findBusinessUnitsByCompanyIdAndWithUserAsOwnerOrEmployee(companyId);
+    }
+
     @PostMapping("/assign-plan/{token}")
     public ResponseEntity<?> assingPlan(@PathVariable("token") String token) {
         return this.businessUnitsService.assingPlan(token);
