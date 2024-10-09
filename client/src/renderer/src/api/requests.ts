@@ -33,6 +33,10 @@ export const reqGetUnitsWithDeposit = async (companyId: any, depositId: any) => 
 export const reqGetUnitsMissingDeposit = async (companyId: any, depositId: any) => api.get(`/business-unit/get-units-missing-deposit/${companyId}/${depositId}`)
 export const reqSearchUnitsMissingDeposit = async (companyId: any, depositId: any, searchValue: any) => api.get(`/business-unit/search-units-missing-deposit/${companyId}/${depositId}/${searchValue}`)
 
+/* Rutas invitaciones */
+export const reqAcceptInviteUnit = async (token: string) => api.post(`/invitations/accept/${token}`)
+export const reqGetInviteUnitByToken = async (token: string) => api.get(`/invitations/get-by-token/${token}`)
+
 /* Rutas inventario */
 export const reqRemoveInventoryById = async (inventoryId: any) => api.delete(`/inventory/remove-inventory-by-id/${inventoryId}`)
 export const reqGetUnitInventoryById = async (unitId: any) => api.get(`/inventory/find-by-unit-id/${unitId}`)
@@ -85,6 +89,7 @@ export const reqGetRoletByUnit = async (id: any) => api.get(`/role/get-by-unit/$
 export const reqAddPermissionRole = async (data: any) => api.post('/role/add-perms', data)
 export const reqUserHasPermissions = ({ unitId, permissionName }) => api.get(`/role/has-permissions/${unitId}/${permissionName}`)
 export const reqRemovePermissionRole = async (roleId: any, permissionId) => api.post(`/role/remove-perms/${roleId}/${permissionId}`)
+export const reqUserHasPermissionsMap = ({ unitId, data }) => api.post(`/role/has-permissions/${unitId}`, data)
 
 /* Rutas empleados */
 export const reqLeaveUnit = (id: any) => api.delete(`/employee/leave-unit/${id}`)
