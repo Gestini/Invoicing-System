@@ -86,16 +86,17 @@ const warehouseRoutes: RouteSection = {
   routes: [
     { path: '/product-management', element: <Warehouse />, title: 'Depósitos' },
     { path: '/brands', element: <Products />, title: 'inventario' },
-    { path: '/price-management', element: <></>, title: 'gestion de precios' },
-    {
-      path: '/stock-movements',
-      element: <></>,
-      title: 'movimientos de inventario',
-    },
-    { path: '/inventory-list', element: <></>, title: 'lista de inventario' },
-    { path: '/reception-management', element: <></>, title: 'recepción' },
+    { path: '/suppliers', element: <SupplierTable />, title: 'Proveedores' },
     { path: '/categories', element: <></>, title: 'categorías' },
-    { path: '/consumptions', element: <></>, title: 'consumos' },
+    // { path: '/price-management', element: <></>, title: 'gestion de precios' },
+    // {
+    //   path: '/stock-movements',
+    //   element: <></>,
+    //   title: 'movimientos de inventario',
+    // },
+    // { path: '/inventory-list', element: <></>, title: 'lista de inventario' },
+    // { path: '/reception-management', element: <></>, title: 'recepción' },
+    // { path: '/consumptions', element: <></>, title: 'consumos' },
   ],
 }
 
@@ -154,10 +155,7 @@ const adminRoutes: RouteSection = {
   path: '/admin/:companyId/:unitId',
   section: 'Admin',
   permission: permissions.admin.permission,
-  routes: [
-    { path: '/suppliers', element: <SupplierTable />, title: 'proveedores' },
-    { path: '/budgets', element: <></>, title: 'presupuestos' },
-  ],
+  routes: [{ path: '/budgets', element: <></>, title: 'presupuestos' }],
 }
 
 const operationsRoutes: RouteSection = {

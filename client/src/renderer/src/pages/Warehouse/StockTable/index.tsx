@@ -67,11 +67,13 @@ export const StockTable = () => {
   return (
     <>
       <MoveProductToInventory />
+
       <AppTable
         columnsData={columnsData}
         addItemModal={<AddProductModal />}
         editItemModal={<EditProductModal />}
         dropdownAction={dropdownAction}
+        
       />
     </>
   )
