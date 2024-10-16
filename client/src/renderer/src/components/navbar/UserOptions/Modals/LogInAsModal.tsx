@@ -11,7 +11,7 @@ import {
 import { AuthForm } from '../../../Auth/AuthInputForm'
 import { RootState } from '@renderer/store'
 import { loginInputs } from '@renderer/pages/Auth/AuthInputs'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { reqAuthLogin } from '@renderer/api/requests'
 import { useModal, modalTypes } from '@renderer/utils/useModal'
@@ -19,6 +19,7 @@ import { useModal, modalTypes } from '@renderer/utils/useModal'
 export const LogInAsModal = ({ errors }) => {
   const navigate = useNavigate()
   const userSession = useSelector((state: RootState) => state.user.userSession)
+  const dispatch = useDispatch()
   const [isOpen, toggleModal] = useModal(modalTypes.logInAsModal)
 
   const [data, setData] = React.useState({
@@ -41,8 +42,8 @@ export const LogInAsModal = ({ errors }) => {
     })
     if (!response) return
     localStorage.setItem('token', response.data)
+    dispatch({ type: 'RESET_STATE' })
     navigate('/')
-    toggleModal()
   }
 
   return (
