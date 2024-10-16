@@ -43,7 +43,7 @@ export const AppTable = ({
     new Set(columnsData.InitialVisibleColumns),
   )
   const [statusFilter, setStatusFilter] = React.useState<Selection>('all')
-  const [rowsPerPage, /* setRowsPerPage */ __] = React.useState(10)
+  const [rowsPerPage /* setRowsPerPage */] = React.useState(window.innerHeight < 700 ? 5 : 10)
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
     column: 'age',
     direction: 'ascending',
