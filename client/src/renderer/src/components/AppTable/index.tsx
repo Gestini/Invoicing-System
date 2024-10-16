@@ -110,20 +110,31 @@ export const AppTable = ({
     toggleModal()
   }
 
+  const ghostRows = React.useMemo(() => {
+    const totalRows = rowsPerPage // Total de filas que deben existir en pantalla.
+    const ghostRowCount = totalRows - sortedItems.length // Número de filas invisibles a agregar.
+
+    return Array.from({ length: ghostRowCount }, (_, index) => ({
+      id: `ghost-${index}`, // ID único para cada fila fantasma.
+    }))
+  }, [sortedItems])
+
   return (
     <Table
       aria-label='Example table with custom cells, pagination and sorting'
       shadow='none'
       isCompact
       selectionMode='multiple'
-      className='overflow-y-hidden flex-grow'
+      className='overflow-y-hidden overflow-x-hidden flex-grow'
       classNames={{
-        emptyWrapper: [''],
-        wrapper: [' flex-grow  overflow-y-auto ', 'p-0', 'hoverScrollbar'],
+        emptyWrapper: ['  '],
+        wrapper: ['flex-grow  overflow-y-auto ', 'p-0', 'hoverScrollbar'],
         th: ['bg-transparent sticky top-0', 'text-default-500'],
 
-        tbody: [' flex-grow  '],
-        table: ['  '],
+        td: ['h-[30px] '],
+        tbody: [' '],
+        table: ['flex-grow'], // Aquí aplicamos la clase condicional
+
         base: ['flex-grow h-full '],
       }}
       bottomContent={
@@ -170,22 +181,25 @@ export const AppTable = ({
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent='Sin resultados' items={sortedItems}>
+      <TableBody emptyContent='Sin resultados' items={[...sortedItems, ...ghostRows]}>
         {(item) => {
+          const isGhost = typeof item.id === 'string' && item.id.startsWith('ghost')
           return (
-            <TableRow key={item.id}>
-              {(columnKey) => (
-                <TableCell className='default-text-color capitalize'>
-                  <RenderCell
-                    item={item}
-                    columnKey={columnKey}
-                    inputCell={inputCell}
-                    dropdownAction={dropdownAction}
-                    handleDeleteItem={handleDeleteItem}
-                    handleSetCurrentIdEdit={handleSetCurrentIdEdit}
-                  />
+            <TableRow key={item.id} className={isGhost ? 'invisible' : ''}>
+              {headerColumns.map((column) => (
+                <TableCell key={column.uid} className='default-text-color capitalize'>
+                  {!isGhost && (
+                    <RenderCell
+                      item={item}
+                      columnKey={column.uid}
+                      inputCell={inputCell}
+                      dropdownAction={dropdownAction}
+                      handleDeleteItem={handleDeleteItem}
+                      handleSetCurrentIdEdit={handleSetCurrentIdEdit}
+                    />
+                  )}
                 </TableCell>
-              )}
+              ))}
             </TableRow>
           )
         }}
