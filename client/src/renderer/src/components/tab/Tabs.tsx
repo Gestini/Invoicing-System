@@ -23,7 +23,7 @@ export const Tabs = ({ tabs }: { tabs: Tab[] }) => {
       }}
     >
       {(item) => (
-        <Tab key={item.name} title={item.name} className='flex-grow  overflow-y-auto'>
+        <Tab key={item.name} title={item.name} className='flex-grow '>
           {item.content}
         </Tab>
       )}

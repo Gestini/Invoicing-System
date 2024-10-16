@@ -118,11 +118,13 @@ export const AppTable = ({
       selectionMode='multiple'
       className='overflow-y-hidden flex-grow'
       classNames={{
-        wrapper: ['flex-grow   overflow-y-auto ', 'p-0', 'hoverScrollbar'],
+        emptyWrapper: [''],
+        wrapper: [' flex-grow  overflow-y-auto ', 'p-0', 'hoverScrollbar'],
         th: ['bg-transparent sticky top-0', 'text-default-500'],
 
-        table: ['flex-grow '],
-        base: ['flex-grow '],
+        tbody: [' flex-grow  '],
+        table: ['  '],
+        base: ['flex-grow h-full '],
       }}
       bottomContent={
         <BottomContent
