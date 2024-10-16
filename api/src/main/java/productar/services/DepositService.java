@@ -34,10 +34,9 @@ public class DepositService {
     @Autowired
     private CompanyRepository companyRepository;
 
-    public ResponseEntity<?> saveDeposit(DepositModel depositUnit) {
+    public ResponseEntity<?> saveDeposit(DepositModel newDeposit) {
         try {
-
-            return ResponseEntity.ok(depositRepository.save(depositUnit));
+            return ResponseEntity.ok(depositRepository.save(newDeposit));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrio un error " + e.getMessage());
         }

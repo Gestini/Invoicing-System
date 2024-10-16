@@ -4,249 +4,98 @@ import {
   Input,
   Button,
   Select,
+  Checkbox,
   Textarea,
   ModalBody,
   SelectItem,
   ModalFooter,
   ModalHeader,
   ModalContent,
-  useDisclosure,
 } from '@nextui-org/react'
-import { addItem } from '@renderer/features/tableSlice'
-import { PlusIcon } from '@renderer/components/Icons/PlusIcon'
-import { Checkbox } from '@nextui-org/react'
-import { useParams } from 'react-router-dom'
 import { RootState } from '@renderer/store'
+import { modalTypes, useModal } from '@renderer/utils/useModal'
 import { useDispatch, useSelector } from 'react-redux'
-import { reqCreateProduct, reqGetSupplier } from '@renderer/api/requests'
-import './ProductAdd.scss'
+import { editItem, setCurrentItemId } from '@renderer/features/tableSlice'
+import { reqEditProduct, reqGetSupplier } from '@renderer/api/requests'
+import { handleValidation, initialErrors } from './utils'
 
-export const AddProductModal = () => {
-  const params = useParams()
+export const EditProductModal = () => {
   const dispatch = useDispatch()
-  const unit = useSelector((state: RootState) => state.currentUnit)
+  const [data, setData] = React.useState({})
+  const [originalData, setOriginalData] = React.useState({})
+  const [errors, setErrors] = React.useState(initialErrors)
+  const [isOpen, toggleModal] = useModal(modalTypes.editProductModal)
   const [suppliers, setSuppliers] = React.useState([])
-  const warehouse = useSelector((state: RootState) => state.unit.warehouse)
-  
+  const table = useSelector((state: RootState) => state.unit.table)
+  const unit = useSelector((state: RootState) => state.currentUnit)
+  const currentItemIdEdit = useSelector((state: RootState) => state.unit.table.currentItemIdEdit)
+  const currentProductEdit = table.data.find((item) => item.id == currentItemIdEdit)
+
   React.useEffect(() => {
-    const GetSupplier = async () => {
-      const response = await reqGetSupplier(unit.id)
-      setSuppliers(response.data)
+    if (currentProductEdit) {
+      setData(currentProductEdit)
+      setOriginalData(currentProductEdit)
     }
-    GetSupplier()
-  }, [])
 
-  const [info, setInfo] = React.useState<any>({
-    name: '',
-    category: null,
-    quantity: null,
-    codigo1: null,
-    codigo2: null,
-    barcode: null,
-    supplierUnit: {
-      id: null,
-    },
-    status: true,
-    purchasePrice: null,
-    costPrice: null,
-    priceCalculation: 'cero',
-    pricePolicy: 'cero',
-    net1: null,
-    net2: null,
-    net3: null,
-    net4: null,
-    taxType: 'IVA 21%',
-    financedPrice: null,
-    friendPrice: null,
-    cardPrice: null,
-    businessUnit: {
-      id: params.unitId,
-    },
-  })
+    reqGetSupplier(unit.id)
+      .then((res) => setSuppliers(res.data))
+      .catch(console.log)
+  }, [currentProductEdit, unit.id])
 
-  const [errors, setErrors] = React.useState({
-    name: '',
-    quantity: '',
-    cardPrice: '',
-    costPrice: '',
-    friendPrice: '',
-    purchasePrice: '',
-    financedPrice: '',
-  })
-  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
+  const handleResetCurrentIdEdit = () => dispatch(setCurrentItemId(-1))
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    if (e.target.name == 'supplierUnit') {
-      setInfo({
-        ...info,
-        [e.target.name]: { id: e.target.value },
-      })
-    } else {
-      setInfo({
-        ...info,
-        [e.target.name]: e.target.value,
-      })
-    }
-    handleValidation(e.target.name, e.target.value)
+    const { name, value } = e.target
+
+    setData((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+
+    const validate = handleValidation(name, value)
+    setErrors((prev) => ({
+      ...prev,
+      [validate.name]: validate.isValid ? '' : validate.errorMessage,
+    }))
   }
 
-  const handleValidation = (name, value) => {
-    let newErrors = { ...errors }
-
-    switch (name) {
-      case 'name':
-        if (!validateName(value)) {
-          newErrors.name = 'Por favor, ingresa un nombre válido.'
-        } else {
-          newErrors.name = ''
-        }
-        break
-      case 'quantity':
-      case 'purchasePrice':
-      case 'costPrice':
-      case 'financedPrice':
-      case 'friendPrice':
-      case 'cardPrice':
-        if (value && !validateNumber(value)) {
-          newErrors[name] = 'Por favor, ingresa un número válido.'
-        } else {
-          newErrors[name] = ''
-        }
-        break
-      default:
-        break
-    }
-
-    setErrors(newErrors)
-  }
-
-  const handleSubmit = async () => {
-    let valid = true
-    const newErrors = {
-      name: '',
-      quantity: '',
-      purchasePrice: '',
-      costPrice: '',
-      financedPrice: '',
-      friendPrice: '',
-      cardPrice: '',
-    }
-
-    if (!validateName(info.name)) {
-      newErrors.name = 'Por favor, ingresa un nombre válido.'
-      valid = false
-    }
-
-    if (info.quantity && !validateNumber(info.quantity)) {
-      newErrors.quantity = 'Por favor, ingresa una cantidad válida.'
-      valid = false
-    }
-
-    if (info.purchasePrice && !validateNumber(info.purchasePrice)) {
-      newErrors.purchasePrice = 'Por favor, ingresa un número válido para el precio de compra.'
-      valid = false
-    }
-
-    if (info.costPrice && !validateNumber(info.costPrice)) {
-      newErrors.costPrice = 'Por favor, ingresa un número válido para el precio de costo.'
-      valid = false
-    }
-
-    if (info.financedPrice && !validateNumber(info.financedPrice)) {
-      newErrors.financedPrice = 'Por favor, ingresa un número válido para el precio financiado.'
-      valid = false
-    }
-
-    if (info.friendPrice && !validateNumber(info.friendPrice)) {
-      newErrors.friendPrice = 'Por favor, ingresa un número válido para el precio amigo.'
-      valid = false
-    }
-
-    if (info.cardPrice && !validateNumber(info.cardPrice)) {
-      newErrors.cardPrice = 'Por favor, ingresa un número válido para el precio de tarjeta.'
-      valid = false
-    }
-
-    setErrors(newErrors)
-    if (!valid) {
-      return
-    }
-
+  const onSubmit = async () => {
     try {
-      const response = await reqCreateProduct({
-        ...info,
-        depositUnit: {
-          id: warehouse.currentWarehouseId,
-        },
-      })
+      const isValid = Object.values(errors).every((error) => error === '')
+      if (!isValid) return
 
-      dispatch(addItem(response.data))
-    } catch (error: any) {
+      const changes = Object.keys(data).reduce((acc, key) => {
+        if (data[key] !== originalData[key]) {
+          acc[key] = data[key]
+        }
+        return acc
+      }, {})
+
+      await reqEditProduct(currentProductEdit.id, changes)
+
+      dispatch(editItem({ data, id: currentItemIdEdit }))
+
+      handleResetCurrentIdEdit()
+      toggleModal()
+    } catch (error) {
       console.log(error)
     }
-
-    setInfo({
-      name: '',
-      category: null,
-      quantity: null,
-      codigo1: null,
-      codigo2: null,
-      barcode: null,
-      suppliers: null,
-      status: true,
-      purchasePrice: null,
-      costPrice: null,
-      priceCalculation: 'cero',
-      pricePolicy: 'cero',
-      net1: null,
-      net2: null,
-      net3: null,
-      net4: null,
-      taxType: 'IVA 21%',
-      financedPrice: null,
-      friendPrice: null,
-      cardPrice: null,
-      businessUnit: {
-        id: params.unitId,
-      },
-    })
-    onClose()
-  }
-
-  const validateName = (name) => {
-    if (!name.trim()) {
-      return false
-    }
-    return true
-  }
-
-  const validateNumber = (number) => {
-    return !isNaN(number)
   }
 
   return (
     <div className='flex flex-col gap-2'>
-      <Button
-        onPress={onOpen}
-        className='bg-c-filter shadow-sm text-c-text'
-        color='secondary'
-        startContent={<PlusIcon className='text-c-primary-variant-1 w-[15px] h-[15px]' />}
-        radius='sm'
-      >
-        Crear orden
-      </Button>
       <Modal
         isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        size='5xl'
-        scrollBehavior={'inside'}
+        onClose={handleResetCurrentIdEdit}
         backdrop='blur'
-        className='bg-c-card'
+        onOpenChange={toggleModal}
+        scrollBehavior={'inside'}
+        size='5xl'
         placement='center'
       >
         <ModalContent>
           <ModalHeader className='flex flex-col gap-1'>
-            <h3 className='text-c-title'>Agrega un nuevo producto</h3>
+            <h3 className='default-text-color'>Editar producto</h3>
           </ModalHeader>
           <ModalBody>
             <div className='productsmodaladd w-full flex flex-col gap-3  '>
@@ -261,6 +110,7 @@ export const AddProductModal = () => {
                   variant='bordered'
                   onChange={handleChange}
                   isInvalid={!!errors.name}
+                  defaultValue={currentProductEdit?.name}
                 ></Input>
                 <Select
                   label='Categoria'
@@ -271,6 +121,7 @@ export const AddProductModal = () => {
                   onChange={handleChange}
                   size='sm'
                   className='text-c-title'
+                  defaultSelectedKeys={[currentProductEdit?.category]}
                 >
                   <SelectItem key={'electricidad'}>Proveedor</SelectItem>
                   <SelectItem key={'materiales'}>materiales</SelectItem>
@@ -282,9 +133,10 @@ export const AddProductModal = () => {
                   size='sm'
                   labelPlacement='outside'
                   placeholder='Cantidad de productos'
-                  variant='bordered'
                   isInvalid={!!errors.quantity}
+                  variant='bordered'
                   onChange={handleChange}
+                  defaultValue={currentProductEdit?.quantity}
                 ></Input>
               </div>
               <div className='rowmodaladdproduct flex gap-3'>
@@ -294,6 +146,7 @@ export const AddProductModal = () => {
                   name='codigo1'
                   labelPlacement='outside'
                   placeholder='Codigo #1'
+                  defaultValue={currentProductEdit?.codigo1}
                   variant='bordered'
                   onChange={handleChange}
                 ></Input>
@@ -301,6 +154,7 @@ export const AddProductModal = () => {
                   label='Codigo'
                   size='sm'
                   name='codigo2'
+                  defaultValue={currentProductEdit?.codigo2}
                   labelPlacement='outside'
                   placeholder='Codigo #2'
                   variant='bordered'
@@ -310,6 +164,7 @@ export const AddProductModal = () => {
                   label='Codigo de barras'
                   size='sm'
                   name='barcode'
+                  defaultValue={currentProductEdit?.barcode}
                   labelPlacement='outside'
                   placeholder='Codigo de barras'
                   variant='bordered'
@@ -323,9 +178,17 @@ export const AddProductModal = () => {
                   placeholder='Selecciona un proveedor'
                   variant='bordered'
                   name='supplierUnit'
-                  onChange={handleChange}
+                  onChange={(e) =>
+                    setData((prev) => ({
+                      ...prev,
+                      supplierUnit: {
+                        id: e.target.value,
+                      },
+                    }))
+                  }
                   size='sm'
                   className='text-c-title'
+                  defaultSelectedKeys={[String(currentProductEdit?.supplierUnit?.id)]}
                 >
                   {suppliers.map((item: any) => (
                     <SelectItem key={item.id}>{item.name}</SelectItem>
@@ -336,11 +199,13 @@ export const AddProductModal = () => {
                   labelPlacement='outside'
                   placeholder='Disponibilidad'
                   variant='bordered'
-                  defaultSelectedKeys={['true']}
                   name='status'
                   onChange={handleChange}
                   size='sm'
                   className='text-c-title'
+                  defaultSelectedKeys={[
+                    currentProductEdit ? String(currentProductEdit.status) : '',
+                  ]}
                 >
                   <SelectItem value={'true'} key={'true'}>
                     Disponible
@@ -360,6 +225,7 @@ export const AddProductModal = () => {
                   size='sm'
                   name='purchasePrice'
                   isInvalid={!!errors.purchasePrice}
+                  defaultValue={currentProductEdit ? currentProductEdit.purchasePrice : ''}
                   onChange={handleChange}
                   endContent={
                     <div className='pointer-events-none flex items-center'>
@@ -373,6 +239,7 @@ export const AddProductModal = () => {
                   labelPlacement='outside'
                   placeholder='0.00'
                   variant='bordered'
+                  defaultValue={currentProductEdit?.costPrice}
                   size='sm'
                   name='costPrice'
                   isInvalid={!!errors.costPrice}
@@ -383,7 +250,6 @@ export const AddProductModal = () => {
                     </div>
                   }
                 />
-
                 <Select
                   label='Calculo de precio'
                   placeholder='Select an animal'
@@ -391,7 +257,7 @@ export const AddProductModal = () => {
                   variant='bordered'
                   name='priceCalculation'
                   onChange={handleChange}
-                  defaultSelectedKeys={['cero']}
+                  defaultSelectedKeys={[currentProductEdit?.priceCalculation]}
                   size='sm'
                   className='text-c-title'
                 >
@@ -407,13 +273,13 @@ export const AddProductModal = () => {
                 <Select
                   label='Politica de precio'
                   labelPlacement='outside'
-                  placeholder='Selecciona una politica'
+                  placeholder='Select an animal'
                   variant='bordered'
                   name='pricePolicy'
                   onChange={handleChange}
-                  defaultSelectedKeys={['politictone']}
+                  defaultSelectedKeys={[currentProductEdit?.pricePolicy]}
                   size='sm'
-                  className='text-c-title  '
+                  className='text-c-title'
                 >
                   <SelectItem value={'politicone'} key={'politictone'}>
                     one
@@ -423,7 +289,6 @@ export const AddProductModal = () => {
                   </SelectItem>
                 </Select>
               </div>
-
               <div className='rowmodaladdproduct  flex items-start justify-start gap-3'>
                 <Input
                   type='number'
@@ -434,6 +299,7 @@ export const AddProductModal = () => {
                   variant='bordered'
                   name='net1'
                   onChange={handleChange}
+                  defaultValue={currentProductEdit?.net1}
                   size='sm'
                   endContent={
                     <div className='pointer-events-none flex items-center'>
@@ -448,6 +314,7 @@ export const AddProductModal = () => {
                   isDisabled
                   placeholder='0.00'
                   variant='bordered'
+                  defaultValue={currentProductEdit?.net2}
                   name='net2'
                   onChange={handleChange}
                   size='sm'
@@ -464,6 +331,7 @@ export const AddProductModal = () => {
                   placeholder='0.00'
                   isDisabled
                   variant='bordered'
+                  defaultValue={currentProductEdit?.net3}
                   name='net3'
                   onChange={handleChange}
                   size='sm'
@@ -479,6 +347,7 @@ export const AddProductModal = () => {
                   label='Neto 4'
                   placeholder='0.00'
                   isDisabled
+                  defaultValue={currentProductEdit?.net4}
                   variant='bordered'
                   name='net4'
                   onChange={handleChange}
@@ -497,7 +366,7 @@ export const AddProductModal = () => {
                   placeholder='Selecciona un tipo'
                   variant='bordered'
                   name='taxType'
-                  defaultSelectedKeys={['IVA21%']}
+                  defaultSelectedKeys={[currentProductEdit?.taxType]}
                   onChange={handleChange}
                   size='sm'
                   className='text-c-title'
@@ -512,8 +381,9 @@ export const AddProductModal = () => {
                   placeholder='0.00'
                   variant='bordered'
                   name='financedPrice'
-                  onChange={handleChange}
+                  defaultValue={currentProductEdit?.financedPrice}
                   isInvalid={!!errors.financedPrice}
+                  onChange={handleChange}
                   size='sm'
                   endContent={
                     <div className='pointer-events-none flex items-center'>
@@ -528,8 +398,9 @@ export const AddProductModal = () => {
                   placeholder='0.00'
                   variant='bordered'
                   name='friendPrice'
-                  isInvalid={!!errors.friendPrice}
+                  defaultValue={currentProductEdit?.friendPrice}
                   onChange={handleChange}
+                  isInvalid={!!errors.friendPrice}
                   size='sm'
                   endContent={
                     <div className='pointer-events-none flex items-center'>
@@ -543,9 +414,10 @@ export const AddProductModal = () => {
                   labelPlacement='outside'
                   placeholder='0.00'
                   name='cardPrice'
-                  isInvalid={!!errors.cardPrice}
                   onChange={handleChange}
+                  isInvalid={!!errors.cardPrice}
                   variant='bordered'
+                  defaultValue={currentProductEdit?.cardPrice}
                   size='sm'
                   endContent={
                     <div className='pointer-events-none flex items-center'>
@@ -573,6 +445,7 @@ export const AddProductModal = () => {
                 name='quantityPerPackage'
                 onChange={handleChange}
                 variant='bordered'
+                defaultValue={currentProductEdit?.quantityPerPackage}
                 isDisabled
                 size='sm'
                 endContent={
@@ -586,17 +459,26 @@ export const AddProductModal = () => {
                 variant='bordered'
                 name='description'
                 onChange={handleChange}
+                defaultValue={currentProductEdit?.description}
                 labelPlacement='outside'
                 placeholder='Enter your description'
               ></Textarea>
             </div>
           </ModalBody>
           <ModalFooter>
-            <Button color='danger' variant='light' radius='sm' onPress={onClose}>
+            <Button
+              color='danger'
+              variant='light'
+              radius='sm'
+              onPress={() => {
+                handleResetCurrentIdEdit()
+                toggleModal()
+              }}
+            >
               Cerrar
             </Button>
-            <Button color='primary' onPress={handleSubmit} radius='sm' className='bg-c-primary'>
-              Agregar
+            <Button color='primary' onPress={() => onSubmit()} radius='sm' className='bg-c-primary'>
+              Guardar
             </Button>
           </ModalFooter>
         </ModalContent>

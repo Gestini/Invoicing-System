@@ -2,6 +2,7 @@ import React from 'react'
 import { RootState } from '@renderer/store'
 import { SearchIcon } from '@renderer/components/Icons/SearchIcon'
 import { addProduct } from '@renderer/features/newInvoicing'
+import { ProductModel } from '@renderer/interfaces/product'
 import { useDispatch, useSelector } from 'react-redux'
 import { reqSearchInventoryProduct } from '@renderer/api/requests'
 import { Autocomplete, AutocompleteItem } from '@nextui-org/react'
@@ -14,7 +15,8 @@ export const SearchProduct = () => {
   const [searchValue, setSearchValue] = React.useState('')
   const currentTab = newInvoicing?.tabs?.find((item: any) => item.id == newInvoicing.currentTabId)
   const filteredData = result.filter(
-    (product: any) => !currentTab?.products.some((item: any) => item.id == product.id),
+    (product: ProductModel) =>
+      !currentTab?.products.some((item: ProductModel) => item.id == product.id),
   )
 
   const handleChange = async (e: string) => setSearchValue(e)
@@ -89,13 +91,13 @@ export const SearchProduct = () => {
       variant='bordered'
       className='text-[#71717a]'
     >
-      {(item: any) => (
+      {(item: ProductModel) => (
         <AutocompleteItem key={item.id} textValue={item.name}>
           <div className='flex justify-between items-center' onClick={() => handleAddProduct(item)}>
             <div className='flex gap-2 items-center'>
               <div className='flex flex-col'>
                 <span className='text-small'>
-                  {item.name} - {item.depositUnit.name}
+                  {item.name} - {item?.deposit?.name}
                 </span>
               </div>
             </div>

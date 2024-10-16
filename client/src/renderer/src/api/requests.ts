@@ -49,8 +49,7 @@ export const reqEditProduct = async (id: any, data: any) => api.put(`/products/e
 export const reqCreateProduct = async (data: any) => api.post('/products', data)
 export const reqDeleteProduct = async (id: any) => api.delete(`/products/${id}`)
 export const reqSearchProduct = async (name: string) => api.get(`/products/by-name/${name}`)
-export const reqGetProductByUnit = async (id: any) => api.get(`/products/by-business-unit/${id}`)
-export const reqGetProductByDeposit = async (id: any) => api.get(`/products/depositunit/${id}`)
+export const reqGetProductByDeposit = async (id: any) => api.get(`/products/get-by-deposit-id/${id}`)
 export const reqSearchProductByNameAndUnit = async (name: string, id: any) => api.get(`/products/search/${name}/${id}`)
 
 /* Rutas proveedores */

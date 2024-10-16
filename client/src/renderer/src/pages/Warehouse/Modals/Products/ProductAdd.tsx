@@ -1,139 +1,97 @@
+import React from 'react'
 import {
-  Input,
   Modal,
+  Input,
   Button,
   Select,
   Textarea,
-  Checkbox,
   ModalBody,
   SelectItem,
   ModalFooter,
   ModalHeader,
   ModalContent,
+  useDisclosure,
 } from '@nextui-org/react'
-import React from 'react'
+import { addItem } from '@renderer/features/tableSlice'
+import { PlusIcon } from '@renderer/components/Icons/PlusIcon'
+import { Checkbox } from '@nextui-org/react'
 import { RootState } from '@renderer/store'
-import { useParams } from 'react-router-dom'
-import { modalTypes, useModal } from '@renderer/utils/useModal'
+import { initialErrors } from './utils'
+import { handleValidation } from './utils'
 import { useDispatch, useSelector } from 'react-redux'
-import { editItem, setCurrentItemId } from '@renderer/features/tableSlice'
-import { reqEditProduct, reqGetSupplier } from '@renderer/api/requests'
+import { reqCreateProduct, reqGetSupplier } from '@renderer/api/requests'
 
-export const EditProductModal = () => {
-  const params = useParams()
+export const AddProductModal = () => {
   const dispatch = useDispatch()
-  const [isOpen, toggleModal] = useModal(modalTypes.editProductModal)
-  const table = useSelector((state: RootState) => state.unit.table)
   const unit = useSelector((state: RootState) => state.currentUnit)
-  const currentItemIdEdit = useSelector((state: RootState) => state.unit.table.currentItemIdEdit)
-  const currentProductEdit = table.data.find((item) => item.id == currentItemIdEdit)
   const [suppliers, setSuppliers] = React.useState([])
-  const [data, setData] = React.useState<any>({
-    businessUnit: {
-      id: params.unitId,
+  const [errors, setErrors] = React.useState(initialErrors)
+  const warehouse = useSelector((state: RootState) => state.unit.warehouse)
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
+  const [info, setInfo] = React.useState({
+    deposit: {
+      id: warehouse.currentWarehouseId,
     },
   })
 
-  const [errors, setErrors] = React.useState({
-    name: '',
-    quantity: '',
-    costPrice: '',
-    cardPrice: '',
-    friendPrice: '',
-    financedPrice: '',
-    purchasePrice: '',
-  })
-
   React.useEffect(() => {
-    const GetSupplier = async () => {
-      const response = await reqGetSupplier(unit.id)
-      setSuppliers(response.data)
-    }
-    GetSupplier()
+    reqGetSupplier(unit.id)
+      .then((res) => setSuppliers(res.data))
+      .catch(console.log)
   }, [])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    if (e.target.name === 'supplierUnit') {
-      setData({
-        ...data,
-        supplierUnit: { id: e.target.value },
-      })
-    } else {
-      setData({
-        ...data,
-        [e.target.name]: e.target.value,
-      })
-    }
+    setInfo({
+      ...info,
+      [e.target.name]: e.target.value,
+    })
     handleValidation(e.target.name, e.target.value)
   }
 
-  const handleValidation = (name, value) => {
-    let newErrors = { ...errors }
-
-    switch (name) {
-      case 'name':
-        newErrors.name = validateName(value) ? '' : 'Por favor, ingresa un nombre válido.'
-        break
-      case 'purchasePrice':
-      case 'costPrice':
-      case 'financedPrice':
-      case 'friendPrice':
-      case 'cardPrice':
-      case 'quantity':
-        newErrors[name] = validateNumber(value) ? '' : 'Ingrese un número válido.'
-        break
-      default:
-        break
-    }
-
-    setErrors(newErrors)
-  }
-  const validateName = (name) => {
-    return name.trim() !== ''
-  }
-
-  const validateNumber = (value) => {
-    return !isNaN(value) && parseFloat(value) >= 0
-  }
-
-  const handleResetCurrentIdEdit = () => dispatch(setCurrentItemId(-1))
-
-  const addNewProduct = async () => {
-    const isValid = Object.values(errors).every((error) => error === '')
-    if (isValid) {
-      try {
-        dispatch(editItem({ data, id: currentItemIdEdit }))
-        await reqEditProduct(currentProductEdit.id, data)
-      } catch (error: any) {
-        console.log(error)
-      }
-
-      handleResetCurrentIdEdit()
-      setData({
-        businessUnit: {
-          id: params.unitId,
-        },
+  const onSubmit = async () => {
+    try {
+      const allValid = Object.keys(initialErrors).every((name) => {
+        const validate = handleValidation(name, info[name])
+        setErrors((prev) => ({
+          ...prev,
+          [name]: validate.isValid ? '' : validate.errorMessage,
+        }))
+        return validate.isValid
       })
-      toggleModal()
-    } else {
-      console.log('Hay errores de validación en el formulario.')
+
+      if (!allValid) return
+
+      const response = await reqCreateProduct(info)
+      dispatch(addItem(response.data))
+      onClose()
+    } catch (error) {
+      console.error(error)
     }
   }
 
   return (
     <div className='flex flex-col gap-2'>
+      <Button
+        onPress={onOpen}
+        className='bg-c-filter shadow-sm text-c-text'
+        color='secondary'
+        startContent={<PlusIcon className='text-c-primary-variant-1 w-[15px] h-[15px]' />}
+        radius='sm'
+      >
+        Crear orden
+      </Button>
       <Modal
         isOpen={isOpen}
-        onClose={handleResetCurrentIdEdit}
-        backdrop='blur'
-        onOpenChange={toggleModal}
-        scrollBehavior={'inside'}
+        onOpenChange={onOpenChange}
         size='5xl'
+        scrollBehavior={'inside'}
+        backdrop='blur'
+        className='bg-c-card'
         placement='center'
       >
         <ModalContent>
           <ModalHeader className='flex flex-col gap-1'>
-            <h3 className='default-text-color'>Editar producto</h3>
+            <h3 className='text-c-title'>Agrega un nuevo producto</h3>
           </ModalHeader>
           <ModalBody>
             <div className='productsmodaladd w-full flex flex-col gap-3  '>
@@ -148,7 +106,6 @@ export const EditProductModal = () => {
                   variant='bordered'
                   onChange={handleChange}
                   isInvalid={!!errors.name}
-                  defaultValue={currentProductEdit?.name}
                 ></Input>
                 <Select
                   label='Categoria'
@@ -159,22 +116,20 @@ export const EditProductModal = () => {
                   onChange={handleChange}
                   size='sm'
                   className='text-c-title'
-                  defaultSelectedKeys={[currentProductEdit?.category]}
                 >
                   <SelectItem key={'electricidad'}>Proveedor</SelectItem>
                   <SelectItem key={'materiales'}>materiales</SelectItem>
                 </Select>
                 <Input
                   name='quantity'
-                  type='cantidad'
+                  type='number'
                   label='cantidad'
                   size='sm'
                   labelPlacement='outside'
                   placeholder='Cantidad de productos'
-                  isInvalid={!!errors.quantity}
                   variant='bordered'
+                  isInvalid={!!errors.quantity}
                   onChange={handleChange}
-                  defaultValue={currentProductEdit?.quantity}
                 ></Input>
               </div>
               <div className='rowmodaladdproduct flex gap-3'>
@@ -184,7 +139,6 @@ export const EditProductModal = () => {
                   name='codigo1'
                   labelPlacement='outside'
                   placeholder='Codigo #1'
-                  defaultValue={currentProductEdit?.codigo1}
                   variant='bordered'
                   onChange={handleChange}
                 ></Input>
@@ -192,7 +146,6 @@ export const EditProductModal = () => {
                   label='Codigo'
                   size='sm'
                   name='codigo2'
-                  defaultValue={currentProductEdit?.codigo2}
                   labelPlacement='outside'
                   placeholder='Codigo #2'
                   variant='bordered'
@@ -202,7 +155,6 @@ export const EditProductModal = () => {
                   label='Codigo de barras'
                   size='sm'
                   name='barcode'
-                  defaultValue={currentProductEdit?.barcode}
                   labelPlacement='outside'
                   placeholder='Codigo de barras'
                   variant='bordered'
@@ -216,10 +168,16 @@ export const EditProductModal = () => {
                   placeholder='Selecciona un proveedor'
                   variant='bordered'
                   name='supplierUnit'
-                  onChange={handleChange}
+                  onChange={(e) =>
+                    setInfo((prev) => ({
+                      ...prev,
+                      supplierUnit: {
+                        id: e.target.value,
+                      },
+                    }))
+                  }
                   size='sm'
                   className='text-c-title'
-                  defaultSelectedKeys={[String(currentProductEdit?.supplierUnitId)]}
                 >
                   {suppliers.map((item: any) => (
                     <SelectItem key={item.id}>{item.name}</SelectItem>
@@ -230,13 +188,11 @@ export const EditProductModal = () => {
                   labelPlacement='outside'
                   placeholder='Disponibilidad'
                   variant='bordered'
+                  defaultSelectedKeys={['true']}
                   name='status'
                   onChange={handleChange}
                   size='sm'
                   className='text-c-title'
-                  defaultSelectedKeys={[
-                    currentProductEdit ? String(currentProductEdit.status) : '',
-                  ]}
                 >
                   <SelectItem value={'true'} key={'true'}>
                     Disponible
@@ -256,7 +212,6 @@ export const EditProductModal = () => {
                   size='sm'
                   name='purchasePrice'
                   isInvalid={!!errors.purchasePrice}
-                  defaultValue={currentProductEdit ? currentProductEdit.purchasePrice : ''}
                   onChange={handleChange}
                   endContent={
                     <div className='pointer-events-none flex items-center'>
@@ -270,7 +225,6 @@ export const EditProductModal = () => {
                   labelPlacement='outside'
                   placeholder='0.00'
                   variant='bordered'
-                  defaultValue={currentProductEdit?.costPrice}
                   size='sm'
                   name='costPrice'
                   isInvalid={!!errors.costPrice}
@@ -281,6 +235,7 @@ export const EditProductModal = () => {
                     </div>
                   }
                 />
+
                 <Select
                   label='Calculo de precio'
                   placeholder='Select an animal'
@@ -288,7 +243,7 @@ export const EditProductModal = () => {
                   variant='bordered'
                   name='priceCalculation'
                   onChange={handleChange}
-                  defaultSelectedKeys={[currentProductEdit?.priceCalculation]}
+                  defaultSelectedKeys={['cero']}
                   size='sm'
                   className='text-c-title'
                 >
@@ -304,13 +259,13 @@ export const EditProductModal = () => {
                 <Select
                   label='Politica de precio'
                   labelPlacement='outside'
-                  placeholder='Select an animal'
+                  placeholder='Selecciona una politica'
                   variant='bordered'
                   name='pricePolicy'
                   onChange={handleChange}
-                  defaultSelectedKeys={[currentProductEdit?.pricePolicy]}
+                  defaultSelectedKeys={['politictone']}
                   size='sm'
-                  className='text-c-title'
+                  className='text-c-title  '
                 >
                   <SelectItem value={'politicone'} key={'politictone'}>
                     one
@@ -330,7 +285,6 @@ export const EditProductModal = () => {
                   variant='bordered'
                   name='net1'
                   onChange={handleChange}
-                  defaultValue={currentProductEdit?.net1}
                   size='sm'
                   endContent={
                     <div className='pointer-events-none flex items-center'>
@@ -345,7 +299,6 @@ export const EditProductModal = () => {
                   isDisabled
                   placeholder='0.00'
                   variant='bordered'
-                  defaultValue={currentProductEdit?.net2}
                   name='net2'
                   onChange={handleChange}
                   size='sm'
@@ -362,7 +315,6 @@ export const EditProductModal = () => {
                   placeholder='0.00'
                   isDisabled
                   variant='bordered'
-                  defaultValue={currentProductEdit?.net3}
                   name='net3'
                   onChange={handleChange}
                   size='sm'
@@ -378,7 +330,6 @@ export const EditProductModal = () => {
                   label='Neto 4'
                   placeholder='0.00'
                   isDisabled
-                  defaultValue={currentProductEdit?.net4}
                   variant='bordered'
                   name='net4'
                   onChange={handleChange}
@@ -397,7 +348,7 @@ export const EditProductModal = () => {
                   placeholder='Selecciona un tipo'
                   variant='bordered'
                   name='taxType'
-                  defaultSelectedKeys={[currentProductEdit?.taxType]}
+                  defaultSelectedKeys={['IVA21%']}
                   onChange={handleChange}
                   size='sm'
                   className='text-c-title'
@@ -412,9 +363,8 @@ export const EditProductModal = () => {
                   placeholder='0.00'
                   variant='bordered'
                   name='financedPrice'
-                  defaultValue={currentProductEdit?.financedPrice}
-                  isInvalid={!!errors.financedPrice}
                   onChange={handleChange}
+                  isInvalid={!!errors.financedPrice}
                   size='sm'
                   endContent={
                     <div className='pointer-events-none flex items-center'>
@@ -429,9 +379,8 @@ export const EditProductModal = () => {
                   placeholder='0.00'
                   variant='bordered'
                   name='friendPrice'
-                  defaultValue={currentProductEdit?.friendPrice}
-                  onChange={handleChange}
                   isInvalid={!!errors.friendPrice}
+                  onChange={handleChange}
                   size='sm'
                   endContent={
                     <div className='pointer-events-none flex items-center'>
@@ -445,10 +394,9 @@ export const EditProductModal = () => {
                   labelPlacement='outside'
                   placeholder='0.00'
                   name='cardPrice'
-                  onChange={handleChange}
                   isInvalid={!!errors.cardPrice}
+                  onChange={handleChange}
                   variant='bordered'
-                  defaultValue={currentProductEdit?.cardPrice}
                   size='sm'
                   endContent={
                     <div className='pointer-events-none flex items-center'>
@@ -476,7 +424,6 @@ export const EditProductModal = () => {
                 name='quantityPerPackage'
                 onChange={handleChange}
                 variant='bordered'
-                defaultValue={currentProductEdit?.quantityPerPackage}
                 isDisabled
                 size='sm'
                 endContent={
@@ -490,31 +437,17 @@ export const EditProductModal = () => {
                 variant='bordered'
                 name='description'
                 onChange={handleChange}
-                defaultValue={currentProductEdit?.description}
                 labelPlacement='outside'
                 placeholder='Enter your description'
               ></Textarea>
             </div>
           </ModalBody>
           <ModalFooter>
-            <Button
-              color='danger'
-              variant='light'
-              radius='sm'
-              onPress={() => {
-                handleResetCurrentIdEdit()
-                toggleModal()
-              }}
-            >
+            <Button color='danger' variant='light' radius='sm' onPress={onClose}>
               Cerrar
             </Button>
-            <Button
-              color='primary'
-              onPress={() => addNewProduct()}
-              radius='sm'
-              className='bg-c-primary'
-            >
-              Guardar
+            <Button color='primary' onPress={onSubmit} radius='sm' className='bg-c-primary'>
+              Agregar
             </Button>
           </ModalFooter>
         </ModalContent>

@@ -100,9 +100,9 @@ public class ProductModel {
     private SupplierModel supplierUnit;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "deposit_unit_id", nullable = true)
+    @JoinColumn(name = "deposit_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private DepositModel depositUnit;
+    private DepositModel deposit;
 
     @Column(name = "price_policy")
     private String pricePolicy;
@@ -130,14 +130,6 @@ public class ProductModel {
 
     @Column(name = "quantity_per_package")
     private Integer quantityPerPackage;
-
-    public DepositModel getDepositUnit() {
-        return depositUnit;
-    }
-
-    public void setDepositUnit(DepositModel depositUnit) {
-        this.depositUnit = depositUnit;
-    }
 
     public String getCodigo1() {
         return codigo1;
@@ -380,5 +372,13 @@ public class ProductModel {
 
     public void setSupplierUnit(SupplierModel supplierUnit) {
         this.supplierUnit = supplierUnit;
+    }
+
+    public DepositModel getDeposit() {
+        return deposit;
+    }
+
+    public void setDeposit(DepositModel deposit) {
+        this.deposit = deposit;
     }
 }

@@ -3,15 +3,15 @@ package productar.services;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import productar.dto.ProductResponseDTO;
+import productar.models.DepositModel;
 import productar.models.ProductModel;
+import productar.repositories.DepositRepository;
 import productar.repositories.ProductRepository;
 
 @Service
@@ -20,8 +20,16 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    public ProductModel createProduct(ProductModel product) {
-        return productRepository.save(product);
+    @Autowired
+    private DepositRepository depositRepository;
+
+    public ResponseEntity<?> createProduct(ProductModel product) {
+        try {
+            ProductModel newProduct = productRepository.save(product);
+            return ResponseEntity.ok(newProduct);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("Ocurrió un error: " + e.getMessage());
+        }
     }
 
     public ResponseEntity<?> updateProduct(Long id, ProductModel updatedProduct) {
@@ -38,8 +46,76 @@ public class ProductService {
 
             return ResponseEntity.ok("Producto actualizado correctamente");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("Ocurrió un error: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("Ocurrió un error");
         }
+    }
+
+    public ResponseEntity<String> deleteProduct(Long productId) {
+        try {
+            productRepository.deleteById(productId);
+            return ResponseEntity.status(HttpStatus.OK).body("Producto eliminado correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("Ocurrió un error al eliminar el producto");
+        }
+    }
+
+    public ResponseEntity<?> getProductById(Long productId) {
+        try {
+            Optional<ProductModel> product = productRepository.findById(productId);
+            if (!product.isPresent()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Producto no encontrado");
+            }
+
+            return ResponseEntity.ok(product);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error");
+        }
+    }
+
+    public List<ProductModel> getAllProducts() {
+        return productRepository.findAll();
+    }
+
+    public ResponseEntity<?> findProductsByDepositId(Long depositId) {
+        try {
+            Optional<DepositModel> deposit = depositRepository.findById(depositId);
+
+            if (!deposit.isPresent()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Depósito no encontrado");
+            }
+
+            List<ProductModel> products = productRepository.findProductsByDepositId(depositId);
+            return ResponseEntity.ok(products);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error");
+        }
+    }
+
+    public List<ProductModel> getProductsByCategory(String category) {
+        return productRepository.findByCategory(category);
+    }
+
+    public List<ProductModel> getProductsByName(String name) {
+        return productRepository.findByName(name);
+    }
+
+    public ResponseEntity<?> findByNameAndDepositId(String name, Long depositId) {
+        try {
+            Optional<DepositModel> deposit = depositRepository.findById(depositId);
+
+            if (!deposit.isPresent()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Depósito no encontrado");
+            }
+
+            List<ProductModel> products = productRepository.findByNameAndDepositId(name, depositId);
+            return ResponseEntity.ok(products);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error");
+        }
+    }
+
+    public List<ProductModel> getProductsByRefCode(String referenceCode) {
+        return productRepository.findByReferenceCode(referenceCode);
     }
 
     private void copyNonNullProperties(ProductModel source, ProductModel target) {
@@ -63,93 +139,5 @@ public class ProductService {
                 e.printStackTrace();
             }
         }
-    }
-
-    public ResponseEntity<String> deleteProduct(Long productId) {
-        try {
-            productRepository.deleteById(productId);
-            return ResponseEntity.status(HttpStatus.OK).body("Producto eliminado correctamente");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("Ocurrió un error al eliminar el producto");
-        }
-    }
-
-    public ProductModel getProductById(Long productId) {
-        return productRepository.findById(productId).orElse(null);
-    }
-
-    public List<ProductModel> getAllProducts() {
-        return productRepository.findAll();
-    }
-
-    public List<ProductResponseDTO> findProductsByDepositId(Long depositId) {
-        List<ProductModel> products = productRepository.findProductsByDepositId(depositId);
-        return products.stream()
-                .map(this::convertToResponseDTO)
-                .collect(Collectors.toList());
-    }
-
-    private ProductResponseDTO convertToResponseDTO(ProductModel product) {
-        ProductResponseDTO dto = new ProductResponseDTO();
-        // Copiar los campos de ProductModel a ProductResponseDTO
-        dto.setId(product.getId());
-        dto.setCodigo1(product.getCodigo1());
-        dto.setCodigo2(product.getCodigo2());
-        dto.setBarcode(product.getBarcode());
-        dto.setImage(product.getImage());
-        dto.setPrice(product.getPrice());
-        dto.setCardPrice(product.getCardPrice());
-        dto.setFinancedPrice(product.getFinancedPrice());
-        dto.setFriendPrice(product.getFriendPrice());
-        dto.setPurchasePrice(product.getPurchasePrice());
-        dto.setPriceCalculation(product.getPriceCalculation());
-        dto.setCostPrice(product.getCostPrice());
-        dto.setQuantity(product.getQuantity());
-        dto.setCategory(product.getCategory());
-        dto.setName(product.getName());
-        dto.setDescription(product.getDescription());
-        dto.setCreatedAt(product.getCreatedAt());
-        dto.setUpdatedAt(product.getUpdatedAt());
-        dto.setStatus(product.getStatus());
-        dto.setPricePolicy(product.getPricePolicy());
-        dto.setNet1(product.getNet1());
-        dto.setNet2(product.getNet2());
-        dto.setNet3(product.getNet3());
-        dto.setNet4(product.getNet4());
-        dto.setTaxType(product.getTaxType());
-        dto.setReferenceCode(product.getReferenceCode());
-        dto.setPackageProduct(product.getPackageProduct());
-        dto.setQuantityPerPackage(product.getQuantityPerPackage());
-        dto.setDepositUnitId(product.getDepositUnit().getId());
-        dto.setSupplierUnitId(product.getSupplierUnit().getId());
-
-        return dto;
-    }
-
-    // Método para obtener productos por categoría
-    public List<ProductModel> getProductsByCategory(String category) {
-        return productRepository.findByCategory(category);
-    }
-
-    // Método para obtener productos por nombre
-    public List<ProductModel> getProductsByName(String name) {
-        return productRepository.findByName(name);
-    }
-
-    // Método para obtener productos por nombre
-    public List<ProductModel> findByNameAndDepositId(String name, Long id) {
-        return productRepository.findByNameAndDepositId(name, id);
-    }
-
-    // Método para obtener productos por código de referencia
-    public List<ProductModel> getProductsByReferenceCode(String referenceCode) {
-        return productRepository.findByReferenceCode(referenceCode);
-    }
-
-    public List<ProductResponseDTO> getProductsByDepositUnit(Long depositUnitId) {
-        List<ProductModel> products = productRepository.findByDepositUnitId(depositUnitId);
-        return products.stream()
-                .map(this::convertToResponseDTO)
-                .collect(Collectors.toList());
     }
 }
