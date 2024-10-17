@@ -1,7 +1,6 @@
 import React from 'react'
+import { LocalIcon } from '@renderer/components/Icons/LocalIcon'
 import { RootState } from '@renderer/store'
-import { PiGarageFill } from 'react-icons/pi'
-
 import { WarehouseModel } from '@renderer/interfaces/warehouse'
 import { ChildrenSlider } from '@renderer/components/ChildrenSlider'
 import { ShortCellValue } from '@renderer/components/AppTable/TableComponents/ShortCellValue'
@@ -53,18 +52,18 @@ export const WarehouseCard = () => {
               onClick={() => openWarehouse(Number(ele.id))}
               className={`${
                 currentWarehouseId === ele.id ? 'bg-c-primary-variant-3' : 'bg-c-card'
-              } gap-4 w-[185px] h-[55px] rounded-[10px] flex-shrink-0 shadow-sm  justify-center flex items-center cursor-pointer`}
+              } gap-4 w-[285px] h-[76px] rounded-[10px] flex-shrink-0 shadow-sm px-[19px] py-[21px] flex items-center cursor-pointer`}
             >
               <div
                 className={`${
                   currentWarehouseId === ele.id ? 'bg-c-primary-variant-3' : 'bg-c-card-variant-3'
-                } p-2  rounded-lg`}
+                } p-2 rounded-lg`}
               >
-                <PiGarageFill className=' text-[var(--c-primary)]' />
+                <LocalIcon color='var(--c-primary)' />
               </div>
               <div className='flex items-center gap-[10px]'>
                 <div className='flex flex-col'>
-                  <span className='text-[20px] leading-none text-c-primary'>
+                  <span className='text-[24px] h-8 text-c-primary'>
                     <ShortCellValue cellValue={ele.name} maxLength={13} />
                   </span>
                   <span className='text-[12px] text-c-title'>Buenos aires</span>

@@ -19,6 +19,7 @@ import {
   setCurrentEditWarehouseId,
 } from '@renderer/features/warehouseSlice'
 import { RootState } from '@renderer/store'
+import { FaCodeBranch } from 'react-icons/fa'
 import { EditWarehouse } from '../Modals/EditWarehouse'
 import { ChildrenSlider } from '@renderer/components/ChildrenSlider'
 import { WarehouseModel } from '@renderer/interfaces/warehouse'
@@ -26,7 +27,7 @@ import { CreateWarehouse } from '../Modals/CreateWarehouse'
 import { modalTypes, useModal } from '@renderer/utils/useModal'
 import { useDispatch, useSelector } from 'react-redux'
 import { AssignWarehouseToDeposit } from '../Modals/AssignWarehouseToDeposit'
-import { FaCodeBranch } from 'react-icons/fa'
+
 export const WarehouseCardCompany = () => {
   const dispatch = useDispatch()
   const company = useSelector((state: RootState) => state.currentCompany)
