@@ -16,7 +16,6 @@ import { addItem } from '@renderer/features/tableSlice'
 import { PlusIcon } from '@renderer/components/Icons/PlusIcon'
 import { Checkbox } from '@nextui-org/react'
 import { RootState } from '@renderer/store'
-import { initialErrors } from './utils'
 import { handleValidation } from './utils'
 import { useDispatch, useSelector } from 'react-redux'
 import { reqCreateProduct, reqGetSupplier } from '@renderer/api/requests'
@@ -25,20 +24,24 @@ export const AddProductModal = () => {
   const dispatch = useDispatch()
   const unit = useSelector((state: RootState) => state.currentUnit)
   const [suppliers, setSuppliers] = React.useState([])
-  const [errors, setErrors] = React.useState(initialErrors)
+  const [errors, setErrors] = React.useState({ name: '' })
   const warehouse = useSelector((state: RootState) => state.unit.warehouse)
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
-  const [info, setInfo] = React.useState({
-    deposit: {
-      id: warehouse.currentWarehouseId,
-    },
-  })
+  const [info, setInfo] = React.useState({})
 
   React.useEffect(() => {
+    setInfo({
+      deposit: {
+        id: warehouse.currentWarehouseId,
+      },
+    })
+
+    setErrors({ name: '' })
+
     reqGetSupplier(unit.id)
       .then((res) => setSuppliers(res.data))
       .catch(console.log)
-  }, [])
+  }, [isOpen])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setInfo({
@@ -50,7 +53,7 @@ export const AddProductModal = () => {
 
   const onSubmit = async () => {
     try {
-      const allValid = Object.keys(initialErrors).every((name) => {
+      const allValid = Object.keys({ name: '' }).every((name) => {
         const validate = handleValidation(name, info[name])
         setErrors((prev) => ({
           ...prev,
@@ -59,6 +62,7 @@ export const AddProductModal = () => {
         return validate.isValid
       })
 
+      console.log(info)
       if (!allValid) return
 
       const response = await reqCreateProduct(info)
@@ -128,7 +132,6 @@ export const AddProductModal = () => {
                   labelPlacement='outside'
                   placeholder='Cantidad de productos'
                   variant='bordered'
-                  isInvalid={!!errors.quantity}
                   onChange={handleChange}
                 ></Input>
               </div>
@@ -211,7 +214,6 @@ export const AddProductModal = () => {
                   variant='bordered'
                   size='sm'
                   name='purchasePrice'
-                  isInvalid={!!errors.purchasePrice}
                   onChange={handleChange}
                   endContent={
                     <div className='pointer-events-none flex items-center'>
@@ -227,7 +229,6 @@ export const AddProductModal = () => {
                   variant='bordered'
                   size='sm'
                   name='costPrice'
-                  isInvalid={!!errors.costPrice}
                   onChange={handleChange}
                   endContent={
                     <div className='pointer-events-none flex items-center'>
@@ -364,7 +365,6 @@ export const AddProductModal = () => {
                   variant='bordered'
                   name='financedPrice'
                   onChange={handleChange}
-                  isInvalid={!!errors.financedPrice}
                   size='sm'
                   endContent={
                     <div className='pointer-events-none flex items-center'>
@@ -379,7 +379,6 @@ export const AddProductModal = () => {
                   placeholder='0.00'
                   variant='bordered'
                   name='friendPrice'
-                  isInvalid={!!errors.friendPrice}
                   onChange={handleChange}
                   size='sm'
                   endContent={
@@ -394,7 +393,6 @@ export const AddProductModal = () => {
                   labelPlacement='outside'
                   placeholder='0.00'
                   name='cardPrice'
-                  isInvalid={!!errors.cardPrice}
                   onChange={handleChange}
                   variant='bordered'
                   size='sm'

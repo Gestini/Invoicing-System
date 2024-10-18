@@ -45,12 +45,12 @@ export const reqSearchInventoryProduct = async (name: string, unitId: number) =>
 export const reqAsingProductsToInventory = async (data: any) => api.post('/inventory/asing-product-to-inventory', data)
 
 /* Rutas productos */
-export const reqEditProduct = async (id: any, data: any) => api.put(`/products/edit/${id}`, data)
-export const reqCreateProduct = async (data: any) => api.post('/products', data)
-export const reqDeleteProduct = async (id: any) => api.delete(`/products/${id}`)
-export const reqSearchProduct = async (name: string) => api.get(`/products/by-name/${name}`)
-export const reqGetProductByDeposit = async (id: any) => api.get(`/products/get-by-deposit-id/${id}`)
-export const reqSearchProductByNameAndUnit = async (name: string, id: any) => api.get(`/products/search/${name}/${id}`)
+export const reqEditProduct = async (id: any, data: any) => api.put(`/product/edit/${id}`, data)
+export const reqCreateProduct = async (data: any) => api.post('/product', data)
+export const reqDeleteProduct = async (id: any) => api.delete(`/product/${id}`)
+export const reqSearchProduct = async (name: string) => api.get(`/product/by-name/${name}`)
+export const reqGetProductByDeposit = async (id: any) => api.get(`/product/get-by-deposit-id/${id}`)
+export const reqSearchProductByNameAndUnit = async (name: string, id: any) => api.get(`/product/search/${name}/${id}`)
 
 /* Rutas proveedores */
 export const reqGetSupplier = async (id: any) => api.get(`/supplier/by-business-unit/${id}`)
