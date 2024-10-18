@@ -22,15 +22,11 @@ export const EditSupplierModal = () => {
   const dispatch = useDispatch()
   const params = useParams()
   const table = useSelector((state: RootState) => state.unit.table)
-  const currentItemEdit = table.data.find((item) => item.id == table.currentItemIdEdit)
+  const currentItemEdit = table.data.find((item) => item.id === table.currentItemIdEdit)
 
   const [isOpen, toggleModal] = useModal(modalTypes.editSupplierModal)
 
-  const [data, setData] = React.useState({
-    businessUnit: {
-      id: params.unitId,
-    },
-  })
+  const [data, setData] = React.useState({})
 
   const [errors, setErrors] = React.useState({
     name: '',
@@ -49,7 +45,7 @@ export const EditSupplierModal = () => {
     handleValidation(e.target.name, e.target.value)
   }
 
-  const handleValidation = (name, value) => {
+  const handleValidation = (name: string, value: string) => {
     let newErrors = { ...errors }
 
     switch (name) {
@@ -77,16 +73,25 @@ export const EditSupplierModal = () => {
   const handleResetCurrentIdEdit = () => dispatch(setCurrentItemId(-1))
 
   const onSubmit = async () => {
-    reqEditSupplier(currentItemEdit.id, data)
-    dispatch(editItem({ data, id: currentItemEdit.id }))
+    // Verificar si hay errores antes de enviar
+    if (Object.values(errors).some((error) => error)) {
+      return // No se envían datos si hay errores
+    }
 
-    handleResetCurrentIdEdit()
-    setData({
-      businessUnit: {
-        id: params.unitId,
-      },
-    })
-    toggleModal()
+    try {
+      await reqEditSupplier(currentItemEdit.id, data)
+      dispatch(editItem({ data, id: currentItemEdit.id }))
+      handleResetCurrentIdEdit()
+      setData({
+        businessUnit: {
+          id: params.unitId,
+        },
+      })
+      toggleModal()
+    } catch (error) {
+      console.error('Error al editar el proveedor:', error)
+      // Manejar el error según sea necesario
+    }
   }
 
   return (
@@ -105,7 +110,7 @@ export const EditSupplierModal = () => {
             <h3 className='default-text-color'>Editar proveedor</h3>
           </ModalHeader>
           <ModalBody>
-            <div className='productsmodaladd w-full flex flex-col gap-3  '>
+            <div className='productsmodaladd w-full flex flex-col gap-3'>
               <div className='rowmodaladdproduct justify-start items-start flex gap-3'>
                 <Input
                   name='name'
@@ -133,12 +138,12 @@ export const EditSupplierModal = () => {
                   className='text-c-title'
                 >
                   <SelectItem key={'productos'}>Productos</SelectItem>
-                  <SelectItem key={'servicios'}>servicios</SelectItem>
+                  <SelectItem key={'servicios'}>Servicios</SelectItem>
                 </Select>
                 <Select
-                  label='Condicion de venta'
+                  label='Condición de venta'
                   labelPlacement='outside'
-                  placeholder='Selecciona una condicion'
+                  placeholder='Selecciona una condición'
                   variant='bordered'
                   name='saleCondition'
                   onChange={handleChange}
@@ -148,28 +153,28 @@ export const EditSupplierModal = () => {
                     currentItemEdit ? String(currentItemEdit.saleCondition) : '',
                   ]}
                 >
-                  <SelectItem key={'contado'}>contado</SelectItem>
-                  <SelectItem key={'financiado'}>financiado</SelectItem>
+                  <SelectItem key={'contado'}>Contado</SelectItem>
+                  <SelectItem key={'financiado'}>Financiado</SelectItem>
                 </Select>
               </div>
               <div className='rowmodaladdproduct justify-start items-start flex gap-3'>
                 <Textarea
-                  label='Description'
+                  label='Descripción'
                   variant='bordered'
                   name='description'
                   onChange={handleChange}
                   labelPlacement='outside'
                   defaultValue={currentItemEdit ? currentItemEdit.description : ''}
-                  placeholder='Enter your description'
+                  placeholder='Ingresa tu descripción'
                 />
               </div>
               <div className='rowmodaladdproduct justify-start items-start flex gap-3'>
                 <Input
-                  label='Numero de celular'
+                  label='Número de celular'
                   size='sm'
                   name='phone'
                   labelPlacement='outside'
-                  placeholder='Numero del proveedor'
+                  placeholder='Número del proveedor'
                   variant='bordered'
                   defaultValue={currentItemEdit ? currentItemEdit.phone : ''}
                   onChange={handleChange}
@@ -202,17 +207,17 @@ export const EditSupplierModal = () => {
                   name='dni'
                   defaultValue={currentItemEdit ? currentItemEdit.dni : ''}
                   labelPlacement='outside'
-                  placeholder='Ingresa el dni'
+                  placeholder='Ingresa el DNI'
                   variant='bordered'
                   onChange={handleChange}
                 />
                 <Input
-                  label='Direccion del proveedor'
+                  label='Dirección del proveedor'
                   size='sm'
                   name='address'
                   labelPlacement='outside'
                   defaultValue={currentItemEdit ? currentItemEdit.address : ''}
-                  placeholder='Ingresa la direccion'
+                  placeholder='Ingresa la dirección'
                   variant='bordered'
                   onChange={handleChange}
                 />
@@ -231,7 +236,13 @@ export const EditSupplierModal = () => {
             >
               Cerrar
             </Button>
-            <Button color='primary' className='bg-c-primary' onPress={() => onSubmit()} radius='sm'>
+            <Button
+              color='primary'
+              className='bg-c-primary'
+              onPress={onSubmit}
+              radius='sm'
+              isDisabled={Object.values(errors).some((error) => error)}
+            >
               Guardar
             </Button>
           </ModalFooter>

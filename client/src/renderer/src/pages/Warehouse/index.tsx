@@ -10,7 +10,7 @@ export const Warehouse = () => {
       content: (
         <div className='flex h-full gap-3 flex-col  '>
           <WarehouseCard />
-
+          <WarehouseStats />
           <StockTable />
         </div>
       ),

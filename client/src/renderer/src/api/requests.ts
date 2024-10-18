@@ -35,8 +35,8 @@ export const reqSearchUnitsMissingDeposit = async (companyId: any, depositId: an
 export const reqGetBusinessUnitsByCompanyIdAndWithUserAsOwnerOrEmployee = async (companyId: any) => api.get(`/business-unit/find-business-units-by-company-id-and-with-user-as-owner-or-employee/${companyId}`)
 
 /* Rutas invitaciones */
-export const reqAcceptInviteUnit = async (token: string) => api.post(`/invitations/accept/${token}`)
-export const reqGetInviteUnitByToken = async (token: string) => api.get(`/invitations/get-by-token/${token}`)
+export const reqAcceptInviteUnit = async (token: string) => api.post(`/invitation/accept/${token}`)
+export const reqGetInviteUnitByToken = async (token: string) => api.get(`/invitation/get-by-token/${token}`)
 
 /* Rutas inventario */
 export const reqRemoveInventoryById = async (inventoryId: any) => api.delete(`/inventory/remove-inventory-by-id/${inventoryId}`)
@@ -53,9 +53,10 @@ export const reqGetProductByDeposit = async (id: any) => api.get(`/products/get-
 export const reqSearchProductByNameAndUnit = async (name: string, id: any) => api.get(`/products/search/${name}/${id}`)
 
 /* Rutas proveedores */
-export const reqGetSupplier = async (id: any) => api.get(`/suppliers/by-business-unit/${id}`)
-export const reqEditSupplier = async (id: any, data: any) => api.put(`/suppliers/${id}`, data)
-export const reqCreateSupplier = async (data: any) => api.post('/suppliers', data)
+export const reqGetSupplier = async (id: any) => api.get(`/supplier/by-business-unit/${id}`)
+export const reqEditSupplier = async (id: any, data: any) => api.put(`/supplier/edit/${id}`, data)
+export const reqCreateSupplier = async (unitId: any, data: any) => api.post(`/supplier/create/${unitId}`, data)
+export const reqDeleteSupplier = async (id: number) => api.delete(`/suppliers/delete/${id}`)
 
 /* Rutas facturacion */
 export const reqGetInvoiceId = async (id: any) => api.get(`/invoicing/get/${id}`)
@@ -94,7 +95,7 @@ export const reqUserHasPermissionsMap = ({ unitId, data }) => api.post(`/role/ha
 /* Rutas empleados */
 export const reqLeaveUnit = (id: any) => api.delete(`/employee/leave-unit/${id}`)
 export const reqEditEmployee = (id: any, data: any) => api.put(`/employee/edit/${id}`, data)
-export const reqCreateEmployee = async (data: any) => api.post('/employee', data)
+export const reqCreateEmployee = async (data: any, unitId: any) => api.post(`/employee/create/${unitId}`, data)
 export const reqDeleteEmployee = (id: any) => api.delete(`/employee/delete/${id}`)
 export const reqGetEmployeesByUnit = async (id: any) => api.get(`/employee/get-by-unit/${id}`)
 export const reqLoadEmployeeByRole = (id: any) => api.get(`/role/get-employees/${id}`)

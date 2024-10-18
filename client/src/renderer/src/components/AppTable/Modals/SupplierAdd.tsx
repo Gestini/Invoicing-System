@@ -23,26 +23,32 @@ export const AddSupplierModal = () => {
   const dispatch = useDispatch()
   const params = useParams()
   const [isOpen, toggleModal] = useModal(modalTypes.createSupplierModal)
-  const [data, setData] = React.useState<any>({
+
+  const initialData = {
+    dni: null,
     name: '',
-    description: null,
     phone: null,
     email: null,
+    address: null,
     website: null,
+    description: null,
     supplierType: null,
     reasonSocial: null,
-    address: null,
-    dni: null,
     saleCondition: null,
-    businessUnit: {
-      id: params.unitId,
-      name: 'Main Unit',
-    },
-  })
+  }
+
+  const [data, setData] = React.useState(initialData)
 
   const [errors, setErrors] = React.useState({
     name: '',
   })
+
+  React.useEffect(() => {
+    setData(initialData)
+    setErrors({
+      name: '',
+    })
+  }, [isOpen])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setData({
@@ -53,7 +59,7 @@ export const AddSupplierModal = () => {
     handleValidation(e.target.name, e.target.value)
   }
 
-  const handleValidation = (name, value) => {
+  const handleValidation = (name: string, value: string) => {
     let newErrors = { ...errors }
 
     switch (name) {
@@ -87,24 +93,16 @@ export const AddSupplierModal = () => {
       return
     }
 
-    const response = await reqCreateSupplier(data)
+    // Filtrar los datos para enviar solo los que no son nulos o vacíos
+    const filteredData = Object.keys(data)
+      .filter((key) => data[key] !== null && data[key] !== '')
+      .reduce((obj, key) => {
+        obj[key] = data[key]
+        return obj
+      }, {})
+
+    const response = await reqCreateSupplier(params.unitId, filteredData)
     dispatch(addItem(response.data))
-    setData({
-      name: '',
-      description: null,
-      phone: null,
-      email: null,
-      website: null,
-      supplierType: null,
-      reasonSocial: null,
-      address: null,
-      dni: null,
-      saleCondition: null,
-      businessUnit: {
-        id: params.unitId,
-        name: 'Main Unit',
-      },
-    })
     toggleModal()
   }
 
@@ -140,7 +138,7 @@ export const AddSupplierModal = () => {
             <h3 className='text-c-title'>Agrega un nuevo proveedor</h3>
           </ModalHeader>
           <ModalBody>
-            <div className='productsmodaladd w-full flex flex-col gap-3  '>
+            <div className='productsmodaladd w-full flex flex-col gap-3'>
               <div className='rowmodaladdproduct justify-start items-start flex gap-3'>
                 <Input
                   name='name'
@@ -164,39 +162,39 @@ export const AddSupplierModal = () => {
                   className='text-c-title'
                 >
                   <SelectItem key={'productos'}>Productos</SelectItem>
-                  <SelectItem key={'servicios'}>servicios</SelectItem>
+                  <SelectItem key={'servicios'}>Servicios</SelectItem>
                 </Select>
                 <Select
                   label='Condicion de venta'
                   labelPlacement='outside'
-                  placeholder='Selecciona una condicion'
+                  placeholder='Selecciona una condición'
                   variant='bordered'
                   name='saleCondition'
                   onChange={handleChange}
                   size='sm'
                   className='text-c-title'
                 >
-                  <SelectItem key={'contado'}>contado</SelectItem>
-                  <SelectItem key={'financiado'}>financiado</SelectItem>
+                  <SelectItem key={'contado'}>Contado</SelectItem>
+                  <SelectItem key={'financiado'}>Financiado</SelectItem>
                 </Select>
               </div>
               <div className='rowmodaladdproduct justify-start items-start flex gap-3'>
                 <Textarea
-                  label='Description'
+                  label='Descripción'
                   variant='bordered'
                   name='description'
                   onChange={handleChange}
                   labelPlacement='outside'
-                  placeholder='Enter your description'
+                  placeholder='Ingresa la descripción'
                 />
               </div>
-              <div className='rowmodaladdproduct  justify-start items-start flex gap-3'>
+              <div className='rowmodaladdproduct justify-start items-start flex gap-3'>
                 <Input
-                  label='Numero de celular'
+                  label='Número de celular'
                   size='sm'
                   name='phone'
                   labelPlacement='outside'
-                  placeholder='Numero del proveedor'
+                  placeholder='Número del proveedor'
                   variant='bordered'
                   onChange={handleChange}
                 />
@@ -230,16 +228,15 @@ export const AddSupplierModal = () => {
                   onChange={handleChange}
                 />
                 <Input
-                  label='Direccion del proveedor'
+                  label='Dirección del proveedor'
                   size='sm'
                   name='address'
                   labelPlacement='outside'
-                  placeholder='Ingresa la direccion'
+                  placeholder='Ingresa la dirección'
                   variant='bordered'
                   onChange={handleChange}
                 />
               </div>
-              <div className='rowmodaladdproduct select flex items-start justify-start gap-3'></div>
             </div>
           </ModalBody>
           <ModalFooter>

@@ -36,13 +36,7 @@ export const EmployeeTable = () => {
     },
     create: async (data: any) => {
       try {
-        const response = await reqCreateEmployee({
-          ...data,
-          status: 'PENDING',
-          businessUnit: {
-            id: params.unitId,
-          },
-        })
+        const response = await reqCreateEmployee({ ...data, status: 'PENDING' }, params.unitId)
         dispatch(addItem(response.data))
       } catch (error: any) {
         console.log(error)

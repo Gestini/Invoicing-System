@@ -39,9 +39,7 @@ export const CreateRoleModal = () => {
     try {
       const response = await reqCreateRole({
         name: data.name,
-        businessUnit: {
-          id: params.unitId,
-        },
+        unitId: params.unitId,
       })
       dispatch(addRole({ ...response.data, permissions: [] }))
       onClose()
