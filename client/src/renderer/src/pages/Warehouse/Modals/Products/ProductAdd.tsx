@@ -62,7 +62,6 @@ export const AddProductModal = () => {
         return validate.isValid
       })
 
-      console.log(info)
       if (!allValid) return
 
       const response = await reqCreateProduct(info)
