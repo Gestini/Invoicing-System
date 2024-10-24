@@ -2,7 +2,9 @@ package gestini.modules.product;
 
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,8 +13,10 @@ import org.springframework.stereotype.Service;
 
 import gestini.modules.deposit.models.DepositModel;
 import gestini.modules.deposit.repositories.DepositRepository;
+import gestini.modules.product.dto.SaveProductsDto;
 import gestini.modules.product.models.ProductModel;
 import gestini.modules.product.repositories.ProductRepository;
+import jakarta.transaction.Transactional;
 
 @Service
 public class ProductService {
@@ -29,6 +33,52 @@ public class ProductService {
             return ResponseEntity.ok(newProduct);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("Ocurrió un error");
+        }
+    }
+
+    @Transactional
+    public ResponseEntity<?> saveProducts(SaveProductsDto body, Long depositId) {
+        try {
+            /* Buscar el depósito */
+            Optional<DepositModel> depositOptional = depositRepository.findById(depositId);
+
+            if (!depositOptional.isPresent()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Depósito no encontrado");
+            }
+
+            /* Obtiene el depósito */
+            DepositModel deposit = depositOptional.get();
+
+            /* Obtener la lista de productos */
+            List<ProductModel> products = body.getProducts();
+
+            /* Obtener todos los IDs de productos a guardar */
+            List<Long> productIds = products.stream()
+                    .map(ProductModel::getId)
+                    .collect(Collectors.toList());
+
+            /* Recuperar productos existentes */
+            List<ProductModel> existingProducts = productRepository.findAllById(productIds);
+            Map<Long, ProductModel> existingProductsMap = existingProducts.stream()
+                    .collect(Collectors.toMap(ProductModel::getId, product -> product));
+
+            /* Recorrer los productos */
+            for (ProductModel product : products) {
+                if (existingProductsMap.containsKey(product.getId())) {
+                    /* Actualiza la cantidad si el producto ya existe */
+                    ProductModel productFound = existingProductsMap.get(product.getId());
+                    productFound.setQuantity(product.getQuantity() + productFound.getQuantity());
+                    productRepository.save(productFound);
+                } else {
+                    /* Guardar nuevo producto */
+                    product.setDeposit(deposit);
+                    productRepository.save(product);
+                }
+            }
+
+            return ResponseEntity.ok("Productos guardados correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error");
         }
     }
 
