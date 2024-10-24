@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Or } from '../../components/Auth/Or'
 import { AuthBody } from '../../components/Auth/AuthBody'
 import { AuthForm } from '../../components/Auth/AuthInputForm'
@@ -10,8 +10,11 @@ import { reqAuthLogin } from '@renderer/api/requests'
 import { AuthLoginOptions } from '@renderer/components/Auth/AuthLoginOptions'
 import { ContinueWithGoogle } from '../../components/Auth/ContinueWithGoogle'
 import './Auth.scss'
+import Loader from '@renderer/components/loader/loader'
 
 const Login = () => {
+  const [isLoading, setIsLoading] = useState(false) // Nuevo estado para el loader
+
   const [data, setData] = React.useState({
     username: '',
     password: '',
@@ -58,30 +61,20 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault()
-    let valid = true
 
-    const newErrors = {
-      username: '',
-      password: '',
+    if (data.username.trim() === '' || data.password.trim() === '') {
+      setErrors({
+        username: data.username.trim() === '' ? 'Por favor, ingresa tu nombre de usuario.' : '',
+        password: data.password.trim() === '' ? 'Por favor, ingresa tu contraseña.' : '',
+      })
+      return
     }
 
-    if (data.username.trim() === '') {
-      newErrors.username = 'Por favor, ingresa tu nombre de usuario.'
-      valid = false
-    }
-
-    if (data.password.trim() === '') {
-      newErrors.password = 'Por favor, ingresa tu contraseña.'
-      valid = false
-    }
-
-    setErrors(newErrors)
-
-    if (!valid) return
+    setIsLoading(true) // Activar loader
 
     try {
-      const token = localStorage.getItem('token')
       const response = await reqAuthLogin(data)
+      const token = localStorage.getItem('token')
 
       if (!token) {
         localStorage.setItem('token', response.data)
@@ -89,19 +82,24 @@ const Login = () => {
       }
     } catch (error) {
       console.log(error)
+    } finally {
+      setIsLoading(false) // Desactivar loader al terminar
     }
   }
 
   return (
-    <AuthBody onClick={(e) => handleLogin(e)}>
-      <AuthHeader title='Sign In' description='Enter your email and password to sign in!' />
-      <ContinueWithGoogle />
-      <Or />
-      <AuthForm inputs={loginInputs} handleChange={handleChange} errors={errors} />
-      <AuthLoginOptions />
-      <AuthSubmit label='Sign In' />
-      <AuthFooter href='/#/register' label='Not registered yet?' hrefLabel='Create an Account' />
-    </AuthBody>
+    <>
+      {isLoading && <Loader />} {/* Loader cubre toda la pantalla */}
+      <AuthBody onClick={(e) => handleLogin(e)}>
+        <AuthHeader title='Sign In' description='Enter your email and password to sign in!' />
+        <ContinueWithGoogle />
+        <Or />
+        <AuthForm inputs={loginInputs} handleChange={handleChange} errors={errors} />
+        <AuthLoginOptions />
+        <AuthSubmit label='Sign In' />
+        <AuthFooter href='/#/register' label='Not registered yet?' hrefLabel='Create an Account' />
+      </AuthBody>
+    </>
   )
 }
 

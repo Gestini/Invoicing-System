@@ -22,7 +22,7 @@ export interface ProductModel {
   updatedAt: string
   status: boolean
   supplierUnit?: SupplierModel
-  depositUnit?: WarehouseModel
+  deposit?: WarehouseModel
   pricePolicy: string
   net1: number
   net2: number

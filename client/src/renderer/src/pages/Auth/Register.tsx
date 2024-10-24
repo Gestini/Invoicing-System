@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Or } from '../../components/Auth/Or'
 import { AuthBody } from '../../components/Auth/AuthBody'
 import { AuthForm } from '../../components/Auth/AuthInputForm'
@@ -11,6 +11,7 @@ import { reqAuthRegister } from '@renderer/api/requests'
 import { validatePassword } from '@renderer/utils/validatePassword'
 import { ContinueWithGoogle } from '../../components/Auth/ContinueWithGoogle'
 import './Auth.scss'
+import Loader from '@renderer/components/loader/loader'
 
 const Register = () => {
   const navigate = useNavigate()
@@ -28,6 +29,8 @@ const Register = () => {
     password: '',
     repeatPassword: '',
   })
+
+  const [isLoading, setIsLoading] = useState(false) // Estado para mostrar el loader
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -118,12 +121,15 @@ const Register = () => {
     if (!valid) {
       return
     }
+    setIsLoading(true)
 
     try {
       await reqAuthRegister(data)
       navigate('/login')
     } catch (error) {
       console.log(error)
+    } finally {
+      setIsLoading(false) // Desactivar loader
     }
   }
 
@@ -145,14 +151,17 @@ const Register = () => {
   }
 
   return (
-    <AuthBody onClick={(e) => handleRegister(e)}>
-      <AuthHeader title='Register' description='Register a new account' />
-      <ContinueWithGoogle />
-      <Or />
-      <AuthForm inputs={registerInputs} handleChange={handleChange} errors={errors} />
-      <AuthSubmit label='Register' />
-      <AuthFooter href='/#/login' label='You registered yet?' hrefLabel='Click here' />
-    </AuthBody>
+    <>
+      {isLoading && <Loader />}
+      <AuthBody onClick={(e) => handleRegister(e)}>
+        <AuthHeader title='Register' description='Register a new account' />
+        <ContinueWithGoogle />
+        <Or />
+        <AuthForm inputs={registerInputs} handleChange={handleChange} errors={errors} />
+        <AuthSubmit label='Register' />
+        <AuthFooter href='/#/login' label='You registered yet?' hrefLabel='Click here' />
+      </AuthBody>
+    </>
   )
 }
 

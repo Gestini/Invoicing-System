@@ -31,6 +31,7 @@
     "axios": "^1.7.2",
     "chart.js": "^4.4.3",
     "cloudinary": "^2.5.0",
+    "discord-rpc-electron": "^4.0.2",
     "echarts": "^5.5.0",
     "electron-updater": "^6.1.7",
     "framer-motion": "^11.2.10",

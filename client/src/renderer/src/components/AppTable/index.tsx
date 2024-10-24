@@ -17,6 +17,7 @@ import {
   TableColumn,
   SortDescriptor,
 } from '@nextui-org/react'
+import { PlantIcon } from '../Icons/PlantIcon'
 
 export const AppTable = ({
   inputCell,
@@ -116,9 +117,11 @@ export const AppTable = ({
       shadow='none'
       isCompact
       selectionMode='multiple'
+      className='h-full'
       classNames={{
-        wrapper: ['bg-transparent', 'p-0', 'hoverScrollbar'],
         th: ['bg-transparent', 'text-default-500', 'border-b', 'border-divider'],
+        table: [`${items.length === 0 && 'h-full'}`],
+        wrapper: ['p-0 h-full overflow-y-auto  hoverScrollbar bg-transparent'],
       }}
       bottomContent={
         <BottomContent
@@ -143,10 +146,10 @@ export const AppTable = ({
           columnsData={columnsData}
           filterValue={filterValue}
           statusFilter={statusFilter}
-          setFilterValue={setFilterValue}
-          setStatusFilter={setStatusFilter}
           addItemModal={addItemModal}
           editItemModal={editItemModal}
+          setFilterValue={setFilterValue}
+          setStatusFilter={setStatusFilter}
         />
       }
       topContentPlacement='outside'
@@ -164,25 +167,32 @@ export const AppTable = ({
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent='Sin resultados' items={sortedItems}>
-        {(item) => {
-          return (
-            <TableRow key={item.id}>
-              {(columnKey) => (
-                <TableCell className='default-text-color capitalize'>
-                  <RenderCell
-                    item={item}
-                    columnKey={columnKey}
-                    inputCell={inputCell}
-                    dropdownAction={dropdownAction}
-                    handleDeleteItem={handleDeleteItem}
-                    handleSetCurrentIdEdit={handleSetCurrentIdEdit}
-                  />
-                </TableCell>
-              )}
-            </TableRow>
-          )
-        }}
+      <TableBody
+        emptyContent={
+          <div className='w-full flex justify-center flex-col items-center'>
+            <PlantIcon />
+            <p className='text-c-title'>Upss!, No tienes registros</p>
+            <span>Presiona agregar para empezar</span>
+          </div>
+        }
+
+        items={sortedItems}>
+        {(item) => (
+          <TableRow key={item.id}>
+            {(columnKey) => (
+              <TableCell className='default-text-color capitalize'>
+                <RenderCell
+                  item={item}
+                  columnKey={columnKey}
+                  inputCell={inputCell}
+                  dropdownAction={dropdownAction}
+                  handleDeleteItem={handleDeleteItem}
+                  handleSetCurrentIdEdit={handleSetCurrentIdEdit}
+                />
+              </TableCell>
+            )}
+          </TableRow>
+        )}
       </TableBody>
     </Table>
   )

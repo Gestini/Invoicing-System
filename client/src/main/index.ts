@@ -1,11 +1,15 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
-import { join } from 'path'
-import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+import { join } from 'path'
+import DiscordRPC from 'discord-rpc-electron'
+import { electronApp, optimizer, is } from '@electron-toolkit/utils'
+import { app, shell, BrowserWindow, ipcMain } from 'electron'
+
+let mainWindow: BrowserWindow;
+const clientId = '1297973891284729929'
 
 function createWindow(): void {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     minWidth: 1200,
     minHeight: 670,
     maxHeight: 1080,
@@ -36,6 +40,41 @@ function createWindow(): void {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
 }
+
+// Only needed if you want to use spectate, join, or ask to join
+DiscordRPC.register(clientId);
+
+const rpc = new DiscordRPC.Client({ transport: 'ipc' });
+const startTimestamp = new Date();
+
+async function setActivity() {
+  if (!rpc || !mainWindow) {
+    return;
+  }
+
+  rpc.setActivity({
+    details: 'Mirando sucursales',
+    state: 'Gestionado empresas',
+    startTimestamp,
+    largeImageKey: 'snek_large',
+    largeImageText: 'tea is delicious',
+    smallImageKey: 'snek_small',
+    smallImageText: 'i am my own pillows',
+    instance: false,
+  });
+}
+
+rpc.on('ready', () => {
+  setActivity();
+
+  // activity can only be set every 15 seconds
+  setInterval(() => {
+    setActivity();
+  }, 15e3);
+});
+
+rpc.login({ clientId }).catch(console.error);
+
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.

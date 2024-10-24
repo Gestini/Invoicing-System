@@ -10,7 +10,7 @@ export const PageLayout = ({ icon, title, section, children, routesLength }) => 
     <div className='w-full h-full flex-col flex pl-[100px] md:pl-0'>
       <Navbar />
       {unit.id && (
-        <div className='flex  h-full flex-col gap-4 pr-3 pl-3 pb-3 overflow-y-auto'>
+        <div className='flex h-full flex-col gap-4 pr-3 pl-3 pb-3 overflow-y-auto'>
           {routesLength === 1 ? (
             <div>
               <h6 className='font-semibold flex items-center text-[#4f4d4d]'>

@@ -120,7 +120,7 @@ export const GraphView = () => {
             <ChartComponent
               data={item.initialData}
               colors={item.colors}
-              sidebarState={sidebarState.isActive}
+              sidebarState={sidebarState.isActive || false}
             />
           </CardBody>
         </Card>
