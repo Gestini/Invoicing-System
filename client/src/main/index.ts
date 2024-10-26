@@ -1,13 +1,11 @@
-import dotenv from "dotenv"
-dotenv.config()
 import icon from '../../resources/icon.png?asset'
 import { join } from 'path'
-import DiscordRPC from "discord-rpc-electron"
+import DiscordRPC from 'discord-rpc-electron'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import { app, shell, BrowserWindow, ipcMain } from 'electron'
 
 let mainWindow: BrowserWindow;
-const clientId = process.env.CLIENT_ID;
+const clientId = '1297973891284729929'
 
 function createWindow(): void {
   // Create the browser window.

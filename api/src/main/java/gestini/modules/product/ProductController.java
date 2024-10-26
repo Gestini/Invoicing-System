@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
+import gestini.modules.product.dto.SaveProductsDto;
 import gestini.modules.product.models.ProductModel;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
@@ -38,6 +39,12 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<?> createProduct(@Valid @RequestBody ProductModel product) {
         return productService.createProduct(product);
+    }
+
+    @PostMapping("/save-products/{depositId}")
+    public ResponseEntity<?> saveProducts(@PathVariable("depositId") Long depositId,
+            @Valid @RequestBody SaveProductsDto body) {
+        return productService.saveProducts(body, depositId);
     }
 
     @PutMapping("/edit/{id}")
