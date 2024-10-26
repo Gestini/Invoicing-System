@@ -1,8 +1,8 @@
 const columns = [
-  { name: 'NOMBRE DEL PRODUCTO', uid: 'name' },
-  { name: 'CATEGORÍA', uid: 'category' },
-  { name: 'PRECIO', uid: 'cardPrice', sortable: true },
   { name: 'CANTIDAD', uid: 'quantity', sortable: true },
+  { name: 'NOMBRE DEL PRODUCTO', uid: 'name' },
+  { name: 'STOCK', uid: 'totalquantity' },
+  { name: 'PRECIO', uid: 'cardPrice', sortable: true },
   { name: 'ACCIÓN', uid: 'actions' },
 ]
 
