@@ -1,29 +1,52 @@
 package gestini.config;
 
+import org.springdoc.core.customizers.OperationCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.parameters.Parameter;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 
 @Configuration
-@Profile("dev")
 public class OpenAPIConfig {
 
   @Bean
   public OpenAPI customOpenAPI() {
+    final String securitySchemeName = "BearerAuth";
+
     return new OpenAPI()
-        .info(new Info()
-            .title("Gestini")
-            .version("1.0")
-            .description("API para la aplicación Gestini"))
-        .components(new Components()
-            .addSecuritySchemes("BearerAuth", new SecurityScheme()
-                .type(SecurityScheme.Type.HTTP)
-                .scheme("bearer")
-                .bearerFormat("JWT")));
+        .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
+        .components(
+            new Components()
+                .addSecuritySchemes(securitySchemeName,
+                    new SecurityScheme()
+                        .name(securitySchemeName)
+                        .type(SecurityScheme.Type.HTTP)
+                        .scheme("bearer")
+                        .bearerFormat("JWT")))
+        .info(new Info().title("Gestini").version("1.0.0"));
+  }
+
+  @Bean
+  public OperationCustomizer customizeOperation() {
+    return (operation, handlerMethod) -> {
+      if (operation.getSecurity() != null && operation.getSecurity().stream()
+          .anyMatch(securityRequirement -> securityRequirement.containsKey("UnitAccess"))) {
+
+        Parameter unitIdHeader = new Parameter()
+            .in("header")
+            .name("X-UnitId")
+            .required(true)
+            .description("Required unit ID for access control")
+            .schema(new io.swagger.v3.oas.models.media.StringSchema());
+
+        operation.addParametersItem(unitIdHeader);
+      }
+      return operation;
+    };
   }
 }
