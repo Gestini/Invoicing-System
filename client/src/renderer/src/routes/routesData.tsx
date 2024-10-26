@@ -29,7 +29,6 @@ import {
   MdPeople,
   MdDashboard,
   MdWarehouse,
-  MdAssessment,
   MdAttachMoney,
   MdPointOfSale,
   MdShoppingCart,
@@ -68,14 +67,6 @@ const generalRoutes: RouteSection = {
   path: '/dashboard/:companyId/:unitId?',
   section: 'Dashboard',
   routes: [{ path: '', element: <Dashboard />, title: 'tablero' }],
-}
-
-const plansRoutes: RouteSection = {
-  icon: <MdAssessment />,
-  path: '/plans/:companyId/:unitId',
-  section: 'Planes',
-  routes: [{ path: '', element: <Plans />, title: 'planes' }],
-  permission: permissions.admin.permission,
 }
 
 const warehouseRoutes: RouteSection = {
@@ -203,7 +194,6 @@ const ecommerceRoutes: RouteSection = {
 export const routes = [
   hrRoutes,
   posRoutes,
-  plansRoutes,
   adminRoutes,
   generalRoutes,
   warehouseRoutes,
@@ -227,7 +217,6 @@ export const routes = [
 
 export const sidebarRoutes: RouteSection[] = [
   generalRoutes,
-  plansRoutes,
   documentsRoutes,
   warehouseRoutes,
   hrRoutes,

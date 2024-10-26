@@ -3,6 +3,7 @@ import { RootState } from '@renderer/store'
 import { useSelector } from 'react-redux'
 import { SearchProduct } from './SarchProduct'
 import { reqCreateInvoice } from '@renderer/api/requests'
+import { SearchClient } from './SarchClient'
 
 export const TopContent = () => {
   const unit = useSelector((state: RootState) => state.currentUnit)
@@ -23,16 +24,9 @@ export const TopContent = () => {
   }
 
   return (
-    <div className='flex gap-2'>
+    <div className='flex gap-2 flex-col'>
+      <SearchClient />
       <SearchProduct />
-      <Button
-        className='bg-c-primary-variant-1'
-        color='secondary'
-        onPress={() => onSubmmit()}
-        radius='sm'
-      >
-        Crear factura
-      </Button>
     </div>
   )
 }
