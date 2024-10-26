@@ -16,7 +16,7 @@ import { useParams } from 'react-router-dom'
 import { CreateRoleModal } from '../Modals/CreateRoleModal'
 import { useSelector, useDispatch } from 'react-redux'
 import { setCurrentRoleId, setInitialUsersRole } from '@renderer/features/roleSlice'
-import { reqGetRoletByUnit, reqLoadEmployeeByRole } from '@renderer/api/requests'
+import { reqGetRolesByUnit, reqLoadEmployeeByRole } from '@renderer/api/requests'
 
 export const RoleTable = () => {
   const params = useParams()
@@ -28,7 +28,7 @@ export const RoleTable = () => {
   React.useEffect(() => {
     const loadData = async () => {
       try {
-        const response = await reqGetRoletByUnit(params.unitId)
+        const response = await reqGetRolesByUnit(params.unitId)
 
         dispatch(setRoles(response.data))
 
