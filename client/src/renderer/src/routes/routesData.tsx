@@ -88,15 +88,6 @@ const warehouseRoutes: RouteSection = {
     { path: '/brands', element: <Products />, title: 'inventario' },
     { path: '/suppliers', element: <SupplierTable />, title: 'Proveedores' },
     { path: '/categories', element: <></>, title: 'categorías' },
-    // { path: '/price-management', element: <></>, title: 'gestion de precios' },
-    // {
-    //   path: '/stock-movements',
-    //   element: <></>,
-    //   title: 'movimientos de inventario',
-    // },
-    // { path: '/inventory-list', element: <></>, title: 'lista de inventario' },
-    // { path: '/reception-management', element: <></>, title: 'recepción' },
-    // { path: '/consumptions', element: <></>, title: 'consumos' },
   ],
 }
 
@@ -228,7 +219,7 @@ export const routes = [
         icon: item.icon,
         path: item.path + route.path,
         routesLength: item.routes.length,
-        permission: item.permission || 'none',
+        permission: item.permission || 'DEFAULT_ACCESS',
       })),
     ),
   [],
