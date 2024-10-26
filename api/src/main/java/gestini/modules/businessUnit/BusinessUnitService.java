@@ -1,8 +1,6 @@
 package gestini.modules.businessUnit;
 
 import java.lang.reflect.Field;
-import java.security.Key;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -16,20 +14,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
 import gestini.modules.businessUnit.models.BusinessUnitModel;
-import gestini.modules.businessUnit.models.BusinessUnitPlanModel;
-import gestini.modules.businessUnit.repositories.BusinessUnitsPlanRepository;
 import gestini.modules.businessUnit.repositories.BusinessUnitsRepository;
 import gestini.modules.employee.models.EmployeeModel;
 import gestini.modules.employee.repositories.EmployeeRepository;
-import gestini.modules.plan.models.PlanModel;
-import gestini.modules.plan.repositories.PlanRepository;
 import gestini.modules.user.models.User;
 
 @Service
@@ -39,12 +28,6 @@ public class BusinessUnitService {
 
     @Autowired
     private EmployeeRepository employeeRepository;
-
-    @Autowired
-    private BusinessUnitsPlanRepository businessUnitsPlanRepository;
-
-    @Autowired
-    private PlanRepository planRepository;
 
     @Value("${secretKeyPlan}")
     private String SECRET_KEY_PLAN;
@@ -182,53 +165,6 @@ public class BusinessUnitService {
         }
     }
 
-    public ResponseEntity<?> assingPlan(String token) {
-        try {
-            // Obtener todas las Claims del token
-            Claims claims = getAllClaims(token);
-
-            // Extraer información específica del token
-            Long planId = claims.get("planId", Long.class);
-            Long unitId = claims.get("unitId", Long.class);
-
-            // Verifica que el PlanModel existe
-            PlanModel selectedPlan = planRepository.findById(planId)
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Plan no encontrado"));
-
-            // Verifica que la Unidad de Negocio existe
-            BusinessUnitModel selectedUnit = businessUnitsRepository.findById(unitId)
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Unidad no encontrada"));
-
-            // Elimina el plan actual si existe
-            BusinessUnitPlanModel currentPlan = selectedUnit.getPlan();
-            if (currentPlan != null) {
-                // Elimina la referencia al plan actual en la unidad de negocio
-                selectedUnit.setPlan(null);
-                businessUnitsRepository.save(selectedUnit);
-
-                // Elimina el plan actual
-                businessUnitsPlanRepository.delete(currentPlan);
-            }
-
-            // Crear el objeto BusinessUnitPlanModel
-            BusinessUnitPlanModel businessUnitPlan = new BusinessUnitPlanModel();
-            businessUnitPlan.setCreatedAt(LocalDate.now());
-            businessUnitPlan.setEndDate(LocalDate.now().plusMonths(1));
-            businessUnitPlan.setPlan(selectedPlan);
-
-            // Guardar el nuevo plan en la base de datos
-            BusinessUnitPlanModel savedPlan = businessUnitsPlanRepository.save(businessUnitPlan);
-
-            // Actualizar la unidad de negocio para referirse al nuevo plan asignado
-            selectedUnit.setPlan(savedPlan);
-            businessUnitsRepository.save(selectedUnit);
-
-            return ResponseEntity.status(HttpStatus.OK).body("Plan asignado correctamente a la unidad de negocio");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("Ocurrió un error inesperado");
-        }
-    }
-
     public ResponseEntity<?> updateBusinessUnit(Long id, BusinessUnitModel updatedData) {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -250,20 +186,6 @@ public class BusinessUnitService {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error");
         }
-    }
-
-    private Key getKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY_PLAN);
-        return Keys.hmacShaKeyFor(keyBytes);
-    }
-
-    private Claims getAllClaims(String token) {
-        return Jwts
-                .parserBuilder()
-                .setSigningKey(getKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
     }
 
     private void copyNonNullProperties(BusinessUnitModel source, BusinessUnitModel target) {

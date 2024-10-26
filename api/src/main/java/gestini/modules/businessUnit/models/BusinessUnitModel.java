@@ -3,6 +3,7 @@ package gestini.modules.businessUnit.models;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import gestini.modules.company.models.CompanyModel;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,9 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import gestini.modules.company.models.CompanyModel;
 
 @Entity
 @Table(name = "business_unit")
@@ -44,10 +43,6 @@ public class BusinessUnitModel {
     @JoinColumn(name = "company_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private CompanyModel company;
-
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "current_plan_id", nullable = true)
-    private BusinessUnitPlanModel plan;
 
     public Long getId() {
         return id;
@@ -103,14 +98,6 @@ public class BusinessUnitModel {
 
     public void setCompany(CompanyModel company) {
         this.company = company;
-    }
-
-    public BusinessUnitPlanModel getPlan() {
-        return plan;
-    }
-
-    public void setPlan(BusinessUnitPlanModel plan) {
-        this.plan = plan;
     }
 
     public String getAddress() {

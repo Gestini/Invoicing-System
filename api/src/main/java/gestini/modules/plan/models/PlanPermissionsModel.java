@@ -1,4 +1,4 @@
-package gestini.modules.role.models;
+package gestini.modules.plan.models;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -20,8 +20,9 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "role_permissions")
-public class RolePermissionsModel {
+@Table(name = "plan_permissions")
+public class PlanPermissionsModel {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,11 +32,11 @@ public class RolePermissionsModel {
     private Permission name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "role_id", nullable = false)
-    @NotNull(message = "El rol no puede ser nulo")
+    @JoinColumn(name = "plan_id", nullable = false)
+    @NotNull(message = "Plan cannot be null")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonBackReference("permRef")
-    private RoleModel role;
+    @JsonBackReference("planPermRef")
+    private PlanModel plan;
 
     public Long getId() {
         return id;
@@ -53,11 +54,12 @@ public class RolePermissionsModel {
         this.name = name;
     }
 
-    public RoleModel getRole() {
-        return role;
+    public PlanModel getPlan() {
+        return plan;
     }
 
-    public void setRole(RoleModel role) {
-        this.role = role;
+    public void setPlan(PlanModel plan) {
+        this.plan = plan;
     }
+
 }

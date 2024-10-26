@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import gestini.modules.plan.dto.AddPermsDto;
 import gestini.modules.plan.models.PlanModel;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -35,6 +37,16 @@ public class PlanController {
         return planService.editPlanById(planId, newData);
     }
 
+    @PostMapping("/add-perms/{planId}")
+    public ResponseEntity<?> addPermission(@RequestParam Long planId, @Valid @RequestBody AddPermsDto body) {
+        return planService.addPermission(planId, body);
+    }
+
+    @DeleteMapping("/remove-perms/{planId}")
+    public ResponseEntity<?> removePermission(@RequestParam Long permissionId) {
+        return planService.removePermission(permissionId);
+    }
+
     @DeleteMapping("/delete/{planId}")
     public ResponseEntity<?> deltePlanById(@PathVariable("planId") Long planId) {
         return planService.deletePlan(planId);
@@ -48,6 +60,11 @@ public class PlanController {
     @GetMapping("/get/{planId}")
     public ResponseEntity<?> getPlanById(@PathVariable("planId") Long planId) {
         return planService.getPlanById(planId);
+    }
+
+    @PostMapping("/assign-plan/{token}")
+    public ResponseEntity<?> assingPlan(@PathVariable("token") String token) {
+        return planService.assingPlan(token);
     }
 
 }
