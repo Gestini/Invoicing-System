@@ -1,5 +1,6 @@
 package gestini.modules.company.models;
 
+import gestini.modules.user.models.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -8,9 +9,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
-import gestini.modules.user.models.User;
 
 @Entity
 @Table(name = "company")
@@ -32,6 +33,10 @@ public class CompanyModel {
     @JoinColumn(name = "owner_id", nullable = false)
     @NotNull(message = "Owner id cannot be null")
     private User owner;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "current_plan_id", nullable = true)
+    private CompanyPlanModel plan;
 
     public Long getId() {
         return id;
@@ -71,6 +76,14 @@ public class CompanyModel {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public CompanyPlanModel getPlan() {
+        return plan;
+    }
+
+    public void setPlan(CompanyPlanModel plan) {
+        this.plan = plan;
     }
 
 }
