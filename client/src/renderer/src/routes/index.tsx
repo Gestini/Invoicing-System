@@ -32,26 +32,11 @@ const Router = () => {
           <Route path='/account/edit' element={<User />} />
           <Route path='/invite/:token' element={<UnitInvite />} />
         </Route>
-        <Route element={<LoadCurrentUnitMiddleware />}>
-          <Route
-            path='/payment/:planId/:unitId'
-            element={
-              <SectionPermissionMiddleware permission={'*'}>
-                <PaymentGateway />
-              </SectionPermissionMiddleware>
-            }
-          />
+        <Route element={<LoadCurrentCompanyMiddleware />}>
+          <Route path='/payment/:planId/:companyId' element={<PaymentGateway />} />
         </Route>
         <Route element={<LoadCurrentCompanyMiddleware />}>
           <Route element={<LoadCurrentUnitMiddleware />}>
-            <Route
-              path='/payment/:planId/:unitId'
-              element={
-                <SectionPermissionMiddleware permission={'*'}>
-                  <PaymentGateway />
-                </SectionPermissionMiddleware>
-              }
-            />
             <Route element={<ThemeMiddleware />}>
               <Route element={<SidebarLayout />}>
                 {routes.map((route: RouteData, index: number) => (
