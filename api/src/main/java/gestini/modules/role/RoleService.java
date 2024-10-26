@@ -24,6 +24,7 @@ import gestini.modules.role.repositories.RoleRepository;
 import gestini.modules.role.repositories.RoleUsersRepository;
 import gestini.modules.user.UserService;
 import gestini.modules.user.models.User;
+import gestini.utils.Permission;
 
 @Service
 public class RoleService {
@@ -89,18 +90,18 @@ public class RoleService {
         return employees;
     }
 
-    public Boolean hasPermissions(Long unitId, String permissionName) {
+    public Boolean hasPermissions(Long unitId, Permission permission) {
         User currentUser = userService.getCurrentUser();
-        return roleUsersRepository.hasPermissions(currentUser.getId(), unitId, permissionName);
+        return roleUsersRepository.hasPermissions(currentUser.getId(), unitId, permission);
     }
 
-    public Map<String, Boolean> hasMultiplePermissions(Long unitId, List<String> permissionNames) {
+    public Map<String, Boolean> hasMultiplePermissions(Long unitId, List<Permission> permissionNames) {
         User currentUser = userService.getCurrentUser();
         Map<String, Boolean> results = new HashMap<>();
 
-        for (String permission : permissionNames) {
+        for (Permission permission : permissionNames) {
             boolean hasPermission = roleUsersRepository.hasPermissions(currentUser.getId(), unitId, permission);
-            results.put(permission, hasPermission);
+            results.put(permission.name(), hasPermission);
         }
 
         return results;
