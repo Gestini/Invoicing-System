@@ -13,14 +13,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import gestini.annotations.CheckPermissions;
 import gestini.modules.supplier.dto.SupplierDto;
 import gestini.modules.supplier.models.SupplierModel;
+import gestini.utils.Permission;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/supplier")
-@SecurityRequirement(name = "BearerAuth")
+@SecurityRequirements({
+        @SecurityRequirement(name = "BearerAuth"),
+        @SecurityRequirement(name = "UnitAccess")
+})
+@CheckPermissions(Permission.MANAGE_STOCK)
 public class SupplierController {
 
     @Autowired

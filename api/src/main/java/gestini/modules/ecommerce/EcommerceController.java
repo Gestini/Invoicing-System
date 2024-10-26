@@ -9,14 +9,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import gestini.annotations.CheckPermissions;
 import gestini.modules.ecommerce.models.EcommerceCategoryModel;
 import gestini.modules.ecommerce.models.EcommerceModel;
 import gestini.modules.ecommerce.models.EcommerceProductModel;
+import gestini.utils.Permission;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 
 @RestController
 @RequestMapping("/ecommerce")
-@SecurityRequirement(name = "BearerAuth")
+@SecurityRequirements({
+        @SecurityRequirement(name = "BearerAuth"),
+        @SecurityRequirement(name = "UnitAccess")
+})
+@CheckPermissions(Permission.MANAGE_ECOMMERCE)
 public class EcommerceController {
 
     @Autowired

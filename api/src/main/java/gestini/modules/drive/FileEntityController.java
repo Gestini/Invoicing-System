@@ -12,14 +12,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import gestini.annotations.CheckPermissions;
 import gestini.modules.drive.dto.CreateFileEntityDto;
 import gestini.modules.drive.dto.EditFileEntityDto;
+import gestini.utils.Permission;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/files")
-@SecurityRequirement(name = "BearerAuth")
+@SecurityRequirements({
+        @SecurityRequirement(name = "BearerAuth"),
+        @SecurityRequirement(name = "UnitAccess")
+})
+@CheckPermissions(Permission.MANAGE_DOCUMENTS)
 public class FileEntityController {
 
     @Autowired

@@ -14,13 +14,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
+import gestini.annotations.CheckPermissions;
 import gestini.modules.product.dto.SaveProductsDto;
 import gestini.modules.product.models.ProductModel;
+import gestini.utils.Permission;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 
 @RestController
 @RequestMapping("/product")
-@SecurityRequirement(name = "BearerAuth")
+@SecurityRequirements({
+        @SecurityRequirement(name = "BearerAuth"),
+        @SecurityRequirement(name = "UnitAccess")
+})
+@CheckPermissions(Permission.MANAGE_STOCK)
 public class ProductController {
 
     @Autowired

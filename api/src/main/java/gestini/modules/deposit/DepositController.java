@@ -11,12 +11,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import gestini.annotations.CheckPermissions;
 import gestini.modules.deposit.models.DepositModel;
+import gestini.utils.Permission;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 
 @RestController
 @RequestMapping("/deposit")
-@SecurityRequirement(name = "BearerAuth")
+@SecurityRequirements({
+        @SecurityRequirement(name = "BearerAuth"),
+        @SecurityRequirement(name = "UnitAccess")
+})
+@CheckPermissions(Permission.MANAGE_STOCK)
 public class DepositController {
 
     @Autowired
