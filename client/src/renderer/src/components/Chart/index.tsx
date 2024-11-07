@@ -1,9 +1,11 @@
 import React from 'react'
 import { PieChart } from 'react-minimal-pie-chart'
 import { RootState } from '@renderer/store'
+import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { ChartComponent } from './ChartComponent'
 import { Card, CardBody, CardHeader } from '@nextui-org/react'
+import { reqGetSalesByMonth, reqGetTopSellingProducts } from '@renderer/api/requests'
 
 // Función para convertir un color hex a HSL
 const hexToHSL = (hex: string): [number, number, number] => {
@@ -48,7 +50,7 @@ const generateColorVariants = (mainColor: string, count: number): string[] => {
   const variants: string[] = []
 
   for (let i = 0; i < count; i++) {
-    const newL = (l + i * 3.5) % 100 // ajustar el nivel de luz
+    const newL = (l + i * 13) % 100 // ajustar el nivel de luz
     variants.push(`hsl(${h}, ${s}%, ${newL}%)`)
   }
 
@@ -60,6 +62,10 @@ export const GraphView = () => {
   const [parsedMainColor, setParsedMainColor] = React.useState('transparent')
   const currentTheme = useSelector((state: RootState) => state.user.currentTheme)
   const sidebarState = useSelector((state: RootState) => state.sidebar)
+  const [initialData, setInitialData] = React.useState([])
+  const [topSellingProductos, setTopSellingProducts] = React.useState([])
+  const unit = useSelector((state: RootState) => state.currentUnit)
+  const params = useParams()
 
   React.useEffect(() => {
     const style = getComputedStyle(document.body)
@@ -69,6 +75,16 @@ export const GraphView = () => {
       `rgba(${parseInt(computedMainColor?.slice(1, 3), 16)}, ${parseInt(computedMainColor?.slice(3, 5), 16)}, ${parseInt(computedMainColor?.slice(5, 7), 16)}, 0.1)`,
     )
   }, [currentTheme])
+
+  React.useEffect(() => {
+    reqGetSalesByMonth(unit.id)
+      .then((res) => setInitialData(res.data))
+      .catch(() => setInitialData([]))
+
+    reqGetTopSellingProducts(unit.id)
+      .then((res) => setTopSellingProducts(res.data))
+      .catch(() => setTopSellingProducts([]))
+  }, [unit.id, params.companyId])
 
   const graphList = [
     {
@@ -80,32 +96,21 @@ export const GraphView = () => {
         areaTopColor: mainColor,
         areaBottomColor: parsedMainColor,
       },
-      initialData: [
-        { time: '2018-12-22', value: 1 },
-        { time: '2018-12-23', value: 2 },
-        { time: '2018-12-24', value: 3 },
-        { time: '2018-12-25', value: 5 },
-        { time: '2018-12-26', value: 4 },
-        { time: '2018-12-27', value: 5 },
-        { time: '2018-12-28', value: 6 },
-        { time: '2018-12-29', value: 7 },
-        { time: '2018-12-30', value: 6 },
-        { time: '2018-12-31', value: 7 },
-      ],
+      initialData,
     },
   ]
 
-  const pieChartData = generateColorVariants(mainColor, 7).map((color, index) => ({
-    title: `Variant ${index + 1}`,
-    value: 10, // o cualquier otro valor que necesites
-    color,
+  const pieChartData = topSellingProductos.map((product: any, index: number) => ({
+    title: `Producto: ${product.productName}\nCantidad: ${product.totalQuantitySold}`,
+    value: product.totalQuantitySold, // o cualquier otro valor necesario
+    color: generateColorVariants(mainColor, topSellingProductos.length)[index],
   }))
 
   return (
     <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4'>
       <Card className='w-full z-0' classNames={{ base: 'rounded-lg' }}>
         <CardHeader>
-          <h3 className='font-medium'>Stock</h3>
+          <h3 className='font-medium'>Mas vendido</h3>
         </CardHeader>
         <CardBody className='flex items-center'>
           <PieChart style={{ maxWidth: '220px' }} data={pieChartData} />
@@ -117,11 +122,13 @@ export const GraphView = () => {
             <h3 className='font-medium'>{item.title}</h3>
           </CardHeader>
           <CardBody>
-            <ChartComponent
-              data={item.initialData}
-              colors={item.colors}
-              sidebarState={sidebarState.isActive || false}
-            />
+            {item.initialData.length > 0 && (
+              <ChartComponent
+                data={item.initialData}
+                colors={item.colors}
+                sidebarState={sidebarState.isActive || false}
+              />
+            )}
           </CardBody>
         </Card>
       ))}

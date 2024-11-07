@@ -1,5 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { ColorType, createChart, IChartApi, ISeriesApi } from 'lightweight-charts'
+import { useSelector } from 'react-redux'
+import { RootState } from '@renderer/store'
+import { useParams } from 'react-router-dom'
 
 interface ChartComponentProps {
   data: { time: string; value: number }[]
@@ -17,9 +20,10 @@ export const ChartComponent: React.FC<ChartComponentProps> = ({ data, colors, si
   const chartContainerRef = useRef<HTMLDivElement | null>(null)
   const chartRef = useRef<IChartApi | null>(null)
   const seriesRef = useRef<ISeriesApi<'Area'> | null>(null)
-
+  const unit = useSelector((state: RootState) => state.currentUnit)
   const [isMounted, setIsMounted] = useState(false)
-
+  const params = useParams()
+  
   useEffect(() => {
     setIsMounted(true)
 
@@ -76,7 +80,7 @@ export const ChartComponent: React.FC<ChartComponentProps> = ({ data, colors, si
         chartRef.current.remove()
       }
     }
-  }, [data, colors, sidebarState, isMounted])
+  }, [data, colors, sidebarState, isMounted, unit.id, params.unitId, params.companyId])
 
   return <div ref={chartContainerRef} />
 }
