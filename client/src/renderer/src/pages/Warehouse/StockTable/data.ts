@@ -1,9 +1,9 @@
 export const columnsData = {
   columns: [
+    { name: 'ID', uid: 'id' },
     { name: 'NOMBRE DEL PRODUCTO', uid: 'name' },
     { name: 'CÓDIGO', uid: 'codigo1' },
     { name: 'CATEGORÍA', uid: 'category' },
-    { name: 'ID', uid: 'id' },
     { name: 'PRECIO TARJETA', uid: 'cardPrice', sortable: true },
     { name: 'PRECIO AMIGO', uid: 'friendPrice', sortable: true },
     { name: 'PRECIO FINANCIADO', uid: 'financedPrice', sortable: true },
@@ -15,6 +15,7 @@ export const columnsData = {
     { name: 'Agotado', uid: '1' },
   ],
   InitialVisibleColumns: [
+    'id',
     'codigo1',
     'cardPrice',
     'friendPrice',
