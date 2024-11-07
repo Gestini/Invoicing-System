@@ -13,7 +13,11 @@ import gestini.modules.employee.models.EmployeeModel;
 
 @Repository
 public interface EmployeeRepository extends JpaRepository<EmployeeModel, Long> {
-    List<EmployeeModel> findByBusinessUnitId(Long businessUnitId);
+    @Query("SELECT employee FROM EmployeeModel employee WHERE employee.businessUnit.id = :unitId")
+    List<EmployeeModel> findByBusinessUnitId(@Param("unitId") Long unitId);
+
+    @Query("SELECT employee FROM EmployeeModel employee WHERE employee.businessUnit.id = :unitId AND employee.status = ACTIVE")
+    List<EmployeeModel> findActiveEmployeesByUnitId(@Param("unitId") Long unitId);
 
     List<EmployeeModel> findByUserUsername(String username);
 

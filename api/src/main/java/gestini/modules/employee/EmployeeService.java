@@ -113,6 +113,15 @@ public class EmployeeService {
         }
     }
 
+    public ResponseEntity<?> findActiveEmployeesByUnitId(Long unitId) {
+        try {
+            List<EmployeeModel> employees = employeeRepository.findActiveEmployeesByUnitId(unitId);
+            return ResponseEntity.ok(employees);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error");
+        }
+    }
+
     public List<EmployeeModel> searchEmployeeByName(Long unitId, String name) {
         return employeeRepository.searchEmployeeByName(unitId, name);
     }

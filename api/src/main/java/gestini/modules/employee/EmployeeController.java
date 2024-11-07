@@ -44,6 +44,11 @@ public class EmployeeController {
         return employeeService.getEmployeesByBusinessUnitId(unitId);
     }
 
+    @GetMapping("/get-active-employees-by-unit-id/{unitId}")
+    public ResponseEntity<?> findActiveEmployeesByUnitId(@PathVariable("unitId") Long unitId) {
+        return employeeService.findActiveEmployeesByUnitId(unitId);
+    }
+
     @GetMapping("/get-by-name/{unitId}/{name}")
     public List<EmployeeModel> searchEmployeeByName(@PathVariable("unitId") Long unitId,
             @PathVariable("name") String name) {
