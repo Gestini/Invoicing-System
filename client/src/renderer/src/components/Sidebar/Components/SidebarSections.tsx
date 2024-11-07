@@ -21,7 +21,6 @@ export const SidebarSections = () => {
 
   const user = useSelector((state: RootState) => state.user.user)
   const unit = useSelector((state: RootState) => state.currentUnit)
-  const company = useSelector((state: RootState) => state.currentCompany)
   const documents = useSelector((state: RootState) => state.documents)
   const sidebarState = useSelector((state: RootState) => state.sidebar)
 
@@ -30,7 +29,7 @@ export const SidebarSections = () => {
       ...section,
       path: section.path
         .replace(':unitId', unit?.id ? String(unit.id) : '')
-        .replace(':companyId', company?.id ? String(company.id) : '')
+        .replace(':companyId', unit?.company?.id ? String(unit.company.id) : '')
         .replace(':fileId', documents.currentPath?.id ? String(documents.currentPath.id) : ''),
     }
   })

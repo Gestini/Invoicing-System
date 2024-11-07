@@ -20,7 +20,6 @@ import { reqGetBusinessUnitsByCompanyIdAndWithUserAsOwnerOrEmployee } from '@ren
 export const SelectUnitDropdown = ({ activeSidebar }) => {
   const navigate = useNavigate()
   const unit = useSelector((state: RootState) => state.currentUnit)
-  const company = useSelector((state: RootState) => state.currentCompany)
   const [isOpen, setIsOpen] = React.useState(false)
   const [sucursales, setSucursales] = React.useState([])
   const [__, toggleCreateUnitModal] = useModal(modalTypes.createUnitModal)
@@ -30,7 +29,7 @@ export const SelectUnitDropdown = ({ activeSidebar }) => {
     const loadData = async () => {
       if (isOpen) {
         const response = await reqGetBusinessUnitsByCompanyIdAndWithUserAsOwnerOrEmployee(
-          company.id,
+          unit.company.id,
         )
         setSucursales(response.data)
       }
@@ -63,10 +62,7 @@ export const SelectUnitDropdown = ({ activeSidebar }) => {
                       <ShortCellValue cellValue={unit.name} maxLength={15} />
                     </h3>
                     <p className='text-c-text opacity-50 whitespace-nowrap'>
-                      <ShortCellValue
-                        cellValue={unit.address || company.description}
-                        maxLength={25}
-                      />
+                      <ShortCellValue cellValue={unit.company.description} maxLength={25} />
                     </p>
                   </div>
                   <IoIosArrowDown className='text-c-text opacity-50 text-[14px] mr-1' />
@@ -91,7 +87,7 @@ export const SelectUnitDropdown = ({ activeSidebar }) => {
           }}
           selectedKeys={[String(unit.id)]}
           onAction={(key) =>
-            !String(key).includes('key') && navigate('/dashboard/' + company.id + '/' + key)
+            !String(key).includes('key') && navigate('/dashboard/' + unit.company.id + '/' + key)
           }
         >
           <DropdownSection title='Sucursales disponibles' showDivider items={sucursales}>
