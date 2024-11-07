@@ -17,7 +17,6 @@ import { useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { reqCreateSupplier } from '@renderer/api/requests'
 import { modalTypes, useModal } from '@renderer/utils/useModal'
-import './ProductAdd.scss'
 
 export const AddSupplierModal = () => {
   const dispatch = useDispatch()

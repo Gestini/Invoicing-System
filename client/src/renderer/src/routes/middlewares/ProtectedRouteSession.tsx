@@ -1,10 +1,9 @@
 import React from 'react'
-import { api } from '@renderer/api/axios'
+import { Outlet } from 'react-router-dom'
 import { Navigate } from 'react-router-dom'
 import { setMyUser } from '@renderer/features/userSlice'
 import { RootState } from '@renderer/store'
 import { useLocation } from 'react-router-dom'
-import { Outlet, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { reqAuthLoadProfileByToken } from '@renderer/api/requests'
 
@@ -15,8 +14,6 @@ export const ProtectedRouteSession = () => {
 
   if (!token) return <Navigate to='/login' />
   const user = useSelector((state: RootState) => state.user.user)
-
-  const params = useParams()
 
   React.useEffect(() => {
     const loadProfile = async () => {
@@ -40,19 +37,6 @@ export const ProtectedRouteSession = () => {
             ]),
           )
         }
-
-        api.interceptors.request.use(
-          (config) => {
-            if (params.unitId) {
-              config.headers['X-UnitId'] = params.unitId
-            }
-
-            return config
-          },
-          (error) => {
-            return Promise.reject(error)
-          },
-        )
 
         const partseSessions = JSON.parse(currentSessions)
         const AuxSessions = [...partseSessions]

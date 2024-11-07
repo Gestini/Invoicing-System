@@ -73,15 +73,12 @@ export const CreateUnitModal = () => {
     try {
       let imageUrl: string | undefined = undefined
 
-      // Check if file is not null before uploading
       if (file) {
-        imageUrl = (await uploadImage(file)) || undefined // Handle potential null response
+        imageUrl = (await uploadImage(file)) || undefined
       }
 
-      // Update the state `data` with the URL of the image
       setData((prev) => ({ ...prev, image: imageUrl }))
 
-      // Wait for `data` state to be updated with the image
       const updatedData = {
         ...data,
         image: imageUrl,
@@ -90,7 +87,6 @@ export const CreateUnitModal = () => {
         },
       }
 
-      // Send the data to the backend
       await reqCreateUnit(updatedData)
       setLoading(false)
       toggleModal()
