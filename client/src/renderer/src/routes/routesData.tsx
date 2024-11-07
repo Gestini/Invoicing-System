@@ -1,6 +1,5 @@
 import React from 'react'
 
-import Plans from '@renderer/pages/PaymentGateway/Plans'
 import Users from '@renderer/pages/Users'
 import Shops from '@renderer/pages/Settings/Shops'
 import Products from '@renderer/pages/Products'
@@ -36,6 +35,8 @@ import {
 } from 'react-icons/md'
 
 import { LoadCurrentFilesMiddleware } from './middlewares/LoadCurrentFilesMiddleware'
+import { DiscountTable } from '@renderer/pages/DiscountTable'
+import { ProductCategoryTable } from '@renderer/pages/ProductCategoryTable'
 
 export interface RouteData {
   path: string
@@ -78,7 +79,7 @@ const warehouseRoutes: RouteSection = {
     { path: '/product-management', element: <Warehouse />, title: 'Depósitos' },
     { path: '/brands', element: <Products />, title: 'inventario' },
     { path: '/suppliers', element: <SupplierTable />, title: 'Proveedores' },
-    { path: '/categories', element: <></>, title: 'categorías' },
+    { path: '/categories', element: <ProductCategoryTable />, title: 'categorías' },
   ],
 }
 
@@ -150,6 +151,7 @@ const operationsRoutes: RouteSection = {
     { path: '/invoicing', element: <InvoicingTable />, title: 'facturación' },
     { path: '/afip', element: <Facturation />, title: 'Facturación AFIP' },
     { path: '/clients', element: <ClientTable />, title: 'clientes' },
+    { path: '/discounts', element: <DiscountTable />, title: 'descuentos' },
     { path: '/reports', element: <></>, title: 'informes' },
     { path: '/orders', element: <></>, title: 'órdenes' },
   ],
