@@ -16,9 +16,10 @@ public interface BusinessUnitsRepository extends JpaRepository<BusinessUnitModel
 
         @Query("SELECT unit FROM BusinessUnitModel unit " +
                         "LEFT JOIN EmployeeModel e ON e.businessUnit = unit " +
-                        "WHERE unit.company.id = :companyId AND " +
-                        "(unit.company.owner.id = :userId) OR (e.user.id = :userId AND e.status = ACTIVE)")
-        List<BusinessUnitModel> findBusinessUnitsByCompanyIdAndWithUserAsOwnerOrEmployee(@PathVariable("companyId") Long companyId,
+                        "WHERE (unit.company.owner.id = :userId OR e.user.id = :userId AND e.status = ACTIVE) " +
+                        "AND unit.company.id = :companyId")
+        List<BusinessUnitModel> findBusinessUnitsByCompanyIdAndWithUserAsOwnerOrEmployee(
+                        @PathVariable("companyId") Long companyId,
                         @PathVariable("userId") Long userId);
 
         @Query("SELECT unit FROM BusinessUnitModel unit WHERE unit.company.id = :companyId")
