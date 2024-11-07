@@ -11,12 +11,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import gestini.annotations.CheckPermissions;
 import gestini.modules.supplier.dto.SupplierDto;
 import gestini.modules.supplier.models.SupplierModel;
 import gestini.utils.Permission;
+import gestini.utils.UnitContext;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import jakarta.validation.Valid;
@@ -51,6 +53,11 @@ public class SupplierController {
     @GetMapping("/by-business-unit/{unitId}")
     public ResponseEntity<?> getSuppliersByBusinessUnit(@PathVariable Long unitId) {
         return supplierService.getSuppliersByBusinessUnit(unitId);
+    }
+
+    @GetMapping("/search-by-name")
+    public List<SupplierModel> searchSupplierByName(@RequestParam("name") String name) {
+        return supplierService.searchSupplierByName(UnitContext.getUnitId(), name);
     }
 
     @PutMapping("/edit/{id}")
