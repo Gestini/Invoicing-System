@@ -18,12 +18,17 @@ import { Checkbox } from '@nextui-org/react'
 import { RootState } from '@renderer/store'
 import { handleValidation } from './utils'
 import { useDispatch, useSelector } from 'react-redux'
-import { reqCreateProduct, reqGetSupplier } from '@renderer/api/requests'
+import {
+  reqGetSupplier,
+  reqCreateProduct,
+  reqFindAllProductCategoriesFromUnit,
+} from '@renderer/api/requests'
 
 export const AddProductModal = () => {
   const dispatch = useDispatch()
   const unit = useSelector((state: RootState) => state.currentUnit)
   const [suppliers, setSuppliers] = React.useState([])
+  const [productCategories, setProductCategories] = React.useState([])
   const [errors, setErrors] = React.useState({ name: '' })
   const warehouse = useSelector((state: RootState) => state.unit.warehouse)
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
@@ -40,6 +45,10 @@ export const AddProductModal = () => {
 
     reqGetSupplier(unit.id)
       .then((res) => setSuppliers(res.data))
+      .catch(console.log)
+
+    reqFindAllProductCategoriesFromUnit()
+      .then((res) => setProductCategories(res.data))
       .catch(console.log)
   }, [isOpen])
 
@@ -115,13 +124,22 @@ export const AddProductModal = () => {
                   labelPlacement='outside'
                   placeholder='Selecciona una categoria'
                   variant='bordered'
+                  isDisabled={productCategories.length === 0}
                   name='category'
-                  onChange={handleChange}
+                  onChange={(e) =>
+                    setInfo((prev) => ({
+                      ...prev,
+                      category: {
+                        id: e.target.value,
+                      },
+                    }))
+                  }
                   size='sm'
                   className='text-c-title'
                 >
-                  <SelectItem key={'electricidad'}>Proveedor</SelectItem>
-                  <SelectItem key={'materiales'}>materiales</SelectItem>
+                  {productCategories.map((item: any) => (
+                    <SelectItem key={item.id}>{item.name}</SelectItem>
+                  ))}
                 </Select>
                 <Input
                   name='quantity'
@@ -170,6 +188,7 @@ export const AddProductModal = () => {
                   placeholder='Selecciona un proveedor'
                   variant='bordered'
                   name='supplierUnit'
+                  isDisabled={suppliers.length === 0}
                   onChange={(e) =>
                     setInfo((prev) => ({
                       ...prev,
@@ -341,7 +360,7 @@ export const AddProductModal = () => {
                   }
                 />
               </div>
-              <div className='rowmodalpricesproduct  flex items-start justify-start gap-3'>
+              <div className='md:flex-row flex flex-col items-start justify-start gap-3'>
                 <Select
                   label='Tipo IVA'
                   labelPlacement='outside'
