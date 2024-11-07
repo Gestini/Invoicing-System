@@ -16,6 +16,7 @@ import { LoadCurrentUnitMiddleware } from './middlewares/LoadCurrentUnitMiddlewa
 import { SectionPermissionMiddleware } from './middlewares/SectionPermissionMiddleware'
 import { LoadCurrentCompanyMiddleware } from './middlewares/LoadCurrentCompanyMiddleware'
 import { routes, authRoutes, RouteData } from './routesData'
+import { RequestInterceptorMiddleware } from './middlewares/RequestInterceptorMiddleware'
 
 const Router = () => {
   return (
@@ -37,26 +38,28 @@ const Router = () => {
         </Route>
         <Route element={<LoadCurrentCompanyMiddleware />}>
           <Route element={<LoadCurrentUnitMiddleware />}>
-            <Route element={<ThemeMiddleware />}>
-              <Route element={<SidebarLayout />}>
-                {routes.map((route: RouteData, index: number) => (
-                  <Route
-                    key={index}
-                    path={route.path}
-                    element={
-                      <SectionPermissionMiddleware permission={route.permission}>
-                        <PageLayout
-                          icon={route.icon}
-                          title={route.title}
-                          section={route.section}
-                          routesLength={route.routesLength}
-                        >
-                          {route.element}
-                        </PageLayout>
-                      </SectionPermissionMiddleware>
-                    }
-                  />
-                ))}
+            <Route element={<RequestInterceptorMiddleware />}>
+              <Route element={<ThemeMiddleware />}>
+                <Route element={<SidebarLayout />}>
+                  {routes.map((route: RouteData, index: number) => (
+                    <Route
+                      key={index}
+                      path={route.path}
+                      element={
+                        <SectionPermissionMiddleware permission={route.permission}>
+                          <PageLayout
+                            icon={route.icon}
+                            title={route.title}
+                            section={route.section}
+                            routesLength={route.routesLength}
+                          >
+                            {route.element}
+                          </PageLayout>
+                        </SectionPermissionMiddleware>
+                      }
+                    />
+                  ))}
+                </Route>
               </Route>
             </Route>
           </Route>
