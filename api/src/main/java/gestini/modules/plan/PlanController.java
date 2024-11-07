@@ -67,4 +67,9 @@ public class PlanController {
         return planService.assingPlan(token);
     }
 
+    @GetMapping("/__dev__/init")
+    public ResponseEntity<?> initPlans() {
+        return planService.initPlans();
+    }
+
 }
