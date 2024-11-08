@@ -125,3 +125,6 @@ export const reqGetFileById = async (id: any) => api.get(`/files/find-by-id/${id
 export const reqGetFileByPath = async (path: any) => api.get(`/files/find-by-path?path=${path}`)
 export const reqGetFilesByParentId = async (id: any) => api.get(`/files/find-files-by-parent-id/${id}`)
 export const reqGetFilesByParentPath = async (path: any) => api.get(`/files/find-files-by-parent-path?path=${path}`)
+
+// Buscar Categorias
+export const reqGetCategoriesByName = async (name: any) => api.get(`/categories/name=${name}`)

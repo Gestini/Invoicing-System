@@ -18,12 +18,16 @@ import { Checkbox } from '@nextui-org/react'
 import { RootState } from '@renderer/store'
 import { handleValidation } from './utils'
 import { useDispatch, useSelector } from 'react-redux'
-import { reqCreateProduct, reqGetSupplier } from '@renderer/api/requests'
+import { reqCreateProduct, reqGetCategoriesByName, reqGetSupplier } from '@renderer/api/requests'
+import AutocompleteInput from '@renderer/components/molecules/AutocompleteInput'
 
 export const AddProductModal = () => {
   const dispatch = useDispatch()
   const unit = useSelector((state: RootState) => state.currentUnit)
   const [suppliers, setSuppliers] = React.useState([])
+  const [products, setProducts] = React.useState<any[]>([])
+  const [categories, setCategories] = React.useState<any[]>([])
+
   const [errors, setErrors] = React.useState({ name: '' })
   const warehouse = useSelector((state: RootState) => state.unit.warehouse)
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
@@ -72,6 +76,50 @@ export const AddProductModal = () => {
     }
   }
 
+  const fetchItems = async (type: 'supplier' | 'product' | 'category', name: string) => {
+    const trimmedName = name.trim()
+
+    if (!trimmedName) {
+      if (type === 'supplier') setSuppliers([])
+      else if (type === 'product') setProducts([])
+      else setCategories([])
+      return
+    }
+
+    try {
+      const response =
+        type === 'supplier'
+          ? await reqGetCategoriesByName(trimmedName)
+          : type === 'product'
+            ? await reqGetCategoriesByName(trimmedName)
+            : await reqGetCategoriesByName(trimmedName)
+
+      // Accede a la propiedad "data" de la respuesta
+      const data = response.data
+
+      if (type === 'supplier') setSuppliers(data)
+      else if (type === 'product') setProducts(data)
+      else setCategories(data)
+    } catch (error) {
+      console.error(`Error fetching ${type}s:`, error)
+    }
+  }
+
+  const handleSelectItem = (type: 'supplier' | 'product' | 'category', key: any) => {
+    const itemKey = Number(key)
+    const selectedItem =
+      type === 'supplier'
+        ? suppliers.find((item: any) => item.supplierId === itemKey)
+        : type === 'product'
+          ? products.find((item: any) => item.productId === itemKey)
+          : categories.find((item: any) => item.categoryId === itemKey)
+
+    setInfo((prevInfo) => ({
+      ...prevInfo,
+      [`${type}Id`]: selectedItem ? selectedItem[`${type}Id`] : null,
+    }))
+  }
+
   return (
     <div className='flex flex-col gap-2'>
       <Button
@@ -110,19 +158,14 @@ export const AddProductModal = () => {
                   onChange={handleChange}
                   isInvalid={!!errors.name}
                 ></Input>
-                <Select
-                  label='Categoria'
-                  labelPlacement='outside'
-                  placeholder='Selecciona una categoria'
-                  variant='bordered'
-                  name='category'
-                  onChange={handleChange}
-                  size='sm'
-                  className='text-c-title'
-                >
-                  <SelectItem key={'electricidad'}>Proveedor</SelectItem>
-                  <SelectItem key={'materiales'}>materiales</SelectItem>
-                </Select>
+                <AutocompleteInput
+                  label='Categoría'
+                  placeholder='Buscar categoría'
+                  type='category'
+                  onSelect={(selectedId) =>
+                    setInfo((prevInfo) => ({ ...prevInfo, categoryId: selectedId }))
+                  }
+                />
                 <Input
                   name='quantity'
                   type='number'
@@ -136,29 +179,20 @@ export const AddProductModal = () => {
               </div>
               <div className='rowmodaladdproduct flex gap-3'>
                 <Input
-                  label='Codigo'
+                  label='Code'
                   size='sm'
-                  name='codigo1'
+                  name='barcode'
                   labelPlacement='outside'
                   placeholder='Codigo #1'
                   variant='bordered'
                   onChange={handleChange}
                 ></Input>
                 <Input
-                  label='Codigo'
+                  label='Precio'
                   size='sm'
-                  name='codigo2'
+                  name='price'
                   labelPlacement='outside'
-                  placeholder='Codigo #2'
-                  variant='bordered'
-                  onChange={handleChange}
-                ></Input>
-                <Input
-                  label='Codigo de barras'
-                  size='sm'
-                  name='barcode'
-                  labelPlacement='outside'
-                  placeholder='Codigo de barras'
+                  placeholder='Precio'
                   variant='bordered'
                   onChange={handleChange}
                 ></Input>
@@ -204,231 +238,7 @@ export const AddProductModal = () => {
                   </SelectItem>
                 </Select>
               </div>
-              <div className='rowmodaladdproduct  flex items-start justify-start gap-3'>
-                <Input
-                  type='number'
-                  label='Precio de compra'
-                  labelPlacement='outside'
-                  placeholder='0.00'
-                  variant='bordered'
-                  size='sm'
-                  name='purchasePrice'
-                  onChange={handleChange}
-                  endContent={
-                    <div className='pointer-events-none flex items-center'>
-                      <span className='text-default-400 text-small'>$</span>
-                    </div>
-                  }
-                />
-                <Input
-                  type='number'
-                  label='Precio de costo'
-                  labelPlacement='outside'
-                  placeholder='0.00'
-                  variant='bordered'
-                  size='sm'
-                  name='costPrice'
-                  onChange={handleChange}
-                  endContent={
-                    <div className='pointer-events-none flex items-center'>
-                      <span className='text-default-400 text-small'>$</span>
-                    </div>
-                  }
-                />
 
-                <Select
-                  label='Calculo de precio'
-                  placeholder='Select an animal'
-                  labelPlacement='outside'
-                  variant='bordered'
-                  name='priceCalculation'
-                  onChange={handleChange}
-                  defaultSelectedKeys={['cero']}
-                  size='sm'
-                  className='text-c-title'
-                >
-                  <SelectItem value={'cero'} key={'cero'}>
-                    cero
-                  </SelectItem>
-                  <SelectItem value={'uno'} key={'uno'}>
-                    uno
-                  </SelectItem>
-                </Select>
-              </div>
-              <div className='rowmodaladdproduct flex items-start justify-start gap-3'>
-                <Select
-                  label='Politica de precio'
-                  labelPlacement='outside'
-                  placeholder='Selecciona una politica'
-                  variant='bordered'
-                  name='pricePolicy'
-                  onChange={handleChange}
-                  defaultSelectedKeys={['politictone']}
-                  size='sm'
-                  className='text-c-title  '
-                >
-                  <SelectItem value={'politicone'} key={'politictone'}>
-                    one
-                  </SelectItem>
-                  <SelectItem value={'politictwo'} key={'politictwo'}>
-                    two
-                  </SelectItem>
-                </Select>
-              </div>
-              <div className='rowmodaladdproduct  flex items-start justify-start gap-3'>
-                <Input
-                  type='number'
-                  label='Neto 1'
-                  isDisabled
-                  labelPlacement='outside'
-                  placeholder='0.00'
-                  variant='bordered'
-                  name='net1'
-                  onChange={handleChange}
-                  size='sm'
-                  endContent={
-                    <div className='pointer-events-none flex items-center'>
-                      <span className='text-default-400 text-small'>$</span>
-                    </div>
-                  }
-                />
-                <Input
-                  type='number'
-                  label='Neto 2'
-                  labelPlacement='outside'
-                  isDisabled
-                  placeholder='0.00'
-                  variant='bordered'
-                  name='net2'
-                  onChange={handleChange}
-                  size='sm'
-                  endContent={
-                    <div className='pointer-events-none flex items-center'>
-                      <span className='text-default-400 text-small'>$</span>
-                    </div>
-                  }
-                />
-                <Input
-                  type='number'
-                  label='Neto 3'
-                  labelPlacement='outside'
-                  placeholder='0.00'
-                  isDisabled
-                  variant='bordered'
-                  name='net3'
-                  onChange={handleChange}
-                  size='sm'
-                  endContent={
-                    <div className='pointer-events-none flex items-center'>
-                      <span className='text-default-400 text-small'>$</span>
-                    </div>
-                  }
-                />
-                <Input
-                  type='number'
-                  labelPlacement='outside'
-                  label='Neto 4'
-                  placeholder='0.00'
-                  isDisabled
-                  variant='bordered'
-                  name='net4'
-                  onChange={handleChange}
-                  size='sm'
-                  endContent={
-                    <div className='pointer-events-none flex items-center'>
-                      <span className='text-default-400 text-small'>$</span>
-                    </div>
-                  }
-                />
-              </div>
-              <div className='rowmodalpricesproduct  flex items-start justify-start gap-3'>
-                <Select
-                  label='Tipo IVA'
-                  labelPlacement='outside'
-                  placeholder='Selecciona un tipo'
-                  variant='bordered'
-                  name='taxType'
-                  defaultSelectedKeys={['IVA21%']}
-                  onChange={handleChange}
-                  size='sm'
-                  className='text-c-title'
-                >
-                  <SelectItem key={'IVA21%'}>IVA 21%</SelectItem>
-                  <SelectItem key={'IVA24%'}>IVA 24%</SelectItem>
-                </Select>
-                <Input
-                  type='number'
-                  label='Precio Financiado'
-                  labelPlacement='outside'
-                  placeholder='0.00'
-                  variant='bordered'
-                  name='financedPrice'
-                  onChange={handleChange}
-                  size='sm'
-                  endContent={
-                    <div className='pointer-events-none flex items-center'>
-                      <span className='text-default-400 text-small'>$</span>
-                    </div>
-                  }
-                />
-                <Input
-                  type='number'
-                  label='Precio Amigo'
-                  labelPlacement='outside'
-                  placeholder='0.00'
-                  variant='bordered'
-                  name='friendPrice'
-                  onChange={handleChange}
-                  size='sm'
-                  endContent={
-                    <div className='pointer-events-none flex items-center'>
-                      <span className='text-default-400 text-small'>$</span>
-                    </div>
-                  }
-                />
-                <Input
-                  type='number'
-                  label='Precio tarjeta'
-                  labelPlacement='outside'
-                  placeholder='0.00'
-                  name='cardPrice'
-                  onChange={handleChange}
-                  variant='bordered'
-                  size='sm'
-                  endContent={
-                    <div className='pointer-events-none flex items-center'>
-                      <span className='text-default-400 text-small'>$</span>
-                    </div>
-                  }
-                />
-              </div>
-              <Checkbox
-                defaultSelected
-                name='envasedproduct'
-                color='primary'
-                classNames={{
-                  wrapper: 'after:bg-[var(--c-primary-variant-1)]',
-                }}
-                onChange={handleChange}
-              >
-                Producto envasado
-              </Checkbox>
-              <Input
-                type='number'
-                label='Cantidad x paquete'
-                labelPlacement='outside'
-                placeholder='0.00'
-                name='quantityPerPackage'
-                onChange={handleChange}
-                variant='bordered'
-                isDisabled
-                size='sm'
-                endContent={
-                  <div className='pointer-events-none flex items-center'>
-                    <span className='text-default-400 text-small'>$</span>
-                  </div>
-                }
-              />
               <Textarea
                 label='Description'
                 variant='bordered'
