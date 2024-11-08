@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Input,
   Modal,
@@ -10,29 +10,39 @@ import {
 } from '@nextui-org/react'
 import { editItem } from '@renderer/features/tableSlice'
 import { RootState } from '@renderer/store'
-import { WarehouseModel } from '@renderer/interfaces/warehouse'
 import { useModal, modalTypes } from '@renderer/utils/useModal'
 import { useDispatch, useSelector } from 'react-redux'
 import { reqAsingProductsToInventory } from '@renderer/api/requests'
 
 export const MoveProductToInventory = () => {
   const dispatch = useDispatch()
-  const unit = useSelector((state: RootState) => state.currentUnit)
   const table = useSelector((state: RootState) => state.unit.table)
   const currentItem = table.data.find((item) => item.id == table?.currentItemIdEdit)
   const [isOpen, toggleModal] = useModal(modalTypes.moveProductToInventoryModal)
-  const [quantity, setQuantity] = React.useState<number>(-1)
-  const warehouse = useSelector((state: RootState) => state.unit.warehouse)
-  const currentWarehouseEdit = warehouse.data.find(
-    (item: WarehouseModel) => item.id == warehouse.currentEditWarehouseId,
-  )
+  const [quantity, setQuantity] = useState<number>(0)
+  const [quantityError, setQuantityError] = useState<string | null>(null)
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuantity(Number(e.target.value))
+    setQuantityError(null)
+  }
+
+  const validate = () => {
+    if (quantity < 1) {
+      setQuantityError('La cantidad debe ser al menos 1.')
+      return false
+    }
+    if (currentItem && quantity > currentItem.quantity) {
+      setQuantityError('La cantidad no puede exceder la cantidad disponible.')
+      return false
+    }
+    return true
+  }
 
   const onSubmit = async () => {
+    if (!validate()) return
+
     if (!currentItem) return
-    if (currentItem.quantity < quantity) return
 
     dispatch(
       editItem({
@@ -42,8 +52,8 @@ export const MoveProductToInventory = () => {
         id: table.currentItemIdEdit,
       }),
     )
+
     await reqAsingProductsToInventory({
-      unitId: unit.id,
       quantity,
       productId: table.currentItemIdEdit,
     })
@@ -69,10 +79,14 @@ export const MoveProductToInventory = () => {
               type='number'
               label='Cantidad'
               name='quantity'
-              defaultValue={currentWarehouseEdit?.name}
+              variant='bordered'
+              max={currentItem?.quantity}
+              min={1}
               placeholder='Ingresa la cantidad'
               labelPlacement='outside'
               onChange={handleChange}
+              isInvalid={!!quantityError}
+              errorMessage={quantityError}
             />
           </div>
         </ModalBody>

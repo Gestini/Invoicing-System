@@ -1,5 +1,6 @@
 package gestini.modules.invoicing;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +23,7 @@ import gestini.modules.invoicing.repositories.InvoicingProductRepository;
 import gestini.modules.invoicing.repositories.InvoicingRepository;
 import gestini.modules.product.models.ProductModel;
 import gestini.modules.product.repositories.ProductRepository;
+import gestini.modules.user.UserService;
 
 @Service
 public class InvoicingService {
@@ -41,6 +43,9 @@ public class InvoicingService {
     @Autowired
     private InvoicingProductRepository invoicingProductRepository;
 
+    @Autowired
+    private UserService userService;
+
     public Boolean InvoicingExists(Long id) {
         Optional<InvoicingModel> invoicing = invoicingRepository.findById(id);
         return invoicing.isPresent();
@@ -53,55 +58,63 @@ public class InvoicingService {
     @Transactional
     public ResponseEntity<?> saveInvoicing(InvoicingRequestDto invoicing) {
         try {
-            Optional<BusinessUnitModel> businessUnitOptinal = businessUnitsRepository
+            Optional<BusinessUnitModel> businessUnitOptional = businessUnitsRepository
                     .findById(invoicing.getBusinessUnitId());
 
-            if (!businessUnitOptinal.isPresent()) {
+            if (!businessUnitOptional.isPresent()) {
                 return ResponseEntity.status(HttpStatus.OK).body("No se encontró la sucursal");
             }
 
-            BusinessUnitModel businessUnit = businessUnitOptinal.get();
+            BusinessUnitModel businessUnit = businessUnitOptional.get();
 
-            /* Creamos la nueva factura */
-            InvoicingModel newInvoicing = new InvoicingModel();
-            newInvoicing.setTotal(invoicing.getTotal());
-            newInvoicing.setClient(invoicing.getClient());
-            newInvoicing.setNumber(invoicing.getNumber());
-            newInvoicing.setSeller(invoicing.getSeller());
-            newInvoicing.setDniOrCuil(invoicing.getDniOrCuil());
-            newInvoicing.setBusinessUnit(businessUnit);
-            newInvoicing.setSaleCondition(invoicing.getSaleCondition());
-
-            /* Guardamos la factura */
-            InvoicingModel savedInvoice = invoicingRepository.save(newInvoicing);
-
-            /* Lista de productos */
+            // Lista de productos
             List<InvoicingProductRequestDto> products = invoicing.getProducts();
 
-            /* Recorremos la lista de productos */
+            // Verificar disponibilidad de stock para todos los productos
             for (InvoicingProductRequestDto productInvoicing : products) {
-
-                /* Buscamos el producto por su id en el inventario de la sucursal */
                 Optional<BusinessUnitInventoryModel> productOptional = inventoryRepository
                         .findInventoryProductByProductId(productInvoicing.getId(), invoicing.getBusinessUnitId());
+
                 if (!productOptional.isPresent()) {
                     return ResponseEntity.status(HttpStatus.OK).body("No se encontró el producto");
                 }
 
-                /* Verificamos si el stock es suficiente para realizar la factura */
                 BusinessUnitInventoryModel product = productOptional.get();
                 if (product.getQuantity() < productInvoicing.getQuantity()) {
-                    return ResponseEntity.status(HttpStatus.OK).body("No hay suficiente cantidad en stock");
+                    return ResponseEntity.status(HttpStatus.OK)
+                            .body("No hay suficiente cantidad en stock para el producto: "
+                                    + product.getProduct().getName());
                 }
+            }
 
-                /* Creamos los productos de la factura */
+            // Creamos la nueva factura después de confirmar que todos los productos tienen
+            // stock suficiente
+            InvoicingModel newInvoicing = new InvoicingModel();
+            newInvoicing.setTotal(invoicing.getTotal());
+            newInvoicing.setClient(invoicing.getClient());
+            newInvoicing.setNumber(invoicing.getNumber());
+            newInvoicing.setSeller(userService.getCurrentUser());
+            newInvoicing.setCreatedAt(LocalDate.now());
+            newInvoicing.setDniOrCuil(invoicing.getDniOrCuil());
+            newInvoicing.setBusinessUnit(businessUnit);
+            newInvoicing.setSaleCondition(invoicing.getSaleCondition());
+
+            // Guardamos la factura
+            InvoicingModel savedInvoice = invoicingRepository.save(newInvoicing);
+
+            // Registrar los productos en la factura y actualizar el inventario
+            for (InvoicingProductRequestDto productInvoicing : products) {
+                BusinessUnitInventoryModel product = inventoryRepository
+                        .findInventoryProductByProductId(productInvoicing.getId(), invoicing.getBusinessUnitId())
+                        .get();
+
                 InvoicingProductModel invoicingProductModel = new InvoicingProductModel();
                 invoicingProductModel.setInvoicing(savedInvoice);
                 invoicingProductModel.setProduct(product.getProduct());
                 invoicingProductModel.setQuantity(productInvoicing.getQuantity());
                 invoicingProductRepository.save(invoicingProductModel);
 
-                /* Actualizamos el stock del producto en el inventario de la sucursal */
+                // Actualizar el stock del producto
                 product.setQuantity(product.getQuantity() - productInvoicing.getQuantity());
                 inventoryRepository.save(product);
             }

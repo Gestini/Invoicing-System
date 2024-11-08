@@ -11,12 +11,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import gestini.annotations.CheckPermissions;
 import gestini.modules.inventory.dto.InventoryRequestDto;
+import gestini.utils.Permission;
+import gestini.utils.UnitContext;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 
 @RestController
 @RequestMapping("/inventory")
-@SecurityRequirement(name = "BearerAuth")
+@SecurityRequirements({
+        @SecurityRequirement(name = "BearerAuth"),
+        @SecurityRequirement(name = "UnitAccess")
+})
+@CheckPermissions(Permission.MANAGE_STOCK)
 public class InventoryController {
 
     @Autowired
@@ -24,18 +32,17 @@ public class InventoryController {
 
     @PostMapping("/asing-product-to-inventory")
     public ResponseEntity<?> asingProductToInventory(@RequestBody InventoryRequestDto data) {
-        return businessUnitInventoryService.asingProductToInventory(data);
+        return businessUnitInventoryService.asingProductToInventory(UnitContext.getUnitId(), data);
     }
 
-    @GetMapping("/find-by-unit-id/{unitId}")
-    public ResponseEntity<?> findInventoryByUnitId(@PathVariable("unitId") Long unitId) {
-        return businessUnitInventoryService.findInventoryByUnitId(unitId);
+    @GetMapping("/find-by-unit-id")
+    public ResponseEntity<?> findInventoryByUnitId() {
+        return businessUnitInventoryService.findInventoryByUnitId(UnitContext.getUnitId());
     }
 
-    @GetMapping("/search-product-by-name-and-unit/{unitId}")
-    public ResponseEntity<?> searchProductByNameAndUnit(@PathVariable("unitId") Long unitId,
-            @RequestParam("name") String name) {
-        return businessUnitInventoryService.findInventoryByUnitId(unitId);
+    @GetMapping("/search-product-by-name")
+    public ResponseEntity<?> searchInventoryProductByNameAndUnit(@RequestParam("name") String name) {
+        return businessUnitInventoryService.searchInventoryProductByNameAndUnit(UnitContext.getUnitId(), name);
     }
 
     @DeleteMapping("/remove-inventory-by-id/{inventoryId}")

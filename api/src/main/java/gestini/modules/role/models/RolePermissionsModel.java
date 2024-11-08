@@ -5,8 +5,11 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import gestini.utils.Permission;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,7 +27,8 @@ public class RolePermissionsModel {
     private Long id;
 
     @Column
-    private String name;
+    @Enumerated(EnumType.STRING)
+    private Permission name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id", nullable = false)
@@ -41,11 +45,11 @@ public class RolePermissionsModel {
         this.id = id;
     }
 
-    public String getName() {
+    public Permission getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(Permission name) {
         this.name = name;
     }
 

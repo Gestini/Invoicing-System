@@ -1,6 +1,5 @@
 import React from 'react'
 
-import Plans from '@renderer/pages/PaymentGateway/Plans'
 import Users from '@renderer/pages/Users'
 import Shops from '@renderer/pages/Settings/Shops'
 import Products from '@renderer/pages/Products'
@@ -29,7 +28,6 @@ import {
   MdPeople,
   MdDashboard,
   MdWarehouse,
-  MdAssessment,
   MdAttachMoney,
   MdPointOfSale,
   MdShoppingCart,
@@ -37,6 +35,8 @@ import {
 } from 'react-icons/md'
 
 import { LoadCurrentFilesMiddleware } from './middlewares/LoadCurrentFilesMiddleware'
+import { DiscountTable } from '@renderer/pages/DiscountTable'
+import { ProductCategoryTable } from '@renderer/pages/ProductCategoryTable'
 
 export interface RouteData {
   path: string
@@ -70,14 +70,6 @@ const generalRoutes: RouteSection = {
   routes: [{ path: '', element: <Dashboard />, title: 'tablero' }],
 }
 
-const plansRoutes: RouteSection = {
-  icon: <MdAssessment />,
-  path: '/plans/:companyId/:unitId',
-  section: 'Planes',
-  routes: [{ path: '', element: <Plans />, title: 'planes' }],
-  permission: permissions.admin.permission,
-}
-
 const warehouseRoutes: RouteSection = {
   icon: <MdWarehouse />,
   path: '/warehouse/:companyId/:unitId',
@@ -87,16 +79,7 @@ const warehouseRoutes: RouteSection = {
     { path: '/product-management', element: <Warehouse />, title: 'Depósitos' },
     { path: '/brands', element: <Products />, title: 'inventario' },
     { path: '/suppliers', element: <SupplierTable />, title: 'Proveedores' },
-    { path: '/categories', element: <></>, title: 'categorías' },
-    // { path: '/price-management', element: <></>, title: 'gestion de precios' },
-    // {
-    //   path: '/stock-movements',
-    //   element: <></>,
-    //   title: 'movimientos de inventario',
-    // },
-    // { path: '/inventory-list', element: <></>, title: 'lista de inventario' },
-    // { path: '/reception-management', element: <></>, title: 'recepción' },
-    // { path: '/consumptions', element: <></>, title: 'consumos' },
+    { path: '/categories', element: <ProductCategoryTable />, title: 'categorías' },
   ],
 }
 
@@ -168,6 +151,7 @@ const operationsRoutes: RouteSection = {
     { path: '/invoicing', element: <InvoicingTable />, title: 'facturación' },
     { path: '/afip', element: <Facturation />, title: 'Facturación AFIP' },
     { path: '/clients', element: <ClientTable />, title: 'clientes' },
+    { path: '/discounts', element: <DiscountTable />, title: 'descuentos' },
     { path: '/reports', element: <></>, title: 'informes' },
     { path: '/orders', element: <></>, title: 'órdenes' },
   ],
@@ -212,7 +196,6 @@ const ecommerceRoutes: RouteSection = {
 export const routes = [
   hrRoutes,
   posRoutes,
-  plansRoutes,
   adminRoutes,
   generalRoutes,
   warehouseRoutes,
@@ -228,7 +211,7 @@ export const routes = [
         icon: item.icon,
         path: item.path + route.path,
         routesLength: item.routes.length,
-        permission: item.permission || 'none',
+        permission: item.permission || 'DEFAULT_ACCESS',
       })),
     ),
   [],
@@ -236,7 +219,6 @@ export const routes = [
 
 export const sidebarRoutes: RouteSection[] = [
   generalRoutes,
-  plansRoutes,
   documentsRoutes,
   warehouseRoutes,
   hrRoutes,

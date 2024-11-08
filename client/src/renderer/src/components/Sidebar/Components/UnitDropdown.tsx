@@ -50,7 +50,7 @@ export const UnitDropdown = ({ company, openDropdownId, setOpenDropdownId }) => 
         <DropdownTrigger>
           <div
             className={`${
-              company.id == currentCompany?.id ? 'rounded-md bg-c-primary-variant-4' : ''
+              unit.company.id == company.id ? 'rounded-md bg-c-primary-variant-4' : ''
             } transition-all duration-500 ease-in-out flex items-center justify-center h-[32px] w-[32px] cursor-pointer`}
           >
             <Tooltip

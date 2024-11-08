@@ -53,7 +53,7 @@ const PlanCard = ({ plan }) => {
             ))}
           </ul>
         </div>
-        <Link to={`/payment/${plan.id}/${params.unitId}`} target='_blank'>
+        <Link to={`/payment/${plan.id}/${params.companyId}`} target='_blank'>
           <Button
             className='relative bg-gray-200 text-black py-2 px-4 rounded-lg w-full hover:bg-gray-300 transition-colors z-10'
             endContent={<BiLinkExternal />}

@@ -9,7 +9,6 @@ import { Autocomplete, AutocompleteItem } from '@nextui-org/react'
 
 export const SearchProduct = () => {
   const dispatch = useDispatch()
-  const unit = useSelector((state: RootState) => state.currentUnit)
   const newInvoicing = useSelector((state: RootState) => state.unit.newInvoicing)
   const [result, setResult] = React.useState([])
   const [searchValue, setSearchValue] = React.useState('')
@@ -26,7 +25,7 @@ export const SearchProduct = () => {
       if (searchValue.trim() == '') return
       if (searchValue.length < 3) return
 
-      const response = await reqSearchInventoryProduct(searchValue, unit.id)
+      const response = await reqSearchInventoryProduct(searchValue)
       if (response.data.length == 0) return
       setResult(
         response.data.map((item: any) => {

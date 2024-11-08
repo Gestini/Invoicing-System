@@ -70,11 +70,6 @@ public class BusinessUnitController {
         return this.businessUnitsService.findBusinessUnitsByCompanyIdAndWithUserAsOwnerOrEmployee(companyId);
     }
 
-    @PostMapping("/assign-plan/{token}")
-    public ResponseEntity<?> assingPlan(@PathVariable("token") String token) {
-        return this.businessUnitsService.assingPlan(token);
-    }
-
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateBusinessUnit(
             @PathVariable("id") Long id, @RequestBody BusinessUnitModel data) {

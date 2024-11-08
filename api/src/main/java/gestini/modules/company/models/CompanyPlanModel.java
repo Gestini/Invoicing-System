@@ -1,4 +1,4 @@
-package gestini.modules.businessUnit.models;
+package gestini.modules.company.models;
 
 import java.time.LocalDate;
 
@@ -14,8 +14,8 @@ import jakarta.persistence.Table;
 import gestini.modules.plan.models.PlanModel;
 
 @Entity
-@Table(name = "business_unit_plan")
-public class BusinessUnitPlanModel {
+@Table(name = "company_plan")
+public class CompanyPlanModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -37,7 +37,7 @@ export const permissions = Object.freeze({
   },
   admin: {
     title: 'Admin',
-    permission: '*',
+    permission: 'ADMIN',
     description: 'Ignora las restricciones',
   },
 })

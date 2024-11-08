@@ -18,7 +18,6 @@ import gestini.modules.role.models.Role;
 import gestini.modules.user.models.User;
 import gestini.modules.user.repositories.UserRepository;
 import gestini.modules.user.services.PasswordResetService;
-import gestini.utils.ValidateFields;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -38,21 +37,12 @@ public class AuthService {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private ValidateFields validateFields;
-
-    @Autowired
     private PasswordResetService passwordResetService;
 
     public ResponseEntity<String> login(LoginRequestDto request) {
         try {
             String password = request.getPassword();
             String username = request.getUsername();
-
-            String fields[] = { password, username };
-
-            if (!validateFields.Validate(fields)) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Entrada de datos no válida");
-            }
 
             Optional<User> userOptional = userRepository.findByUsername(username);
             if (!userOptional.isPresent()) {

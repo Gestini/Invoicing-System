@@ -21,6 +21,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import gestini.modules.deposit.models.DepositModel;
+import gestini.modules.productCategory.models.ProductCategoryModel;
 import gestini.modules.supplier.models.SupplierModel;
 
 @Entity
@@ -76,10 +77,6 @@ public class ProductModel {
     private Integer quantity;
 
     @Column
-    @Size(min = 1, max = 100, message = "La categoría debe tener entre 1 y 100 caracteres")
-    private String category;
-
-    @Column
     @NotNull(message = "El nombre no puede estar vacío")
     @Size(min = 1, max = 100, message = "El nombre debe tener entre 1 y 100 caracteres")
     private String name;
@@ -100,6 +97,10 @@ public class ProductModel {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "supplier_init_id", nullable = true)
     private SupplierModel supplierUnit;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "product_category_id", nullable = true)
+    private ProductCategoryModel category;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "deposit_id", nullable = false)
@@ -309,14 +310,6 @@ public class ProductModel {
         this.quantity = quantity;
     }
 
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
     public String getName() {
         return name;
     }
@@ -382,5 +375,13 @@ public class ProductModel {
 
     public void setDeposit(DepositModel deposit) {
         this.deposit = deposit;
+    }
+
+    public ProductCategoryModel getCategory() {
+        return category;
+    }
+
+    public void setCategory(ProductCategoryModel category) {
+        this.category = category;
     }
 }

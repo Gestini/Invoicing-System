@@ -20,12 +20,17 @@ import gestini.modules.role.dto.EditRoleDto;
 import gestini.modules.role.models.RoleModel;
 import gestini.modules.role.models.RolePermissionsModel;
 import gestini.modules.role.models.RoleUsersModel;
+import gestini.utils.Permission;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/role")
-@SecurityRequirement(name = "BearerAuth")
+@SecurityRequirements({
+        @SecurityRequirement(name = "BearerAuth"),
+        @SecurityRequirement(name = "UnitAccess")
+})
 public class RoleController {
 
     @Autowired
@@ -47,14 +52,14 @@ public class RoleController {
     }
 
     @GetMapping("/has-permissions/{unitId}/{permissionName}")
-    public Boolean hasPermissions(@PathVariable Long unitId, @PathVariable String permissionName) {
+    public Boolean hasPermissions(@PathVariable Long unitId, @PathVariable Permission permissionName) {
         return roleService.hasPermissions(unitId, permissionName);
     }
 
     @PostMapping("/has-permissions/{unitId}")
     public ResponseEntity<Map<String, Boolean>> checkMultiplePermissions(
             @PathVariable("unitId") Long unitId,
-            @RequestBody List<String> permissions) {
+            @RequestBody List<Permission> permissions) {
         Map<String, Boolean> results = roleService.hasMultiplePermissions(unitId, permissions);
         return ResponseEntity.ok(results);
     }

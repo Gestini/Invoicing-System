@@ -43,7 +43,7 @@ export const RenderCell = ({
     case 'category':
       return (
         <span className='bg-c-primary-variant-3 text-c-primary px-2 py-[2px] rounded-md text-[12px]'>
-          {item[columnKey]}
+          {item[columnKey]?.name}
         </span>
       )
     case 'name':

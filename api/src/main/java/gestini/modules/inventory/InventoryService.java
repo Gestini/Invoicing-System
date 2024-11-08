@@ -42,9 +42,10 @@ public class InventoryService {
         }
     }
 
-    public ResponseEntity<?> searchProductByNameAndUnit(Long unitId, String name) {
+    public ResponseEntity<?> searchInventoryProductByNameAndUnit(Long unitId, String name) {
         try {
-            List<BusinessUnitInventoryModel> result = inventoryRepository.searchProductByNameAndUnit(unitId, name);
+            List<BusinessUnitInventoryModel> result = inventoryRepository.searchInventoryProductByNameAndUnit(unitId,
+                    name);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error");
@@ -81,9 +82,8 @@ public class InventoryService {
     }
 
     @Transactional
-    public ResponseEntity<?> asingProductToInventory(InventoryRequestDto data) {
+    public ResponseEntity<?> asingProductToInventory(Long unitId, InventoryRequestDto data) {
         try {
-            Long unitId = data.getUnitId();
             Long productId = data.getProductId();
             Integer quantity = data.getQuantity();
 

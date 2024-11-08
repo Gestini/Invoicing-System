@@ -21,6 +21,6 @@ public interface InventoryRepository extends JpaRepository<BusinessUnitInventory
     List<BusinessUnitInventoryModel> findInventoryByUnitId(@PathVariable("unitId") Long unitId);
 
     @Query("SELECT inventory FROM BusinessUnitInventoryModel inventory WHERE inventory.businessUnit.id = :unitId AND LOWER(inventory.product.name) LIKE LOWER(CONCAT('%', :name, '%')) ")
-    List<BusinessUnitInventoryModel> searchProductByNameAndUnit(@PathVariable("unitId") Long unitId,
+    List<BusinessUnitInventoryModel> searchInventoryProductByNameAndUnit(@PathVariable("unitId") Long unitId,
             @PathVariable("name") String name);
 }

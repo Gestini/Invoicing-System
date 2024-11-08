@@ -18,11 +18,9 @@ import gestini.modules.employee.models.EmployeeModel;
 import gestini.modules.employee.repositories.EmployeeRepository;
 import gestini.modules.invitation.models.BusinessUnitInvitationModel;
 import gestini.modules.invitation.repositories.InvitationRepository;
-import gestini.modules.role.repositories.RoleUsersRepository;
 import gestini.modules.user.UserService;
 import gestini.modules.user.models.User;
 import gestini.utils.EmailSender;
-import gestini.utils.Permissions;
 
 @Service
 public class EmployeeService {
@@ -38,9 +36,6 @@ public class EmployeeService {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private RoleUsersRepository roleUsersRepository;
 
     @Autowired
     private EmailSender emailSender;
@@ -111,13 +106,16 @@ public class EmployeeService {
 
     public ResponseEntity<?> getEmployeesByBusinessUnitId(Long unitId) {
         try {
-            // verificar si el usuario tiene permisos
-            if (!roleUsersRepository.hasPermissions(userService.getCurrentUser().getId(), unitId,
-                    Permissions.HR.getPermission())) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("No tienes permisos suficientes.");
-            }
-
             List<EmployeeModel> employees = employeeRepository.findByBusinessUnitId(unitId);
+            return ResponseEntity.ok(employees);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error");
+        }
+    }
+
+    public ResponseEntity<?> findActiveEmployeesByUnitId(Long unitId) {
+        try {
+            List<EmployeeModel> employees = employeeRepository.findActiveEmployeesByUnitId(unitId);
             return ResponseEntity.ok(employees);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error");

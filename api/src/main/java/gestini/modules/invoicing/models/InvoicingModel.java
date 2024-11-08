@@ -10,7 +10,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+
+import java.time.LocalDate;
+
 import gestini.modules.businessUnit.models.BusinessUnitModel;
+import gestini.modules.user.models.User;
 
 @Entity
 @Table(name = "invoice")
@@ -24,15 +28,22 @@ public class InvoicingModel {
 
     private String client;
     private String saleCondition;
-    private String seller;
     private String number;
     private Integer total;
+
+    @Column(name = "created_at")
+    private LocalDate createdAt;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "business_unit_id", nullable = false)
     @NotNull(message = "La unidad de negocio no puede ser nula")
     private BusinessUnitModel businessUnit;
-    
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "seller_id", nullable = false)
+    @NotNull(message = "Seller id cannot be null")
+    private User seller;
+
     public Long getId() {
         return id;
     }
@@ -65,14 +76,6 @@ public class InvoicingModel {
         this.saleCondition = saleCondition;
     }
 
-    public String getSeller() {
-        return seller;
-    }
-
-    public void setSeller(String seller) {
-        this.seller = seller;
-    }
-
     public String getNumber() {
         return number;
     }
@@ -89,6 +92,14 @@ public class InvoicingModel {
         this.total = total;
     }
 
+    public LocalDate getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
+    }
+
     public BusinessUnitModel getBusinessUnit() {
         return businessUnit;
     }
@@ -96,4 +107,13 @@ public class InvoicingModel {
     public void setBusinessUnit(BusinessUnitModel businessUnit) {
         this.businessUnit = businessUnit;
     }
+
+    public User getSeller() {
+        return seller;
+    }
+
+    public void setSeller(User seller) {
+        this.seller = seller;
+    }
+
 }

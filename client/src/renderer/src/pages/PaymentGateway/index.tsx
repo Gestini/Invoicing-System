@@ -113,7 +113,7 @@ export const PaymentGateway = () => {
                   transaction_amount: Number(amount),
                   installments: Number(installments),
                   planId: Number(currentPlan.id),
-                  unitId: Number(params.unitId),
+                  companyId: Number(params.companyId),
                   description: currentPlan.description,
                   payer: {
                     email,

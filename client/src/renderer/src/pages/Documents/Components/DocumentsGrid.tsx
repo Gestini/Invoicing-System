@@ -1,3 +1,4 @@
+import { Node } from '@renderer/types/File'
 import { RootState } from '@renderer/store'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -8,9 +9,9 @@ import { MdFolder, MdInsertDriveFile, MdOpenInNew } from 'react-icons/md'
 export const DocumentsGrid = () => {
   const { data } = useSelector((state: RootState) => state.documents)
   const navigate = useNavigate()
-  const company = useSelector((state: RootState) => state.currentCompany)
   const unit = useSelector((state: RootState) => state.currentUnit)
-  const fileNavigate = (file: any) => navigate(`/documents/${company.id}/${unit.id}/${file.id}`)
+  const fileNavigate = (file: Node) =>
+    navigate(`/documents/${unit.company.id}/${unit.id}/${file.id}`)
 
   return (
     <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>

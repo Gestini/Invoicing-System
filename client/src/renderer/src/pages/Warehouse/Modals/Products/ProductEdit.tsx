@@ -16,16 +16,25 @@ import { RootState } from '@renderer/store'
 import { modalTypes, useModal } from '@renderer/utils/useModal'
 import { useDispatch, useSelector } from 'react-redux'
 import { editItem, setCurrentItemId } from '@renderer/features/tableSlice'
-import { reqEditProduct, reqGetSupplier } from '@renderer/api/requests'
+import {
+  reqEditProduct,
+  reqFindAllProductCategoriesFromUnit,
+  reqGetSupplier,
+} from '@renderer/api/requests'
 import { handleValidation, initialErrors } from './utils'
 
 export const EditProductModal = () => {
+  interface Category {
+    id: string
+    name: string
+  }
   const dispatch = useDispatch()
   const [data, setData] = React.useState({})
   const [originalData, setOriginalData] = React.useState({})
   const [errors, setErrors] = React.useState(initialErrors)
   const [isOpen, toggleModal] = useModal(modalTypes.editProductModal)
   const [suppliers, setSuppliers] = React.useState([])
+  const [productCategories, setProductCategories] = React.useState<Category[]>([])
   const table = useSelector((state: RootState) => state.unit.table)
   const unit = useSelector((state: RootState) => state.currentUnit)
   const currentItemIdEdit = useSelector((state: RootState) => state.unit.table.currentItemIdEdit)
@@ -39,6 +48,10 @@ export const EditProductModal = () => {
 
     reqGetSupplier(unit.id)
       .then((res) => setSuppliers(res.data))
+      .catch(console.log)
+
+    reqFindAllProductCategoriesFromUnit()
+      .then((res) => setProductCategories(res.data))
       .catch(console.log)
   }, [currentProductEdit, unit.id])
 
@@ -118,13 +131,24 @@ export const EditProductModal = () => {
                   placeholder='Selecciona una categoria'
                   variant='bordered'
                   name='category'
-                  onChange={handleChange}
+                  isDisabled={productCategories.length === 0}
+                  onChange={(e) => {
+                    const category = productCategories.find((item) => item.id == e.target.value)
+                    setData((prev) => ({
+                      ...prev,
+                      category: {
+                        id: e.target.value,
+                        name: category?.name,
+                      },
+                    }))
+                  }}
                   size='sm'
                   className='text-c-title'
-                  defaultSelectedKeys={[currentProductEdit?.category]}
+                  defaultSelectedKeys={[String(currentProductEdit?.category?.id)]}
                 >
-                  <SelectItem key={'electricidad'}>Proveedor</SelectItem>
-                  <SelectItem key={'materiales'}>materiales</SelectItem>
+                  {productCategories.map((item) => (
+                    <SelectItem key={item.id}>{item.name}</SelectItem>
+                  ))}
                 </Select>
                 <Input
                   name='quantity'
@@ -178,6 +202,7 @@ export const EditProductModal = () => {
                   placeholder='Selecciona un proveedor'
                   variant='bordered'
                   name='supplierUnit'
+                  isDisabled={suppliers.length === 0}
                   onChange={(e) =>
                     setData((prev) => ({
                       ...prev,
@@ -359,7 +384,7 @@ export const EditProductModal = () => {
                   }
                 />
               </div>
-              <div className='rowmodalpricesproduct  flex items-start justify-start gap-3'>
+              <div className='md:flex-row flex flex-col items-start justify-start gap-3'>
                 <Select
                   label='Tipo IVA'
                   labelPlacement='outside'

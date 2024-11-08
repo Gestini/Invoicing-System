@@ -13,14 +13,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import gestini.annotations.CheckPermissions;
 import gestini.modules.employee.dto.CreateEmployeeDto;
 import gestini.modules.employee.models.EmployeeModel;
+import gestini.utils.Permission;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/employee")
-@SecurityRequirement(name = "BearerAuth")
+@SecurityRequirements({
+        @SecurityRequirement(name = "BearerAuth"),
+        @SecurityRequirement(name = "UnitAccess")
+})
+@CheckPermissions(Permission.MANAGE_HR)
 public class EmployeeController {
 
     @Autowired
@@ -35,6 +42,11 @@ public class EmployeeController {
     @GetMapping("/get-by-unit/{unitId}")
     public ResponseEntity<?> getEmployeesByBusinessUnitId(@PathVariable("unitId") Long unitId) {
         return employeeService.getEmployeesByBusinessUnitId(unitId);
+    }
+
+    @GetMapping("/get-active-employees-by-unit-id/{unitId}")
+    public ResponseEntity<?> findActiveEmployeesByUnitId(@PathVariable("unitId") Long unitId) {
+        return employeeService.findActiveEmployeesByUnitId(unitId);
     }
 
     @GetMapping("/get-by-name/{unitId}/{name}")

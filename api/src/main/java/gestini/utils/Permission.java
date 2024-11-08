@@ -1,25 +1,12 @@
 package gestini.utils;
 
-public class Permission {
-    private final String title;
-    private final String permission;
-    private final String description;
-
-    public Permission(String title, String permission, String description) {
-        this.title = title;
-        this.permission = permission;
-        this.description = description;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getPermission() {
-        return permission;
-    }
-
-    public String getDescription() {
-        return description;
-    }
+public enum Permission {
+    DEFAULT_ACCESS,
+    MANAGE_STOCK,
+    MANAGE_HR,
+    MANAGE_OPERATIONS,
+    MANAGE_POS,
+    MANAGE_DOCUMENTS,
+    MANAGE_ECOMMERCE,
+    ADMIN,
 }

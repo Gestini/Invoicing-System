@@ -15,14 +15,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import gestini.annotations.CheckPermissions;
 import gestini.modules.businessUnit.models.BusinessUnitModel;
 import gestini.modules.client.dto.ClientDto;
 import gestini.modules.client.models.ClientModel;
+import gestini.utils.Permission;
+import gestini.utils.UnitContext;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 
 @RestController
 @RequestMapping("/clients")
-@SecurityRequirement(name = "BearerAuth")
+@SecurityRequirements({
+        @SecurityRequirement(name = "BearerAuth"),
+        @SecurityRequirement(name = "UnitAccess")
+})
+@CheckPermissions(Permission.MANAGE_OPERATIONS)
 public class ClientController {
 
     @Autowired
@@ -44,9 +52,9 @@ public class ClientController {
         }
     }
 
-    @GetMapping("/by-business-unit/{businessUnitId}")
-    public List<ClientDto> getClientsByBusinessUnit(@PathVariable Long businessUnitId) {
-        return clientService.getClientsByBusinessUnit(businessUnitId);
+    @GetMapping("/by-business-unit")
+    public List<ClientDto> getClientsByBusinessUnit() {
+        return clientService.getClientsByBusinessUnit(UnitContext.getUnitId());
     }
 
     @PostMapping
