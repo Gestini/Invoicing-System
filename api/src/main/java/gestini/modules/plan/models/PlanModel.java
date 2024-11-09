@@ -42,6 +42,10 @@ public class PlanModel {
     @NotNull(message = "El valor de popularidad no puede ser nulo")
     private Boolean isPopular;
 
+    @Column(nullable = false)
+    @NotNull(message = "El valor de plan por defecto no puede ser nulo")
+    private Boolean isDefault;
+
     @OneToMany(mappedBy = "plan", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference("planPermRef")
     private Set<PlanPermissionsModel> permissions;
@@ -84,6 +88,14 @@ public class PlanModel {
 
     public void setIsPopular(Boolean isPopular) {
         this.isPopular = isPopular;
+    }
+
+    public Boolean getIsDefault() {
+        return isDefault;
+    }
+
+    public void setIsDefault(Boolean isDefault) {
+        this.isDefault = isDefault;
     }
 
     public Set<PlanPermissionsModel> getPermissions() {

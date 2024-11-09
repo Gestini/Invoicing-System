@@ -18,7 +18,7 @@ import { Checkbox } from '@nextui-org/react'
 import { RootState } from '@renderer/store'
 import { handleValidation } from './utils'
 import { useDispatch, useSelector } from 'react-redux'
-import { reqCreateProduct, reqGetCategoriesByName, reqGetSupplier } from '@renderer/api/requests'
+import { reqCreateProduct, reqGetSupplier } from '@renderer/api/requests'
 import AutocompleteInput from '@renderer/components/molecules/AutocompleteInput'
 
 export const AddProductModal = () => {
@@ -48,6 +48,7 @@ export const AddProductModal = () => {
   }, [isOpen])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    console.log(info)
     setInfo({
       ...info,
       [e.target.name]: e.target.value,
@@ -74,50 +75,6 @@ export const AddProductModal = () => {
     } catch (error) {
       console.error(error)
     }
-  }
-
-  const fetchItems = async (type: 'supplier' | 'product' | 'category', name: string) => {
-    const trimmedName = name.trim()
-
-    if (!trimmedName) {
-      if (type === 'supplier') setSuppliers([])
-      else if (type === 'product') setProducts([])
-      else setCategories([])
-      return
-    }
-
-    try {
-      const response =
-        type === 'supplier'
-          ? await reqGetCategoriesByName(trimmedName)
-          : type === 'product'
-            ? await reqGetCategoriesByName(trimmedName)
-            : await reqGetCategoriesByName(trimmedName)
-
-      // Accede a la propiedad "data" de la respuesta
-      const data = response.data
-
-      if (type === 'supplier') setSuppliers(data)
-      else if (type === 'product') setProducts(data)
-      else setCategories(data)
-    } catch (error) {
-      console.error(`Error fetching ${type}s:`, error)
-    }
-  }
-
-  const handleSelectItem = (type: 'supplier' | 'product' | 'category', key: any) => {
-    const itemKey = Number(key)
-    const selectedItem =
-      type === 'supplier'
-        ? suppliers.find((item: any) => item.supplierId === itemKey)
-        : type === 'product'
-          ? products.find((item: any) => item.productId === itemKey)
-          : categories.find((item: any) => item.categoryId === itemKey)
-
-    setInfo((prevInfo) => ({
-      ...prevInfo,
-      [`${type}Id`]: selectedItem ? selectedItem[`${type}Id`] : null,
-    }))
   }
 
   return (
@@ -163,7 +120,7 @@ export const AddProductModal = () => {
                   placeholder='Buscar categoría'
                   type='category'
                   onSelect={(selectedId) =>
-                    setInfo((prevInfo) => ({ ...prevInfo, categoryId: selectedId }))
+                    setInfo((prevInfo) => ({ ...prevInfo, category: { id: selectedId } }))
                   }
                 />
                 <Input

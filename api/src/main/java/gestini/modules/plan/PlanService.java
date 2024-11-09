@@ -22,10 +22,13 @@ import gestini.modules.plan.models.PlanModel;
 import gestini.modules.plan.models.PlanPermissionsModel;
 import gestini.modules.plan.repositories.PlanPermissionsRepository;
 import gestini.modules.plan.repositories.PlanRepository;
+import gestini.utils.Permission;
+import gestini.utils.PlanList;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.transaction.Transactional;
 
 @Service
 public class PlanService {
@@ -173,6 +176,30 @@ public class PlanService {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("Ocurrió un error");
         }
+    }
+
+    @Transactional
+    public ResponseEntity<?> initPlans() {
+        List<PlanList.PlanConfig> planConfigs = PlanList.getPlanList();
+
+        for (PlanList.PlanConfig config : planConfigs) {
+            PlanModel plan = new PlanModel();
+            plan.setName(config.name);
+            plan.setPrice(config.price);
+            plan.setIsDefault(config.isDefault);
+            plan.setIsPopular(config.isPopular);
+            plan.setDescription(config.description);
+            PlanModel savedPlan = planRepository.save(plan);
+
+            for (Permission permission : config.permissions) {
+                PlanPermissionsModel planPermission = new PlanPermissionsModel();
+                planPermission.setName(permission);
+                planPermission.setPlan(savedPlan);
+                planPermissionsRepository.save(planPermission);
+            }
+        }
+
+        return ResponseEntity.ok("Planes y permisos inicializados exitosamente");
     }
 
     private void copyNonNullProperties(PlanModel source, PlanModel target) {

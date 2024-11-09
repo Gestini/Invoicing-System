@@ -5,7 +5,6 @@ export const columnsData = {
     { name: 'ID VENTA', uid: 'id' },
     { name: 'NUMERO', uid: 'number' },
     { name: 'CONDICION', uid: 'saleCondition' },
-    { name: 'VENDEDOR', uid: 'seller' },
     /* { name: 'PRODUCTO', uid: 'product' },
      { name: 'CANTIDAD', uid: 'quantity', sortable: true },
     { name: 'PRECIO UNITARIO', uid: 'unitPrice', sortable: true }, */

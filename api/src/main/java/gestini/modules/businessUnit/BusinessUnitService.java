@@ -16,7 +16,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import gestini.modules.businessUnit.models.BusinessUnitModel;
+import gestini.modules.businessUnit.repositories.BusinessUnitsDepositRespository;
 import gestini.modules.businessUnit.repositories.BusinessUnitsRepository;
+import gestini.modules.deposit.models.BusinessUnitDepositModel;
+import gestini.modules.deposit.models.DepositModel;
+import gestini.modules.deposit.repositories.DepositRepository;
 import gestini.modules.employee.models.EmployeeModel;
 import gestini.modules.employee.repositories.EmployeeRepository;
 import gestini.modules.user.models.User;
@@ -28,6 +32,12 @@ public class BusinessUnitService {
 
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private DepositRepository depositRepository;
+
+    @Autowired
+    private BusinessUnitsDepositRespository businessUnitsDepositRespository;
 
     @Value("${secretKeyPlan}")
     private String SECRET_KEY_PLAN;
@@ -126,6 +136,18 @@ public class BusinessUnitService {
     public ResponseEntity<BusinessUnitModel> saveBusinessUnit(BusinessUnitModel businessUnit) {
 
         BusinessUnitModel savedBusinessUnit = businessUnitsRepository.save(businessUnit);
+
+        /* Creamos el depósito */
+        DepositModel newDeposit = new DepositModel();
+        newDeposit.setName("Depósito");
+        newDeposit.setCompany(businessUnit.getCompany());
+        DepositModel savedDeposit = depositRepository.save(newDeposit);
+
+        /* Relacionamos el depósito con la sucursal */
+        BusinessUnitDepositModel businessUnitDeposit = new BusinessUnitDepositModel();
+        businessUnitDeposit.setBusinessUnit(savedBusinessUnit);
+        businessUnitDeposit.setDeposit(savedDeposit);
+        businessUnitsDepositRespository.save(businessUnitDeposit);
 
         return ResponseEntity.status(HttpStatus.OK).body(savedBusinessUnit);
     }

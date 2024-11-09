@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import gestini.annotations.CheckPermissions;
 import gestini.modules.deposit.models.DepositModel;
 import gestini.utils.Permission;
+import gestini.utils.UnitContext;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 
@@ -50,9 +51,9 @@ public class DepositController {
         return depositService.assignDepositToUnit(depositId, unitId);
     }
 
-    @GetMapping("/get-by-unit-id/{unitId}")
-    public ResponseEntity<?> getDepositsByUnitId(@PathVariable("unitId") Long unitId) {
-        return depositService.getDepositsByUnitId(unitId);
+    @GetMapping("/get-by-unit-id")
+    public ResponseEntity<?> getDepositsByUnitId() {
+        return depositService.getDepositsByUnitId(UnitContext.getUnitId());
     }
 
     @GetMapping("/get-by-company-id/{companyId}")

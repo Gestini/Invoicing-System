@@ -79,6 +79,10 @@ public class SupplierService {
         }
     }
 
+    public List<SupplierModel> searchSupplierByName(Long unitId, String name) {
+        return supplierRepository.searchSupplierByName(unitId, name);
+    }
+
     public List<SupplierModel> getAllSuppliers() {
         return supplierRepository.findAll();
     }

@@ -20,15 +20,15 @@ public interface RoleUsersRepository extends JpaRepository<RoleUsersModel, Long>
     Optional<RoleUsersModel> userHasRole(@Param("roleId") Long roleId, @Param("userId") Long userId);
 
     @Query("SELECT " +
-            "    :permissionName = 'DEFAULT_ACCESS' OR EXISTS ( " +
+            "    EXISTS ( " +
             "        SELECT 1 " +
             "        FROM BusinessUnitModel b " +
             "        JOIN b.company cm " +
-            "        JOIN cm.plan cpm " +
-            "        JOIN PlanPermissionsModel ppm ON cpm.plan.id = ppm.plan.id " +
+            "        LEFT JOIN cm.plan cpm " +
+            "        LEFT JOIN PlanPermissionsModel ppm ON cpm.plan.id = ppm.plan.id " +
             "        WHERE b.id = :unitId " +
             "        AND cm.owner.id = :userId " +
-            "        AND (ppm.name = :permissionName OR ppm.name = 'ADMIN') " +
+            "        AND (:permissionName = 'DEFAULT_ACCESS' OR ppm.name = :permissionName OR ppm.name = 'ADMIN') " +
             "    ) " +
             "OR ( " +
             "    EXISTS ( " +
@@ -46,8 +46,8 @@ public interface RoleUsersRepository extends JpaRepository<RoleUsersModel, Long>
             "            JOIN ru.role r " +
             "            JOIN RolePermissionsModel rp ON r.id = rp.role.id " +
             "            JOIN CompanyModel cm ON cm.id = r.businessUnit.company.id " +
-            "            JOIN cm.plan cpm " +
-            "            JOIN PlanPermissionsModel ppm ON cpm.plan.id = ppm.plan.id " +
+            "            LEFT JOIN cm.plan cpm " +
+            "            LEFT JOIN PlanPermissionsModel ppm ON cpm.plan.id = ppm.plan.id " +
             "            WHERE ru.employee.user.id = :userId " +
             "            AND r.businessUnit.id = :unitId " +
             "            AND (rp.name = :permissionName OR rp.name = 'ADMIN') " +

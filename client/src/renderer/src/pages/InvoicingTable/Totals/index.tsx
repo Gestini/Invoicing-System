@@ -3,8 +3,6 @@ import { setTotal } from '@renderer/features/newInvoicing'
 import { RootState } from '@renderer/store'
 import { useDispatch, useSelector } from 'react-redux'
 import { Card, CardHeader, CardBody } from '@nextui-org/react'
-import { MdAttachMoney } from "react-icons/md";
-import { Input } from "@nextui-org/react";
 
 export const Totals = () => {
   const dispatch = useDispatch()

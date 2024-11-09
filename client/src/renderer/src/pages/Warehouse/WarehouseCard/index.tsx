@@ -11,7 +11,6 @@ import { setCurrentWarehouseId, setDataWarehouses } from '@renderer/features/war
 
 export const WarehouseCard = () => {
   const dispatch = useDispatch()
-  const unit = useSelector((state: RootState) => state.currentUnit)
   const warehouse = useSelector((state: RootState) => state.unit.warehouse)
   const currentWarehouseId = warehouse.currentWarehouseId
   const [isOpen, _] = useModal(modalTypes.companySettingsModal)
@@ -19,7 +18,7 @@ export const WarehouseCard = () => {
   React.useEffect(() => {
     const loadData = async () => {
       try {
-        const response = await reqGetDepositByUnit(unit.id)
+        const response = await reqGetDepositByUnit()
         const deposits: WarehouseModel[] = response.data
 
         dispatch(setDataWarehouses(response.data))

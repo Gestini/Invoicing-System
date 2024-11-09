@@ -69,9 +69,9 @@ public class ProductController {
         return productService.findProductsByDepositId(depositId);
     }
 
-    @GetMapping("/by-category/{category}")
-    public List<ProductModel> getProductsByCategory(@PathVariable("category") String category) {
-        return productService.getProductsByCategory(category);
+    @GetMapping("/by-category/{categoryId}")
+    public List<ProductModel> getProductsByCategoryId(@PathVariable("categoryId") Long categoryId) {
+        return productService.getProductsByCategoryId(categoryId);
     }
 
     @GetMapping("/by-name/{name}")

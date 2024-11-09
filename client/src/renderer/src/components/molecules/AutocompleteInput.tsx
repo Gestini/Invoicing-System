@@ -1,7 +1,7 @@
 import { Autocomplete, AutocompleteItem } from '@nextui-org/react'
-import { reqGetCategoriesByName } from '@renderer/api/requests'
+import { reqSearchProductCategoryByName } from '@renderer/api/requests'
+// import { reqGetCategoriesByName } from '@renderer/api/requests'
 import React, { useState } from 'react'
-
 
 interface AutocompleteInputProps {
   label: string
@@ -27,14 +27,8 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({
     }
 
     try {
-      const response = await reqGetCategoriesByName(trimmedName) // Asumiendo que reqGetCategoriesByName funciona para todos los tipos
-      const data = response.data
-      setItems(
-        data.map((item: any) => ({
-          id: item[`${type}Id`],
-          name: item[`${type}Name`],
-        })),
-      )
+      const response = await reqSearchProductCategoryByName(trimmedName) // Asumiendo que reqGetCategoriesByName funciona para todos los tipos
+      setItems(response.data)
     } catch (error) {
       console.error(`Error fetching ${type}s:`, error)
     }
@@ -52,6 +46,7 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({
       labelPlacement='outside'
       placeholder={placeholder}
       variant='bordered'
+      
       value={localInputValue}
       onInputChange={(value: string) => {
         setLocalInputValue(value)

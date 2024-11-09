@@ -1,7 +1,12 @@
+import React from 'react'
+import { RootState } from '@renderer/store'
 import { BiMailIcon } from '../Icons/BiMailIcon'
+import { useSelector } from 'react-redux'
 import { IoPersonSharp } from 'react-icons/io5'
+import { EmployeeModel } from '@renderer/interfaces/employee'
 import { BiChevronRight } from 'react-icons/bi'
 import { IoIosArrowDown } from 'react-icons/io'
+import { reqGetActiveEmployeesByUnitId } from '@renderer/api/requests'
 import { Avatar, Badge, Card, CardBody, CardFooter, CardHeader, Chip } from '@nextui-org/react'
 
 const TeamMember = ({ name, role, roleColor }) => {
@@ -19,7 +24,7 @@ const TeamMember = ({ name, role, roleColor }) => {
         <div className='flex justify-center gap-1 flex-col'>
           <span className='text-c-title font-[500] text-[13px]'>{name}</span>
           <div
-            className={`text-[10px] px-[0px] flex justify-center items-center rounded-md`}
+            className={`text-[10px] px-2 flex justify-center items-center rounded-md`}
             style={{ color: roleColor.text, backgroundColor: roleColor.bg }}
           >
             {role}
@@ -41,11 +46,14 @@ const TeamMember = ({ name, role, roleColor }) => {
 }
 
 export const TeamDashboard = () => {
-  const teamMembers = [
-    { name: 'Mario Carmen', role: 'Vendedor', roleColor: { text: '#32ADE6', bg: '#32ade621' } },
-    { name: 'Mario Carmen', role: 'Vendedor', roleColor: { text: '#32ADE6', bg: '#32ade621' } },
-    { name: 'Mario Carmen', role: 'Admin', roleColor: { text: '#cd54e5', bg: '#ad32e621' } },
-  ]
+  const unit = useSelector((state: RootState) => state.currentUnit)
+  const [initialData, setInitialData] = React.useState<EmployeeModel[]>([])
+
+  React.useEffect(() => {
+    reqGetActiveEmployeesByUnitId(unit.id)
+      .then((res) => setInitialData(res.data))
+      .catch(() => setInitialData([]))
+  }, [unit.id])
 
   return (
     <Card classNames={{ base: 'rounded-lg' }}>
@@ -57,7 +65,7 @@ export const TeamDashboard = () => {
           <Chip size='sm' radius='sm'>
             <div className='flex gap-1 items-center'>
               <IoPersonSharp />
-              <span className='font-[500] text-c-title-opacity'>20</span>
+              <span className='font-[500] text-c-title-opacity'>{initialData.length}</span>
             </div>
           </Chip>
         </div>
@@ -65,12 +73,12 @@ export const TeamDashboard = () => {
       <CardBody>
         <div className='rounded-lg flex flex-col gap-4 '>
           <div className='flex w-full h-full gap-3 flex-col'>
-            {teamMembers.slice(0, 3).map((member, index) => (
+            {initialData.slice(0, 3).map((member, index) => (
               <TeamMember
                 key={index}
                 name={member.name}
-                role={member.role}
-                roleColor={member.roleColor}
+                role='Vendedor'
+                roleColor={{ text: '#32ADE6', bg: '#32ade621' }}
               />
             ))}
           </div>

@@ -6,7 +6,6 @@ public class InvoicingRequestDto {
     Integer total;
     String client;
     String branch;
-    String seller;
     String number;
     String dniOrCuil;
     String saleCondition;
@@ -35,14 +34,6 @@ public class InvoicingRequestDto {
 
     public void setBranch(String branch) {
         this.branch = branch;
-    }
-
-    public String getSeller() {
-        return seller;
-    }
-
-    public void setSeller(String seller) {
-        this.seller = seller;
     }
 
     public String getNumber() {

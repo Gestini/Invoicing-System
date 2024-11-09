@@ -1,3 +1,4 @@
+import { Node } from '@renderer/types/File'
 import { RootState } from '@renderer/store'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -7,9 +8,8 @@ import { BreadcrumbItem, Breadcrumbs } from '@nextui-org/react'
 export const PathDirection = () => {
   const documents = useSelector((state: RootState) => state.documents)
   const navigate = useNavigate()
-  const company = useSelector((state: RootState) => state.currentCompany)
   const unit = useSelector((state: RootState) => state.currentUnit)
-  const fileNavigate = (file: any) => navigate(`/documents/${company.id}/${unit.id}/${file.id}`)
+  const fileNavigate = (file: Node) => navigate(`/documents/${unit.company.id}/${unit.id}/${file.id}`)
 
   if (!documents.currentPath?.path) {
     return (
@@ -32,7 +32,7 @@ export const PathDirection = () => {
 
     // Se busca el índice de la carpeta
     const targetIndex = pathParts.findIndex((part) => part === targetFolder)
-    if (targetIndex === -1) return navigate(`/documents/${company.id}/${unit.id}`)
+    if (targetIndex === -1) return navigate(`/documents/${unit.company.id}/${unit.id}`)
 
     // Se crea un nuevo path con la carpeta encontrada
     const newPath = '/' + pathParts.slice(0, targetIndex + 1).join('/')

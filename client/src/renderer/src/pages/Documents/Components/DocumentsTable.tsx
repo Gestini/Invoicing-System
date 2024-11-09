@@ -8,9 +8,9 @@ import { MdFolder, MdInsertDriveFile } from 'react-icons/md'
 export const DocumentsTable = () => {
   const { data } = useSelector((state: RootState) => state.documents)
   const navigate = useNavigate()
-  const company = useSelector((state: RootState) => state.currentCompany)
   const unit = useSelector((state: RootState) => state.currentUnit)
-  const fileNavigate = (file: any) => navigate(`/documents/${company.id}/${unit.id}/${file.id}`)
+  const fileNavigate = (file: Node) =>
+    navigate(`/documents/${unit.company.id}/${unit.id}/${file.id}`)
 
   return (
     <div>

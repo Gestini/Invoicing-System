@@ -141,8 +141,8 @@ public class ProductService {
         }
     }
 
-    public List<ProductModel> getProductsByCategory(String category) {
-        return productRepository.findByCategory(category);
+    public List<ProductModel> getProductsByCategoryId(Long categoryId) {
+        return productRepository.findByCategoryId(categoryId);
     }
 
     public List<ProductModel> getProductsByName(String name) {

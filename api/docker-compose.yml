@@ -23,8 +23,8 @@ services:
       SPRING_MAIL_PORT: 587
       SPRING_MAIL_USERNAME: josesoriap21@gmail.com
       SPRING_MAIL_PASSWORD: zbetszxrmqjidajl
-      SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH: true
-      SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE: true
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH: "true"
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE: "true"
     restart: always
     depends_on:
       gestini_db:
