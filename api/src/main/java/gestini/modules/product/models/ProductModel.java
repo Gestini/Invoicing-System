@@ -5,8 +5,13 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import gestini.modules.deposit.models.DepositModel;
+import gestini.modules.productCategory.models.ProductCategoryModel;
+import gestini.modules.supplier.models.SupplierModel;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,9 +25,6 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import gestini.modules.deposit.models.DepositModel;
-import gestini.modules.productCategory.models.ProductCategoryModel;
-import gestini.modules.supplier.models.SupplierModel;
 
 @Entity
 @Table(name = "product")
@@ -91,8 +93,14 @@ public class ProductModel {
     @Column
     private LocalDateTime updatedAt;
 
+    @Enumerated(EnumType.STRING)
     @Column
-    private Boolean status = true;
+    private ProductStatus status;
+
+    public enum ProductStatus {
+        AVAILABLE,
+        NOTAVAILABLE,
+    }
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "supplier_init_id", nullable = true)
@@ -342,14 +350,6 @@ public class ProductModel {
         this.updatedAt = updatedAt;
     }
 
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
-
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
@@ -383,5 +383,13 @@ public class ProductModel {
 
     public void setCategory(ProductCategoryModel category) {
         this.category = category;
+    }
+
+    public ProductStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ProductStatus status) {
+        this.status = status;
     }
 }
