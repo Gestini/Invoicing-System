@@ -13,9 +13,14 @@ import org.springframework.stereotype.Service;
 
 import gestini.modules.deposit.models.DepositModel;
 import gestini.modules.deposit.repositories.DepositRepository;
+import gestini.modules.product.dto.ProductDto;
 import gestini.modules.product.dto.SaveProductsDto;
 import gestini.modules.product.models.ProductModel;
 import gestini.modules.product.repositories.ProductRepository;
+import gestini.modules.productCategory.models.ProductCategoryModel;
+import gestini.modules.productCategory.repositories.ProductCategoryRepository;
+import gestini.modules.supplier.models.SupplierModel;
+import gestini.modules.supplier.repositories.SupplierRepository;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -27,12 +32,84 @@ public class ProductService {
     @Autowired
     private DepositRepository depositRepository;
 
-    public ResponseEntity<?> createProduct(ProductModel product) {
+    @Autowired
+    private ProductCategoryRepository productCategoryRepository;
+
+    @Autowired
+    private SupplierRepository supplierRepository;
+
+    public ResponseEntity<?> createProduct(ProductDto productDto) {
         try {
+            /* Buscar el depósito */
+            Optional<DepositModel> depositOptional = depositRepository.findById(productDto.getDepositId());
+
+            if (!depositOptional.isPresent()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Depósito no encontrado");
+            }
+
+            DepositModel deposit = depositOptional.get();
+
+            /* Buscar la categoría del producto */
+            ProductCategoryModel productCategory = null;
+            if (productDto.getCategoryId() != null) {
+                Optional<ProductCategoryModel> productCategoryOptional = productCategoryRepository
+                        .findById(productDto.getCategoryId());
+
+                if (!productCategoryOptional.isPresent()) {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Categoría no encontrado");
+                }
+
+                productCategory = productCategoryOptional.get();
+            }
+
+            /* Buscar al proveedor del producto */
+            SupplierModel productSupplier = null;
+            if (productDto.getSupplierId() != null) {
+                Optional<SupplierModel> productSupplierOptional = supplierRepository
+                        .findById(productDto.getSupplierId());
+
+                if (!productSupplierOptional.isPresent()) {
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Categoría no encontrado");
+                }
+
+                productSupplier = productSupplierOptional.get();
+            }
+
+            ProductModel product = new ProductModel();
+
+            product.setNet1(productDto.getNet1());
+            product.setNet2(productDto.getNet2());
+            product.setNet3(productDto.getNet3());
+            product.setNet4(productDto.getNet4());
+            product.setName(productDto.getName());
+            product.setImage(productDto.getImage());
+            product.setPrice(productDto.getPrice());
+            product.setStatus(productDto.getStatus());
+            product.setTaxType(productDto.getTaxType());
+            product.setBarcode(productDto.getBarcode());
+            product.setCodigo2(productDto.getCodigo2());
+            product.setCodigo1(productDto.getCodigo1());
+            product.setDeposit(deposit);
+            product.setCategory(productCategory);
+            product.setQuantity(productDto.getQuantity());
+            product.setCardPrice(productDto.getCardPrice());
+            product.setCostPrice(productDto.getCostPrice());
+            product.setDescription(productDto.getDescription());
+            product.setFriendPrice(productDto.getFriendPrice());
+            product.setPricePolicy(productDto.getPricePolicy());
+            product.setSupplierUnit(productSupplier);
+            product.setPurchasePrice(productDto.getPurchasePrice());
+            product.setFinancedPrice(productDto.getFinancedPrice());
+            product.setReferenceCode(productDto.getReferenceCode());
+            product.setPackageProduct(productDto.getPackageProduct());
+            product.setPriceCalculation(productDto.getPriceCalculation());
+            product.setQuantityPerPackage(productDto.getQuantityPerPackage());
+
             ProductModel newProduct = productRepository.save(product);
             return ResponseEntity.ok(newProduct);
+
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("Ocurrió un error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error");
         }
     }
 

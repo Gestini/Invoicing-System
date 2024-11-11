@@ -34,7 +34,7 @@ public class BusinessUnitController {
         return this.businessUnitsService.getAllBusinessUnit();
     }
 
-    @GetMapping(path = "/get/{id}")
+    @GetMapping("/get/{id}")
     public ResponseEntity<?> getBusinessUnitById(@PathVariable("id") Long id) {
         return this.businessUnitsService.getBusinessUnitById(id);
     }
@@ -49,7 +49,7 @@ public class BusinessUnitController {
         return this.businessUnitsService.findByUnitIdAndEcommerce(unitId);
     }
 
-    @DeleteMapping(path = "/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteBusinessUnitById(@PathVariable("id") Long id) {
         return this.businessUnitsService.deleteBusinessUnitById(id);
     }

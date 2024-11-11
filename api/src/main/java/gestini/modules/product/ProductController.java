@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import gestini.annotations.CheckPermissions;
+import gestini.modules.product.dto.ProductDto;
 import gestini.modules.product.dto.SaveProductsDto;
 import gestini.modules.product.models.ProductModel;
 import gestini.utils.Permission;
@@ -44,7 +45,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createProduct(@Valid @RequestBody ProductModel product) {
+    public ResponseEntity<?> createProduct(@Valid @RequestBody ProductDto product) {
         return productService.createProduct(product);
     }
 

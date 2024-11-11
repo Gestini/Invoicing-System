@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import gestini.modules.invoicing.models.InvoicingModel;
@@ -16,10 +15,8 @@ public interface InvoicingRepository extends JpaRepository<InvoicingModel, Long>
     List<InvoicingModel> findByBusinessUnitId(Long businessUnitId);
 
     @Query("SELECT invoice FROM InvoicingModel invoice WHERE invoice.businessUnit.id = :businessUnitId AND invoice.createdAt BETWEEN :startDate AND :endDate")
-    List<InvoicingModel> findInvoicesByUnitIdAndDateRange(
-            @Param("businessUnitId") Long businessUnitId,
-            @Param("startDate") LocalDate startDate,
-            @Param("endDate") LocalDate endDate);
+    List<InvoicingModel> findInvoicesByUnitIdAndDateRange(Long businessUnitId, LocalDate startDate,
+            LocalDate endDate);
 
     @Query("SELECT FUNCTION('DATE', invoice.createdAt) as day, COUNT(invoice) as count " +
             "FROM InvoicingModel invoice " +
@@ -27,10 +24,7 @@ public interface InvoicingRepository extends JpaRepository<InvoicingModel, Long>
             "AND invoice.createdAt BETWEEN :startDate AND :endDate " +
             "GROUP BY FUNCTION('DATE', invoice.createdAt) " +
             "ORDER BY day")
-    List<Object[]> getDailySalesForCurrentMonth(
-            @Param("businessUnitId") Long businessUnitId,
-            @Param("startDate") LocalDate startDate,
-            @Param("endDate") LocalDate endDate);
+    List<Object[]> getDailySalesForCurrentMonth(Long businessUnitId, LocalDate startDate, LocalDate endDate);
 
     @Query("SELECT invoice.seller.username, COUNT(invoice) as saleCount " +
             "FROM InvoicingModel invoice " +
@@ -39,8 +33,6 @@ public interface InvoicingRepository extends JpaRepository<InvoicingModel, Long>
             "AND FUNCTION('YEAR', invoice.createdAt) = :year " +
             "GROUP BY invoice.seller.username " +
             "ORDER BY saleCount DESC")
-    List<Object[]> getTopSellersBySalesForMonth(@Param("businessUnitId") Long businessUnitId,
-            @Param("month") int month,
-            @Param("year") int year);
+    List<Object[]> getTopSellersBySalesForMonth(Long businessUnitId, int month, int year);
 
 }

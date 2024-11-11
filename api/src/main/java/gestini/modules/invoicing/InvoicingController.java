@@ -42,17 +42,17 @@ public class InvoicingController {
         return invoicingService.getAllInvoices();
     }
 
-    @GetMapping(path = "/get/{id}")
+    @GetMapping("/get/{id}")
     public Optional<InvoicingModel> getInvoiceById(@PathVariable("id") Long id) {
         return invoicingService.getInvoiceById(id);
     }
 
-    @GetMapping(path = "/get-by-unit/{id}")
+    @GetMapping("/get-by-unit/{id}")
     public List<InvoicingModel> getInvoiceByUnit(@PathVariable("id") Long id) {
         return invoicingService.getByUnit(id);
     }
 
-    @DeleteMapping(path = "/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteInvoiceById(@PathVariable("id") Long id) {
         return invoicingService.deleteInvoiceById(id);
     }
