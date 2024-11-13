@@ -12,7 +12,7 @@ import gestini.modules.invoicing.models.InvoicingProductModel;
 public interface InvoicingProductRepository extends JpaRepository<InvoicingProductModel, Long> {
 
     @Query("SELECT invoicingProduct FROM InvoicingProductModel invoicingProduct WHERE invoicingProduct.invoicing.id = :invoiceId")
-    List<InvoicingProductModel> findAllInvoiceProduct(Long invoiceId);
+    List<InvoicingProductModel> findInvoiceProductByInvoiceId(Long invoiceId);
 
     @Query("SELECT invoicingProduct.product.name, SUM(invoicingProduct.quantity) AS totalQuantitySold " +
             "FROM InvoicingProductModel invoicingProduct " +
