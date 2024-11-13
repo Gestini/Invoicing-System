@@ -27,10 +27,13 @@ export const SearchProduct = () => {
 
       const response = await reqSearchInventoryProduct(searchValue)
       if (response.data.length == 0) return
+
       setResult(
         response.data.map((item: any) => {
           return {
             ...item.product,
+            inventoryQuantity:
+              item.quantity - 1 /* Cantidad en el inventario - el producto inicial */,
           }
         }),
       )
@@ -77,7 +80,7 @@ export const SearchProduct = () => {
         },
       }}
       aria-label='Selecciona un producto'
-      placeholder='Buscar por nombre...'
+      placeholder='Buscar producto'
       popoverProps={{
         offset: 10,
         radius: 'sm',
@@ -95,9 +98,7 @@ export const SearchProduct = () => {
           <div className='flex justify-between items-center' onClick={() => handleAddProduct(item)}>
             <div className='flex gap-2 items-center'>
               <div className='flex flex-col'>
-                <span className='text-small'>
-                  {item.name} - {item?.deposit?.name}
-                </span>
+                <span className='text-small'>{item.name}</span>
               </div>
             </div>
           </div>

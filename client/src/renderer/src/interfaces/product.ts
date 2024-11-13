@@ -15,7 +15,7 @@ export interface ProductModel {
   priceCalculation: string
   costPrice: number
   quantity: number
-  category: string
+  category?: ProductCategoryModel,
   name: string
   description: string
   createdAt: string
@@ -24,6 +24,7 @@ export interface ProductModel {
   supplierUnit?: SupplierModel
   deposit?: WarehouseModel
   pricePolicy: string
+  inventoryQuantity: number
   net1: number
   net2: number
   net3: number
@@ -32,4 +33,9 @@ export interface ProductModel {
   referenceCode: string
   packageProduct: boolean
   quantityPerPackage: number
+}
+
+export interface ProductCategoryModel {
+  id: string
+  name: string
 }
