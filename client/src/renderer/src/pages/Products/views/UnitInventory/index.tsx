@@ -1,6 +1,5 @@
 import React from 'react'
 import { AppTable } from '@renderer/components/AppTable'
-import { useParams } from 'react-router-dom'
 import { columnsData } from './data'
 import { useDispatch } from 'react-redux'
 import { FaArrowRotateLeft } from 'react-icons/fa6'
@@ -10,12 +9,11 @@ import { reqGetUnitInventoryById, reqRemoveInventoryById } from '@renderer/api/r
 
 export const UniInventory = () => {
   const dispatch = useDispatch()
-  const params = useParams()
 
   React.useEffect(() => {
     const loadData = async () => {
       try {
-        const response = await reqGetUnitInventoryById(params.unitId)
+        const response = await reqGetUnitInventoryById()
         dispatch(
           setTableData(
             response.data.map((item: any) => {
