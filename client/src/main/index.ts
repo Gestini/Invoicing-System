@@ -3,9 +3,19 @@ import { join } from 'path'
 import DiscordRPC from 'discord-rpc-electron'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import log from 'electron-log';
+import { autoUpdater } from 'electron-updater'
 
 let mainWindow: BrowserWindow;
 const clientId = '1297973891284729929'
+
+class AppUpdater {
+  constructor() {
+    log.transports.file.level = 'info';
+    autoUpdater.logger = log;
+    autoUpdater.checkForUpdatesAndNotify();
+  }
+}
 
 function createWindow(): void {
   // Create the browser window.
@@ -25,6 +35,7 @@ function createWindow(): void {
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show()
+    new AppUpdater();
   })
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
