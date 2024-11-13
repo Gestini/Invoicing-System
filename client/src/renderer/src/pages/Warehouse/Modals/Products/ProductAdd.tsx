@@ -14,20 +14,18 @@ import {
 } from '@nextui-org/react'
 import { addItem } from '@renderer/features/tableSlice'
 import { PlusIcon } from '@renderer/components/Icons/PlusIcon'
-import { Checkbox } from '@nextui-org/react'
 import { RootState } from '@renderer/store'
 import { handleValidation } from './utils'
 import { useDispatch, useSelector } from 'react-redux'
-import { reqCreateProduct, reqGetSupplier } from '@renderer/api/requests'
-import AutocompleteInput from '@renderer/components/molecules/AutocompleteInput'
+import {
+  reqCreateProduct,
+  reqSearchSupplierByName,
+  reqSearchProductCategoryByName,
+} from '@renderer/api/requests'
+import { SearchAutocomplete } from '@renderer/components/SearchAutocomplete'
 
 export const AddProductModal = () => {
   const dispatch = useDispatch()
-  const unit = useSelector((state: RootState) => state.currentUnit)
-  const [suppliers, setSuppliers] = React.useState([])
-  const [products, setProducts] = React.useState<any[]>([])
-  const [categories, setCategories] = React.useState<any[]>([])
-
   const [errors, setErrors] = React.useState({ name: '' })
   const warehouse = useSelector((state: RootState) => state.unit.warehouse)
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure()
@@ -35,20 +33,13 @@ export const AddProductModal = () => {
 
   React.useEffect(() => {
     setInfo({
-      deposit: {
-        id: warehouse.currentWarehouseId,
-      },
+      depositId: warehouse.currentWarehouseId,
     })
 
     setErrors({ name: '' })
-
-    reqGetSupplier(unit.id)
-      .then((res) => setSuppliers(res.data))
-      .catch(console.log)
   }, [isOpen])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    console.log(info)
     setInfo({
       ...info,
       [e.target.name]: e.target.value,
@@ -58,6 +49,7 @@ export const AddProductModal = () => {
 
   const onSubmit = async () => {
     try {
+      console.log(info)
       const allValid = Object.keys({ name: '' }).every((name) => {
         const validate = handleValidation(name, info[name])
         setErrors((prev) => ({
@@ -83,10 +75,10 @@ export const AddProductModal = () => {
         onPress={onOpen}
         className='bg-c-filter shadow-sm text-c-text'
         color='secondary'
-        startContent={<PlusIcon className='text-c-primary-variant-1 w-[15px] h-[15px]' />}
+        startContent={<PlusIcon className='text-c-primary-variant-1' />}
         radius='sm'
       >
-        Crear orden
+        Agregar
       </Button>
       <Modal
         isOpen={isOpen}
@@ -103,7 +95,7 @@ export const AddProductModal = () => {
           </ModalHeader>
           <ModalBody>
             <div className='productsmodaladd w-full flex flex-col gap-3  '>
-              <div className='rowmodaladdproduct justify-start items-start flex gap-3'>
+              <div className='justify-start items-start flex gap-3'>
                 <Input
                   name='name'
                   label='Nombre'
@@ -114,27 +106,33 @@ export const AddProductModal = () => {
                   variant='bordered'
                   onChange={handleChange}
                   isInvalid={!!errors.name}
-                ></Input>
-                <AutocompleteInput
+                />
+                <SearchAutocomplete
                   label='Categoría'
-                  placeholder='Buscar categoría'
-                  type='category'
-                  onSelect={(selectedId) =>
-                    setInfo((prevInfo) => ({ ...prevInfo, category: { id: selectedId } }))
+                  itemKey='id'
+                  itemLabel='name'
+                  setSelectedItem={(item) => {
+                    setInfo((prevInfo) => ({
+                      ...prevInfo,
+                      categoryId: item?.id,
+                    }))
+                  }}
+                  searchFunction={(searchValue: string) =>
+                    reqSearchProductCategoryByName(searchValue).then((res) => res.data)
                   }
                 />
                 <Input
                   name='quantity'
                   type='number'
-                  label='cantidad'
+                  label='Cantidad'
                   size='sm'
                   labelPlacement='outside'
                   placeholder='Cantidad de productos'
                   variant='bordered'
                   onChange={handleChange}
-                ></Input>
+                />
               </div>
-              <div className='rowmodaladdproduct flex gap-3'>
+              <div className='flex gap-3'>
                 <Input
                   label='Code'
                   size='sm'
@@ -143,7 +141,7 @@ export const AddProductModal = () => {
                   placeholder='Codigo #1'
                   variant='bordered'
                   onChange={handleChange}
-                ></Input>
+                />
                 <Input
                   label='Precio'
                   size='sm'
@@ -152,58 +150,49 @@ export const AddProductModal = () => {
                   placeholder='Precio'
                   variant='bordered'
                   onChange={handleChange}
-                ></Input>
+                />
               </div>
-              <div className='rowmodaladdproduct select flex items-start justify-start gap-3'>
-                <Select
-                  label='Proveedores'
-                  labelPlacement='outside'
-                  placeholder='Selecciona un proveedor'
-                  variant='bordered'
-                  name='supplierUnit'
-                  onChange={(e) =>
-                    setInfo((prev) => ({
-                      ...prev,
-                      supplierUnit: {
-                        id: e.target.value,
-                      },
+              <div className='select flex items-start justify-start gap-3'>
+                <SearchAutocomplete
+                  label='Proveedor'
+                  itemKey='id'
+                  itemLabel='name'
+                  setSelectedItem={(item) => {
+                    setInfo((prevInfo) => ({
+                      ...prevInfo,
+                      supplierId: item?.id,
                     }))
+                  }}
+                  searchFunction={(searchValue: string) =>
+                    reqSearchSupplierByName(searchValue).then((res) => res.data)
                   }
-                  size='sm'
-                  className='text-c-title'
-                >
-                  {suppliers.map((item: any) => (
-                    <SelectItem key={item.id}>{item.name}</SelectItem>
-                  ))}
-                </Select>
+                />
                 <Select
                   label='Estado'
                   labelPlacement='outside'
                   placeholder='Disponibilidad'
                   variant='bordered'
-                  defaultSelectedKeys={['true']}
                   name='status'
                   onChange={handleChange}
                   size='sm'
                   className='text-c-title'
                 >
-                  <SelectItem value={'true'} key={'true'}>
+                  <SelectItem value='AVAILABLE' key='AVAILABLE'>
                     Disponible
                   </SelectItem>
-                  <SelectItem value={'false'} key={'false'}>
+                  <SelectItem value='NOTAVAILABLE' key='NOTAVAILABLE'>
                     No disponible
                   </SelectItem>
                 </Select>
               </div>
-
               <Textarea
+                name='description'
                 label='Description'
                 variant='bordered'
-                name='description'
                 onChange={handleChange}
                 labelPlacement='outside'
-                placeholder='Enter your description'
-              ></Textarea>
+                placeholder='Ingresa la descripción'
+              />
             </div>
           </ModalBody>
           <ModalFooter>
