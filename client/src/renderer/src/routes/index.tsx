@@ -15,8 +15,8 @@ import { ProtectedRouteSession } from './middlewares/ProtectedRouteSession'
 import { LoadCurrentUnitMiddleware } from './middlewares/LoadCurrentUnitMiddleware'
 import { SectionPermissionMiddleware } from './middlewares/SectionPermissionMiddleware'
 import { LoadCurrentCompanyMiddleware } from './middlewares/LoadCurrentCompanyMiddleware'
-import { routes, authRoutes, RouteData } from './routesData'
 import { RequestInterceptorMiddleware } from './middlewares/RequestInterceptorMiddleware'
+import { routes, authRoutes, RouteData } from './routesData'
 
 const Router = () => {
   return (

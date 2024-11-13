@@ -23,7 +23,6 @@ export const UnitInvite = () => {
   const acceptInvite = () => {
     if (!invite) return
     reqAcceptInviteUnit(invite?.token)
-      .then((res) => console.log(res.data))
       .catch(console.log)
       .finally(() => navigate('/'))
   }
