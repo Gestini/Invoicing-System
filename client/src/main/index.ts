@@ -1,24 +1,31 @@
-import icon from '../../resources/icon.png?asset'
-import { join } from 'path'
-import DiscordRPC from 'discord-rpc-electron'
-import { electronApp, optimizer, is } from '@electron-toolkit/utils'
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { electronApp, is, optimizer } from '@electron-toolkit/utils';
+import DiscordRPC from 'discord-rpc-electron';
+import { app, BrowserWindow, shell } from 'electron';
 import log from 'electron-log';
-import { autoUpdater } from 'electron-updater'
+import { autoUpdater } from 'electron-updater';
+import { join } from 'path';
+import icon from '../../resources/icon.png?asset';
 
 let mainWindow: BrowserWindow;
-const clientId = '1297973891284729929'
+let updateWindow: BrowserWindow | null = null; // Ventana modal de actualización
+
+const clientId = '1297973891284729929';
+
+autoUpdater.autoDownload = true;
+autoUpdater.autoInstallOnAppQuit = true;
 
 class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
     autoUpdater.logger = log;
+
+    // Iniciar verificación de actualizaciones
     autoUpdater.checkForUpdatesAndNotify();
   }
 }
 
-function createWindow(): void {
-  // Create the browser window.
+// Crear ventana de la aplicación principal
+function createMainWindow(): void {
   mainWindow = new BrowserWindow({
     minWidth: 1200,
     minHeight: 670,
@@ -31,37 +38,88 @@ function createWindow(): void {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false,
     },
-  })
+  });
 
   mainWindow.on('ready-to-show', () => {
-    mainWindow.show()
+    mainWindow.show();
     new AppUpdater();
-  })
+  });
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
-    shell.openExternal(details.url)
-    return { action: 'deny' }
-  })
+    shell.openExternal(details.url);
+    return { action: 'deny' };
+  });
 
-  // HMR for renderer base on electron-vite cli.
-  // Load the remote URL for development or the local html file for production.
   if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
-    mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
+    mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL']);
   } else {
-    mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
+    mainWindow.loadFile(join(__dirname, '../renderer/index.html'));
   }
 }
 
-// Only needed if you want to use spectate, join, or ask to join
-DiscordRPC.register(clientId);
+// Crear ventana modal para las actualizaciones
+function createUpdateWindow() {
+  updateWindow = new BrowserWindow({
+    width: 400,
+    height: 200,
+    parent: mainWindow, // Hacer que la ventana de actualización dependa de la ventana principal
+    modal: true,
+    show: true,
+    autoHideMenuBar: true,
+    webPreferences: {
+      preload: join(__dirname, '../preload/index.js'),
+      sandbox: false,
+    },
+  });
 
-const rpc = new DiscordRPC.Client({ transport: 'ipc' });
-const startTimestamp = new Date();
+  updateWindow.loadURL('data:text/html;charset=utf-8,' + encodeURIComponent(`
+    <html>
+      <head><title>Actualización</title></head>
+      <body>
+        <h3>Comprobando actualizaciones...</h3>
+        <div id="status">Esperando...</div>
+      </body>
+    </html>
+  `));
+}
+
+// Actualizar el contenido de la ventana modal
+function updateStatus(message: string) {
+  if (updateWindow) {
+    updateWindow.webContents.executeJavaScript(`
+      document.getElementById('status').innerText = "${message}";
+    `);
+  }
+}
+
+// Mostrar mensaje de error si no se puede verificar la actualización
+autoUpdater.on('error', (err) => {
+  console.error('Error durante la verificación de la actualización:', err);
+  updateStatus('Hubo un error al comprobar la actualización: ' + err);
+});
+
+// Cuando hay una actualización disponible
+autoUpdater.on('update-available', () => {
+  console.log('Actualización disponible');
+  updateStatus('Actualización disponible. Descargando...');
+});
+
+// Cuando no hay actualizaciones disponibles
+autoUpdater.on('update-not-available', () => {
+  console.log('No hay actualizaciones disponibles');
+  updateStatus('No hay actualizaciones disponibles.');
+});
+
+// Cuando la actualización se ha descargado
+autoUpdater.on('update-downloaded', () => {
+  console.log('Actualización descargada');
+  updateStatus('Actualización descargada. Preparando...');
+  autoUpdater.quitAndInstall(); // Instalar la actualización
+});
 
 async function setActivity() {
-  if (!rpc || !mainWindow) {
-    return;
-  }
+  const rpc = new DiscordRPC.Client({ transport: 'ipc' });
+  const startTimestamp = new Date();
 
   rpc.setActivity({
     details: 'Mirando sucursales',
@@ -73,54 +131,53 @@ async function setActivity() {
     smallImageText: 'i am my own pillows',
     instance: false,
   });
+
+  rpc.on('ready', () => {
+    setInterval(() => {
+      rpc.setActivity({
+        details: 'Mirando sucursales',
+        state: 'Gestionado empresas',
+        startTimestamp,
+        largeImageKey: 'snek_large',
+        largeImageText: 'tea is delicious',
+        smallImageKey: 'snek_small',
+        smallImageText: 'i am my own pillows',
+        instance: false,
+      });
+    }, 15000);
+  });
+
+  rpc.login({ clientId }).catch(console.error);
 }
 
-rpc.on('ready', () => {
+// Este método se ejecuta cuando Electron está listo
+app.whenReady().then(() => {
+  electronApp.setAppUserModelId('com.electron');
+
+  app.on('browser-window-created', (_, window) => {
+    optimizer.watchWindowShortcuts(window);
+  });
+
+  // Crear la ventana de actualización
+  if (!is.dev) {
+    createUpdateWindow();
+  }
+
+  // Crear la ventana principal
+  createMainWindow();
+
+  // Mostrar estado en discord
   setActivity();
 
-  // activity can only be set every 15 seconds
-  setInterval(() => {
-    setActivity();
-  }, 15e3);
+  app.on('activate', function () {
+    if (BrowserWindow.getAllWindows().length === 0) createMainWindow();
+  });
 });
 
-rpc.login({ clientId }).catch(console.error);
-
-
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.whenReady().then(() => {
-  // Set app user model id for windows
-  electronApp.setAppUserModelId('com.electron')
-
-  // Default open or close DevTools by F12 in development
-  // and ignore CommandOrControl + R in production.
-  // see https://github.com/alex8088/electron-toolkit/tree/master/packages/utils
-  app.on('browser-window-created', (_, window) => {
-    optimizer.watchWindowShortcuts(window)
-  })
-
-  // IPC test
-  ipcMain.on('ping', () => console.log('pong'))
-
-  createWindow()
-
-  app.on('activate', function () {
-    // On macOS it's common to re-create a window in the app when the
-    // dock icon is clicked and there are no other windows open.
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
-  })
-})
-
-// Quit when all windows are closed, except on macOS. There, it's common
-// for applications and their menu bar to stay active until the user quits
-// explicitly with Cmd + Q.
+// Cerrar la ventana de actualización cuando se cierre la aplicación
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
-    app.quit()
+    if (updateWindow) updateWindow.close(); // Cerrar la ventana de actualización
+    app.quit();
   }
-})
-
-// In this file you can include the rest of your app"s specific main process
-// code. You can also put them in separate files and require them here.
+});
