@@ -1,7 +1,7 @@
 import { Input } from '@nextui-org/react'
+import { Chip, Snippet } from '@nextui-org/react'
 import { ActionDropdown } from '../Dropdown'
 import { ShortCellValue } from './ShortCellValue'
-import { Chip, ChipProps } from '@nextui-org/react'
 import { DropdownAction } from '../Dropdown/DropdownAction'
 
 interface RenderCellInterface {
@@ -21,48 +21,87 @@ export const RenderCell = ({
   handleDeleteItem,
   handleSetCurrentIdEdit,
 }: RenderCellInterface) => {
-  const statusColorMap: Record<string, ChipProps['color']> = {
-    ACTIVE: 'success',
-    INACTIVE: 'danger',
-    PENDING: 'warning',
+  const statusColorMap = {
+    ACTIVE: {
+      text: 'Activo',
+      color: 'success',
+    },
+    INACTIVE: {
+      text: 'Inactivo',
+      color: 'danger',
+    },
+    PENDING: {
+      text: 'Pendiente',
+      color: 'warning',
+    },
+    AVAILABLE: {
+      text: 'Disponible',
+      color: 'success',
+    },
+    NOTAVAILABLE: {
+      text: 'No disponible',
+      color: 'danger',
+    },
+    FIXED: {
+      text: 'Fijo',
+    },
+    PERCENTAGE: {
+      text: 'Porcentaje',
+    },
   }
 
   const cellValue = item[columnKey]
 
   if (inputCell) return <Input type='email' size='sm' defaultValue={item[columnKey]} />
 
-  if (columnKey === 'actions' && dropdownAction) {
-    return (
-      <div className='relative flex justify-end items-center gap-2'>
-        <DropdownAction dropdownItems={dropdownAction} tableItemId={item.id} />
-      </div>
-    )
-  }
+  if (columnKey === 'actions' && dropdownAction)
+    return <DropdownAction dropdownItems={dropdownAction} tableItemId={item.id} />
+
+  if (cellValue == null && columnKey !== 'actions') return
 
   switch (columnKey) {
+    case 'supplierUnit':
     case 'category':
       return (
-        <span className='bg-c-primary-variant-3 text-c-primary px-2 py-[2px] rounded-md text-[12px]'>
-          {item[columnKey]?.name}
-        </span>
+        <Chip size='sm' variant='flat' className='rounded-md'>
+          <ShortCellValue cellValue={item[columnKey]?.name} maxLength={20} />
+        </Chip>
       )
     case 'name':
       return <ShortCellValue cellValue={cellValue} maxLength={20} />
+
     case 'status':
       return (
-        <Chip className='capitalize' color={statusColorMap[item.status]} size='sm' variant='flat'>
-          {cellValue}
+        <Chip
+          color={statusColorMap[item.status].color}
+          size='sm'
+          variant='flat'
+          className='rounded-md'
+        >
+          {statusColorMap[item.status].text}
+        </Chip>
+      )
+
+    case 'type':
+      return (
+        <Chip size='sm' variant='flat' className='rounded-md'>
+          {statusColorMap[item.type].text}
         </Chip>
       )
 
     case 'actions':
       return (
-        <div className='relative flex justify-end items-center gap-2'>
-          <ActionDropdown
-            editAction={() => handleSetCurrentIdEdit(item.id)}
-            deleteAction={() => handleDeleteItem(item.id)}
-          />
-        </div>
+        <ActionDropdown
+          editAction={() => handleSetCurrentIdEdit(item.id)}
+          deleteAction={() => handleDeleteItem(item.id)}
+        />
+      )
+
+    case 'code':
+      return (
+        <Snippet size='sm' color='default' codeString={cellValue} symbol=''>
+          <ShortCellValue cellValue={cellValue} maxLength={20} />
+        </Snippet>
       )
 
     default:
