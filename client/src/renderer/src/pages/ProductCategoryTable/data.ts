@@ -4,10 +4,6 @@ export const columnsData = {
     { name: 'NOMBRE', uid: 'name' },
     { name: 'ACION', uid: 'actions' },
   ],
-  statusOptions: [
-    { name: 'Pendiente', uid: 'PENDING' },
-    { name: 'Activo', uid: 'ACTIVE' },
-  ],
   InitialVisibleColumns: ['id', 'name', 'actions'],
 }
 
@@ -17,6 +13,7 @@ export const modalInputs = {
       type: 'text',
       name: 'name',
       label: 'Nombre',
+      placeholder: 'Ingresa el nombre',
     },
   ],
 }

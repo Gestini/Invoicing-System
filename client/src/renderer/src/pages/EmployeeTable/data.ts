@@ -5,7 +5,7 @@ export const columnsData = {
     { name: 'NOMBRE', uid: 'name' },
     { name: 'APELLIDO', uid: 'lastname' },
     { name: 'EMAIL', uid: 'email' },
-    { name: 'STATUS', uid: 'status' },
+    { name: 'ESTADO', uid: 'status' },
     { name: 'ACCIÓN', uid: 'actions' },
   ],
   statusOptions: [
@@ -21,21 +21,25 @@ export const modalInputs = {
       type: 'text',
       name: 'name',
       label: 'Nombre',
+      placeholder: 'Ingresa el nombre'
     },
     {
       type: 'text',
       name: 'lastname',
       label: 'Apellido',
+      placeholder: 'Ingresa el apellido'
     },
     {
       type: 'email',
       name: 'email',
       label: 'Email',
+      placeholder: 'Ingresa el correo'
     },
     {
       type: 'text',
       name: 'pin',
       label: 'Pin de ingreso',
+      placeholder: 'Ingresa el pin de ingreso'
     },
   ],
 }
