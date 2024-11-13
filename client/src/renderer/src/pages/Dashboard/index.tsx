@@ -9,6 +9,7 @@ export const Dashboard = () => {
   return (
     <div className='flex gap-4 w-full justify-end dashbordsection'>
       <div className='flex-grow flex flex-col gap-4'>
+        <h3>Prueba de versión</h3>
         <DashboardHeaderInfo />
         <StatsCardGrid />
         <GraphView />
