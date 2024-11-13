@@ -1,4 +1,4 @@
-import { Tabs } from '@renderer/components/tab/Tabs'
+import { TabsRender } from '@renderer/components/TabsRender'
 import Employes from './views/Employes'
 
 const index = () => {
@@ -9,7 +9,7 @@ const index = () => {
   ]
   return (
     <div className='flex gap-2 w-full flex-col h-full'>
-      <Tabs tabs={tabs} />
+      <TabsRender tabs={tabs} />
     </div>
   )
 }

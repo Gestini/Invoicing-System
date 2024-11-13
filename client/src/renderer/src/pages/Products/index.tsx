@@ -1,4 +1,4 @@
-import { Tabs } from '@renderer/components/tab/Tabs'
+import { TabsRender } from '@renderer/components/TabsRender'
 import { UniInventory } from './views/UnitInventory'
 import BulkUpload from './views/BulkUpload'
 import BulkUploadVanilla from './views/BulkUploadVanilla'
@@ -10,7 +10,7 @@ const index = () => {
     { name: 'Carga masiva de productos IA', content: <BulkUpload /> },
   ]
 
-  return <Tabs tabs={tabs} />
+  return <TabsRender tabs={tabs} />
 }
 
 export default index

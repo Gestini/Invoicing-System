@@ -1,4 +1,4 @@
-import { Tabs } from '../../components/tab/Tabs'
+import { TabsRender } from '@renderer/components/TabsRender'
 import { StockTable } from './StockTable'
 import { WarehouseCard } from './WarehouseCard'
 import { WarehouseStats } from './Components/WarehouseStats'
@@ -25,5 +25,5 @@ export const Warehouse = () => {
     },
   ]
 
-  return <Tabs tabs={tabs} />
+  return <TabsRender tabs={tabs} />
 }
