@@ -1,47 +1,9 @@
 const columns = [
-  { name: 'CANTIDAD', uid: 'quantity', sortable: true },
   { name: 'NOMBRE DEL PRODUCTO', uid: 'name' },
-  { name: 'STOCK', uid: 'totalquantity' },
-  { name: 'PRECIO', uid: 'cardPrice', sortable: true },
+  { name: 'PRECIO', uid: 'price', sortable: true },
+  { name: 'CANTIDAD', uid: 'quantity', sortable: true },
+  { name: 'STOCK', uid: 'inventoryQuantity' },
   { name: 'ACCIÓN', uid: 'actions' },
-]
-
-const products = [
-  {
-    id: 1,
-    productName: 'Licuadora gamer',
-    category: 'Electrodomesticos',
-    price: '29',
-    quantity: 1,
-  },
-  {
-    id: 2,
-    productName: 'Escritorio HD',
-    category: 'Hogar',
-    price: '29',
-    quantity: 1,
-  },
-  {
-    id: 3,
-    productName: 'Teclado de piedra',
-    category: 'Tecnología',
-    price: '29',
-    quantity: 1,
-  },
-  {
-    id: 4,
-    productName: 'Tampones',
-    category: 'Personal',
-    price: '29',
-    quantity: 1,
-  },
-  {
-    id: 5,
-    productName: 'Copa menstrual',
-    category: 'Personal',
-    price: '29',
-    quantity: 1,
-  },
 ]
 
 const totalApply = [
@@ -110,4 +72,4 @@ const totalApply = [
   },
 ]
 
-export { columns, products, totalApply }
+export { columns, totalApply }
