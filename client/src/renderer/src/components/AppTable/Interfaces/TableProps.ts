@@ -14,7 +14,7 @@ interface Column {
 
 interface ColmnsData {
   columns: Column[]
-  statusOptions: statusOptions[]
+  statusOptions?: statusOptions[]
   InitialVisibleColumns: string[]
 }
 
