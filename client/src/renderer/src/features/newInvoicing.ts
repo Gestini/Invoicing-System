@@ -1,6 +1,7 @@
 import { totalApply } from '@renderer/pages/InvoicingTable/ViewProducts/data'
 import { createSlice } from '@reduxjs/toolkit'
 import { ProductModel } from '@renderer/interfaces/product'
+import { DiscountModel, DiscountType } from '@renderer/interfaces/discount'
 
 interface TotalApplyItem {
   label: string
@@ -14,8 +15,10 @@ export interface Tab {
   id: string
   total: number
   title: string
+  subTotal: number
   formData: Record<string, any>
   products: ProductModel[]
+  discount: DiscountModel | null
   totalApply: TotalApplyItem[]
 }
 
@@ -30,24 +33,30 @@ const initialState = {
       id: '1',
       total: 0.0,
       title: 'Pestaña #1',
+      subTotal: 0.0,
       formData: {},
       products: [],
+      discount: null,
       totalApply: totalApply as TotalApplyItem[],
     },
     {
       id: '2',
       total: 0.0,
       title: 'Pestaña #2',
+      subTotal: 0.0,
       formData: {},
       products: [],
+      discount: null,
       totalApply: totalApply as TotalApplyItem[],
     },
     {
       id: '3',
       total: 0.0,
       title: 'Pestaña #3',
+      subTotal: 0.0,
       formData: {},
       products: [],
+      discount: null,
       totalApply: totalApply as TotalApplyItem[],
     },
   ],
@@ -67,8 +76,10 @@ export const newInvoicing = createSlice({
         id: new Date().getTime().toString(),
         total: 0.0,
         title: `Pestaña #${state.tabs.length + 1}`,
+        subTotal: 0.0,
         formData: {},
         products: [],
+        discount: null,
         totalApply: totalApply as TotalApplyItem[],
       }
       state.tabs.push(obj)
@@ -95,6 +106,14 @@ export const newInvoicing = createSlice({
     setCurrentTabId: (state, action) => {
       state.currentTabId = action.payload
     },
+    setDiscount: (state, action) => {
+      const tabIndex = state.tabs.findIndex((item) => item.id === state.currentTabId)
+      if (tabIndex === -1) return
+
+      const tab = state.tabs[tabIndex]
+
+      tab.discount = action.payload
+    },
     setTotal: (state) => {
       const tabIndex = state.tabs.findIndex((item) => item.id === state.currentTabId)
       if (tabIndex === -1) return
@@ -106,17 +125,19 @@ export const newInvoicing = createSlice({
       )
       let applyAmount = 0.0
 
-      tab.totalApply.forEach((item) => {
-        if (item.apply) {
-          if (item.format === 'percentage') {
-            applyAmount += (subtotal * item.value) / 100
-          } else {
-            applyAmount += item.value
-          }
+      /* Calcular el total teniendo en cuenta el descuento */
+      if (tab.discount && tab.products.length > 0) {
+        if (tab.discount.type == DiscountType.FIXED) {
+          applyAmount = tab.discount.value
         }
-      })
 
-      tab.total = subtotal - applyAmount
+        if (tab.discount.type == DiscountType.PERCENTAGE) {
+          applyAmount = subtotal * tab.discount.value / 100
+        }
+      }
+
+      state.tabs[tabIndex].total = subtotal - applyAmount
+      state.tabs[tabIndex].subTotal = subtotal
     },
     editTotal: (state, action) => {
       const { name, value } = action.payload
@@ -146,7 +167,7 @@ export const newInvoicing = createSlice({
       const tabIndex = state.tabs.findIndex((item) => item.id === state.currentTabId)
       if (tabIndex === -1) return
 
-      state.tabs[tabIndex].products.push({ ...product, quantity: 1, price: product.cardPrice })
+      state.tabs[tabIndex].products.push({ ...product, quantity: 1 })
     },
     deleteProduct: (state, action) => {
       const { id } = action.payload
@@ -168,12 +189,24 @@ export const newInvoicing = createSlice({
       const productIndex = state.tabs[tabIndex].products.findIndex((item) => item.id === id)
       if (productIndex === -1) return
 
+      const product = state.tabs[tabIndex].products[productIndex];
+
       if (handleType === 'sum') {
-        state.tabs[tabIndex].products[productIndex].quantity += 1
+        // Verificar inventario antes de incrementar la cantidad
+        if (product.inventoryQuantity === 0) return;
+
+        product.inventoryQuantity -= 1;
+        product.quantity += 1;
       } else {
-        if (state.tabs[tabIndex].products[productIndex].quantity === 0) return
-        state.tabs[tabIndex].products[productIndex].quantity -= 1
+        // Reducir la cantidad o eliminar el producto si la cantidad es 1
+        if (product.quantity === 1) {
+          state.tabs[tabIndex].products.splice(productIndex, 1);
+        } else {
+          product.quantity -= 1;
+          product.inventoryQuantity += 1;
+        }
       }
+
     },
     setFormData: (state, action) => {
       const { name, value } = action.payload
@@ -201,6 +234,7 @@ export const {
   editTotal,
   addProduct,
   editAmount,
+  setDiscount,
   handleTotal,
   setFormData,
   deleteProduct,
