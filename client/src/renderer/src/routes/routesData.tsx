@@ -6,7 +6,6 @@ import Products from '@renderer/pages/Products'
 import Settings from '@renderer/pages/Settings'
 import { Roles } from '@renderer/pages/Roles'
 import { Warehouse } from '@renderer/pages/Warehouse'
-import Facturation from '../pages/Facturation/index'
 import { Dashboard } from '@renderer/pages/Dashboard'
 import { SalesTable } from '@renderer/pages/SalesTable'
 import { ClientTable } from '@renderer/pages/ClientTable'
@@ -77,7 +76,7 @@ const warehouseRoutes: RouteSection = {
   permission: permissions.warehouse.permission,
   routes: [
     { path: '/product-management', element: <Warehouse />, title: 'Depósitos' },
-    { path: '/brands', element: <Products />, title: 'inventario' },
+    { path: '/inventory', element: <Products />, title: 'inventario' },
     { path: '/suppliers', element: <SupplierTable />, title: 'Proveedores' },
     { path: '/categories', element: <ProductCategoryTable />, title: 'categorías' },
   ],
@@ -147,13 +146,10 @@ const operationsRoutes: RouteSection = {
   section: 'Operaciones',
   permission: permissions.operations.permission,
   routes: [
-    { path: '/sales', element: <SalesTable />, title: 'ventas' },
     { path: '/invoicing', element: <InvoicingTable />, title: 'facturación' },
-    { path: '/afip', element: <Facturation />, title: 'Facturación AFIP' },
+    { path: '/sales', element: <SalesTable />, title: 'ventas' },
     { path: '/clients', element: <ClientTable />, title: 'clientes' },
     { path: '/discounts', element: <DiscountTable />, title: 'descuentos' },
-    { path: '/reports', element: <></>, title: 'informes' },
-    { path: '/orders', element: <></>, title: 'órdenes' },
   ],
 }
 

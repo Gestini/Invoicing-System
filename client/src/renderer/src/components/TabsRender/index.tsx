@@ -1,14 +1,14 @@
 import React from 'react'
-import { Tabs as TabNextUI, Tab } from '@nextui-org/react'
+import { Tabs, Tab } from '@nextui-org/react'
 
 interface Tab {
   name: string
   content: React.ReactNode
 }
 
-export const Tabs = ({ tabs }: { tabs: Tab[] }) => {
+export const TabsRender = ({ tabs }: { tabs: Tab[] }) => {
   return (
-    <TabNextUI
+    <Tabs
       color='primary'
       items={tabs}
       radius='none'
@@ -27,6 +27,6 @@ export const Tabs = ({ tabs }: { tabs: Tab[] }) => {
           {item.content}
         </Tab>
       )}
-    </TabNextUI>
+    </Tabs>
   )
 }

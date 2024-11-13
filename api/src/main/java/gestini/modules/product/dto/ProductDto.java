@@ -1,145 +1,114 @@
-package gestini.modules.product.models;
+package gestini.modules.product.dto;
 
-import java.time.LocalDateTime;
-
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
-import gestini.modules.deposit.models.DepositModel;
-import gestini.modules.productCategory.models.ProductCategoryModel;
-import gestini.modules.supplier.models.SupplierModel;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
-import jakarta.persistence.Table;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "product")
-public class ProductModel {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+import gestini.modules.product.models.ProductModel.ProductStatus;
 
-    @Column
+public class ProductDto {
+
+    @Schema(description = "Código 1 del producto, máximo 100 caracteres")
     @Size(max = 100, message = "El código 1 debe tener como máximo 100 caracteres")
     private String codigo1;
 
-    @Column
+    @Schema(description = "Código 2 del producto, máximo 100 caracteres")
     @Size(max = 100, message = "El código 2 debe tener como máximo 100 caracteres")
     private String codigo2;
 
-    @Column
+    @Schema(description = "Código de barras, máximo 255 caracteres")
     @Size(max = 255, message = "El código de barras debe tener como máximo 255 caracteres")
     private String barcode;
 
-    @Column
+    @Schema(description = "URL de la imagen del producto")
     private String image;
 
-    @Column
+    @Schema(description = "Precio del producto")
     @DecimalMin(value = "0.0", message = "El precio debe ser mayor o igual que cero")
     private Double price;
 
-    @Column(name = "card_price")
+    @Schema(description = "Precio con tarjeta")
     @DecimalMin(value = "0.0", message = "El precio de tarjeta debe ser mayor o igual que cero")
     private Double cardPrice;
 
-    @Column(name = "financed_price")
+    @Schema(description = "Precio financiado")
     @DecimalMin(value = "0.0", message = "El precio financiado debe ser mayor o igual que cero")
     private Double financedPrice;
 
-    @Column(name = "friend_price")
+    @Schema(description = "Precio de amigo")
     @DecimalMin(value = "0.0", message = "El precio de amigo debe ser mayor o igual que cero")
     private Double friendPrice;
 
-    @Column(name = "purchase_price")
+    @Schema(description = "Precio de compra")
     @DecimalMin(value = "0.0", message = "El precio de compra debe ser mayor o igual que cero")
     private Double purchasePrice;
 
-    @Column(name = "price_calculation")
+    @Schema(description = "Tipo de cálculo de precio")
     private String priceCalculation;
 
-    @Column(name = "cost_price")
+    @Schema(description = "Precio de costo")
     private Double costPrice;
 
-    @Column
+    @Schema(description = "Cantidad en inventario")
     @Min(value = 0, message = "La cantidad debe ser mayor o igual que cero")
     private Integer quantity;
 
-    @Column
+    @Schema(description = "Nombre del producto", required = true)
     @NotNull(message = "El nombre no puede estar vacío")
     @Size(min = 1, max = 100, message = "El nombre debe tener entre 1 y 100 caracteres")
     private String name;
 
-    @Column
+    @Schema(description = "Descripción del producto, máximo 255 caracteres")
     @Size(max = 255, message = "La descripción debe tener menos de 255 caracteres")
     private String description;
 
-    @Column
+    @Schema(description = "Fecha de creación del producto")
     private LocalDateTime createdAt;
 
-    @Column
+    @Schema(description = "Fecha de última actualización del producto")
     private LocalDateTime updatedAt;
 
-    @Enumerated(EnumType.STRING)
-    @Column
+    @Schema(description = "Estado del producto")
     private ProductStatus status;
 
-    public enum ProductStatus {
-        AVAILABLE,
-        NOTAVAILABLE,
-    }
+    @Schema(description = "ID del proveedor")
+    private Long supplierId;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "supplier_init_id", nullable = true)
-    private SupplierModel supplierUnit;
+    @Schema(description = "ID de la categoría del producto")
+    private Long categoryId;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "product_category_id", nullable = true)
-    private ProductCategoryModel category;
+    @Schema(description = "ID del depósito", required = true)
+    @NotNull(message = "El ID del depósito es obligatorio")
+    private Long depositId;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "deposit_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private DepositModel deposit;
-
-    @Column(name = "price_policy")
+    @Schema(description = "Política de precios")
     private String pricePolicy;
 
-    @Column
+    @Schema(description = "Neto 1")
     private Double net1;
 
-    @Column
+    @Schema(description = "Neto 2")
     private Double net2;
 
-    @Column
+    @Schema(description = "Neto 3")
     private Double net3;
 
-    @Column
+    @Schema(description = "Neto 4")
     private Double net4;
 
-    @Column(name = "tax_type")
+    @Schema(description = "Tipo de impuesto")
     private String taxType;
 
-    @Column(name = "reference_code")
+    @Schema(description = "Código de referencia")
     private String referenceCode;
 
-    @Column(name = "package_product")
+    @Schema(description = "Indica si el producto es un paquete")
     private Boolean packageProduct;
 
-    @Column(name = "quantity_per_package")
+    @Schema(description = "Cantidad por paquete")
     private Integer quantityPerPackage;
 
     public String getCodigo1() {
@@ -164,6 +133,22 @@ public class ProductModel {
 
     public void setBarcode(String barcode) {
         this.barcode = barcode;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     public Double getCardPrice() {
@@ -212,6 +197,70 @@ public class ProductModel {
 
     public void setCostPrice(Double costPrice) {
         this.costPrice = costPrice;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public Long getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(Long supplierId) {
+        this.supplierId = supplierId;
+    }
+
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public Long getDepositId() {
+        return depositId;
+    }
+
+    public void setDepositId(Long depositId) {
+        this.depositId = depositId;
     }
 
     public String getPricePolicy() {
@@ -284,105 +333,6 @@ public class ProductModel {
 
     public void setQuantityPerPackage(Integer quantityPerPackage) {
         this.quantityPerPackage = quantityPerPackage;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    public SupplierModel getSupplierUnit() {
-        return supplierUnit;
-    }
-
-    public void setSupplierUnit(SupplierModel supplierUnit) {
-        this.supplierUnit = supplierUnit;
-    }
-
-    public DepositModel getDeposit() {
-        return deposit;
-    }
-
-    public void setDeposit(DepositModel deposit) {
-        this.deposit = deposit;
-    }
-
-    public ProductCategoryModel getCategory() {
-        return category;
-    }
-
-    public void setCategory(ProductCategoryModel category) {
-        this.category = category;
     }
 
     public ProductStatus getStatus() {

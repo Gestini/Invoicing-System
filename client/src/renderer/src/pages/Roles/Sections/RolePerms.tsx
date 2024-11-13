@@ -1,7 +1,7 @@
 import React from 'react'
 import { RootState } from '@renderer/store'
 import { SearchIcon } from '@renderer/components/Icons/SearchIcon'
-import { Input, Switch } from '@nextui-org/react'
+import { Input, ScrollShadow, Switch } from '@nextui-org/react'
 import { permissions, permsMap } from '../Permissions'
 import { useDispatch, useSelector } from 'react-redux'
 import { removePermission, addPermissions } from '@renderer/features/roleSlice'
@@ -46,35 +46,37 @@ export const RolePerms = () => {
         placeholder='Buscar por nombre...'
         startContent={<SearchIcon />}
       />
-      <div className='flex items-center flex-col gap-4'>
-        {Object.values(permissions)
-          .filter((item: permsMap) => item.title.toLowerCase().includes(searchTerm.toLowerCase()))
-          .map((item, index) => {
-            const hasPermissions = currentRole?.permissions?.some(
-              (perm) => perm.name === item.permission,
-            )
-            const permission = currentRole?.permissions?.find(
-              (perm) => perm.name === item.permission,
-            )
-            return (
-              <div key={index} className='flex items-center gap-4 justify-between w-full'>
-                <div className='flex flex-col gap-1'>
-                  <p className='text-medium text-default-700'>{item.title}</p>
-                  <p className='text-small text-default-500'>{item.description}</p>
+      <ScrollShadow className='w-full h-[250px]'>
+        <div className='flex items-center flex-col gap-4'>
+          {Object.values(permissions)
+            .filter((item: permsMap) => item.title.toLowerCase().includes(searchTerm.toLowerCase()))
+            .map((item, index) => {
+              const hasPermissions = currentRole?.permissions?.some(
+                (perm) => perm.name === item.permission,
+              )
+              const permission = currentRole?.permissions?.find(
+                (perm) => perm.name === item.permission,
+              )
+              return (
+                <div key={index} className='flex items-center gap-4 justify-between w-full'>
+                  <div className='flex flex-col gap-1'>
+                    <p className='text-medium text-default-700'>{item.title}</p>
+                    <p className='text-small text-default-500'>{item.description}</p>
+                  </div>
+                  <Switch
+                    isSelected={hasPermissions}
+                    classNames={{
+                      wrapper: 'group-data-[selected=true]:bg-[var(--c-primary)]',
+                    }}
+                    onChange={() =>
+                      changePermissions(hasPermissions, permission?.id, item.permission)
+                    }
+                  />
                 </div>
-                <Switch
-                  isSelected={hasPermissions}
-                  classNames={{
-                    wrapper: 'group-data-[selected=true]:bg-[var(--c-primary)]',
-                  }}
-                  onChange={() =>
-                    changePermissions(hasPermissions, permission?.id, item.permission)
-                  }
-                />
-              </div>
-            )
-          })}
-      </div>
+              )
+            })}
+        </div>
+      </ScrollShadow>
     </div>
   )
 }

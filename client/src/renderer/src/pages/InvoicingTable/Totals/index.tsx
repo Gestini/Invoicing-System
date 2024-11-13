@@ -1,116 +1,137 @@
 import React from 'react'
-import { setTotal } from '@renderer/features/newInvoicing'
+import { PlusIcon } from '@renderer/components/Icons'
 import { RootState } from '@renderer/store'
+import { DiscountType } from '@renderer/interfaces/discount'
+import { MdAttachMoney } from 'react-icons/md'
+import { setDiscount, setTotal } from '@renderer/features/newInvoicing'
 import { useDispatch, useSelector } from 'react-redux'
-import { Card, CardHeader, CardBody } from '@nextui-org/react'
+import { reqCreateInvoice, reqFindDiscountByCode } from '@renderer/api/requests'
+import { Button, Card, CardBody, CardHeader, Input } from '@nextui-org/react'
 
 export const Totals = () => {
   const dispatch = useDispatch()
   const newInvoicing = useSelector((state: RootState) => state.unit.newInvoicing)
-
   const currentTab = newInvoicing?.tabs?.find((item: any) => item.id == newInvoicing.currentTabId)
+  const [discountCode, setDiscountCode] = React.useState('')
 
   React.useEffect(() => {
     dispatch(setTotal())
-  }, [currentTab])
+    if (currentTab?.discount) {
+      setDiscountCode(currentTab.discount.code)
+    } else {
+      setDiscountCode('')
+    }
+  }, [currentTab, currentTab?.discount])
+
+  const onSubmmit = () => {
+    reqCreateInvoice({
+      ...currentTab?.formData,
+      total: currentTab?.total,
+      products: currentTab?.products,
+      discountCode: currentTab?.discount?.code,
+    })
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    setDiscountCode(e.target.value)
+  }
+
+  const searchDiscountCode = () => {
+    reqFindDiscountByCode(discountCode)
+      .then((res) => dispatch(setDiscount(res.data)))
+      .catch(() => dispatch(setDiscount(null)))
+  }
+
+  const paymentMethods = [
+    {
+      method: 'Dinero',
+      icon: <MdAttachMoney />,
+    },
+    {
+      method: 'Tarjeta Credito',
+      icon: <MdAttachMoney />,
+    },
+    {
+      method: 'E-Wallet',
+      icon: <MdAttachMoney />,
+    },
+  ]
 
   return (
-    <Card className='w-[500px] bg-[#26272B]'>
-    <CardHeader className='flex gap-3'>
-      <span className='text-xs text-c-primary'>Detalle</span>
-    </CardHeader>
-    <CardBody>
-      <div className='text-white flex flex-col gap-2'>
-        <div className='flex justify-between text-sm'>
-          <span>Monto Neto</span>
-          <span>$100.000</span>
-        </div>
-        <div className='flex justify-between text-sm'>
-          <span>Vuelto</span>
-          <span>$10.00</span>
-        </div>
-        <div className='flex justify-between text-sm'>
-          <span>IVA 19%</span>
-          <span>$10.00</span>
-        </div>
-        <div className='flex justify-between text-sm'>
-          <span>Descuento</span>
-          <span>$20.00</span>
-        </div>
-      </div>
-      
-      {/* Custom Discounts and Additions */}
-      <div className='my-2'>
-        <div className='mt-3 flex flex-col gap-2'>
-
-          {/* Discounts Section */}
-          <div className='text-white'>
-            <span className='text-sm font-semibold'>Descuentos</span>
-            <div className='flex flex-col gap-2 mt-2'>
-              <div className='flex justify-between items-center text-sm'>
-                <span>Hot Sale - 20%</span>
-                <input type='checkbox' className='w-4 h-4' />
-              </div>
-              <div className='flex justify-between items-center text-sm'>
-                <span>Descuento Especial - $100</span>
-                <input type='checkbox' className='w-4 h-4' />
-              </div>
-            </div>
+    <Card className='min-w-[300px]'>
+      <CardHeader>
+        <Input
+          placeholder='Código de descuento'
+          classNames={{
+            label: 'text-black/50 dark:text-white/90',
+            innerWrapper: 'bg-transparent',
+            inputWrapper: ['dark:hover:bg-default/50'],
+          }}
+          endContent={
+            <Button isIconOnly size='sm' aria-label='Like'>
+              <PlusIcon onClick={searchDiscountCode} />
+            </Button>
+          }
+          value={discountCode}
+          onChange={handleChange}
+        />
+      </CardHeader>
+      <CardBody className='flex justify-between gap-3'>
+        <div className='flex flex-col gap-2'>
+          <div className='flex justify-between text-sm'>
+            <span>Monto Neto</span>
+            <span>{currentTab?.total}</span>
           </div>
-  
-          {/* Additions Section */}
-          <div className='text-white mt-2'>
-            <span className='text-sm font-semibold'>Adicionales</span>
-            <div className='flex flex-col gap-2 mt-2'>
-              <div className='flex justify-between items-center text-sm'>
-                <span>Pago con Tarjeta - 20%</span>
-                <input type='checkbox' className='w-4 h-4' />
-              </div>
-              <div className='flex justify-between items-center text-sm'>
-                <span>IVA - 21%</span>
-                <input type='checkbox' className='w-4 h-4' />
-              </div>
-            </div>
+          <div className='flex justify-between text-sm'>
+            <span>IVA 19%</span>
+            <span>$10.00</span>
+          </div>
+          <div className='flex justify-between text-sm'>
+            <span>Descuento</span>
+            <span>
+              {currentTab?.discount == null && 'Ninguno'}
+              {currentTab?.discount?.type == DiscountType.FIXED && '$'}
+              {currentTab?.discount?.type == DiscountType.PERCENTAGE && '%'}
+              {currentTab?.discount?.value}
+            </span>
           </div>
         </div>
-      </div>
-      
-      <div className='border-t border-dashed border-[#fafafa44] flex justify-between h-[57px] py-[14px] my-2'>
-        <span className='text-xl'>Total</span>
-        <span className='text-2xl'>$100.000</span>
-      </div>
-      
-      {/* <div className='mb-5'>
-        <span className='text-sm text-white'>Metodos de Pago</span>
-        <div className='flex justify-between'>
-          <div className='flex flex-col gap-[10px] items-center'>
-            <div className='w-[80px] h-[53px] rounded-2xl border border-[#fafafa44] flex justify-center items-center'>
-              <div className='bg-[#fafafa] rounded-full'>
-                <MdAttachMoney className='text-[#26272B] text-xl' />
-              </div>
-            </div>
-            <span className='text-xs text-white'>Dinero</span>
+        <span className=' border-t border-dashed border-[#fafafa44]'></span>
+        <div className='flex-col flex justify-between '>
+          <div className='flex gap-2 items-center'>
+            <span className='text-xs'>Sub total</span>
+            <span className='text-1xl'>
+              <s>${currentTab?.subTotal}</s>
+            </span>
           </div>
-          <div className='flex flex-col gap-[10px] items-center'>
-            <div className='w-[80px] h-[53px] rounded-2xl border border-[#fafafa44] flex justify-center items-center'>
-              <div className='bg-[#fafafa] rounded-full'>
-                <MdAttachMoney className='text-[#26272B] text-xl' />
-              </div>
-            </div>
-            <span className='text-xs text-white'>Tarjeta Credito</span>
-          </div>
-          <div className='flex flex-col gap-[10px] items-center'>
-            <div className='w-[80px] h-[53px] rounded-2xl border border-[#fafafa44] flex justify-center items-center'>
-              <div className='bg-[#fafafa] rounded-full'>
-                <MdAttachMoney className='text-[#26272B] text-xl' />
-              </div>
-            </div>
-            <span className='text-xs text-white'>E-Wallet</span>
+          <div className='flex gap-2 items-center'>
+            <span className='text-xl'>Total</span>
+            <span className='text-2xl'>${currentTab?.total}</span>
           </div>
         </div>
-      </div> */}
-      <button className='bg-[#A0DB8E] text-[#26272B] font-semibold text-xl py-5 rounded-[14px]'>Pagar</button>
-    </CardBody>
-  </Card>
+        <div>
+          <div className='flex flex-col gap-2'>
+            <span className='text-sm '>Metodos de Pago</span>
+            <div className='flex justify-between'>
+              {paymentMethods.map((item, index) => (
+                <div className='flex flex-col gap-[10px] items-center' key={index}>
+                  <div className='w-[80px] h-[45px] rounded-2xl border flex justify-center items-center'>
+                    <span className='rounded-full text-[var(--text)] text-xl'>{item.icon}</span>
+                  </div>
+                  <span className='text-xs'>{item.method}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        <Button
+          isDisabled={currentTab?.products.length === 0}
+          className='text-[#fff]  bg-[var(--c-primary)]  dark:bg-[var(--c-primary-variant-2)] font-semibold text-xl py-8 rounded-[14px]'
+          onPress={onSubmmit}
+        >
+          Pagar
+        </Button>
+      </CardBody>
+    </Card>
   )
 }

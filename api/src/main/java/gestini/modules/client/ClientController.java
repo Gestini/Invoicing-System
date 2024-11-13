@@ -1,31 +1,29 @@
 package gestini.modules.client;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import gestini.annotations.CheckPermissions;
-import gestini.modules.businessUnit.models.BusinessUnitModel;
 import gestini.modules.client.dto.ClientDto;
 import gestini.modules.client.models.ClientModel;
 import gestini.utils.Permission;
 import gestini.utils.UnitContext;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
+import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/clients")
+@RequestMapping("/client")
 @SecurityRequirements({
         @SecurityRequirement(name = "BearerAuth"),
         @SecurityRequirement(name = "UnitAccess")
@@ -36,51 +34,24 @@ public class ClientController {
     @Autowired
     private ClientService clientService;
 
-    @GetMapping
-    public ResponseEntity<List<ClientModel>> getAllClients() {
-        List<ClientModel> Clients = clientService.getAllClients();
-        return ResponseEntity.ok(Clients);
+    @GetMapping("/find-all-by-unit")
+    public List<ClientModel> findClientsByUnitId() {
+        return clientService.findClientsByUnitId(UnitContext.getUnitId());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Optional<ClientModel>> getClientById(@PathVariable("id") Long id) {
-        Optional<ClientModel> Client = clientService.getClientById(id);
-        if (Client != null) {
-            return ResponseEntity.ok(Client);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @PostMapping("/create")
+    public ResponseEntity<?> createClient(@RequestBody @Valid ClientDto newClient) {
+        return clientService.createClient(newClient, UnitContext.getUnitId());
     }
 
-    @GetMapping("/by-business-unit")
-    public List<ClientDto> getClientsByBusinessUnit() {
-        return clientService.getClientsByBusinessUnit(UnitContext.getUnitId());
+    @PatchMapping("/edit/{clientId}")
+    public ResponseEntity<?> updateClient(@PathVariable("clientId") Long clientId,
+            @RequestBody @Valid ClientDto client) {
+        return clientService.updateClient(clientId, client);
     }
 
-    @PostMapping
-    public ResponseEntity<ClientModel> createClient(@RequestBody ClientModel Client) {
-        if (Client.getBusinessUnit() == null || Client.getBusinessUnit().getId() == null) {
-            // Manejo de error si businessUnitId no está presente en el objeto ClientModel
-            return ResponseEntity.badRequest().build();
-        }
-
-        BusinessUnitModel businessUnit = new BusinessUnitModel();
-        businessUnit.setId(Client.getBusinessUnit().getId());
-
-        ClientModel createdClient = clientService.createClient(Client, businessUnit);
-        return new ResponseEntity<>(createdClient, HttpStatus.CREATED);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<ClientModel> updateSupplier(@PathVariable("id") Long id,
-            @RequestBody ClientModel supplier) {
-        ClientModel updatedSupplier = clientService.updateClient(id, supplier);
-        return ResponseEntity.ok(updatedSupplier);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteClient(@PathVariable("id") Long id) {
-        clientService.deleteClient(id);
-        return ResponseEntity.noContent().build();
+    @DeleteMapping("/delete-by-id/{clientId}")
+    public ResponseEntity<?> deleteClientById(@PathVariable("clientId") Long clientId) {
+        return clientService.deleteClientById(clientId);
     }
 }

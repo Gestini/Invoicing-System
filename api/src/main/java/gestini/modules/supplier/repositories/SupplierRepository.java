@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import gestini.modules.supplier.models.SupplierModel;
 
@@ -16,6 +15,5 @@ public interface SupplierRepository extends JpaRepository<SupplierModel, Long> {
     List<SupplierModel> findByBusinessUnitId(Long businessUnitId);
 
     @Query("SELECT supplier FROM SupplierModel supplier WHERE LOWER(supplier.name) LIKE LOWER(CONCAT('%', :searchValue, '%')) AND supplier.businessUnit.id = :unitId")
-    List<SupplierModel> searchSupplierByName(@PathVariable("unitId") Long unitId,
-            @PathVariable("searchValue") String searchValue);
+    List<SupplierModel> searchSupplierByName(Long unitId, String searchValue);
 }

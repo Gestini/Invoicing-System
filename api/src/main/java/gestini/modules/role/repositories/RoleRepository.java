@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import gestini.modules.role.models.RoleModel;
@@ -17,5 +16,5 @@ public interface RoleRepository extends JpaRepository<RoleModel, Long> {
             "LEFT JOIN FETCH r.users ru " +
             "LEFT JOIN FETCH ru.employee e " +
             "WHERE r.businessUnit.id = :businessUnitId")
-    List<RoleModel> findByBusinessUnitIdWithPermissions(@Param("businessUnitId") Long businessUnitId);
+    List<RoleModel> findByBusinessUnitIdWithPermissions(Long businessUnitId);
 }

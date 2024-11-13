@@ -85,6 +85,7 @@ export const reqGetSupplier = (id: any) => api.get(`/supplier/by-business-unit/$
 export const reqEditSupplier = (id: any, data: any) => api.put(`/supplier/edit/${id}`, data)
 export const reqCreateSupplier = (unitId: any, data: any) => api.post(`/supplier/create/${unitId}`, data)
 export const reqDeleteSupplier = (id: number) => api.delete(`/suppliers/delete/${id}`)
+export const reqSearchSupplierByName = (name: string) => api.get(`/supplier/search-by-name?name=${name}`)
 
 /* Rutas facturacion */
 export const reqGetInvoiceId = (id: any) => api.get(`/invoicing/get/${id}`)
@@ -92,12 +93,13 @@ export const reqCreateInvoice = (data: any) => api.post('/invoicing/save', data)
 export const reqDeleteInvoice = (id: any) => api.delete(`/invoicing/delete/${id}`)
 export const reqUpdateInvoice = (id: any, data: any) => api.put(`/invoicing/${id}`, data)
 export const reqGetAllInvoicesByUnit = (id: any) => api.get(`/invoicing/get-by-unit/${id}`)
+export const reqGetInvoiceProductsByInvoiceId = (id: any) => api.get(`/invoicing/get-invoice-products-by-invoice-id/${id}`)
 
 /* Rutas clientes */
-export const reqEditClient = (id: any, data: any) => api.put(`/clients/${id}`, data)
-export const reqDeleteClient = (id: any) => api.delete(`/clients/${id}`)
-export const reqCreateClient = (data: any) => api.post('/clients', data)
-export const reqGetClientByUnit = () => api.get('/clients/by-business-unit')
+export const reqEditClient = (id: any, data: any) => api.patch(`/client/edit/${id}`, data)
+export const reqDeleteClient = (id: any) => api.delete(`/client/delete-by-id/${id}`)
+export const reqCreateClient = (data: any) => api.post('/client/create', data)
+export const reqGetClientByUnit = () => api.get('/client/find-all-by-unit')
 
 /* Rutas roles */
 export const reqEditRole = (id: any, data: any) => api.put(`/role/${id}`, data)

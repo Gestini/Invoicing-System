@@ -14,6 +14,7 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 import gestini.modules.businessUnit.models.BusinessUnitModel;
+import gestini.modules.discount.models.DiscountModel;
 import gestini.modules.user.models.User;
 
 @Entity
@@ -22,10 +23,7 @@ public class InvoicingModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false)
     private String dniOrCuil;
-
     private String client;
     private String saleCondition;
     private String number;
@@ -43,6 +41,10 @@ public class InvoicingModel {
     @JoinColumn(name = "seller_id", nullable = false)
     @NotNull(message = "Seller id cannot be null")
     private User seller;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "discount_id", nullable = true)
+    private DiscountModel discount;
 
     public Long getId() {
         return id;
@@ -114,6 +116,14 @@ public class InvoicingModel {
 
     public void setSeller(User seller) {
         this.seller = seller;
+    }
+
+    public DiscountModel getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(DiscountModel discount) {
+        this.discount = discount;
     }
 
 }

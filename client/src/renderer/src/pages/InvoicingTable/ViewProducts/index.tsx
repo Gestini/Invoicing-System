@@ -1,17 +1,41 @@
 import React from 'react'
-import { Tab } from '@renderer/features/newInvoicing'
 import { columns } from './data'
 import { RootState } from '@renderer/store'
 import { EditAmount } from './EditAmount'
 import { TopContent } from './TopContent'
-import { useSelector } from 'react-redux'
 import { ProductModel } from '@renderer/interfaces/product'
 import { DeleteProduct } from './DeleteProduct'
+import { EmptyTableContent } from '@renderer/components/AppTable/TableComponents/EmptyTableContent'
+import { useDispatch, useSelector } from 'react-redux'
+import { clearInvoiceData, setInvoiceData, Tab } from '@renderer/features/newInvoicing'
 import { Table, TableRow, TableBody, TableCell, TableColumn, TableHeader } from '@nextui-org/react'
 
 export default function ViewProducts() {
+  const dispatch = useDispatch()
   const newInvoicing = useSelector((state: RootState) => state.unit.newInvoicing)
   const currentTab = newInvoicing?.tabs?.find((tab: Tab) => tab.id == newInvoicing.currentTabId)
+  const [isInitialized, setIsInitialized] = React.useState(false)
+  const unit = useSelector((state: RootState) => state.currentUnit)
+
+  React.useEffect(() => {
+    if (isInitialized) {
+      const localInvoiceData = localStorage.getItem('invoices') || '{}'
+      const allInvoices = JSON.parse(localInvoiceData)
+      allInvoices[unit.id] = { tabs: newInvoicing.tabs, currentTabId: newInvoicing.currentTabId }
+      localStorage.setItem('invoices', JSON.stringify(allInvoices))
+    }
+  }, [newInvoicing, isInitialized, unit.id])
+
+  React.useEffect(() => {
+    dispatch(clearInvoiceData())
+    const localInvoiceData = localStorage.getItem('invoices') || '{}'
+    const allInvoices = JSON.parse(localInvoiceData)
+    if (allInvoices[unit.id]) {
+      const { tabs, currentTabId } = allInvoices[unit.id]
+      dispatch(setInvoiceData({ tabs, currentTabId }))
+    }
+    setIsInitialized(true)
+  }, [dispatch, unit.id])
 
   const renderCell = React.useCallback((product: ProductModel, columnKey: string) => {
     const cellValue = product[columnKey]
@@ -47,7 +71,7 @@ export default function ViewProducts() {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody items={currentTab?.products || []} emptyContent={'Tabla de productos vacía'}>
+      <TableBody items={currentTab?.products || []} emptyContent={<EmptyTableContent />}>
         {(item) => (
           <TableRow key={item?.id}>
             {(columnKey) => (

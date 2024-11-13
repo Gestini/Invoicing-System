@@ -20,7 +20,7 @@ export const ClientTable = () => {
 
   React.useEffect(() => {
     const loadData = async () => {
-      const response = await reqGetClientByUnit(params.unitId)
+      const response = await reqGetClientByUnit()
       dispatch(setTableData(response.data))
     }
     loadData()

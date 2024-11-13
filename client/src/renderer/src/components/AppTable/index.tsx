@@ -17,7 +17,7 @@ import {
   TableColumn,
   SortDescriptor,
 } from '@nextui-org/react'
-import { PlantIcon } from '../Icons/PlantIcon'
+import { EmptyTableContent } from './TableComponents/EmptyTableContent'
 
 export const AppTable = ({
   inputCell,
@@ -44,7 +44,7 @@ export const AppTable = ({
     new Set(columnsData.InitialVisibleColumns),
   )
   const [statusFilter, setStatusFilter] = React.useState<Selection>('all')
-  const [rowsPerPage, /* setRowsPerPage */ __] = React.useState(10)
+  const [rowsPerPage, /* setRowsPerPage */ __] = React.useState(8)
   const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
     column: 'age',
     direction: 'ascending',
@@ -78,9 +78,13 @@ export const AppTable = ({
 
     if (
       statusFilter !== 'all' &&
-      Array.from(statusFilter).length !== columnsData.statusOptions.length
+      Array.from(statusFilter).length !== columnsData?.statusOptions?.length
     ) {
-      filteredItems = filteredItems.filter((item) => Array.from(statusFilter).includes(item.status))
+      filteredItems = filteredItems.filter(
+        (item) =>
+          Array.from(statusFilter).includes(item.status) ||
+          Array.from(statusFilter).includes(item.type),
+      )
     }
 
     return filteredItems
@@ -167,20 +171,11 @@ export const AppTable = ({
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody
-        emptyContent={
-          <div className='w-full flex justify-center flex-col items-center'>
-            <PlantIcon />
-            <p className='text-c-title'>Upss!, No tienes registros</p>
-            <span>Presiona agregar para empezar</span>
-          </div>
-        }
-
-        items={sortedItems}>
+      <TableBody emptyContent={<EmptyTableContent />} items={sortedItems}>
         {(item) => (
           <TableRow key={item.id}>
             {(columnKey) => (
-              <TableCell className='default-text-color capitalize'>
+              <TableCell className='default-text-color'>
                 <RenderCell
                   item={item}
                   columnKey={columnKey}

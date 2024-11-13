@@ -14,11 +14,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import gestini.annotations.CheckPermissions;
+import gestini.modules.invoicing.dto.InvoicingDto;
+import gestini.modules.invoicing.dto.InvoicingProductDto;
 import gestini.modules.invoicing.dto.InvoicingRequestDto;
 import gestini.modules.invoicing.models.InvoicingModel;
 import gestini.utils.Permission;
+import gestini.utils.UnitContext;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/invoicing")
@@ -33,8 +37,8 @@ public class InvoicingController {
     private InvoicingService invoicingService;
 
     @PostMapping("/save")
-    public ResponseEntity<?> saveInvoice(@RequestBody InvoicingRequestDto data) {
-        return invoicingService.saveInvoicing(data);
+    public ResponseEntity<?> saveInvoice(@RequestBody @Valid InvoicingRequestDto data) {
+        return invoicingService.saveInvoicing(data, UnitContext.getUnitId());
     }
 
     @GetMapping("/get-all")
@@ -42,19 +46,25 @@ public class InvoicingController {
         return invoicingService.getAllInvoices();
     }
 
-    @GetMapping(path = "/get/{id}")
+    @GetMapping("/get/{id}")
     public Optional<InvoicingModel> getInvoiceById(@PathVariable("id") Long id) {
         return invoicingService.getInvoiceById(id);
     }
 
-    @GetMapping(path = "/get-by-unit/{id}")
-    public List<InvoicingModel> getInvoiceByUnit(@PathVariable("id") Long id) {
+    @GetMapping("/get-by-unit/{id}")
+    public List<InvoicingDto> getInvoiceByUnit(@PathVariable("id") Long id) {
         return invoicingService.getByUnit(id);
     }
 
-    @DeleteMapping(path = "/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteInvoiceById(@PathVariable("id") Long id) {
         return invoicingService.deleteInvoiceById(id);
+    }
+
+    @GetMapping("/get-invoice-products-by-invoice-id/{invoiceId}")
+    public List<InvoicingProductDto> findInvoiceProductByInvoiceId(
+            @PathVariable("invoiceId") Long invoiceId) {
+        return invoicingService.findInvoiceProductByInvoiceId(invoiceId);
     }
 
 }
